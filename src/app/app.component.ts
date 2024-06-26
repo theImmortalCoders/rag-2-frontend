@@ -5,9 +5,8 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  template: '',
-  styles: '',
+  template: '<div class="text-red-600">{{title}}</div> ',
 })
 export class AppComponent {
-  private _title = 'rag-2-frontend';
+  public title = 'rag-2-frontend';
 }
