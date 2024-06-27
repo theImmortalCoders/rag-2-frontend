@@ -7,4 +7,9 @@ export const routes: Routes = [
     component: HomePageComponent,
     title: 'Home Page',
   },
+  {
+    path: 'home',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
 ];
