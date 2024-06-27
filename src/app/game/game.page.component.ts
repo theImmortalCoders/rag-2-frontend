@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { PongComponent } from './components/pong/pong.component';
 import { TetrisComponent } from './components/tetris/tetris.component';
+import { BaseGameComponent } from './models/base-game.component';
 
-const gameComponents: Record<string, Type<unknown>> = {
+const gameComponents: Record<string, Type<BaseGameComponent>> = {
   pong: PongComponent,
   tetris: TetrisComponent,
 };
@@ -22,7 +23,7 @@ const gameComponents: Record<string, Type<unknown>> = {
   `,
   imports: [NgComponentOutlet],
 })
-export class GameBaseComponent implements OnInit {
+export class GamePageComponent implements OnInit {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
 

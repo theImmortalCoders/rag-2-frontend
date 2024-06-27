@@ -1,12 +1,12 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
-import { GameBaseComponent } from './game.page.component';
+import { GamePageComponent } from './game.page.component';
 import { PongComponent } from './components/pong/pong.component';
 
 describe('GameComponent', () => {
-  let component: GameBaseComponent;
-  let fixture: ComponentFixture<GameBaseComponent>;
+  let component: GamePageComponent;
+  let fixture: ComponentFixture<GamePageComponent>;
   let mockRoute: unknown;
   let mockRouter: unknown;
 
@@ -24,7 +24,7 @@ describe('GameComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [NgComponentOutlet, GameBaseComponent],
+      imports: [NgComponentOutlet, GamePageComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Router, useValue: mockRouter },
@@ -33,7 +33,7 @@ describe('GameComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GameBaseComponent);
+    fixture = TestBed.createComponent(GamePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
