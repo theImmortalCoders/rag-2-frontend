@@ -13,6 +13,7 @@ module.exports = {
       colors: {
         mainGray: '#454545',
         lightGray: '#5D5D5D',
+        darkGray: ' #3C3D42',
         mainOrange: '#FF6000',
         lightOragne: '#FFA559',
         mainCreme: '#FFE6C7',

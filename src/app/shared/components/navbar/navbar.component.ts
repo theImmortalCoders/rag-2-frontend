@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   imports: [],
   template: `
     <nav
-      class="bg-mainGray min-w-max pl-6 py-4 shadow-navbarShadow relative z-50">
+      class="bg-darkGray min-w-max pl-6 py-4 shadow-navbarShadow relative z-50">
       <div class="flex mx-auto w-full flex-row items-center justify-between">
         <div
           class="flex w-1/2 xs:w-[60%] sm:w-5/12 lg:w-1/3 justify-between items-center">
