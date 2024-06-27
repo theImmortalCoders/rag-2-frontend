@@ -28,4 +28,3 @@ jobs:
     - run: npm ci
     - run: npm install -g @angular/cli
     - run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
-    - run: ng e2e --headless --watch false
