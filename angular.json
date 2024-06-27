@@ -10,7 +10,7 @@
           "inlineTemplate": true,
           "inlineStyle": true,
           "style": "css",
-          "skipTests": true,
+          "skipTests": false,
           "standalone": true,
           "flat": true
         },
