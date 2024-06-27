@@ -52,7 +52,7 @@ module.exports = tseslint.config(
       ],
       '@typescript-eslint/no-non-null-assertion': 'warn',
       'no-use-before-define': ['error', { variables: true }],
-      '@typescript-eslint/no-extraneous-class': 'warn',
+      // '@typescript-eslint/no-extraneous-class': 'warn',
       '@typescript-eslint/naming-convention': [
         'warn',
         {
