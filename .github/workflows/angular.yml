@@ -26,7 +26,9 @@ jobs:
           cache: 'npm'
       - name: Install all necessary dependencies
         run: npm ci
+      - name: Install Angular CLI
         run: npm install -g @angular/cli
+      - name: Install Cypress
         run: npm install cypress --save-dev
       - name: Run Karma unit tests
         run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
