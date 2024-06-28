@@ -29,8 +29,7 @@ import { Component } from '@angular/core';
           Reset
         </button>
       </form>
-      <div
-        class="flex flex-row items-center justify-center space-x-4 {% if not user.is_authenticated %} hidden {% endif %}">
+      <div class="flex flex-row items-center justify-center space-x-4">
         <label for="sendData">Send data?</label>
         <input
           id="sendData"
