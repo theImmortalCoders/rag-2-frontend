@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { PongComponent } from './components/pong/pong.component';
 import { TetrisComponent } from './components/tetris/tetris.component';
-import { BaseGameComponent } from './models/base-game.component';
+import { BaseGameComponent } from './components/base-game/base-game.component';
 
 const gameComponents: Record<string, Type<BaseGameComponent>> = {
   pong: PongComponent,
@@ -11,8 +11,9 @@ const gameComponents: Record<string, Type<BaseGameComponent>> = {
 };
 
 @Component({
-  selector: 'app-game-base',
+  selector: 'app-game',
   standalone: true,
+  imports: [NgComponentOutlet],
   template: `
     <div class="min-h-screen w-full">
       <h1 class="text-4xl font-bold text-center mt-10">Game: {{ gameName }}</h1>
@@ -21,7 +22,6 @@ const gameComponents: Record<string, Type<BaseGameComponent>> = {
       }
     </div>
   `,
-  imports: [NgComponentOutlet],
 })
 export class GamePageComponent implements OnInit {
   private _route = inject(ActivatedRoute);

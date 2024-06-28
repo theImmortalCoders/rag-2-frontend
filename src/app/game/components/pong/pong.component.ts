@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { BaseGameComponent } from '../../models/base-game.component';
+import { BaseGameComponent } from '../base-game/base-game.component';
 
 @Component({
   selector: 'app-pong',
   standalone: true,
-  imports: [],
-  template: ` <p>pong works!</p> `,
+  template: `
+    <p>pong works!</p>
+    <app-base-game [menuType]="'TIME'"></app-base-game>
+  `,
   styles: ``,
+  imports: [BaseGameComponent],
 })
 export class PongComponent extends BaseGameComponent {}
