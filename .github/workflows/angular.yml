@@ -24,9 +24,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: npm install -g @angular/cli
-      - run: npm install cypress --save-dev
-      - run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+      - name: Install all necessary dependencies
+        run: npm ci
+        run: npm install -g @angular/cli
+        run: npm install cypress --save-dev
+      - name: Run Karma unit tests
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
       - name: Run Cypress E2E tests
         run: npx ng e2e --no-watch --headless
