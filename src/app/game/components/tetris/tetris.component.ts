@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseGameComponent } from '../../models/base-game.component';
+import { BaseGameComponent } from '../base-game/base-game.component';
 
 @Component({
   selector: 'app-tetris',
