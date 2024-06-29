@@ -5,10 +5,7 @@ import { BaseGameComponent } from '../base-game/base-game.component';
   selector: 'app-pong',
   standalone: true,
   imports: [BaseGameComponent],
-  template: `
-    <p>pong works!</p>
-    <app-base-game [menuType]="'TIME'"></app-base-game>
-  `,
+  template: ` <app-base-game [menuType]="'TIME'"></app-base-game> `,
   styles: ``,
 })
 export class PongComponent extends BaseGameComponent {}
