@@ -11,7 +11,7 @@ module.exports = {
         '3xl': '1760px',
       },
       colors: {
-        mainGray: '#454545',
+        mainGray: '#353535',
         lightGray: '#5D5D5D',
         darkGray: ' #3C3D42',
         mainOrange: '#FF6000',
@@ -37,7 +37,7 @@ module.exports = {
       },
       boxShadow: {
         navbarShadow: '0px 1px 7px 2px rgba(255, 96, 0, 1)',
-        footerShadow: 'inset 0px 10px 23px 0px rgba(69, 69, 69, 1)',
+        footerShadow: 'inset 0px 10px 23px 0px rgba(59, 59, 59, 1)',
       },
       animation: {
         typewriter21: 'typewriter 3s steps(21) forwards',
