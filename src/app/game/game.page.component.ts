@@ -16,7 +16,6 @@ const gameComponents: Record<string, Type<BaseGameComponent>> = {
   imports: [NgComponentOutlet],
   template: `
     <div class="min-h-screen w-full">
-      <h1 class="text-4xl font-bold text-center mt-10">Game: {{ gameName }}</h1>
       @if (component) {
         <ng-container *ngComponentOutlet="component"></ng-container>
       }
