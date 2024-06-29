@@ -23,12 +23,12 @@ const menuTypeComponents: Record<
         class="flex flex-col items-center justify-center h-full mt-4 w-[70%] space-y-4">
         <div class="flex flex-row items-center justify-center space-x-4">
           <button
-            class="border-mainOrange border-2 p-1 w-28 hover:bg-mainOrange hover:text-mainGray"
+            class="border-mainOrange text-mainCreme border-2 p-1 w-28 hover:bg-mainOrange hover:text-mainGray"
             id="pvai">
             PvAI
           </button>
           <button
-            class="border-mainOrange border-2 p-1 w-28 hover:bg-mainOrange hover:text-mainGray"
+            class="border-mainOrange text-mainCreme border-2 p-1 w-28 hover:bg-mainOrange hover:text-mainGray"
             id="pvp">
             PvP
           </button>
