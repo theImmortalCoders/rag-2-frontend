@@ -18,7 +18,7 @@ const menuTypeComponents: Record<
   imports: [NgComponentOutlet],
   template: `
     <div
-      class="flex w-full min-h-screen justify-center bg-mainGray pt-4 pb-12 font-mono">
+      class="flex w-full min-h-screen justify-center bg-gradient-to-b from-mainGray via-darkGray to-lightGray pt-4 pb-12 font-mono">
       <div
         class="flex flex-col items-center justify-center h-full mt-4 w-[70%] space-y-4">
         <div class="flex flex-row items-center justify-center space-x-4">
