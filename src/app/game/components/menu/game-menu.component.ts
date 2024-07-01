@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { TGameDataSendingType } from '../../models/game-data-sending-type';
 
 @Component({
-  selector: 'app-event-menu',
+  selector: 'app-game-menu',
   standalone: true,
   imports: [],
   template: `
@@ -36,8 +37,31 @@ import { Component } from '@angular/core';
           type="checkbox"
           class="border-mainOrange border-2 p-1 bg-mainGray text-mainCreme hover:bg-mainOrange hover:text-mainGray checked:bg-mainOrange checked:text-mainGray" />
       </div>
+      @if (gameDataSendingType === TGameDataSendingType.TIME_GAME) {
+        <div class="flex flex-row items-center justify-center space-x-4">
+          <label for="log-interval"></label
+          ><input
+            class="border-mainOrange border-2 px-4 py-1 w-52 bg-mainGray text-mainCreme focus:bg-mainOrange focus:text-mainGray"
+            type="number"
+            id="log-interval"
+            min="50"
+            value="100"
+            step="10"
+            max="1000" />
+          <button
+            class="border-mainOrange border-2 p-1 w-52 bg-mainGray text-mainCreme hover:bg-mainOrange hover:text-mainGray"
+            id="save-log">
+            Save Log Interval
+          </button>
+        </div>
+      }
     </div>
   `,
   styles: ``,
 })
-export class EventMenuComponent {}
+export class GameMenuComponent {
+  @Input() public gameDataSendingType: TGameDataSendingType =
+    TGameDataSendingType.EVENT_GAME;
+
+  public TGameDataSendingType = TGameDataSendingType;
+}

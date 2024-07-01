@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TetrisComponent } from './tetris.component';
+import { TetrisGameWindowComponent } from './tetris.component';
 
 describe('TetrisComponent', () => {
-  let component: TetrisComponent;
-  let fixture: ComponentFixture<TetrisComponent>;
+  let component: TetrisGameWindowComponent;
+  let fixture: ComponentFixture<TetrisGameWindowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TetrisComponent]
-    })
-    .compileComponents();
+      imports: [TetrisGameWindowComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(TetrisComponent);
+    fixture = TestBed.createComponent(TetrisGameWindowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
