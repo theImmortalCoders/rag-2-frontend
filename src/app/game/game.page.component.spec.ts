@@ -2,7 +2,8 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { GamePageComponent } from './game.page.component';
-import { PongComponent } from './components/pong/pong.component';
+import { PongGameWindowComponent } from './components/games/pong/pong.component';
+import { of } from 'rxjs';
 
 describe('GameComponent', () => {
   let component: GamePageComponent;
@@ -12,11 +13,9 @@ describe('GameComponent', () => {
 
   beforeEach(async () => {
     mockRoute = {
-      snapshot: {
-        paramMap: {
-          get: (): string => 'pong',
-        },
-      },
+      paramMap: of({
+        get: (key: string) => 'pong',
+      }),
     };
 
     mockRouter = {
@@ -30,6 +29,10 @@ describe('GameComponent', () => {
         { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(GamePageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   beforeEach(() => {
@@ -47,6 +50,6 @@ describe('GameComponent', () => {
   });
 
   it('should set the correct component based on gameName', () => {
-    expect(component.component).toBe(PongComponent);
+    expect(component.gameWindowComponent).toBe(PongGameWindowComponent);
   });
 });
