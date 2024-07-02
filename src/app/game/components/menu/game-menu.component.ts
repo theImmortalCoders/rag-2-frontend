@@ -37,7 +37,7 @@ import { TGameDataSendingType } from '../../models/game-data-sending-type';
           type="checkbox"
           class="border-mainOrange border-2 p-1 bg-mainGray text-mainCreme hover:bg-mainOrange hover:text-mainGray checked:bg-mainOrange checked:text-mainGray" />
       </div>
-      @if (gameDataSendingType === TGameDataSendingType.TIME_GAME) {
+      @if (gameDataSendingType === tgameDataSendingType.TimeGame) {
         <div class="flex flex-row items-center justify-center space-x-4">
           <label for="log-interval"></label
           ><input
@@ -61,7 +61,7 @@ import { TGameDataSendingType } from '../../models/game-data-sending-type';
 })
 export class GameMenuComponent {
   @Input() public gameDataSendingType: TGameDataSendingType =
-    TGameDataSendingType.EVENT_GAME;
+    TGameDataSendingType.EventGame;
 
-  public TGameDataSendingType = TGameDataSendingType;
+  public tgameDataSendingType = TGameDataSendingType;
 }

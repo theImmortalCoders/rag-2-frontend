@@ -28,16 +28,15 @@ export class GamePageComponent implements OnInit {
   public game: Game | null = null;
   public gameWindowComponent: Type<BaseGameWindowComponent> | null = null;
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
-      console.log(params);
       this.gameName = params.get('gameName') || '';
       this.loadGame();
     });
   }
 
-  private loadGame() {
-    let game = games[this.gameName];
+  private loadGame(): void {
+    const game = games[this.gameName];
     if (!game) {
       this._router.navigate(['']);
     } else {
