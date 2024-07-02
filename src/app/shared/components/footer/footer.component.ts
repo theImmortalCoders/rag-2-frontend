@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   imports: [],
   template: `
     <footer
-      class="flex flex-col font-mono items-center justify-around bg-darkGray shadow-footerShadow w-full py-4 relative z-50">
+      class="flex flex-col font-mono items-center justify-around bg-darkGray shadow-footerShadow w-full py-4 relative z-40">
       <div
         class="flex flex-row w-full items-center text-sm md:text-base font-extrabold uppercase justify-around text-mainCreme my-2">
         AUTHORS:
