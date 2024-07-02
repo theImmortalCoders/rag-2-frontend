@@ -14,7 +14,7 @@ describe('GameComponent', () => {
   beforeEach(async () => {
     mockRoute = {
       paramMap: of({
-        get: (key: string) => 'pong',
+        get: () => 'pong',
       }),
     };
 

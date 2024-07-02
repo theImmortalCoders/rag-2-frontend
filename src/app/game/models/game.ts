@@ -3,29 +3,29 @@ import { BaseGameWindowComponent } from '../components/games/base-game.component
 import { TGameDataSendingType } from './game-data-sending-type';
 
 export class Game {
-  private name: string;
-  private gameWindowComponent: Type<BaseGameWindowComponent>;
-  private gameDataSendingType: TGameDataSendingType;
+  private _name: string;
+  private _gameWindowComponent: Type<BaseGameWindowComponent>;
+  private _gameDataSendingType: TGameDataSendingType;
 
-  constructor(
+  public constructor(
     name: string,
     gameWindowComponent: Type<BaseGameWindowComponent>,
     gameDataSendingType: TGameDataSendingType
   ) {
-    this.name = name;
-    this.gameWindowComponent = gameWindowComponent;
-    this.gameDataSendingType = gameDataSendingType;
+    this._name = name;
+    this._gameWindowComponent = gameWindowComponent;
+    this._gameDataSendingType = gameDataSendingType;
   }
 
   public getName(): string {
-    return this.name;
+    return this._name;
   }
 
   public getGameWindowComponent(): Type<BaseGameWindowComponent> {
-    return this.gameWindowComponent;
+    return this._gameWindowComponent;
   }
 
   public getGameDataSendingType(): TGameDataSendingType {
-    return this.gameDataSendingType;
+    return this._gameDataSendingType;
   }
 }

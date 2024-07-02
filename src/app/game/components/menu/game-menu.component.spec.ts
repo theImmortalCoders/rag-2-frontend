@@ -23,7 +23,7 @@ describe('TimeMenuComponent', () => {
 
   it('should have a default gameDataSendingType', () => {
     expect(component.gameDataSendingType).toEqual(
-      TGameDataSendingType.EVENT_GAME
+      TGameDataSendingType.EventGame
     );
   });
 });
