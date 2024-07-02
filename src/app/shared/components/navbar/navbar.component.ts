@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
             <img src="" alt="Logo" class="h-12 w-auto" />
           </a>
           <span class="text-3xl font-mono text-mainOrange hidden xs:block"
-            >RUT-AI GAMES</span
+            >RAG-2</span
           >
         </div>
       </div>
