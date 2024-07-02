@@ -1,42 +1,94 @@
-import { Component, OnInit, Type, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  Type,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
-import { PongComponent } from './components/pong/pong.component';
-import { TetrisComponent } from './components/tetris/tetris.component';
-import { BaseGameComponent } from './models/base-game.component';
-
-const gameComponents: Record<string, Type<BaseGameComponent>> = {
-  pong: PongComponent,
-  tetris: TetrisComponent,
-};
+import { BaseGameWindowComponent } from './components/games/base-game.component';
+import { Game } from './models/game.class';
+import { GameMenuComponent } from './components/menu/game-menu.component';
+import { games } from './data-access/games';
+import { ConsoleComponent } from './components/console/console.component';
+import { TGameDataSendingType } from './models/game-data-sending-type.enum';
+import { TLogData } from './models/log-data.type';
 
 @Component({
-  selector: 'app-game-base',
+  selector: 'app-game',
   standalone: true,
   template: `
     <div class="min-h-screen w-full">
-      <h1 class="text-4xl font-bold text-center mt-10">Game: {{ gameName }}</h1>
-      @if (component) {
-        <ng-container *ngComponentOutlet="component"></ng-container>
+      @if (game) {
+        <app-game-menu
+          (gameMenuLogData)="this.logData['menu'] = $event"
+          [gameDataSendingType]="game.getGameDataSendingType()"></app-game-menu>
+        <ng-container *ngComponentOutlet="gameWindowComponent"></ng-container>
       }
     </div>
+    <app-console [logData]="logData"></app-console>
   `,
-  imports: [NgComponentOutlet],
+  imports: [NgComponentOutlet, GameMenuComponent, ConsoleComponent],
 })
-export class GamePageComponent implements OnInit {
+export class GamePageComponent implements OnInit, AfterViewInit {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
 
   public gameName = '';
-  public component: Type<unknown> | null = null;
+  public game: Game | null = null;
+  public logData: Record<string, TLogData> = {};
+
+  @ViewChild(NgComponentOutlet)
+  public ngComponentOutlet!: NgComponentOutlet;
+  public gameWindowComponent: Type<BaseGameWindowComponent> | null = null;
+  public gameWindowComponentInstance: BaseGameWindowComponent | null = null;
 
   public ngOnInit(): void {
-    this.gameName = this._route.snapshot.paramMap.get('gameName') || '';
+    this._route.paramMap.subscribe(params => {
+      this.gameName = params.get('gameName') || '';
+      this.loadGame();
+    });
 
-    this.component = gameComponents[this.gameName] || null;
+    this.updateGameLogData();
+  }
 
-    if (!this.component) {
+  public ngAfterViewInit(): void {
+    if (!this.game) return;
+    this.gameWindowComponentInstance = this.ngComponentOutlet['_componentRef']
+      .instance as BaseGameWindowComponent;
+
+    this.updateGameWindowLogData();
+  }
+
+  //
+
+  private loadGame(): void {
+    const game = games[this.gameName];
+    if (!game) {
       this._router.navigate(['']);
+    } else {
+      this.game = game;
+      this.gameWindowComponent = game.getGameWindowComponent();
     }
+  }
+
+  private updateGameLogData(): void {
+    if (!this.game) return;
+
+    this.logData['game'] = {
+      game: this.game.getName(),
+      dataSendingType: TGameDataSendingType[this.game.getGameDataSendingType()],
+    };
+  }
+
+  private updateGameWindowLogData(): void {
+    setTimeout(() => {
+      if (this.gameWindowComponentInstance === null) return;
+
+      this.logData['game window'] =
+        this.gameWindowComponentInstance.gameWindowLogData;
+    });
   }
 }

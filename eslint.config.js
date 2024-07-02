@@ -126,15 +126,7 @@ module.exports = tseslint.config(
       'max-lines': ['warn', 200],
       'no-else-return': 'warn',
       'no-console': 'off',
-      'no-magic-numbers': [
-        'warn',
-        {
-          detectObjects: false,
-          enforceConst: true,
-          ignore: [-1, 0, 1],
-          ignoreArrayIndexes: true,
-        },
-      ],
+      'no-magic-numbers': 'off',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {

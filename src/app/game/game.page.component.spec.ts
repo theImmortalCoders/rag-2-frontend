@@ -2,9 +2,16 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { GamePageComponent } from './game.page.component';
-import { PongComponent } from './components/pong/pong.component';
+import { PongGameWindowComponent } from './components/games/pong/pong.component';
+import { GameMenuComponent } from './components/menu/game-menu.component';
+import { ConsoleComponent } from './components/console/console.component';
+import { of } from 'rxjs';
+import { TGameDataSendingType } from './models/game-data-sending-type.enum';
+import { TLogData } from './models/log-data.type';
+import { By } from '@angular/platform-browser';
+import { EventEmitter } from '@angular/core';
 
-describe('GameComponent', () => {
+describe('GamePageComponent', () => {
   let component: GamePageComponent;
   let fixture: ComponentFixture<GamePageComponent>;
   let mockRoute: unknown;
@@ -12,11 +19,9 @@ describe('GameComponent', () => {
 
   beforeEach(async () => {
     mockRoute = {
-      snapshot: {
-        paramMap: {
-          get: (): string => 'pong',
-        },
-      },
+      paramMap: of({
+        get: () => 'pong',
+      }),
     };
 
     mockRouter = {
@@ -24,15 +29,18 @@ describe('GameComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [NgComponentOutlet, GamePageComponent],
+      imports: [
+        GamePageComponent,
+        GameMenuComponent,
+        ConsoleComponent,
+        PongGameWindowComponent,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(GamePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -47,6 +55,19 @@ describe('GameComponent', () => {
   });
 
   it('should set the correct component based on gameName', () => {
-    expect(component.component).toBe(PongComponent);
+    expect(component.gameWindowComponent).toBe(PongGameWindowComponent);
+  });
+
+  it('should pass logData to ConsoleComponent', () => {
+    const testLogData: Record<string, TLogData> = {
+      menu: { message: 'Test message', level: 'info' },
+    };
+    component.logData = testLogData;
+    fixture.detectChanges();
+
+    const consoleComponent = fixture.debugElement.query(
+      By.directive(ConsoleComponent)
+    ).componentInstance;
+    expect(consoleComponent.logData).toEqual(testLogData);
   });
 });
