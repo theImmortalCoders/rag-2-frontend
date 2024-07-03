@@ -9,7 +9,6 @@ export class RoleService {
     //todo
     return new Promise<boolean>(resolve => {
       setTimeout(() => {
-        console.log('isAuthenticated');
         resolve(true);
       }, 500);
     });
@@ -17,7 +16,6 @@ export class RoleService {
   public async getCurrentRole(): Promise<TRole> {
     return new Promise<TRole>(resolve => {
       setTimeout(() => {
-        console.log('isAuthenticated');
         resolve(TRole.Admin);
       }, 500);
     });

@@ -14,11 +14,11 @@ import { GameMenuComponent } from './components/menu/game-menu.component';
 import { games } from './data-access/games';
 import { ConsoleComponent } from './components/console/console.component';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
-import { TLogData } from './models/log-data.type';
+import { TExchangeData } from './models/log-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
-import { AllowedRolesDirective } from '../shared/directives/allowed-roles.directive';
 import { TRole } from '../shared/models/role.enum';
 import { AuthRequiredDirective } from '../shared/directives/auth-required.directive';
+import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
 
 @Component({
   selector: 'app-game',
@@ -29,13 +29,23 @@ import { AuthRequiredDirective } from '../shared/directives/auth-required.direct
         <app-game-menu
           (logDataEmitter)="logData['menu'] = $event"
           [gameDataSendingType]="game.getGameDataSendingType()"></app-game-menu>
-        <app-data-menu
-          *appAuthRequired
-          (logDataEmitter)="logData['data menu'] = $event"></app-data-menu>
+        <div class="absolute top-20 right-0 flex flex-col">
+          <app-data-menu
+            *appAuthRequired
+            (logDataEmitter)="logData['data menu'] = $event"></app-data-menu>
+          <app-ai-socket-menu
+            *appAuthRequired
+            (logDataEmitter)="
+              logData['ai-socket menu'] = $event
+            "></app-ai-socket-menu>
+        </div>
         <ng-container *ngComponentOutlet="gameWindowComponent"></ng-container>
       }
     </div>
-    <app-console [logData]="logData"></app-console>
+    <div
+      class="fixed bottom-0 p-10 bg-white border-y-red-600 border-solid border-2 left-0 w-full z-50">
+      <app-console [logData]="logData"></app-console>
+    </div>
   `,
   imports: [
     NgComponentOutlet,
@@ -43,7 +53,7 @@ import { AuthRequiredDirective } from '../shared/directives/auth-required.direct
     ConsoleComponent,
     DataMenuComponent,
     AuthRequiredDirective,
-    AllowedRolesDirective,
+    AiSocketMenuComponent,
   ],
 })
 export class GamePageComponent implements OnInit, AfterViewInit {
@@ -52,7 +62,7 @@ export class GamePageComponent implements OnInit, AfterViewInit {
 
   public gameName = '';
   public game: Game | null = null;
-  public logData: Record<string, TLogData> = {};
+  public logData: Record<string, TExchangeData> = {};
   public roleEnum = TRole;
 
   @ViewChild(NgComponentOutlet)

@@ -1,5 +1,7 @@
-import { TLogData } from '../../models/log-data.type';
+import { TExchangeData } from '../../models/log-data.type';
 
 export class BaseGameWindowComponent {
-  public gameWindowLogData: TLogData = {};
+  public gameWindowLogData: Record<string, TExchangeData> = {};
+  public gameWindowOutputData: TExchangeData = {};
+  public gameWindowInputData: TExchangeData = {};
 }
