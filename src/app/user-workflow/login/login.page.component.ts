@@ -2,41 +2,17 @@ import { Component, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import * as feather from 'feather-icons';
+import { LoginFormComponent } from './components/login-form.component';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, LoginFormComponent],
   template: `
     <div
       class="w-full min-h-screen bg-mainGray flex justify-evenly font-mono pt-20 text-mainCreme">
-      <div class="w-1/3 h-fit border-2 border-mainOrange rounded-lg px-6 py-8">
-        <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
-        <form
-          [formGroup]="loginForm"
-          (submit)="submitButton()"
-          class="flex flex-col space-y-4">
-          <label for="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            formControlName="email"
-            placeholder="Type your email"
-            class="border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-mainCreme focus:outline-none" />
-          <label for="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            formControlName="password"
-            placeholder="Type your password"
-            class="border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-mainCreme focus:outline-none" />
-          <button
-            type="submit"
-            class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
-            Log in
-          </button>
-        </form>
-      </div>
+      <app-login-form
+        class="w-1/3 h-fit border-2 border-mainOrange rounded-lg px-6 py-8" />
       <div class="flex flex-col space-y-4 w-1/3 h-fit p-6">
         <h1 class="text-2xl font-bold uppercase tracking-wider">
           Don't you have an account yet?
