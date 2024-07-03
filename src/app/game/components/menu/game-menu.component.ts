@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TGameDataSendingType } from '../../models/game-data-sending-type.enum';
-import { TLogData } from '../../models/log-data.type';
+import { TExchangeData } from '../../models/log-data.type';
 import { ILoggableDataComponent } from '../../models/loggable-data-component';
 
 @Component({
@@ -74,8 +74,8 @@ export class GameMenuComponent implements OnInit, ILoggableDataComponent {
   public isSendData = false;
   public defaultLogInterval = 100;
 
-  @Output() public logDataEmitter = new EventEmitter<TLogData>();
-  public logData: TLogData = {
+  @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
+  public logData: TExchangeData = {
     socketDomain: this.defaultSocketDomain,
     reset: 'no',
     sendData: this.isSendData,

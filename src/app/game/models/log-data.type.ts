@@ -1,1 +1,1 @@
-export type TLogData = Record<string, unknown>;
+export type TExchangeData = Record<string, unknown>;

@@ -23,7 +23,7 @@ describe('PongComponent', () => {
   it('should update gameWindowLogData.pong on updateInputData call', () => {
     const testValue = 'Test Pong Data';
     component.updateInputData(testValue);
-    expect(component.gameWindowLogData['pong']).toEqual(testValue);
+    expect(component.gameWindowLogData['output']['pong']).toEqual(testValue);
   });
 
   it('should update gameWindowLogData.pong when input element value changes', () => {
@@ -33,6 +33,6 @@ describe('PongComponent', () => {
     inputElement.value = testValue;
     inputElement.dispatchEvent(new Event('input'));
     fixture.detectChanges();
-    expect(component.gameWindowLogData['pong']).toEqual(testValue);
+    expect(component.gameWindowLogData['output']['pong']).toEqual(testValue);
   });
 });
