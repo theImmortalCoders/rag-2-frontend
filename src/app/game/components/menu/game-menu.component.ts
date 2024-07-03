@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TGameDataSendingType } from '../../models/game-data-sending-type.enum';
 import { TLogData } from '../../models/log-data.type';
+import { ILoggableDataComponent } from '../../models/loggable-data-component';
 
 @Component({
   selector: 'app-game-menu',
@@ -65,15 +66,15 @@ import { TLogData } from '../../models/log-data.type';
     </div>
   `,
 })
-export class GameMenuComponent implements OnInit {
+export class GameMenuComponent implements OnInit, ILoggableDataComponent {
   @Input() public gameDataSendingType: TGameDataSendingType =
     TGameDataSendingType.EventGame;
-  @Output() public gameMenuLogData = new EventEmitter<TLogData>();
   public tgameDataSendingType = TGameDataSendingType;
-
   public defaultSocketDomain = 'localhost:8001';
   public isSendData = false;
   public defaultLogInterval = 100;
+
+  @Output() public logDataEmitter = new EventEmitter<TLogData>();
   public logData: TLogData = {
     socketDomain: this.defaultSocketDomain,
     reset: 'no',
@@ -84,7 +85,7 @@ export class GameMenuComponent implements OnInit {
   };
 
   public ngOnInit(): void {
-    this.gameMenuLogData.emit(this.logData);
+    this.logDataEmitter.emit(this.logData);
   }
 
   public onInputChange(
@@ -102,7 +103,7 @@ export class GameMenuComponent implements OnInit {
   //
 
   private updateTemporarily(inputName: string, value: string): void {
-    const previousValue = this.logData[inputName];
+    const previousValue = 'no';
 
     this.updateLogData(inputName, value);
 
@@ -113,6 +114,6 @@ export class GameMenuComponent implements OnInit {
 
   private updateLogData(inputName: string, value: unknown): void {
     this.logData[inputName] = value;
-    this.gameMenuLogData.emit(this.logData);
+    this.logDataEmitter.emit(this.logData);
   }
 }
