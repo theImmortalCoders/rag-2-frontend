@@ -21,9 +21,11 @@ export class AllowedRolesDirective implements OnInit {
     private _permissionService: RoleService
   ) {}
 
-  public ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
     if (
-      this.appAllowedRoles.includes(this._permissionService.getCurrentRole())
+      this.appAllowedRoles.includes(
+        await this._permissionService.getCurrentRole()
+      )
     ) {
       this._vc.createEmbeddedView(this._templateRef);
     } else {

@@ -5,10 +5,21 @@ import { TRole } from '../models/role.enum';
   providedIn: 'root',
 })
 export class RoleService {
-  public isAuthenticated(): boolean {
-    return true; //todo
+  public async isAuthenticated(): Promise<boolean> {
+    //todo
+    return new Promise<boolean>(resolve => {
+      setTimeout(() => {
+        console.log('isAuthenticated');
+        resolve(true);
+      }, 500);
+    });
   }
-  public getCurrentRole(): TRole {
-    return TRole.Admin; //todo
+  public async getCurrentRole(): Promise<TRole> {
+    return new Promise<TRole>(resolve => {
+      setTimeout(() => {
+        console.log('isAuthenticated');
+        resolve(TRole.Admin);
+      }, 500);
+    });
   }
 }
