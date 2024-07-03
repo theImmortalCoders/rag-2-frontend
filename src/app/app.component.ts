@@ -8,7 +8,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
   template: ` <app-navbar />
-    <main><router-outlet /></main>
+    <main class="w-full min-h-screen"><router-outlet /></main>
     <app-footer />`,
 })
 export class AppComponent {
