@@ -10,7 +10,7 @@ import * as feather from 'feather-icons';
   template: `
     <div
       class="w-full min-h-screen bg-mainGray flex justify-evenly font-mono pt-20 text-mainCreme">
-      <div class="w-1/3 h-fit border-2 border-mainOrange rounded-lg p-6">
+      <div class="w-1/3 h-fit border-2 border-mainOrange rounded-lg px-6 py-8">
         <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
         <form
           [formGroup]="loginForm"
