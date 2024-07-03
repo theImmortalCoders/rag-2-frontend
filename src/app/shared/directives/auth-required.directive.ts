@@ -18,8 +18,8 @@ export class AuthRequiredDirective implements OnInit {
     private _permissionService: RoleService
   ) {}
 
-  public ngOnInit(): void {
-    if (this._permissionService.isAuthenticated()) {
+  public async ngOnInit(): Promise<void> {
+    if (await this._permissionService.isAuthenticated()) {
       this._vc.createEmbeddedView(this._templateRef);
     } else {
       this._vc.clear();

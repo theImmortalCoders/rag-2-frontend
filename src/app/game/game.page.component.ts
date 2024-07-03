@@ -43,6 +43,7 @@ import { AuthRequiredDirective } from '../shared/directives/auth-required.direct
     ConsoleComponent,
     DataMenuComponent,
     AuthRequiredDirective,
+    AllowedRolesDirective,
   ],
 })
 export class GamePageComponent implements OnInit, AfterViewInit {
