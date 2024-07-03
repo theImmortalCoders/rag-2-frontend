@@ -15,6 +15,10 @@ import { games } from './data-access/games';
 import { ConsoleComponent } from './components/console/console.component';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
 import { TLogData } from './models/log-data.type';
+import { DataMenuComponent } from './components/data-menu/data-menu.component';
+import { AllowedRolesDirective } from '../shared/directives/allowed-roles.directive';
+import { TRole } from '../shared/models/role.enum';
+import { AuthRequiredDirective } from '../shared/directives/auth-required.directive';
 
 @Component({
   selector: 'app-game',
@@ -23,14 +27,23 @@ import { TLogData } from './models/log-data.type';
     <div class="min-h-screen w-full">
       @if (game) {
         <app-game-menu
-          (gameMenuLogData)="this.logData['menu'] = $event"
+          (logDataEmitter)="logData['menu'] = $event"
           [gameDataSendingType]="game.getGameDataSendingType()"></app-game-menu>
+        <app-data-menu
+          *appAuthRequired
+          (logDataEmitter)="logData['data menu'] = $event"></app-data-menu>
         <ng-container *ngComponentOutlet="gameWindowComponent"></ng-container>
       }
     </div>
     <app-console [logData]="logData"></app-console>
   `,
-  imports: [NgComponentOutlet, GameMenuComponent, ConsoleComponent],
+  imports: [
+    NgComponentOutlet,
+    GameMenuComponent,
+    ConsoleComponent,
+    DataMenuComponent,
+    AuthRequiredDirective,
+  ],
 })
 export class GamePageComponent implements OnInit, AfterViewInit {
   private _route = inject(ActivatedRoute);
@@ -39,6 +52,7 @@ export class GamePageComponent implements OnInit, AfterViewInit {
   public gameName = '';
   public game: Game | null = null;
   public logData: Record<string, TLogData> = {};
+  public roleEnum = TRole;
 
   @ViewChild(NgComponentOutlet)
   public ngComponentOutlet!: NgComponentOutlet;
