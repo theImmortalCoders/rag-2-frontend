@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePageComponent } from './home/home.page.component';
 import { GamePageComponent } from './game/game.page.component';
 import { LoginPageComponent } from './user-workflow/login/login.page.component';
+import { RegisterPageComponent } from './user-workflow/register/register.page.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,11 @@ export const routes: Routes = [
     path: 'login',
     component: LoginPageComponent,
     title: 'Login Page',
+  },
+  {
+    path: 'register',
+    component: RegisterPageComponent,
+    title: 'Register Page',
   },
   {
     path: '**',
