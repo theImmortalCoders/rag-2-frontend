@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { TExchangeData } from '../../../models/log-data.type';
+import { TExchangeData } from '../../../models/exchange-data.type';
 
 @Component({
   selector: 'app-pong',
@@ -23,6 +23,7 @@ export class PongGameWindowComponent extends BaseGameWindowComponent {
 
   public override gameWindowOutputData: TExchangeData = {
     text: this.defaultText,
+    score: this.score,
   };
   public override gameWindowInputData: TExchangeData = {
     score: this.score,
@@ -33,11 +34,12 @@ export class PongGameWindowComponent extends BaseGameWindowComponent {
   };
 
   public updateInputData(value: string): void {
-    this.gameWindowLogData['output']['pong'] = value;
+    this.gameWindowLogData['output']['text'] = value;
   }
 
   public update(): void {
     this.score++;
-    this.gameWindowLogData['input']['pong'] = this.score;
+    this.gameWindowLogData['input']['score'] = this.score;
+    this.gameWindowLogData['output']['score'] = this.score;
   }
 }

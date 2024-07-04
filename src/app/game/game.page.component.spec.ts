@@ -7,7 +7,7 @@ import { GameMenuComponent } from './components/menu/game-menu.component';
 import { ConsoleComponent } from './components/console/console.component';
 import { of } from 'rxjs';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
-import { TExchangeData } from './models/log-data.type';
+import { TExchangeData } from './models/exchange-data.type';
 import { By } from '@angular/platform-browser';
 import { EventEmitter } from '@angular/core';
 

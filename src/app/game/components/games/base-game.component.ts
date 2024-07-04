@@ -1,4 +1,4 @@
-import { TExchangeData } from '../../models/log-data.type';
+import { TExchangeData } from '../../models/exchange-data.type';
 
 export class BaseGameWindowComponent {
   public gameWindowLogData: Record<string, TExchangeData> = {};

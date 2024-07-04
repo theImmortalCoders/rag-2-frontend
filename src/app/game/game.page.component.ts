@@ -14,11 +14,12 @@ import { GameMenuComponent } from './components/menu/game-menu.component';
 import { games } from './data-access/games';
 import { ConsoleComponent } from './components/console/console.component';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
-import { TExchangeData } from './models/log-data.type';
+import { TExchangeData } from './models/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { TRole } from '../shared/models/role.enum';
 import { AuthRequiredDirective } from '../shared/directives/auth-required.directive';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
+import { RecordPipe } from '../shared/pipes/record.pipe';
 
 @Component({
   selector: 'app-game',
@@ -32,7 +33,11 @@ import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-men
         <div class="absolute top-20 right-0 flex flex-col">
           <app-data-menu
             *appAuthRequired
-            (logDataEmitter)="logData['data menu'] = $event"></app-data-menu>
+            (logDataEmitter)="logData['data menu'] = $event"
+            [gameName]="game.getName()"
+            [dataPossibleToPersist]="
+              logData['game window']['output'] | record
+            "></app-data-menu>
           <app-ai-socket-menu
             *appAuthRequired
             (logDataEmitter)="
@@ -54,6 +59,7 @@ import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-men
     DataMenuComponent,
     AuthRequiredDirective,
     AiSocketMenuComponent,
+    RecordPipe,
   ],
 })
 export class GamePageComponent implements OnInit, AfterViewInit {
