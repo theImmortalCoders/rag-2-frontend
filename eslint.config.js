@@ -121,7 +121,7 @@ module.exports = tseslint.config(
           leadingUnderscore: 'require',
         },
       ],
-      'max-depth': ['warn', 1],
+      'max-depth': ['warn', 2],
       complexity: ['warn', { max: 5 }],
       'max-lines': ['warn', 200],
       'no-else-return': 'warn',

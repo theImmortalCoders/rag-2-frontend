@@ -1,15 +1,15 @@
 import { Type } from '@angular/core';
 import { TGameDataSendingType } from './game-data-sending-type.enum';
-import { IBaseGameWindowComponent } from '../components/games/models/base-game-component';
+import { BaseGameWindowComponent } from '../components/games/models/base-game.component';
 
 export class Game {
   private _name: string;
-  private _gameWindowComponent: Type<IBaseGameWindowComponent>;
+  private _gameWindowComponent: Type<BaseGameWindowComponent>;
   private _gameDataSendingType: TGameDataSendingType;
 
   public constructor(
     name: string,
-    gameWindowComponent: Type<IBaseGameWindowComponent>,
+    gameWindowComponent: Type<BaseGameWindowComponent>,
     gameDataSendingType: TGameDataSendingType
   ) {
     this._name = name;
@@ -21,7 +21,7 @@ export class Game {
     return this._name;
   }
 
-  public getGameWindowComponent(): Type<IBaseGameWindowComponent> {
+  public getGameWindowComponent(): Type<BaseGameWindowComponent> {
     return this._gameWindowComponent;
   }
 
