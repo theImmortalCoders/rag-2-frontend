@@ -11,20 +11,24 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
       [formGroup]="loginForm"
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
-      <label for="email">Email</label>
-      <input
-        id="email"
-        type="email"
-        formControlName="email"
-        placeholder="Type your email"
-        class="border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-mainCreme focus:outline-none" />
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        placeholder="Type your password"
-        class="border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-mainCreme focus:outline-none" />
+      <div class="flex flex-col space-y-1">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Type your email"
+          class="custom-input" />
+      </div>
+      <div class="flex flex-col space-y-1">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Type your password"
+          class="custom-input" />
+      </div>
       <button
         type="submit"
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
