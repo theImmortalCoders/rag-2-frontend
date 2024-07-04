@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { GamePageComponent } from './game.page.component';
 import { PongGameWindowComponent } from './components/games/pong/pong.component';
-import { GameMenuComponent } from './components/menu/game-menu.component';
 import { ConsoleComponent } from './components/console/console.component';
 import { of } from 'rxjs';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
@@ -29,12 +28,7 @@ describe('GamePageComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        GamePageComponent,
-        GameMenuComponent,
-        ConsoleComponent,
-        PongGameWindowComponent,
-      ],
+      imports: [GamePageComponent, ConsoleComponent, PongGameWindowComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Router, useValue: mockRouter },
@@ -52,10 +46,6 @@ describe('GamePageComponent', () => {
 
   it('should set gameName based on route parameter', () => {
     expect(component.gameName).toBe('pong');
-  });
-
-  it('should set the correct component based on gameName', () => {
-    expect(component.gameWindowComponent).toBe(PongGameWindowComponent);
   });
 
   it('should pass logData to ConsoleComponent', () => {

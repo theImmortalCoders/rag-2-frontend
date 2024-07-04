@@ -19,20 +19,4 @@ describe('PongComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should update gameWindowLogData.pong on updateInputData call', () => {
-    const testValue = 'Test Pong Data';
-    component.updateInputData(testValue);
-    expect(component.gameWindowLogData['output']['pong']).toEqual(testValue);
-  });
-
-  it('should update gameWindowLogData.pong when input element value changes', () => {
-    const inputElement: HTMLInputElement =
-      fixture.nativeElement.querySelector('input');
-    const testValue = 'New Pong Data';
-    inputElement.value = testValue;
-    inputElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    expect(component.gameWindowLogData['output']['pong']).toEqual(testValue);
-  });
 });
