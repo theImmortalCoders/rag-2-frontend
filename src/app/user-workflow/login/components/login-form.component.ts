@@ -6,7 +6,6 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [ReactiveFormsModule],
   template: `
-    <!-- <div class="w-1/3 h-fit border-2 border-mainOrange rounded-lg px-6 py-8"> -->
     <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
     <form
       [formGroup]="loginForm"
@@ -32,7 +31,6 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
         Log in
       </button>
     </form>
-    <!-- </div> -->
   `,
 })
 export class LoginFormComponent {
