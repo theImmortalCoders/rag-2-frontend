@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { TExchangeData } from '../../models/log-data.type';
+import { TExchangeData } from '../../models/exchange-data.type';
 import { ILoggableDataComponent } from '../../models/loggable-data-component';
 
 @Component({

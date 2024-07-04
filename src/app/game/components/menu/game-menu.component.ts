@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TGameDataSendingType } from '../../models/game-data-sending-type.enum';
-import { TExchangeData } from '../../models/log-data.type';
+import { TExchangeData } from '../../models/exchange-data.type';
 import { ILoggableDataComponent } from '../../models/loggable-data-component';
 
 @Component({

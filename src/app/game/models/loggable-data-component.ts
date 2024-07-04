@@ -1,5 +1,5 @@
-import { EventEmitter, Output } from '@angular/core';
-import { TExchangeData } from './log-data.type';
+import { EventEmitter } from '@angular/core';
+import { TExchangeData } from './exchange-data.type';
 
 export interface ILoggableDataComponent {
   logDataEmitter: EventEmitter<TExchangeData>;
