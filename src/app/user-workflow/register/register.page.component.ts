@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { BenefitsListComponent } from '../shared/components/benefits-list/benefits-list.component';
 import { SideFormPanelComponent } from '../shared/components/side-form-panel/side-form-panel.component';
 import { RegisterFormComponent } from './components/register-form.component';
@@ -8,7 +7,6 @@ import { RegisterFormComponent } from './components/register-form.component';
   selector: 'app-register-page',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
     RegisterFormComponent,
     BenefitsListComponent,
     SideFormPanelComponent,
