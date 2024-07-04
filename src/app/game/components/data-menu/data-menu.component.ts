@@ -31,7 +31,9 @@ import { AsyncPipe, KeyValuePipe } from '@angular/common';
         </span>
       }
       <div class="flex flex-col">
-        <button (click)="isDataCollectingActive = !isDataCollectingActive">
+        <button
+          #dataCollectingButton
+          (click)="isDataCollectingActive = !isDataCollectingActive">
           @if (!isDataCollectingActive) {
             Start collecting data
           } @else {
@@ -39,7 +41,7 @@ import { AsyncPipe, KeyValuePipe } from '@angular/common';
           }
         </button>
         @if (collectedData.length > 0 && !isDataCollectingActive) {
-          <button (click)="downloadJson()">
+          <button #jsonDownloadButton (click)="downloadJson()">
             Download JSON ({{ collectedData.length }} records)
           </button>
         }
@@ -99,7 +101,6 @@ export class DataMenuComponent implements OnInit, DoCheck {
       newData[key] = this.dataPossibleToPersist[key];
     }
     if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
-      //autodelete duplicates
       this.collectedData.push(newData);
       this.dataToPersist = newData;
     }
