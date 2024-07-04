@@ -1,18 +1,12 @@
 import {
-  AfterContentChecked,
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
   Component,
+  DoCheck,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
-import { ILoggableDataComponent } from '../../models/loggable-data-component';
 import { AsyncPipe, KeyValuePipe } from '@angular/common';
 
 @Component({
@@ -20,7 +14,7 @@ import { AsyncPipe, KeyValuePipe } from '@angular/common';
   standalone: true,
   imports: [KeyValuePipe, AsyncPipe],
   template: `
-    <div class="border-2 border-solid border-red-600 p-5">
+    <div class="border-2 bg-white border-solid border-red-600 p-5">
       Select data to persist
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
         <span class="flex gap-2">
@@ -36,20 +30,41 @@ import { AsyncPipe, KeyValuePipe } from '@angular/common';
             " />
         </span>
       }
-      <button (click)="downloadJson()">Download JSON</button>
+      <div class="flex flex-col">
+        <button (click)="isDataCollectingActive = !isDataCollectingActive">
+          @if (!isDataCollectingActive) {
+            Start collecting data
+          } @else {
+            Stop collecting data
+          }
+        </button>
+        @if (collectedData.length > 0 && !isDataCollectingActive) {
+          <button (click)="downloadJson()">
+            Download JSON ({{ collectedData.length }} records)
+          </button>
+        }
+      </div>
     </div>
   `,
 })
-export class DataMenuComponent implements OnInit {
+export class DataMenuComponent implements OnInit, DoCheck {
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public dataPossibleToPersist: TExchangeData = {};
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
   public logData: TExchangeData = { menu: 'menu' };
   public dataToPersist: TExchangeData = {};
+  public collectedData: TExchangeData[] = [];
+  public isDataCollectingActive = false;
 
   public ngOnInit(): void {
     this.logDataEmitter.emit(this.logData);
-    this.dataToPersist = { ...this.dataPossibleToPersist };
+    this.dataToPersist = JSON.parse(JSON.stringify(this.dataPossibleToPersist));
+  }
+
+  public ngDoCheck(): void {
+    if (this.isDataCollectingActive) {
+      this.saveReceivedData();
+    }
   }
 
   public updateDataToPersist(
@@ -65,7 +80,7 @@ export class DataMenuComponent implements OnInit {
   }
 
   public downloadJson(): void {
-    const data = JSON.stringify(this.dataToPersist);
+    const data = JSON.stringify(this.collectedData);
     const url = URL.createObjectURL(
       new Blob([data], { type: 'application/json' })
     );
@@ -74,5 +89,19 @@ export class DataMenuComponent implements OnInit {
     a.download = `${this.gameName}_${new Date().toISOString()}.json`;
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  //
+
+  private saveReceivedData(): void {
+    const newData = JSON.parse(JSON.stringify(this.dataToPersist));
+    for (const key in newData) {
+      newData[key] = this.dataPossibleToPersist[key];
+    }
+    if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
+      //autodelete duplicates
+      this.collectedData.push(newData);
+      this.dataToPersist = newData;
+    }
   }
 }
