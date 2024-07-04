@@ -6,7 +6,7 @@ import * as feather from 'feather-icons';
   standalone: true,
   template: `
     <h1 class="text-xl pb-6 font-bold uppercase tracking-wider">
-      Why is it worth to create an account on RAG-2?
+      Why is it worth to have an account on RAG-2?
     </h1>
     <div class="flex flex-col space-y-8 text-mainOrange">
       <span class="flex flex-row items-center space-x-4">
