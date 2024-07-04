@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
-import { BaseGameWindowComponent } from './components/games/base-game.component';
 import { Game } from './models/game.class';
 import { GameMenuComponent } from './components/menu/game-menu.component';
 import { games } from './data-access/games';
@@ -20,6 +19,7 @@ import { TRole } from '../shared/models/role.enum';
 import { AuthRequiredDirective } from '../shared/directives/auth-required.directive';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
 import { RecordPipe } from '../shared/pipes/record.pipe';
+import { IBaseGameWindowComponent } from './components/games/models/base-game-component';
 
 @Component({
   selector: 'app-game',
@@ -73,8 +73,8 @@ export class GamePageComponent implements OnInit, AfterViewInit {
 
   @ViewChild(NgComponentOutlet)
   public ngComponentOutlet!: NgComponentOutlet;
-  public gameWindowComponent: Type<BaseGameWindowComponent> | null = null;
-  public gameWindowComponentInstance: BaseGameWindowComponent | null = null;
+  public gameWindowComponent: Type<IBaseGameWindowComponent> | null = null;
+  public gameWindowComponentInstance: IBaseGameWindowComponent | null = null;
 
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
@@ -88,7 +88,7 @@ export class GamePageComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     if (!this.game) return;
     this.gameWindowComponentInstance = this.ngComponentOutlet['_componentRef']
-      .instance as BaseGameWindowComponent;
+      .instance as IBaseGameWindowComponent;
 
     this.updateGameWindowLogData();
   }

@@ -50,7 +50,6 @@ export class DataMenuComponent implements OnInit {
   public ngOnInit(): void {
     this.logDataEmitter.emit(this.logData);
     this.dataToPersist = { ...this.dataPossibleToPersist };
-    console.log(this.dataPossibleToPersist);
   }
 
   public updateDataToPersist(

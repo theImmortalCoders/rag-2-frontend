@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { BaseGameWindowComponent } from '../base-game.component';
 import { TExchangeData } from '../../../models/exchange-data.type';
+import { IBaseGameWindowComponent } from '../models/base-game-component';
 
 @Component({
   selector: 'app-pong',
@@ -17,18 +17,18 @@ import { TExchangeData } from '../../../models/exchange-data.type';
     <button (click)="update()">AI input</button>
   `,
 })
-export class PongGameWindowComponent extends BaseGameWindowComponent {
+export class PongGameWindowComponent implements IBaseGameWindowComponent {
   public score = 0;
   public defaultText = 'PONG';
 
-  public override gameWindowOutputData: TExchangeData = {
+  public gameWindowOutputData: TExchangeData = {
     text: this.defaultText,
     score: this.score,
   };
-  public override gameWindowInputData: TExchangeData = {
+  public gameWindowInputData: TExchangeData = {
     score: this.score,
   };
-  public override gameWindowLogData = {
+  public gameWindowLogData = {
     output: this.gameWindowOutputData,
     input: this.gameWindowInputData,
   };
