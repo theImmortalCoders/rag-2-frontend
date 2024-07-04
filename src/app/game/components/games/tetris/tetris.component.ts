@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { BaseGameWindowComponent } from '../base-game.component';
+import { TExchangeData } from '../../../models/exchange-data.type';
+import { IBaseGameWindowComponent } from '../models/base-game-component';
 
 @Component({
   selector: 'app-tetris',
@@ -7,4 +8,8 @@ import { BaseGameWindowComponent } from '../base-game.component';
   template: ` retris`,
   styles: ``,
 })
-export class TetrisGameWindowComponent extends BaseGameWindowComponent {}
+export class TetrisGameWindowComponent implements IBaseGameWindowComponent {
+  public gameWindowLogData: Record<string, TExchangeData> = {};
+  public gameWindowOutputData: TExchangeData = {};
+  public gameWindowInputData: TExchangeData = {};
+}
