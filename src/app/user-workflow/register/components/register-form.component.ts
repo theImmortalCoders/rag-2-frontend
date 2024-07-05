@@ -20,7 +20,9 @@ import {
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-1">
-        <label for="name">Name</label>
+        <label for="name" [class.text-red-500]="shouldShowError('name')"
+          >Name</label
+        >
         <input
           id="name"
           type="text"
@@ -29,7 +31,9 @@ import {
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="email">Email</label>
+        <label for="email" [class.text-red-500]="shouldShowError('email')"
+          >Email</label
+        >
         <input
           id="email"
           type="email"
@@ -38,7 +42,9 @@ import {
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="password">Password</label>
+        <label for="password" [class.text-red-500]="shouldShowError('password')"
+          >Password</label
+        >
         <input
           id="password"
           type="password"
@@ -47,7 +53,11 @@ import {
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="repeatedPassword">Repeated password</label>
+        <label
+          for="repeatedPassword"
+          [class.text-red-500]="shouldShowError('repeatedPassword')"
+          >Repeated password</label
+        >
         <input
           id="repeatedPassword"
           type="password"
@@ -57,15 +67,13 @@ import {
       </div>
       <button
         type="submit"
+        [disabled]="registerForm.invalid"
+        [class.opacity-50]="registerForm.invalid"
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Register now
       </button>
-      @if (registerForm.invalid) {
-        <span>BŁĄD W FORMULARZU</span>
-      }
     </form>
   `,
-  styles: ``,
 })
 export class RegisterFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
@@ -76,6 +84,12 @@ export class RegisterFormComponent {
     password: ['', [Validators.required, Validators.minLength(8)]],
     repeatedPassword: ['', [Validators.required, Validators.minLength(8)]],
   });
+
+  // eslint-disable-next-line complexity
+  public shouldShowError(controlName: string): boolean | undefined {
+    const control = this.registerForm.get(controlName);
+    return control?.invalid && (control?.dirty || control?.touched);
+  }
 
   public submitButton(): void {
     console.log('Name: ', this.registerForm.value.name);
