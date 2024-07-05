@@ -4,6 +4,7 @@ import {
   FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 
 @Component({
@@ -39,6 +40,9 @@ import {
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Log in
       </button>
+      @if (loginForm.invalid) {
+        <span>BŁĄD W FORMULARZU</span>
+      }
     </form>
   `,
 })
@@ -46,8 +50,8 @@ export class LoginFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
 
   public loginForm = this._formBuilder.group({
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   public submitButton(): void {
