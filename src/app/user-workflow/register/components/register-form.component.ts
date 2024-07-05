@@ -4,6 +4,7 @@ import {
   FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 
 @Component({
@@ -22,7 +23,7 @@ import {
         <label for="name">Name</label>
         <input
           id="name"
-          type="name"
+          type="text"
           formControlName="name"
           placeholder="Type your name"
           class="custom-input" />
@@ -59,6 +60,9 @@ import {
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Register now
       </button>
+      @if (registerForm.invalid) {
+        <span>BŁĄD W FORMULARZU</span>
+      }
     </form>
   `,
   styles: ``,
@@ -67,10 +71,10 @@ export class RegisterFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
 
   public registerForm = this._formBuilder.group({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    repeatedPassword: new FormControl(''),
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    repeatedPassword: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   public submitButton(): void {
