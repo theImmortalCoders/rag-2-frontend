@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-register-form',
@@ -59,7 +64,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styles: ``,
 })
 export class RegisterFormComponent {
-  public registerForm = new FormGroup({
+  private _formBuilder = inject(NonNullableFormBuilder);
+
+  public registerForm = this._formBuilder.group({
     name: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
