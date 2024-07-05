@@ -18,7 +18,9 @@ import {
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-1">
-        <label for="email">Email</label>
+        <label for="email" [class.text-red-500]="shouldShowError('email')"
+          >Email</label
+        >
         <input
           id="email"
           type="email"
@@ -27,7 +29,9 @@ import {
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="password">Password</label>
+        <label for="password" [class.text-red-500]="shouldShowError('password')"
+          >Password</label
+        >
         <input
           id="password"
           type="password"
@@ -37,12 +41,11 @@ import {
       </div>
       <button
         type="submit"
+        [disabled]="loginForm.invalid"
+        [class.opacity-50]="loginForm.invalid"
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Log in
       </button>
-      @if (loginForm.invalid) {
-        <span>BŁĄD W FORMULARZU</span>
-      }
     </form>
   `,
 })
@@ -53,6 +56,12 @@ export class LoginFormComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
+
+  // eslint-disable-next-line complexity
+  public shouldShowError(controlName: string): boolean | undefined {
+    const control = this.loginForm.get(controlName);
+    return control?.invalid && (control?.dirty || control?.touched);
+  }
 
   public submitButton(): void {
     console.log('Email: ', this.loginForm.value.email);
