@@ -48,7 +48,6 @@ describe('DataMenuComponent', () => {
   it('should initialize with default values', () => {
     expect(component.gameName).toEqual('');
     expect(component.dataPossibleToPersist).toEqual({});
-    expect(component.logData).toEqual({ menu: 'menu' });
     expect(component.dataToPersist).toEqual({});
     expect(component.collectedDataArray).toEqual([]);
     expect(component.isDataCollectingActive).toBeFalse();

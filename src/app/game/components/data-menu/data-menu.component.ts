@@ -62,12 +62,12 @@ export class DataMenuComponent implements OnInit, DoCheck {
   @Input({ required: true }) public dataPossibleToPersist: TExchangeData = {};
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
 
-  public logData: TExchangeData = { menu: 'menu' };
+  private _dataToPersistQueryParams: TExchangeData = {};
+
+  public logData: TExchangeData = this._dataToPersistQueryParams;
   public dataToPersist: TExchangeData = {};
   public collectedDataArray: TExchangeData[] = [];
   public isDataCollectingActive = false;
-
-  private _dataToPersistQueryParams: TExchangeData = {};
 
   public constructor(
     private _dataTransformService: DataTransformService,
