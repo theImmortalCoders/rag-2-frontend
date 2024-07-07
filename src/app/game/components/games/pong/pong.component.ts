@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { BaseGameWindowComponent } from '../base-game.component';
-import { TLogData } from '../../../models/log-data.type';
+import { Component } from '@angular/core';
+import { TExchangeData } from '../../../models/exchange-data.type';
+import { BaseGameWindowComponent } from '../models/base-game.component';
 
 @Component({
   selector: 'app-pong',
@@ -11,15 +11,33 @@ import { TLogData } from '../../../models/log-data.type';
       class="w-full h-10 border-2 border-gray-300 rounded-lg p-2"
       #inputElement
       type="text"
+      [value]="defaultText"
       (input)="updateInputData(inputElement.value)" />
+    <div>{{ score }}</div>
+    <button (click)="update()">AI input</button>
   `,
 })
 export class PongGameWindowComponent extends BaseGameWindowComponent {
-  public override gameWindowLogData: TLogData = {
-    pong: 'Pong Data',
+  public score = 0;
+  public defaultText = 'PONG';
+
+  public override gameWindowOutputData: TExchangeData = {
+    text: this.defaultText,
+    score: this.score,
+  };
+  public override gameWindowInputData: TExchangeData = {
+    score: this.score,
   };
 
   public updateInputData(value: string): void {
-    this.gameWindowLogData['pong'] = value;
+    this.gameWindowOutputData['text'] = value;
+    this.emit();
+  }
+
+  public update(): void {
+    this.score++;
+    this.gameWindowInputData['score'] = this.score;
+    this.gameWindowOutputData['score'] = this.score;
+    this.emit();
   }
 }
