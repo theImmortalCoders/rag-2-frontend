@@ -7,11 +7,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { shouldShowError } from '../../shared/utils/should-show-error';
+import { NgFor, NgIf } from '@angular/common';
+import { FormValidationService } from '../../shared/services/form-validation.service';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf, NgFor],
   template: `
     <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
     <form
@@ -19,7 +21,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-1">
-        <label for="email" [class.text-red-500]="shouldShowError('email')"
+        <label for="email" [class.text-red-500]="showError('email')"
           >Email</label
         >
         <input
@@ -30,7 +32,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="password" [class.text-red-500]="shouldShowError('password')"
+        <label for="password" [class.text-red-500]="showError('password')"
           >Password</label
         >
         <input
@@ -47,15 +49,23 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Log in
       </button>
+      @if (loginForm.invalid && loginForm.touched) {
+        <div class="text-red-500">
+          @for (error of getFormErrors(); track error) {
+            <p>{{ error }}</p>
+          }
+        </div>
+      }
     </form>
   `,
 })
 export class LoginFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
+  private _formValidationService = inject(FormValidationService);
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    password: ['', [Validators.required]],
   });
 
   public submitButton(): void {
@@ -63,6 +73,10 @@ export class LoginFormComponent {
     console.log('Password: ', this.loginForm.value.password);
   }
 
-  public shouldShowError = (controlName: string): boolean | undefined =>
+  public showError = (controlName: string): boolean | undefined =>
     shouldShowError(this.loginForm, controlName);
+
+  public getFormErrors(): string[] {
+    return this._formValidationService.getFormErrors(this.loginForm);
+  }
 }
