@@ -1,19 +1,15 @@
 import { Component, inject } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { shouldShowError } from '../../shared/utils/should-show-error';
-import { NgFor, NgIf } from '@angular/common';
 import { FormValidationService } from '../../shared/services/form-validation.service';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, NgFor],
+  imports: [ReactiveFormsModule],
   template: `
     <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
     <form
@@ -21,7 +17,7 @@ import { FormValidationService } from '../../shared/services/form-validation.ser
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-1">
-        <label for="email" [class.text-red-500]="showError('email')"
+        <label for="email" [class.text-red-500]="shouldShowError('email')"
           >Email</label
         >
         <input
@@ -32,7 +28,7 @@ import { FormValidationService } from '../../shared/services/form-validation.ser
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="password" [class.text-red-500]="showError('password')"
+        <label for="password" [class.text-red-500]="shouldShowError('password')"
           >Password</label
         >
         <input
@@ -73,8 +69,12 @@ export class LoginFormComponent {
     console.log('Password: ', this.loginForm.value.password);
   }
 
-  public showError = (controlName: string): boolean | undefined =>
-    shouldShowError(this.loginForm, controlName);
+  public shouldShowError(controlName: string): boolean | undefined {
+    return this._formValidationService.shouldShowError(
+      this.loginForm,
+      controlName
+    );
+  }
 
   public getFormErrors(): string[] {
     return this._formValidationService.getFormErrors(this.loginForm);

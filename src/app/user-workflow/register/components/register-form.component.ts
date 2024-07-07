@@ -1,12 +1,10 @@
 import { Component, inject } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { shouldShowError } from '../../shared/utils/should-show-error';
+import { FormValidationService } from '../../shared/services/form-validation.service';
 
 @Component({
   selector: 'app-register-form',
@@ -21,7 +19,9 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-1">
-        <label for="name" [class.text-red-500]="showError('name')">Name</label>
+        <label for="name" [class.text-red-500]="shouldShowError('name')"
+          >Name</label
+        >
         <input
           id="name"
           type="text"
@@ -30,7 +30,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="email" [class.text-red-500]="showError('email')"
+        <label for="email" [class.text-red-500]="shouldShowError('email')"
           >Email</label
         >
         <input
@@ -41,7 +41,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="password" [class.text-red-500]="showError('password')"
+        <label for="password" [class.text-red-500]="shouldShowError('password')"
           >Password</label
         >
         <input
@@ -54,7 +54,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
       <div class="flex flex-col space-y-1">
         <label
           for="repeatedPassword"
-          [class.text-red-500]="showError('repeatedPassword')"
+          [class.text-red-500]="shouldShowError('repeatedPassword')"
           >Repeated password</label
         >
         <input
@@ -71,11 +71,21 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Register now
       </button>
+      @if (
+        registerForm.invalid && (registerForm.dirty || registerForm.touched)
+      ) {
+        <div class="text-red-500">
+          @for (error of getFormErrors(); track error) {
+            <p>{{ error }}</p>
+          }
+        </div>
+      }
     </form>
   `,
 })
 export class RegisterFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
+  private _formValidationService = inject(FormValidationService);
 
   public registerForm = this._formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -94,6 +104,14 @@ export class RegisterFormComponent {
     );
   }
 
-  public showError = (controlName: string): boolean | undefined =>
-    shouldShowError(this.registerForm, controlName);
+  public shouldShowError(controlName: string): boolean | undefined {
+    return this._formValidationService.shouldShowError(
+      this.registerForm,
+      controlName
+    );
+  }
+
+  public getFormErrors(): string[] {
+    return this._formValidationService.getFormErrors(this.registerForm);
+  }
 }

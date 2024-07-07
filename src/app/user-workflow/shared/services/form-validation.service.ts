@@ -31,10 +31,18 @@ export class FormValidationService {
     errorValue: unknown
   ): string | null {
     const errorMessages: Record<string, string> = {
-      required: `${controlName} is required`,
-      email: 'Email must be a valid email address',
-      minlength: `${controlName} must be at least ${(errorValue as { requiredLength: number })?.requiredLength} characters long`,
+      required: `${controlName.toUpperCase()} is required`,
+      email: 'EMAIL must be a valid email address',
+      minlength: `${controlName.toUpperCase()} must be at least ${(errorValue as { requiredLength: number })?.requiredLength} characters long`,
     };
     return errorMessages[errorKey] || null;
+  }
+
+  public shouldShowError(
+    groupName: FormGroup,
+    controlName: string
+  ): boolean | undefined {
+    const control = groupName.get(controlName);
+    return control?.invalid && (control?.dirty || control?.touched);
   }
 }
