@@ -21,9 +21,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
       <div class="flex flex-col space-y-1">
-        <label for="name" [class.text-red-500]="shouldShowError('name')"
-          >Name</label
-        >
+        <label for="name" [class.text-red-500]="showError('name')">Name</label>
         <input
           id="name"
           type="text"
@@ -32,7 +30,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="email" [class.text-red-500]="shouldShowError('email')"
+        <label for="email" [class.text-red-500]="showError('email')"
           >Email</label
         >
         <input
@@ -43,7 +41,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="password" [class.text-red-500]="shouldShowError('password')"
+        <label for="password" [class.text-red-500]="showError('password')"
           >Password</label
         >
         <input
@@ -56,7 +54,7 @@ import { shouldShowError } from '../../shared/utils/should-show-error';
       <div class="flex flex-col space-y-1">
         <label
           for="repeatedPassword"
-          [class.text-red-500]="shouldShowError('repeatedPassword')"
+          [class.text-red-500]="showError('repeatedPassword')"
           >Repeated password</label
         >
         <input
@@ -96,6 +94,6 @@ export class RegisterFormComponent {
     );
   }
 
-  public shouldShowError = (controlName: string): boolean | undefined =>
+  public showError = (controlName: string): boolean | undefined =>
     shouldShowError(this.registerForm, controlName);
 }
