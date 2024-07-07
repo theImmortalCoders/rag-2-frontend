@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { shouldShowError } from '../../shared/utils/should-show-error';
 
 @Component({
   selector: 'app-register-form',
@@ -85,12 +86,6 @@ export class RegisterFormComponent {
     repeatedPassword: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  // eslint-disable-next-line complexity
-  public shouldShowError(controlName: string): boolean | undefined {
-    const control = this.registerForm.get(controlName);
-    return control?.invalid && (control?.dirty || control?.touched);
-  }
-
   public submitButton(): void {
     console.log('Name: ', this.registerForm.value.name);
     console.log('Email: ', this.registerForm.value.email);
@@ -100,4 +95,7 @@ export class RegisterFormComponent {
       this.registerForm.value.repeatedPassword
     );
   }
+
+  public shouldShowError = (controlName: string): boolean | undefined =>
+    shouldShowError(this.registerForm, controlName);
 }
