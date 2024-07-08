@@ -7,7 +7,7 @@ export const games: Record<string, Game> = {
   pong: new Game(
     'pong',
     PongGameWindowComponent,
-    TGameDataSendingType.TimeGame
+    TGameDataSendingType.TimeGame //debug
   ),
   tetris: new Game(
     'tetris',

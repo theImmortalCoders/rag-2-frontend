@@ -30,7 +30,8 @@ import { TetrisGameWindowComponent } from './components/games/tetris/tetris.comp
             "></app-data-menu>
           <app-ai-socket-menu
             *appAuthRequired
-            [dataToSend]="logData['game window']['output'] | record"
+            [setDataToSend]="gameInputTriggerData"
+            [gameDataSendingType]="game.getGameDataSendingType()"
             (receivedDataEmitter)="gameWindowReceivedData = $event"
             (logDataEmitter)="
               logData['ai-socket menu'] = $event
@@ -39,17 +40,20 @@ import { TetrisGameWindowComponent } from './components/games/tetris/tetris.comp
         @switch (game.getName()) {
           @case ('pong') {
             <app-pong
-              [setGameWindowInput]="gameWindowReceivedData"
+              [onGameWindowInputChange]="gameWindowReceivedData"
+              (gameWindowInputTriggerDataEmitter)="
+                receiveGameInputTriggerData($event)
+              "
               (gameWindowOutputDataEmitter)="
                 logData['game window'] = $event
               "></app-pong>
           }
-          @case ('tetris') {
+          <!-- @case ('tetris') {
             <app-tetris
               (gameWindowOutputDataEmitter)="
                 logData['game window'] = $event
               "></app-tetris>
-          }
+          } -->
         }
       }
     </div>
@@ -79,6 +83,8 @@ export class GamePageComponent implements OnInit {
   public roleEnum = TRole;
   public gameWindowReceivedData: TExchangeData = {};
 
+  public gameInputTriggerData: TExchangeData = {};
+
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
       this.gameName = params.get('gameName') || '';
@@ -86,6 +92,12 @@ export class GamePageComponent implements OnInit {
     });
 
     this.updateGameLogData();
+  }
+
+  public receiveGameInputTriggerData(data: TExchangeData): void {
+    this.gameInputTriggerData = JSON.parse(
+      JSON.stringify(data as TExchangeData)
+    );
   }
 
   //

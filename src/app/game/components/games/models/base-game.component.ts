@@ -9,22 +9,31 @@ import { TExchangeData } from '../../../models/exchange-data.type';
 export class BaseGameWindowComponent implements OnInit {
   protected gameWindowOutputData: TExchangeData = {};
   protected gameWindowInputData: TExchangeData = {};
+  protected gameWindowInputTriggerData: TExchangeData = {};
 
-  @Input() public set setGameWindowInput(value: TExchangeData) {
-    this.emit();
+  @Input() public set onGameWindowInputChange(value: TExchangeData) {
+    this.emitOutputData();
   }
 
   @Output() public gameWindowOutputDataEmitter =
     new EventEmitter<TExchangeData>();
+  @Output() public gameWindowInputTriggerDataEmitter =
+    new EventEmitter<TExchangeData>();
 
   public ngOnInit(): void {
-    this.emit();
+    this.emitOutputData();
   }
 
-  protected emit(): void {
+  protected emitOutputData(): void {
     this.gameWindowOutputDataEmitter.emit({
       output: this.gameWindowOutputData,
       input: this.gameWindowInputData,
     });
+  }
+
+  protected emitInputTriggerData(): void {
+    this.gameWindowInputTriggerDataEmitter.emit(
+      this.gameWindowInputTriggerData
+    );
   }
 }
