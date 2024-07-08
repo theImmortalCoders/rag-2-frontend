@@ -7,8 +7,12 @@ import { TExchangeData } from '../../../models/exchange-data.type';
   template: ` base-game-window`,
 })
 export class BaseGameWindowComponent implements OnInit {
-  public gameWindowOutputData: TExchangeData = {};
-  @Input() public gameWindowInputData: TExchangeData = {};
+  protected gameWindowOutputData: TExchangeData = {};
+  protected gameWindowInputData: TExchangeData = {};
+
+  @Input() public set setGameWindowInput(value: TExchangeData) {
+    this.emit();
+  }
 
   @Output() public gameWindowOutputDataEmitter =
     new EventEmitter<TExchangeData>();

@@ -39,7 +39,7 @@ import { TetrisGameWindowComponent } from './components/games/tetris/tetris.comp
         @switch (game.getName()) {
           @case ('pong') {
             <app-pong
-              [gameWindowInputData]="gameWindowReceivedData"
+              [setGameWindowInput]="gameWindowReceivedData"
               (gameWindowOutputDataEmitter)="
                 logData['game window'] = $event
               "></app-pong>
