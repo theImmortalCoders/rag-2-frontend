@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { ILoggableDataComponent } from '../../models/loggable-data-component';
 
@@ -18,20 +25,52 @@ import { ILoggableDataComponent } from '../../models/loggable-data-component';
           <option [value]="phrase"></option>
         }
       </datalist>
-      <div [textContent]="socketStatus"></div>
-      <button (click)="connect(socketDomain.value)">Connect</button>
-      <button (click)="socket?.close()">Disconnect</button>
-      <button (click)="send()">Send</button>
+      <span
+        [textContent]="isSocketConnected ? 'Connected' : 'Disconnected'"></span>
+      <div>
+        @if (isSocketConnected) {
+          <button (click)="socket?.close()">Disconnect</button>
+          @if (isDataSendingActive) {
+            <button #dataCollectingButton (click)="stopDataExchange()">
+              Stop data exchange
+            </button>
+          } @else {
+            <input
+              type="number"
+              #sendingIntervalInput
+              class="border-2 border-solid border-black"
+              min="10"
+              max="1000"
+              step="10"
+              [defaultValue]="sendingInterval"
+              (change)="sendingInterval = sendingIntervalInput.valueAsNumber" />
+            <button #dataCollectingButton (click)="startDataExchange()">
+              Start data exchange
+            </button>
+          }
+        } @else {
+          <button (click)="connect(socketDomain.value)">Connect</button>
+        }
+      </div>
     </div>
   `,
 })
 export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
+  @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
+  @Input({ required: true }) public dataToSend: TExchangeData = {};
 
-  public logData: TExchangeData = {};
   public socket: WebSocket | null = null;
   public recentPhrases: string[] = [];
-  public socketStatus = 'Disconnected';
+  public isSocketConnected = false;
+  public isDataSendingActive = false;
+  public sendingInterval = 500;
+  public sendingIntervalID: NodeJS.Timeout | null = null;
+  public logData: TExchangeData = {
+    isSocketConnected: this.isSocketConnected,
+    socketURL: '',
+    sendingInterval: this.sendingInterval,
+  };
 
   public ngOnInit(): void {
     this.logDataEmitter.emit(this.logData);
@@ -39,22 +78,42 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   }
 
   public connect(socketDomain: string): void {
-    this.socket = new WebSocket(socketDomain);
-    this.socket.addEventListener('open', () => {
-      this.socketStatus = 'Connected';
-      this.saveRecentPhrase(socketDomain);
-    });
-    this.socket.addEventListener('message', event => {
-      console.log('Received message:', event.data);
-    });
-    this.socket.addEventListener('close', () => {
-      this.socketStatus = 'Disconnected';
-    });
+    try {
+      this.socket = new WebSocket(socketDomain);
+      this.socket.addEventListener('open', () => {
+        this.isSocketConnected = true;
+        this.saveRecentPhrase(socketDomain);
+        this.emitLogData();
+      });
+      this.socket.addEventListener('message', event => {
+        this.receivedDataEmitter.emit(JSON.parse(event.data));
+      });
+      this.socket.addEventListener('close', () => {
+        this.isSocketConnected = false;
+        this.stopDataExchange();
+        this.emitLogData();
+      });
+    } catch (error) {
+      this.isSocketConnected = false;
+      this.stopDataExchange();
+      this.emitLogData();
+    }
   }
 
-  public send(): void {
-    if (this.socket) {
-      this.socket.send(JSON.stringify({ message: 'Hello, World!' }));
+  public startDataExchange(): void {
+    this.isDataSendingActive = true;
+    this.sendingIntervalID = setInterval(() => {
+      if (this.isSocketConnected && this.socket) {
+        this.socket.send(JSON.stringify(this.dataToSend));
+      }
+    }, this.sendingInterval);
+    this.emitLogData();
+  }
+
+  public stopDataExchange(): void {
+    if (this.sendingIntervalID != null) {
+      this.isDataSendingActive = false;
+      clearInterval(this.sendingIntervalID);
     }
   }
 
@@ -75,5 +134,12 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
       }
       localStorage.setItem('recentPhrases', JSON.stringify(this.recentPhrases));
     }
+  }
+
+  private emitLogData(): void {
+    this.logData['socketURL'] = this.socket?.url || '';
+    this.logData['isSocketConnected'] = this.isSocketConnected;
+    this.logData['sendingInterval'] = this.sendingInterval;
+    this.logDataEmitter.emit(this.logData);
   }
 }

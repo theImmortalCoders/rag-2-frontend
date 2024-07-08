@@ -10,5 +10,4 @@ import { BaseGameWindowComponent } from '../models/base-game.component';
 })
 export class TetrisGameWindowComponent extends BaseGameWindowComponent {
   public override gameWindowOutputData: TExchangeData = {};
-  public override gameWindowInputData: TExchangeData = {};
 }

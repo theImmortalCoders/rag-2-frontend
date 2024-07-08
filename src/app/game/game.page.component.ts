@@ -30,6 +30,8 @@ import { TetrisGameWindowComponent } from './components/games/tetris/tetris.comp
             "></app-data-menu>
           <app-ai-socket-menu
             *appAuthRequired
+            [dataToSend]="logData['game window']['output'] | record"
+            (receivedDataEmitter)="gameWindowReceivedData = $event"
             (logDataEmitter)="
               logData['ai-socket menu'] = $event
             "></app-ai-socket-menu>
@@ -37,6 +39,7 @@ import { TetrisGameWindowComponent } from './components/games/tetris/tetris.comp
         @switch (game.getName()) {
           @case ('pong') {
             <app-pong
+              [gameWindowInputData]="gameWindowReceivedData"
               (gameWindowOutputDataEmitter)="
                 logData['game window'] = $event
               "></app-pong>
@@ -74,6 +77,7 @@ export class GamePageComponent implements OnInit {
   public game: Game | null = null;
   public logData: Record<string, TExchangeData> = {};
   public roleEnum = TRole;
+  public gameWindowReceivedData: TExchangeData = {};
 
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
