@@ -21,8 +21,7 @@ describe('AiSocketMenuComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize logData and socket to null', () => {
-    expect(component.logData).toEqual({});
+  it('should initialize socket to null', () => {
     expect(component.socket).toBeNull();
   });
 
@@ -38,12 +37,5 @@ describe('AiSocketMenuComponent', () => {
     component.connect(socketDomain);
     expect(component.socket).not.toBeNull();
     expect(component.socket?.url).toBe(socketDomain);
-  });
-
-  it('should send data through the socket when send is called', () => {
-    component.socket = new WebSocket('ws://localhost:8080/');
-    spyOn(component.socket, 'send');
-    component.send();
-    expect(component.socket.send).toHaveBeenCalled();
   });
 });

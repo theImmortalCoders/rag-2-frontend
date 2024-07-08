@@ -65,7 +65,7 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   public isSocketConnected = false;
   public isDataSendingActive = false;
   public sendingInterval = 500;
-  public sendingIntervalID: NodeJS.Timeout | null = null;
+  public sendingIntervalID: unknown | null = null;
   public logData: TExchangeData = {
     isSocketConnected: this.isSocketConnected,
     socketURL: '',
@@ -113,7 +113,7 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   public stopDataExchange(): void {
     if (this.sendingIntervalID != null) {
       this.isDataSendingActive = false;
-      clearInterval(this.sendingIntervalID);
+      clearInterval(this.sendingIntervalID as number);
     }
   }
 
