@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { ILoggableDataComponent } from '../../models/loggable-data-component';
+import { TGameDataSendingType } from '../../models/game-data-sending-type.enum';
 
 @Component({
   selector: 'app-ai-socket-menu',
@@ -35,15 +36,21 @@ import { ILoggableDataComponent } from '../../models/loggable-data-component';
               Stop data exchange
             </button>
           } @else {
-            <input
-              type="number"
-              #sendingIntervalInput
-              class="border-2 border-solid border-black"
-              min="10"
-              max="1000"
-              step="10"
-              [defaultValue]="sendingInterval"
-              (change)="sendingInterval = sendingIntervalInput.valueAsNumber" />
+            @if (gameDataSendingType === tGameDataSendingType.TimeGame) {
+              <input
+                type="number"
+                #sendingIntervalInput
+                class="border-2 border-solid border-black"
+                min="10"
+                max="1000"
+                step="10"
+                [defaultValue]="sendingInterval"
+                (change)="
+                  sendingInterval = sendingIntervalInput.valueAsNumber
+                " />
+            } @else {
+              // Ready to send data //
+            }
             <button #dataCollectingButton (click)="startDataExchange()">
               Start data exchange
             </button>
@@ -56,10 +63,20 @@ import { ILoggableDataComponent } from '../../models/loggable-data-component';
   `,
 })
 export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
+  private _dataToSend: TExchangeData = {};
+
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
-  @Input({ required: true }) public dataToSend: TExchangeData = {};
+  @Input({ required: true }) public gameDataSendingType: TGameDataSendingType =
+    TGameDataSendingType.TimeGame;
+  @Input({ required: true }) public set setDataToSend(value: TExchangeData) {
+    this._dataToSend = value;
+    if (this.gameDataSendingType === TGameDataSendingType.EventGame) {
+      this.sendDataToSocket();
+    }
+  }
 
+  public tGameDataSendingType = TGameDataSendingType;
   public socket: WebSocket | null = null;
   public recentPhrases: string[] = [];
   public isSocketConnected = false;
@@ -103,9 +120,7 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   public startDataExchange(): void {
     this.isDataSendingActive = true;
     this.sendingIntervalID = setInterval(() => {
-      if (this.isSocketConnected && this.socket) {
-        this.socket.send(JSON.stringify(this.dataToSend));
-      }
+      this.sendDataToSocket();
     }, this.sendingInterval);
     this.emitLogData();
   }
@@ -118,6 +133,13 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   }
 
   //
+
+  private sendDataToSocket(): void {
+    if (this.socket && this.isSocketConnected) {
+      this.socket.send(JSON.stringify(this._dataToSend));
+      console.log('Data sent');
+    }
+  }
 
   private loadRecentPhrases(): void {
     const cachedPhrases = localStorage.getItem('recentPhrases');

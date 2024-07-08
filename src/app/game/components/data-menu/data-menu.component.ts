@@ -7,14 +7,14 @@ import {
   Output,
 } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
-import { AsyncPipe, KeyValuePipe } from '@angular/common';
+import { KeyValuePipe } from '@angular/common';
 import { DataTransformService } from '../../../shared/services/data-transform.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-data-menu',
   standalone: true,
-  imports: [KeyValuePipe, AsyncPipe],
+  imports: [KeyValuePipe],
   template: `
     <div class="border-2 bg-white border-solid border-red-600 p-5">
       Select data to persist
@@ -71,7 +71,7 @@ export class DataMenuComponent implements OnInit, DoCheck {
 
   public constructor(
     private _dataTransformService: DataTransformService,
-    private _route: ActivatedRoute,
+    private _route$: ActivatedRoute,
     private _router: Router
   ) {}
 
@@ -116,7 +116,7 @@ export class DataMenuComponent implements OnInit, DoCheck {
   //
 
   private updateDataToPersistFromURL(): void {
-    this._route.queryParams.subscribe(params => {
+    this._route$.queryParams.subscribe(params => {
       for (const key in this.dataPossibleToPersist) {
         this.updateDataToPersist(
           key,
