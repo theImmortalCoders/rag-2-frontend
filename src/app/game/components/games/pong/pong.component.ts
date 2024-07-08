@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
 import { BaseGameWindowComponent } from '../models/base-game.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-pong',
   standalone: true,
+  imports: [JsonPipe],
   template: `
     PONG
     <input
@@ -13,11 +15,13 @@ import { BaseGameWindowComponent } from '../models/base-game.component';
       type="text"
       [value]="defaultText"
       (input)="updateInputData(inputElement.value)" />
-    <div>{{ score }}</div>
-    <button (click)="update()">AI input</button>
+    <div>Ai input: {{ score }}</div>
   `,
 })
-export class PongGameWindowComponent extends BaseGameWindowComponent {
+export class PongGameWindowComponent
+  extends BaseGameWindowComponent
+  implements DoCheck
+{
   public score = 0;
   public defaultText = 'PONG';
 
@@ -34,10 +38,11 @@ export class PongGameWindowComponent extends BaseGameWindowComponent {
     this.emit();
   }
 
-  public update(): void {
-    this.score++;
+  public ngDoCheck(): void {
+    this.score = this.gameWindowInputData['aiMove'] as number | 0;
     this.gameWindowInputData['score'] = this.score;
     this.gameWindowOutputData['score'] = this.score;
     this.emit();
+    console.log('check');
   }
 }

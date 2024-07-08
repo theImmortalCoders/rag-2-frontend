@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
 
 @Component({
@@ -8,7 +8,7 @@ import { TExchangeData } from '../../../models/exchange-data.type';
 })
 export class BaseGameWindowComponent implements OnInit {
   public gameWindowOutputData: TExchangeData = {};
-  public gameWindowInputData: TExchangeData = {};
+  @Input() public gameWindowInputData: TExchangeData = {};
 
   @Output() public gameWindowOutputDataEmitter =
     new EventEmitter<TExchangeData>();

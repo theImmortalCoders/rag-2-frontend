@@ -128,7 +128,6 @@ export class DataMenuComponent implements OnInit, DoCheck {
   }
 
   private updateCollectedData(): void {
-    this.dataToPersist['timestamp'] = new Date().toISOString();
     const newData = JSON.parse(JSON.stringify(this.dataToPersist));
     for (const key in newData) {
       newData[key] = this.dataPossibleToPersist[key];
@@ -136,6 +135,7 @@ export class DataMenuComponent implements OnInit, DoCheck {
     if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
       this.collectedDataArray.push(newData);
       this.dataToPersist = newData;
+      this.dataToPersist['timestamp'] = new Date().toISOString();
     }
   }
 
