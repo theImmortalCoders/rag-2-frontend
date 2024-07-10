@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "dev", "main" ]
+    branches: ['dev', 'main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,12 +18,19 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm install -g @angular/cli
-    - run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Install all necessary dependencies
+        run: npm ci
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+      - name: Install Cypress
+        run: npm install cypress --save-dev
+      - name: Run Karma unit tests
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+      - name: Run Cypress E2E tests
+        run: npx ng e2e --no-watch --headless
