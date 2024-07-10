@@ -11,8 +11,7 @@ describe('LoginFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      declarations: [LoginFormComponent],
+      imports: [ReactiveFormsModule, LoginFormComponent],
       providers: [FormValidationService],
     }).compileComponents();
   });
