@@ -52,7 +52,7 @@ module.exports = tseslint.config(
       ],
       '@typescript-eslint/no-non-null-assertion': 'warn',
       'no-use-before-define': ['error', { variables: true }],
-      '@typescript-eslint/no-extraneous-class': 'warn',
+      // '@typescript-eslint/no-extraneous-class': 'warn',
       '@typescript-eslint/naming-convention': [
         'warn',
         {
@@ -121,20 +121,12 @@ module.exports = tseslint.config(
           leadingUnderscore: 'require',
         },
       ],
-      'max-depth': ['warn', 1],
+      'max-depth': ['warn', 2],
       complexity: ['warn', { max: 5 }],
       'max-lines': ['warn', 200],
       'no-else-return': 'warn',
       'no-console': 'off',
-      'no-magic-numbers': [
-        'warn',
-        {
-          detectObjects: false,
-          enforceConst: true,
-          ignore: [-1, 0, 1],
-          ignoreArrayIndexes: true,
-        },
-      ],
+      'no-magic-numbers': 'off',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
