@@ -1,108 +1,146 @@
-import {
-  Component,
-  DoCheck,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
-import { AsyncPipe, KeyValuePipe } from '@angular/common';
+import { KeyValuePipe } from '@angular/common';
+import { DataTransformService } from '../../../shared/services/data-transform.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DataCollectingToggleButtonComponent } from './components/collect-toggle-button/collect-toggle-button.component';
+import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
 
 @Component({
   selector: 'app-data-menu',
   standalone: true,
-  imports: [KeyValuePipe, AsyncPipe],
+  imports: [
+    KeyValuePipe,
+    DataCollectingToggleButtonComponent,
+    DataSelectCheckboxComponent,
+  ],
   template: `
     <div class="border-2 bg-white border-solid border-red-600 p-5">
       Select data to persist
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
-        <span class="flex gap-2">
-          @if (variable.key && variable.key !== '1') {
-            <p>{{ variable.key }}</p>
-          }
-          <input
-            #input
-            type="checkbox"
-            [defaultChecked]="true"
-            (change)="
-              updateDataToPersist(variable.key, variable.value, input.checked)
-            " />
-        </span>
+        <app-data-select-checkbox
+          [variable]="variable"
+          [isDataCollectingActive]="vIsDataCollectingActive.value"
+          [dataToPersist]="dataToPersist"
+          [updateDataToPersist]="updateDataToPersist" />
       }
       <div class="flex flex-col">
-        <button
-          #dataCollectingButton
-          (click)="isDataCollectingActive = !isDataCollectingActive">
-          @if (!isDataCollectingActive) {
-            Start collecting data
-          } @else {
-            Stop collecting data
-          }
-        </button>
-        @if (collectedData.length > 0 && !isDataCollectingActive) {
-          <button #jsonDownloadButton (click)="downloadJson()">
-            Download JSON ({{ collectedData.length }} records)
+        <app-data-collecting-toggle-button
+          [vIsDataCollectingActive]="vIsDataCollectingActive" />
+        @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
+          <button (click)="generateCsv()">
+            Download CSV ({{ collectedDataArray.length }} records)
           </button>
+          <button (click)="deleteCollectedData()">X</button>
         }
       </div>
     </div>
   `,
 })
-export class DataMenuComponent implements OnInit, DoCheck {
+export class DataMenuComponent implements OnInit {
   @Input({ required: true }) public gameName = '';
-  @Input({ required: true }) public dataPossibleToPersist: TExchangeData = {};
+  public dataPossibleToPersist: TExchangeData = {};
+  @Input({ required: true }) public set setDataPossibleToPersist(
+    value: TExchangeData
+  ) {
+    this.dataPossibleToPersist = value;
+    if (this.vIsDataCollectingActive.value) {
+      this.updateCollectedData();
+    }
+  }
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
-  public logData: TExchangeData = { menu: 'menu' };
+
+  private _dataToPersistQueryParams: TExchangeData = {};
+
+  public logData: TExchangeData = this._dataToPersistQueryParams;
   public dataToPersist: TExchangeData = {};
-  public collectedData: TExchangeData[] = [];
-  public isDataCollectingActive = false;
+  public collectedDataArray: TExchangeData[] = [];
+  public vIsDataCollectingActive = { value: false };
+
+  public constructor(
+    private _dataTransformService: DataTransformService,
+    private _route$: ActivatedRoute,
+    private _router: Router
+  ) {}
 
   public ngOnInit(): void {
     this.logDataEmitter.emit(this.logData);
     this.dataToPersist = JSON.parse(JSON.stringify(this.dataPossibleToPersist));
+
+    this.updateDataToPersistFromURL();
   }
 
-  public ngDoCheck(): void {
-    if (this.isDataCollectingActive) {
-      this.saveReceivedData();
-    }
-  }
-
-  public updateDataToPersist(
+  public updateDataToPersist = (
     key: string,
     value: unknown,
     isPresent: boolean
-  ): void {
+  ): void => {
     if (isPresent) {
       this.dataToPersist[key] = value as TExchangeData[keyof TExchangeData];
     } else {
       delete this.dataToPersist[key];
     }
+
+    this.updateURLByDataToPersist(key, isPresent);
+  };
+
+  public generateCsv(): void {
+    const csvContent = this._dataTransformService.exchangeDataToCsv(
+      this.collectedDataArray
+    );
+    this.downloadCsv(csvContent);
   }
 
-  public downloadJson(): void {
-    const data = JSON.stringify(this.collectedData);
-    const url = URL.createObjectURL(
-      new Blob([data], { type: 'application/json' })
-    );
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${this.gameName}_${new Date().toISOString()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+  public deleteCollectedData(): void {
+    this.collectedDataArray = [];
   }
 
   //
 
-  private saveReceivedData(): void {
+  private updateDataToPersistFromURL(): void {
+    this._route$.queryParams.subscribe(params => {
+      for (const key in this.dataPossibleToPersist) {
+        this.updateDataToPersist(
+          key,
+          this.dataPossibleToPersist[key],
+          params[key] !== 'false'
+        );
+      }
+    });
+  }
+
+  private updateCollectedData(): void {
     const newData = JSON.parse(JSON.stringify(this.dataToPersist));
     for (const key in newData) {
       newData[key] = this.dataPossibleToPersist[key];
     }
+    delete this.dataToPersist['timestamp'];
     if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
-      this.collectedData.push(newData);
+      this.dataToPersist['timestamp'] = new Date().toISOString();
       this.dataToPersist = newData;
+      this.collectedDataArray.push(this.dataToPersist);
     }
+  }
+
+  private downloadCsv(csv: string): void {
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute(
+      'download',
+      `${this.gameName}_${new Date().toISOString()}.csv`
+    );
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  private updateURLByDataToPersist(key: string, isPresent: boolean): void {
+    this._dataToPersistQueryParams[key] = isPresent;
+    this._router.navigate([], {
+      queryParams: this._dataToPersistQueryParams,
+    });
   }
 }

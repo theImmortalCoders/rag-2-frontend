@@ -5,7 +5,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { RoleService } from '../services/permission.service';
+import { RoleService } from '../../app/shared/services/permission.service';
 
 @Directive({
   selector: '[appAuthRequired]',
