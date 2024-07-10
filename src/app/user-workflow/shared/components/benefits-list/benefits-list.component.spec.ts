@@ -8,7 +8,7 @@ describe('BenefitsListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BenefitsListComponent],
+      imports: [BenefitsListComponent],
     }).compileComponents();
   });
 

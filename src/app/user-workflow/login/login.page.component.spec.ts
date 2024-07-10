@@ -17,8 +17,8 @@ describe('LoginPageComponent', () => {
         LoginFormComponent,
         BenefitsListComponent,
         SideFormPanelComponent,
+        LoginPageComponent,
       ],
-      declarations: [LoginPageComponent],
     }).compileComponents();
   });
 
