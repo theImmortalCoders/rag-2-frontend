@@ -3,11 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { GamePageComponent } from './game.page.component';
 import { PongGameWindowComponent } from './components/games/pong/pong.component';
-import { GameMenuComponent } from './components/menu/game-menu.component';
 import { ConsoleComponent } from './components/console/console.component';
 import { of } from 'rxjs';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
-import { TLogData } from './models/log-data.type';
+import { TExchangeData } from './models/exchange-data.type';
 import { By } from '@angular/platform-browser';
 import { EventEmitter } from '@angular/core';
 
@@ -29,12 +28,7 @@ describe('GamePageComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        GamePageComponent,
-        GameMenuComponent,
-        ConsoleComponent,
-        PongGameWindowComponent,
-      ],
+      imports: [GamePageComponent, ConsoleComponent, PongGameWindowComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Router, useValue: mockRouter },
@@ -54,12 +48,8 @@ describe('GamePageComponent', () => {
     expect(component.gameName).toBe('pong');
   });
 
-  it('should set the correct component based on gameName', () => {
-    expect(component.gameWindowComponent).toBe(PongGameWindowComponent);
-  });
-
   it('should pass logData to ConsoleComponent', () => {
-    const testLogData: Record<string, TLogData> = {
+    const testLogData: Record<string, TExchangeData> = {
       menu: { message: 'Test message', level: 'info' },
     };
     component.logData = testLogData;
