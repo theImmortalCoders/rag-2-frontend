@@ -36,7 +36,7 @@ export class PongGameWindowComponent extends BaseGameWindowComponent {
   };
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    this.score = (value['aiMove'] as number) | 0;
+    this.score = (value['score'] as number) | 0;
     this.gameWindowInputData['score'] = this.score;
     this.gameWindowOutputData['score'] = this.score;
     this.emitOutputData();

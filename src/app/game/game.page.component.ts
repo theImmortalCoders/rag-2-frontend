@@ -11,6 +11,7 @@ import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-men
 import { PongGameWindowComponent } from './components/games/pong/pong.component';
 import { AuthRequiredDirective } from '../../utils/directives/auth-required.directive';
 import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
+import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
 
 @Component({
   selector: 'app-game',
@@ -24,7 +25,11 @@ import { TictactoeGameWindowComponent } from './components/games/tictactoe/ticta
             [gameName]="game.getName()"
             [setDataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
           <app-ai-socket-menu
+            class=" border-2 border-solid border-red-600 p-5"
             [setDataToSend]="gameWindowOutputData"
+            [expectedDataToReceive]="
+              logData['game window']['input'] | exchange_data
+            "
             [gameDataSendingType]="game.getGameDataSendingType()"
             [gameName]="game.getName()"
             (receivedDataEmitter)="receiveSocketInputData($event)"
@@ -63,6 +68,7 @@ import { TictactoeGameWindowComponent } from './components/games/tictactoe/ticta
     AiSocketMenuComponent,
     PongGameWindowComponent,
     TictactoeGameWindowComponent,
+    ExchangeDataPipe,
   ],
 })
 export class GamePageComponent implements OnInit {

@@ -1,44 +1,56 @@
-import {
-  Component,
-  DoCheck,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { ILoggableDataComponent } from '../../models/loggable-data-component';
 import { TGameDataSendingType } from '../../models/game-data-sending-type.enum';
 import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
+import { DebugModeMenuComponent } from './components/debug-mode-menu/debug-mode-menu.component';
+import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mode-panel.component';
 
 @Component({
   selector: 'app-ai-socket-menu',
   standalone: true,
-  imports: [SocketDomainInputComponent, SocketConnectedMenuComponent],
+  imports: [
+    SocketDomainInputComponent,
+    SocketConnectedMenuComponent,
+    DebugModeMenuComponent,
+    DebugModePanelComponent,
+  ],
   template: `
-    <div class=" border-2 border-solid border-red-600 p-5">
-      <app-socket-domain-input
-        (socketDomainEmitter)="socketUrl = $event"
-        [recentPhrases]="recentPhrases"></app-socket-domain-input>
-      <span
-        [textContent]="isSocketConnected ? 'Connected' : 'Disconnected'"></span>
+    <app-debug-mode-menu
+      (debugModeEmitter)="isDebugModeActive = $event"></app-debug-mode-menu>
+    @if (isDebugModeActive) {
+      <app-debug-mode-panel
+        [expectedInput]="expectedDataToReceive"
+        (inputEmitter)="emitDebugSocketInput($event)"></app-debug-mode-panel>
+    } @else {
       <div>
-        @if (isSocketConnected) {
-          <button (click)="socket?.close()">Disconnect</button>
-          @if (gameDataSendingType === tGameDataSendingType.TimeGame) {
-            <app-socket-connected-menu
-              [isDataSendingActive]="isDataSendingActive"
-              [sendingInterval]="sendingInterval"
-              [socket]="socket"
-              [startDataExchange]="startDataExchange"
-              [stopDataExchange]="stopDataExchange"></app-socket-connected-menu>
+        <app-socket-domain-input
+          (socketDomainEmitter)="socketUrl = $event"
+          [recentPhrases]="recentPhrases"></app-socket-domain-input>
+        <span
+          [textContent]="
+            isSocketConnected ? 'Connected' : 'Disconnected'
+          "></span>
+        <div>
+          @if (isSocketConnected) {
+            <button (click)="socket?.close()">Disconnect</button>
+            @if (gameDataSendingType === tGameDataSendingType.TimeGame) {
+              <app-socket-connected-menu
+                [isDataSendingActive]="isDataSendingActive"
+                [sendingInterval]="sendingInterval"
+                [socket]="socket"
+                [startDataExchange]="startDataExchange"
+                [stopDataExchange]="
+                  stopDataExchange
+                "></app-socket-connected-menu>
+            }
+          } @else {
+            <button (click)="connect(socketUrl)">Connect</button>
           }
-        } @else {
-          <button (click)="connect(socketUrl)">Connect</button>
-        }
+        </div>
       </div>
-    </div>
+    }
   `,
 })
 export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
@@ -53,10 +65,12 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
       this.sendDataToSocket();
     }
   }
+  @Input({ required: true }) public expectedDataToReceive: TExchangeData = {};
 
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
+  public isDebugModeActive = false;
   public socket: WebSocket | null = null;
   public recentPhrases: string[] = [];
   public isSocketConnected = false;
@@ -114,12 +128,21 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
     }
   };
 
+  public emitDebugSocketInput(data: TExchangeData): void {
+    this.receivedDataEmitter.emit(data);
+  }
+
   //
 
   private sendDataToSocket(): void {
     if (this.socket && this.isSocketConnected) {
-      this.socket.send(JSON.stringify(this._dataToSend));
-      console.log('Data sent');
+      this.socket.send(
+        JSON.stringify({
+          output: this._dataToSend,
+          expected_input: this.expectedDataToReceive,
+        })
+      );
+      console.log('Data sent'); //
     }
   }
 
