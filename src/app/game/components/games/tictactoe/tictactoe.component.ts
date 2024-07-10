@@ -29,7 +29,7 @@ export class TictactoeGameWindowComponent extends BaseGameWindowComponent {
   }
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    this.input = (value['aiMove'] as number) | 0;
+    this.input = (value['input'] as number) | 0;
     this.gameWindowInputData['input'] = this.input;
   }
 }

@@ -5,7 +5,6 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   template: `
     <button
-      #dataCollectingButton
       (click)="vIsDataCollectingActive.value = !vIsDataCollectingActive.value">
       @if (!vIsDataCollectingActive.value) {
         Start collecting data

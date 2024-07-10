@@ -7,9 +7,7 @@ import { TGameDataSendingType } from '../../../../models/game-data-sending-type.
   imports: [],
   template: `
     @if (isDataSendingActive) {
-      <button #dataCollectingButton (click)="stopDataExchange()">
-        Stop data exchange
-      </button>
+      <button (click)="stopDataExchange()">Stop data exchange</button>
     } @else {
       <input
         type="number"
@@ -20,9 +18,7 @@ import { TGameDataSendingType } from '../../../../models/game-data-sending-type.
         step="10"
         [defaultValue]="sendingInterval"
         (change)="sendingInterval = sendingIntervalInput.valueAsNumber" />
-      <button #dataCollectingButton (click)="startDataExchange()">
-        Start data exchange
-      </button>
+      <button (click)="startDataExchange()">Start data exchange</button>
     }
   `,
 })

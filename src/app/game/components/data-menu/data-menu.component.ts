@@ -22,17 +22,13 @@ import { DataSelectCheckboxComponent } from './components/data-select-checkbox/d
           [variable]="variable"
           [isDataCollectingActive]="vIsDataCollectingActive.value"
           [dataToPersist]="dataToPersist"
-          [updateDataToPersist]="
-            updateDataToPersist
-          "></app-data-select-checkbox>
+          [updateDataToPersist]="updateDataToPersist" />
       }
       <div class="flex flex-col">
         <app-data-collecting-toggle-button
-          [vIsDataCollectingActive]="
-            vIsDataCollectingActive
-          "></app-data-collecting-toggle-button>
+          [vIsDataCollectingActive]="vIsDataCollectingActive" />
         @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
-          <button #jsonDownloadButton (click)="generateCsv()">
+          <button (click)="generateCsv()">
             Download CSV ({{ collectedDataArray.length }} records)
           </button>
           <button (click)="deleteCollectedData()">X</button>

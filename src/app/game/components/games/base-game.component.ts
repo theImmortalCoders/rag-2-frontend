@@ -4,9 +4,9 @@ import { TExchangeData } from '../../models/exchange-data.type';
 @Component({
   selector: 'app-base-game-window',
   standalone: true,
-  template: ` base-game-window`,
+  template: ``,
 })
-export class BaseGameWindowComponent implements OnInit {
+export abstract class BaseGameWindowComponent implements OnInit {
   protected gameWindowOutputData: TExchangeData = {};
   protected gameWindowInputData: TExchangeData = {};
 
