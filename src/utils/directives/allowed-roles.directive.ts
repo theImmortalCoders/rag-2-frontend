@@ -5,9 +5,8 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { RoleService } from '../services/permission.service';
-import { TRole } from '../models/role.enum';
-
+import { TRole } from '../../app/shared/models/role.enum';
+import { RoleService } from '../../app/shared/services/permission.service';
 @Directive({
   selector: '[appAllowedRoles]',
   standalone: true,

@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TExchangeData } from '../../game/models/exchange-data.type';
+import { TExchangeData } from '../../app/game/models/exchange-data.type';
 
 @Pipe({
-  name: 'record',
+  name: 'exchange_data',
   standalone: true,
 })
-export class RecordPipe implements PipeTransform {
+export class ExchangeDataPipe implements PipeTransform {
   public transform(value: unknown): Record<string, TExchangeData> {
     return value as Record<string, TExchangeData>;
   }

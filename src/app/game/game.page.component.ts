@@ -8,11 +8,11 @@ import { TGameDataSendingType } from './models/game-data-sending-type.enum';
 import { TExchangeData } from './models/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { TRole } from '../shared/models/role.enum';
-import { AuthRequiredDirective } from '../shared/directives/auth-required.directive';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
-import { RecordPipe } from '../shared/pipes/record.pipe';
 import { PongGameWindowComponent } from './components/games/pong/pong.component';
 import { TetrisGameWindowComponent } from './components/games/tetris/tetris.component';
+import { ExchangeDataPipe } from '../../utils/pipes/record.pipe';
+import { AuthRequiredDirective } from '../../utils/directives/auth-required.directive';
 
 @Component({
   selector: 'app-game',
@@ -26,7 +26,7 @@ import { TetrisGameWindowComponent } from './components/games/tetris/tetris.comp
             (logDataEmitter)="logData['data menu'] = $event"
             [gameName]="game.getName()"
             [dataPossibleToPersist]="
-              logData['game window']['output'] | record
+              logData['game window']['output'] | exchange_data
             "></app-data-menu>
           <app-ai-socket-menu
             *appAuthRequired
@@ -68,7 +68,7 @@ import { TetrisGameWindowComponent } from './components/games/tetris/tetris.comp
     DataMenuComponent,
     AuthRequiredDirective,
     AiSocketMenuComponent,
-    RecordPipe,
+    ExchangeDataPipe,
     PongGameWindowComponent,
     TetrisGameWindowComponent,
   ],
