@@ -18,7 +18,7 @@ import { ExchangeDataPipe } from '../../../../utils/pipes/record.pipe';
       </p>
     }
   `,
-  imports: [JsonPipe, KeyValuePipe, ExchangeDataPipe],
+  imports: [KeyValuePipe, ExchangeDataPipe],
 })
 export class ConsoleComponent {
   @Input({ required: true }) public logData: TExchangeData = {};

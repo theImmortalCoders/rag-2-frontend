@@ -22,7 +22,7 @@ import { TictactoeGameWindowComponent } from './components/games/tictactoe/ticta
           <app-data-menu
             (logDataEmitter)="logData['data menu'] = $event"
             [gameName]="game.getName()"
-            [dataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
+            [setDataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
           <app-ai-socket-menu
             [setDataToSend]="gameInputTriggerData"
             [gameDataSendingType]="game.getGameDataSendingType()"
