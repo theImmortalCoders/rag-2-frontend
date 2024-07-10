@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { JsonPipe, KeyValuePipe } from '@angular/common';
 import { TExchangeData } from '../../models/exchange-data.type';
-import { ExchangeDataPipe } from '../../../../utils/pipes/record.pipe';
+import { ExchangeDataPipe } from '../../../../utils/pipes/exchange-data.pipe';
 
 @Component({
   selector: 'app-console',
