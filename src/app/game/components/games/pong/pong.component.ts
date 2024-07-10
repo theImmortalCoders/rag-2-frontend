@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
-import { BaseGameWindowComponent } from '../models/base-game.component';
+import { BaseGameWindowComponent } from '../base-game.component';
 
 @Component({
   selector: 'app-pong',
@@ -12,13 +12,13 @@ import { BaseGameWindowComponent } from '../models/base-game.component';
       #inputElement1
       type="text"
       [value]="defaultText"
-      (input)="updateOutputData1(inputElement1.value, true)" />
+      (input)="updateOutputData1(inputElement1.value)" />
     <input
       class="w-full h-10 border-2 border-gray-300 rounded-lg p-2"
       #inputElement2
       type="text"
       [value]="defaultText + '2'"
-      (input)="updateOutputData2(inputElement2.value, false)" />
+      (input)="updateOutputData2(inputElement2.value)" />
     <div>Ai input: {{ score }}</div>
   `,
 })
@@ -35,26 +35,20 @@ export class PongGameWindowComponent extends BaseGameWindowComponent {
     score: this.score,
   };
 
-  public override set socketInputData(value: TExchangeData) {
+  public override set setSocketInputDataReceive(value: TExchangeData) {
     this.score = (value['aiMove'] as number) | 0;
     this.gameWindowInputData['score'] = this.score;
     this.gameWindowOutputData['score'] = this.score;
     this.emitOutputData();
   }
 
-  public updateOutputData1(value: string, trigger: boolean): void {
+  public updateOutputData1(value: string): void {
     this.gameWindowOutputData['text'] = value;
     this.emitOutputData();
-    if (trigger) {
-      this.emitInputTriggerData();
-    }
   }
 
-  public updateOutputData2(value: string, trigger: boolean): void {
+  public updateOutputData2(value: string): void {
     this.gameWindowOutputData['text2'] = value;
     this.emitOutputData();
-    if (trigger) {
-      this.emitInputTriggerData();
-    }
   }
 }

@@ -24,8 +24,9 @@ import { TictactoeGameWindowComponent } from './components/games/tictactoe/ticta
             [gameName]="game.getName()"
             [setDataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
           <app-ai-socket-menu
-            [setDataToSend]="gameInputTriggerData"
+            [setDataToSend]="gameWindowOutputData"
             [gameDataSendingType]="game.getGameDataSendingType()"
+            [gameName]="game.getName()"
             (receivedDataEmitter)="receiveSocketInputData($event)"
             (logDataEmitter)="
               logData['ai-socket menu'] = $event
@@ -34,16 +35,17 @@ import { TictactoeGameWindowComponent } from './components/games/tictactoe/ticta
         @switch (game.getName()) {
           @case ('pong') {
             <app-pong
-              [socketInputData]="socketInputData"
-              (gameWindowInputTriggerDataEmitter)="
-                receiveGameInputTriggerData($event)
-              "
+              [setSocketInputDataReceive]="socketInputData"
               (gameWindowOutputDataEmitter)="
                 receiveGameOutputData($event)
               "></app-pong>
           }
           @case ('tictactoe') {
-            <app-tictactoe></app-tictactoe>
+            <app-tictactoe
+              [setSocketInputDataReceive]="socketInputData"
+              (gameWindowOutputDataEmitter)="
+                receiveGameOutputData($event)
+              "></app-tictactoe>
           }
         }
       }
@@ -74,8 +76,6 @@ export class GamePageComponent implements OnInit {
   public socketInputData: TExchangeData = {};
   public gameWindowOutputData: TExchangeData = {};
 
-  public gameInputTriggerData: TExchangeData = {};
-
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
       this.gameName = params.get('gameName') || '';
@@ -94,12 +94,6 @@ export class GamePageComponent implements OnInit {
 
   public receiveSocketInputData(data: TExchangeData): void {
     this.socketInputData = JSON.parse(JSON.stringify(data));
-  }
-
-  public receiveGameInputTriggerData(data: TExchangeData): void {
-    this.gameInputTriggerData = JSON.parse(
-      JSON.stringify(data as TExchangeData)
-    );
   }
 
   //
