@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PongGameWindowComponent } from './pong.component';
+import { AiSocketMenuComponent } from './ai-socket-menu.component';
 
-describe('PongComponent', () => {
-  let component: PongGameWindowComponent;
-  let fixture: ComponentFixture<PongGameWindowComponent>;
+describe('AiSocketMenuComponent', () => {
+  let component: AiSocketMenuComponent;
+  let fixture: ComponentFixture<AiSocketMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PongGameWindowComponent],
+      imports: [AiSocketMenuComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PongGameWindowComponent);
+    fixture = TestBed.createComponent(AiSocketMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

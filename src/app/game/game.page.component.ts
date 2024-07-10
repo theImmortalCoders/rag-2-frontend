@@ -1,20 +1,18 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  Type,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
-import { BaseGameWindowComponent } from './components/games/base-game.component';
 import { Game } from './models/game.class';
-import { GameMenuComponent } from './components/menu/game-menu.component';
 import { games } from './data-access/games';
 import { ConsoleComponent } from './components/console/console.component';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
-import { TLogData } from './models/log-data.type';
+import { TExchangeData } from './models/exchange-data.type';
+import { DataMenuComponent } from './components/data-menu/data-menu.component';
+import { TRole } from '../shared/models/role.enum';
+import { AuthRequiredDirective } from '../shared/directives/auth-required.directive';
+import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
+import { RecordPipe } from '../shared/pipes/record.pipe';
+import { PongGameWindowComponent } from './components/games/pong/pong.component';
+import { TetrisGameWindowComponent } from './components/games/tetris/tetris.component';
 
 @Component({
   selector: 'app-game',
@@ -22,28 +20,60 @@ import { TLogData } from './models/log-data.type';
   template: `
     <div class="min-h-screen w-full">
       @if (game) {
-        <app-game-menu
-          (gameMenuLogData)="this.logData['menu'] = $event"
-          [gameDataSendingType]="game.getGameDataSendingType()"></app-game-menu>
-        <ng-container *ngComponentOutlet="gameWindowComponent"></ng-container>
+        <div class="absolute top-20 right-0 flex flex-col">
+          <app-data-menu
+            *appAuthRequired
+            (logDataEmitter)="logData['data menu'] = $event"
+            [gameName]="game.getName()"
+            [dataPossibleToPersist]="
+              logData['game window']['output'] | record
+            "></app-data-menu>
+          <app-ai-socket-menu
+            *appAuthRequired
+            (logDataEmitter)="
+              logData['ai-socket menu'] = $event
+            "></app-ai-socket-menu>
+        </div>
+        @switch (game.getName()) {
+          @case ('pong') {
+            <app-pong
+              (gameWindowOutputDataEmitter)="
+                logData['game window'] = $event
+              "></app-pong>
+          }
+          @case ('tetris') {
+            <app-tetris
+              (gameWindowOutputDataEmitter)="
+                logData['game window'] = $event
+              "></app-tetris>
+          }
+        }
       }
     </div>
-    <app-console [logData]="logData"></app-console>
+    <div
+      class="fixed bottom-0 p-10 bg-white border-y-red-600 border-solid border-2 left-0 w-full z-50">
+      <app-console [logData]="logData"></app-console>
+    </div>
   `,
-  imports: [NgComponentOutlet, GameMenuComponent, ConsoleComponent],
+  imports: [
+    NgComponentOutlet,
+    ConsoleComponent,
+    DataMenuComponent,
+    AuthRequiredDirective,
+    AiSocketMenuComponent,
+    RecordPipe,
+    PongGameWindowComponent,
+    TetrisGameWindowComponent,
+  ],
 })
-export class GamePageComponent implements OnInit, AfterViewInit {
+export class GamePageComponent implements OnInit {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
 
   public gameName = '';
   public game: Game | null = null;
-  public logData: Record<string, TLogData> = {};
-
-  @ViewChild(NgComponentOutlet)
-  public ngComponentOutlet!: NgComponentOutlet;
-  public gameWindowComponent: Type<BaseGameWindowComponent> | null = null;
-  public gameWindowComponentInstance: BaseGameWindowComponent | null = null;
+  public logData: Record<string, TExchangeData> = {};
+  public roleEnum = TRole;
 
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
@@ -54,14 +84,6 @@ export class GamePageComponent implements OnInit, AfterViewInit {
     this.updateGameLogData();
   }
 
-  public ngAfterViewInit(): void {
-    if (!this.game) return;
-    this.gameWindowComponentInstance = this.ngComponentOutlet['_componentRef']
-      .instance as BaseGameWindowComponent;
-
-    this.updateGameWindowLogData();
-  }
-
   //
 
   private loadGame(): void {
@@ -70,7 +92,6 @@ export class GamePageComponent implements OnInit, AfterViewInit {
       this._router.navigate(['']);
     } else {
       this.game = game;
-      this.gameWindowComponent = game.getGameWindowComponent();
     }
   }
 
@@ -81,14 +102,5 @@ export class GamePageComponent implements OnInit, AfterViewInit {
       game: this.game.getName(),
       dataSendingType: TGameDataSendingType[this.game.getGameDataSendingType()],
     };
-  }
-
-  private updateGameWindowLogData(): void {
-    setTimeout(() => {
-      if (this.gameWindowComponentInstance === null) return;
-
-      this.logData['game window'] =
-        this.gameWindowComponentInstance.gameWindowLogData;
-    });
   }
 }
