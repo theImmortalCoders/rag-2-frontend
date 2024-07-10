@@ -11,7 +11,7 @@ export class BaseGameWindowComponent implements OnInit {
   protected gameWindowInputData: TExchangeData = {};
   protected gameWindowInputTriggerData: TExchangeData = {};
 
-  @Input() public set onGameWindowInputChange(value: TExchangeData) {
+  @Input() public set socketInputData(value: TExchangeData) {
     this.emitOutputData();
   }
 
