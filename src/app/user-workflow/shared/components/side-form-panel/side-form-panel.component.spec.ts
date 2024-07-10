@@ -16,8 +16,7 @@ describe('SideFormPanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [SideFormPanelComponent, DummyComponent],
+      imports: [RouterTestingModule, SideFormPanelComponent],
       providers: [
         provideRouter([{ path: 'test-link', component: DummyComponent }]),
       ],
