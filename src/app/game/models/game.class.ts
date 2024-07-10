@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { TGameDataSendingType } from './game-data-sending-type.enum';
-import { BaseGameWindowComponent } from '../components/games/models/base-game.component';
+import { BaseGameWindowComponent } from '../components/games/base-game.component';
 
 export class Game {
   private _name: string;
