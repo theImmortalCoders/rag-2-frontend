@@ -1,17 +1,17 @@
 import { PongGameWindowComponent } from '../components/games/pong/pong.component';
-import { TetrisGameWindowComponent } from '../components/games/tetris/tetris.component';
 import { Game } from '../models/game.class';
 import { TGameDataSendingType } from '../models/game-data-sending-type.enum';
+import { TictactoeGameWindowComponent } from '../components/games/tictactoe/tictactoe.component';
 
 export const games: Record<string, Game> = {
   pong: new Game(
     'pong',
     PongGameWindowComponent,
-    TGameDataSendingType.TimeGame //debug
+    TGameDataSendingType.TimeGame
   ),
-  tetris: new Game(
-    'tetris',
-    TetrisGameWindowComponent,
+  tictactoe: new Game(
+    'tictactoe',
+    TictactoeGameWindowComponent,
     TGameDataSendingType.EventGame
   ),
 };

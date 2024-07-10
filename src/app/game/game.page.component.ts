@@ -7,12 +7,10 @@ import { ConsoleComponent } from './components/console/console.component';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
 import { TExchangeData } from './models/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
-import { TRole } from '../shared/models/role.enum';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
 import { PongGameWindowComponent } from './components/games/pong/pong.component';
-import { TetrisGameWindowComponent } from './components/games/tetris/tetris.component';
-import { ExchangeDataPipe } from '../../utils/pipes/record.pipe';
 import { AuthRequiredDirective } from '../../utils/directives/auth-required.directive';
+import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
 
 @Component({
   selector: 'app-game',
@@ -20,19 +18,15 @@ import { AuthRequiredDirective } from '../../utils/directives/auth-required.dire
   template: `
     <div class="min-h-screen w-full">
       @if (game) {
-        <div class="absolute top-20 right-0 flex flex-col">
+        <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
           <app-data-menu
-            *appAuthRequired
             (logDataEmitter)="logData['data menu'] = $event"
             [gameName]="game.getName()"
-            [dataPossibleToPersist]="
-              logData['game window']['output'] | exchange_data
-            "></app-data-menu>
+            [dataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
           <app-ai-socket-menu
-            *appAuthRequired
             [setDataToSend]="gameInputTriggerData"
             [gameDataSendingType]="game.getGameDataSendingType()"
-            (receivedDataEmitter)="gameWindowReceivedData = $event"
+            (receivedDataEmitter)="receiveSocketInputData($event)"
             (logDataEmitter)="
               logData['ai-socket menu'] = $event
             "></app-ai-socket-menu>
@@ -40,20 +34,17 @@ import { AuthRequiredDirective } from '../../utils/directives/auth-required.dire
         @switch (game.getName()) {
           @case ('pong') {
             <app-pong
-              [onGameWindowInputChange]="gameWindowReceivedData"
+              [socketInputData]="socketInputData"
               (gameWindowInputTriggerDataEmitter)="
                 receiveGameInputTriggerData($event)
               "
               (gameWindowOutputDataEmitter)="
-                logData['game window'] = $event
+                receiveGameOutputData($event)
               "></app-pong>
           }
-          <!-- @case ('tetris') {
-            <app-tetris
-              (gameWindowOutputDataEmitter)="
-                logData['game window'] = $event
-              "></app-tetris>
-          } -->
+          @case ('tictactoe') {
+            <app-tictactoe></app-tictactoe>
+          }
         }
       }
     </div>
@@ -68,9 +59,8 @@ import { AuthRequiredDirective } from '../../utils/directives/auth-required.dire
     DataMenuComponent,
     AuthRequiredDirective,
     AiSocketMenuComponent,
-    ExchangeDataPipe,
     PongGameWindowComponent,
-    TetrisGameWindowComponent,
+    TictactoeGameWindowComponent,
   ],
 })
 export class GamePageComponent implements OnInit {
@@ -80,8 +70,9 @@ export class GamePageComponent implements OnInit {
   public gameName = '';
   public game: Game | null = null;
   public logData: Record<string, TExchangeData> = {};
-  public roleEnum = TRole;
-  public gameWindowReceivedData: TExchangeData = {};
+
+  public socketInputData: TExchangeData = {};
+  public gameWindowOutputData: TExchangeData = {};
 
   public gameInputTriggerData: TExchangeData = {};
 
@@ -92,6 +83,17 @@ export class GamePageComponent implements OnInit {
     });
 
     this.updateGameLogData();
+  }
+
+  public receiveGameOutputData(data: TExchangeData): void {
+    this.gameWindowOutputData = JSON.parse(
+      JSON.stringify((data as TExchangeData)['output'])
+    );
+    this.logData['game window'] = data;
+  }
+
+  public receiveSocketInputData(data: TExchangeData): void {
+    this.socketInputData = JSON.parse(JSON.stringify(data));
   }
 
   public receiveGameInputTriggerData(data: TExchangeData): void {
