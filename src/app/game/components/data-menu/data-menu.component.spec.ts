@@ -47,10 +47,9 @@ describe('DataMenuComponent', () => {
 
   it('should initialize with default values', () => {
     expect(component.gameName).toEqual('');
-    expect(component.dataPossibleToPersist).toEqual({});
     expect(component.dataToPersist).toEqual({});
     expect(component.collectedDataArray).toEqual([]);
-    expect(component.isDataCollectingActive).toBeFalse();
+    expect(component.vIsDataCollectingActive.value).toBeFalse();
   });
 
   it('should update dataToPersist when updateDataToPersist is called', () => {
@@ -59,13 +58,5 @@ describe('DataMenuComponent', () => {
 
     component.updateDataToPersist('key2', 'value2', false);
     expect(component.dataToPersist).toEqual({ key1: 'value1' });
-  });
-
-  it('should return true if key is present in dataToPersist', () => {
-    component.dataToPersist = { key1: 'value1', key2: 'value2' };
-
-    expect(component.isKeyInDataToPersist('key1')).toBeTrue();
-    expect(component.isKeyInDataToPersist('key2')).toBeTrue();
-    expect(component.isKeyInDataToPersist('key3')).toBeFalse();
   });
 });

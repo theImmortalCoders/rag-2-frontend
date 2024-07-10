@@ -1,65 +1,57 @@
-import {
-  Component,
-  DoCheck,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
 import { DataTransformService } from '../../../shared/services/data-transform.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DataCollectingToggleButtonComponent } from './components/collect-toggle-button/collect-toggle-button.component';
+import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
 
 @Component({
   selector: 'app-data-menu',
   standalone: true,
-  imports: [KeyValuePipe],
+  imports: [
+    KeyValuePipe,
+    DataCollectingToggleButtonComponent,
+    DataSelectCheckboxComponent,
+  ],
   template: `
     <div class="border-2 bg-white border-solid border-red-600 p-5">
       Select data to persist
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
-        <span class="flex gap-2">
-          @if (variable.key && variable.key !== '1') {
-            <p>{{ variable.key }}</p>
-          }
-          <input
-            #dataInput
-            [attr.disabled]="isDataCollectingActive ? 'disabled' : null"
-            type="checkbox"
-            [defaultChecked]="true"
-            [checked]="isKeyInDataToPersist(variable.key)"
-            (change)="
-              updateDataToPersist(
-                variable.key,
-                variable.value,
-                dataInput.checked
-              )
-            " />
-        </span>
+        <app-data-select-checkbox
+          [variable]="variable"
+          [isDataCollectingActive]="vIsDataCollectingActive.value"
+          [dataToPersist]="dataToPersist"
+          [updateDataToPersist]="
+            updateDataToPersist
+          "></app-data-select-checkbox>
       }
       <div class="flex flex-col">
-        <button
-          #dataCollectingButton
-          (click)="isDataCollectingActive = !isDataCollectingActive">
-          @if (!isDataCollectingActive) {
-            Start collecting data
-          } @else {
-            Stop collecting data
-          }
-        </button>
-        @if (collectedDataArray.length > 0 && !isDataCollectingActive) {
+        <app-data-collecting-toggle-button
+          [vIsDataCollectingActive]="
+            vIsDataCollectingActive
+          "></app-data-collecting-toggle-button>
+        @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
           <button #jsonDownloadButton (click)="generateCsv()">
             Download CSV ({{ collectedDataArray.length }} records)
           </button>
+          <button (click)="deleteCollectedData()">X</button>
         }
       </div>
     </div>
   `,
 })
-export class DataMenuComponent implements OnInit, DoCheck {
+export class DataMenuComponent implements OnInit {
   @Input({ required: true }) public gameName = '';
-  @Input({ required: true }) public dataPossibleToPersist: TExchangeData = {};
+  public dataPossibleToPersist: TExchangeData = {};
+  @Input({ required: true }) public set setDataPossibleToPersist(
+    value: TExchangeData
+  ) {
+    this.dataPossibleToPersist = value;
+    if (this.vIsDataCollectingActive.value) {
+      this.updateCollectedData();
+    }
+  }
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
 
   private _dataToPersistQueryParams: TExchangeData = {};
@@ -67,7 +59,7 @@ export class DataMenuComponent implements OnInit, DoCheck {
   public logData: TExchangeData = this._dataToPersistQueryParams;
   public dataToPersist: TExchangeData = {};
   public collectedDataArray: TExchangeData[] = [];
-  public isDataCollectingActive = false;
+  public vIsDataCollectingActive = { value: false };
 
   public constructor(
     private _dataTransformService: DataTransformService,
@@ -82,17 +74,11 @@ export class DataMenuComponent implements OnInit, DoCheck {
     this.updateDataToPersistFromURL();
   }
 
-  public ngDoCheck(): void {
-    if (this.isDataCollectingActive) {
-      this.updateCollectedData();
-    }
-  }
-
-  public updateDataToPersist(
+  public updateDataToPersist = (
     key: string,
     value: unknown,
     isPresent: boolean
-  ): void {
+  ): void => {
     if (isPresent) {
       this.dataToPersist[key] = value as TExchangeData[keyof TExchangeData];
     } else {
@@ -100,7 +86,7 @@ export class DataMenuComponent implements OnInit, DoCheck {
     }
 
     this.updateURLByDataToPersist(key, isPresent);
-  }
+  };
 
   public generateCsv(): void {
     const csvContent = this._dataTransformService.exchangeDataToCsv(
@@ -109,8 +95,8 @@ export class DataMenuComponent implements OnInit, DoCheck {
     this.downloadCsv(csvContent);
   }
 
-  public isKeyInDataToPersist(key: string): boolean {
-    return Object.prototype.hasOwnProperty.call(this.dataToPersist, key);
+  public deleteCollectedData(): void {
+    this.collectedDataArray = [];
   }
 
   //
@@ -132,10 +118,11 @@ export class DataMenuComponent implements OnInit, DoCheck {
     for (const key in newData) {
       newData[key] = this.dataPossibleToPersist[key];
     }
+    delete this.dataToPersist['timestamp'];
     if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
-      this.collectedDataArray.push(newData);
-      this.dataToPersist = newData;
       this.dataToPersist['timestamp'] = new Date().toISOString();
+      this.dataToPersist = newData;
+      this.collectedDataArray.push(this.dataToPersist);
     }
   }
 
