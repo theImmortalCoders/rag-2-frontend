@@ -6,6 +6,7 @@ import { SocketDomainInputComponent } from './components/socket-domain-input/soc
 import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
 import { DebugModeMenuComponent } from './components/debug-mode-menu/debug-mode-menu.component';
 import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mode-panel.component';
+import { AiSocketService } from './services/ai-socket.service';
 
 @Component({
   selector: 'app-ai-socket-menu',
@@ -30,23 +31,27 @@ import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mod
           [recentPhrases]="recentPhrases"></app-socket-domain-input>
         <span
           [textContent]="
-            isSocketConnected ? 'Connected' : 'Disconnected'
+            aiSocketService.getIsSocketConnected()
+              ? 'Connected'
+              : 'Disconnected'
           "></span>
         <div>
-          @if (isSocketConnected) {
-            <button (click)="socket?.close()">Disconnect</button>
+          @if (aiSocketService.getIsSocketConnected()) {
+            <button (click)="aiSocketService.getSocket()?.close()">
+              Disconnect
+            </button>
             @if (gameDataSendingType === tGameDataSendingType.TimeGame) {
               <app-socket-connected-menu
-                [isDataSendingActive]="isDataSendingActive"
-                [sendingInterval]="sendingInterval"
-                [socket]="socket"
-                [startDataExchange]="startDataExchange"
+                [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"
+                [vSendingInterval]="vSendingInterval"
+                [socket]="aiSocketService.getSocket()"
+                [startDataExchange]="onStartDataExchangeClick"
                 [stopDataExchange]="
-                  stopDataExchange
+                  aiSocketService.stopDataExchange
                 "></app-socket-connected-menu>
             }
           } @else {
-            <button (click)="connect(socketUrl)">Connect</button>
+            <button (click)="onConnectButtonClick()">Connect</button>
           }
         </div>
       </div>
@@ -54,97 +59,75 @@ import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mod
   `,
 })
 export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
-  private _dataToSend: TExchangeData = {};
-
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public gameDataSendingType: TGameDataSendingType =
     TGameDataSendingType.TimeGame;
+  @Input({ required: true }) public expectedDataToReceive: TExchangeData = {};
   @Input({ required: true }) public set setDataToSend(value: TExchangeData) {
     this._dataToSend = value;
     if (this.gameDataSendingType === TGameDataSendingType.EventGame) {
-      this.sendDataToSocket();
+      this.aiSocketService.sendDataToSocket(
+        this._dataToSend,
+        this.expectedDataToReceive
+      );
     }
   }
-  @Input({ required: true }) public expectedDataToReceive: TExchangeData = {};
 
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
+  private _dataToSend: TExchangeData = {};
+
   public isDebugModeActive = false;
-  public socket: WebSocket | null = null;
   public recentPhrases: string[] = [];
-  public isSocketConnected = false;
-  public isDataSendingActive = false;
-  public sendingInterval = 500;
-  public sendingIntervalID: unknown | null = null;
+  public vSendingInterval = { value: 500 };
   public socketUrl = '';
   public tGameDataSendingType = TGameDataSendingType;
   public logData: TExchangeData = {
-    isSocketConnected: this.isSocketConnected,
+    isSocketConnected: this.aiSocketService.getIsSocketConnected(),
     socketURL: this.socketUrl,
-    sendingInterval: this.sendingInterval,
+    sendingInterval: this.vSendingInterval.value,
   };
+
+  public constructor(public aiSocketService: AiSocketService) {
+    console.log('AiSocketMenuComponent constructor');
+  }
 
   public ngOnInit(): void {
     this.logDataEmitter.emit(this.logData);
     this.loadRecentPhrases();
   }
 
-  public connect(socketDomain: string): void {
-    try {
-      this.socket = new WebSocket(socketDomain);
-      this.socket.addEventListener('open', () => {
-        this.isSocketConnected = true;
-        this.saveRecentPhrase(socketDomain);
-        this.emitLogData();
-      });
-      this.socket.addEventListener('message', event => {
-        this.receivedDataEmitter.emit(JSON.parse(event.data));
-      });
-      this.socket.addEventListener('close', () => {
-        this.isSocketConnected = false;
-        this.stopDataExchange();
-        this.emitLogData();
-      });
-    } catch (error) {
-      this.isSocketConnected = false;
-      this.stopDataExchange();
-      this.emitLogData();
-    }
-  }
-
-  public startDataExchange = (): void => {
-    this.isDataSendingActive = true;
-    this.sendingIntervalID = setInterval(() => {
-      this.sendDataToSocket();
-    }, this.sendingInterval);
+  public onStartDataExchangeClick = (): void => {
+    this.aiSocketService.startDataExchange(
+      this.vSendingInterval.value,
+      this._dataToSend,
+      this.expectedDataToReceive
+    );
     this.emitLogData();
   };
 
-  public stopDataExchange = (): void => {
-    if (this.sendingIntervalID != null) {
-      this.isDataSendingActive = false;
-      clearInterval(this.sendingIntervalID as number);
-    }
-  };
+  public onConnectButtonClick(): void {
+    this.aiSocketService.connect(
+      this.socketUrl,
+      () => {
+        this.saveRecentPhrase(this.socketUrl);
+        this.emitLogData();
+      },
+      (event: MessageEvent<string>) => {
+        this.receivedDataEmitter.emit(JSON.parse(event.data));
+      },
+      () => {
+        this.emitLogData();
+      }
+    );
+  }
 
   public emitDebugSocketInput(data: TExchangeData): void {
     this.receivedDataEmitter.emit(data);
   }
 
   //
-
-  private sendDataToSocket(): void {
-    if (this.socket && this.isSocketConnected) {
-      this.socket.send(
-        JSON.stringify({
-          output: this._dataToSend,
-          expected_input: this.expectedDataToReceive,
-        })
-      );
-      console.log('Data sent'); //
-    }
-  }
 
   private loadRecentPhrases(): void {
     const cachedPhrases = localStorage.getItem(
@@ -170,9 +153,10 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   }
 
   private emitLogData(): void {
-    this.logData['socketURL'] = this.socket?.url || '';
-    this.logData['isSocketConnected'] = this.isSocketConnected;
-    this.logData['sendingInterval'] = this.sendingInterval;
+    this.logData['socketURL'] = this.aiSocketService.getSocket()?.url || '';
+    this.logData['isSocketConnected'] =
+      this.aiSocketService.getIsSocketConnected();
+    this.logData['sendingInterval'] = this.vSendingInterval;
     this.logDataEmitter.emit(this.logData);
   }
 }
