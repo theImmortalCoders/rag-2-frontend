@@ -56,7 +56,7 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
       }
     </div>
     <div
-      class="fixed bottom-0 p-10 bg-white border-y-red-600 border-solid border-2 left-0 w-full z-50">
+      class="fixed bottom-0 left-0 w-1/2 p-10 max-h-96 overflow-y-auto bg-white border-y-red-600 border-solid border-2 z-50">
       <app-console [logData]="logData"></app-console>
     </div>
   `,
