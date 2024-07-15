@@ -17,7 +17,7 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
   selector: 'app-game',
   standalone: true,
   template: `
-    <div class="min-h-screen w-full">
+    <div class="min-h-screen w-full flex flex-col justify-between">
       @if (game) {
         <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
           <app-data-menu
@@ -54,10 +54,17 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
           }
         }
       }
-    </div>
-    <div
-      class="fixed bottom-0 left-0 w-1/2 p-10 max-h-96 overflow-y-auto bg-white border-y-red-600 border-solid border-2 z-50">
-      <app-console [logData]="logData"></app-console>
+      <div
+        class="w-full max-h-96 transition-all ease-in-out duration-500 {{
+          isConsoleVisible ? 'h-96' : 'h-12'
+        }} overflow-y-auto bg-lightGray z-50">
+        <button
+          class="w-full border-b-2 border-mainOrange text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer"
+          (click)="toggleConsole()">
+          {{ isConsoleVisible ? 'hide' : 'show' }} console
+        </button>
+        <app-console [logData]="logData" class="p-10" />
+      </div>
     </div>
   `,
   imports: [
@@ -81,6 +88,12 @@ export class GamePageComponent implements OnInit {
 
   public socketInputData: TExchangeData = {};
   public gameWindowOutputData: TExchangeData = {};
+
+  public isConsoleVisible = false;
+
+  public toggleConsole(): void {
+    this.isConsoleVisible = !this.isConsoleVisible;
+  }
 
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
