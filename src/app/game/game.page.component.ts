@@ -54,16 +54,22 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
           }
         }
       }
-      <div
-        class="w-full max-h-96 transition-all ease-in-out duration-500 {{
-          isConsoleVisible ? 'h-96' : 'h-12'
-        }} overflow-y-auto bg-lightGray z-50">
+      <div>
         <button
-          class="w-full border-b-2 border-mainOrange text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer"
+          class="w-full bg-lightGray sticky z-50 top-0 border-b-2 border-mainOrange text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer"
           (click)="toggleConsole()">
           {{ isConsoleVisible ? 'hide' : 'show' }} console
         </button>
-        <app-console [logData]="logData" class="p-10" />
+        <div
+          class="w-full max-h-96 transition-all ease-in-out duration-700 {{
+            isConsoleVisible ? 'h-72' : 'h-0'
+          }} bg-lightGray overflow-y-scroll z-50">
+          <app-console
+            [logData]="logData"
+            class="flex flex-row justify-around transition-all ease-in-out duration-700 {{
+              isConsoleVisible ? 'p-10' : 'p-0'
+            }}" />
+        </div>
       </div>
     </div>
   `,
