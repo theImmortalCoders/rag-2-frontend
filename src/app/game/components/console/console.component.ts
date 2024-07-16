@@ -8,14 +8,14 @@ import { ExchangeDataPipe } from '../../../../utils/pipes/exchange-data.pipe';
   standalone: true,
   template: `
     @for (data of logData | keyvalue; track data.key) {
-      <p class="ml-10">
-        {{ data.key }}:
+      <div class="ml-4 overflow-y-auto">
+        <span class="font-bold text-lg font-mono">{{ data.key }}:</span>
         @if (isTLogData(data.value)) {
           <app-console [logData]="data.value | exchange_data" />
         } @else {
-          {{ data.value }}
+          <span class="ml-2 text-base text-mainCreme">{{ data.value }}</span>
         }
-      </p>
+      </div>
     }
   `,
   imports: [KeyValuePipe, ExchangeDataPipe],
