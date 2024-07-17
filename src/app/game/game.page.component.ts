@@ -54,7 +54,7 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
           }
         }
       }
-      <div>
+      <div class="fixed bottom-0 left-0 w-full z-50">
         <button
           class="w-full bg-lightGray sticky z-50 top-0 border-b-2 border-mainOrange text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer"
           (click)="toggleConsole()">
@@ -63,7 +63,7 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
         <div
           class="w-full max-h-96 transition-all ease-in-out duration-700 {{
             isConsoleVisible ? 'h-72' : 'h-0'
-          }} bg-lightGray overflow-y-scroll z-50">
+          }} bg-lightGray overflow-y-auto z-50">
           <app-console
             [logData]="logData"
             class="flex flex-row justify-around transition-all ease-in-out duration-700 {{
