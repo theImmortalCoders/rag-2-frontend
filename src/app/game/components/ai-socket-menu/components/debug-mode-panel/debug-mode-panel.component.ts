@@ -11,7 +11,7 @@ import { KeyValuePipe } from '@angular/common';
       {{ variable.key }}:
       <input
         #variableInput
-        class="border-2 border-black border-solid"
+        class="custom-input w-52"
         type="text"
         [defaultValue]="variable.value" />
       <button (click)="emitInputData(variable.key, variableInput.value)">
