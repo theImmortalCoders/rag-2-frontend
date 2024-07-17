@@ -6,8 +6,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   imports: [],
   template: `
     <input
-      class="border-2 border-solid border-black"
+      class="custom-input w-52 mb-2"
       #socketDomain
+      placeholder="localhost:8001"
       type="text"
       (change)="socketDomainEmitter.emit(socketDomain.value)"
       list="recentPhrases" />
