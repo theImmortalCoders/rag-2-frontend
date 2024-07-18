@@ -66,6 +66,14 @@ module.exports = {
           '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-700 focus:outline-none focus:border-mainOrange':
             {},
         },
+        '.side-menu-button': {
+          '@apply flex flex-col shadow-sideMenuShadow absolute transition-all ease-in-out duration-700 p-2 items-center justify-center bg-lightGray font-mono font-bold border-r-2 border-mainOrange hover:border-green-500':
+            {},
+        },
+        '.side-menu-container': {
+          '@apply flex flex-row shadow-sideMenuShadow absolute transition-all ease-in-out duration-700':
+            {},
+        },
       });
     },
   ],
