@@ -17,7 +17,7 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
   selector: 'app-game',
   standalone: true,
   template: `
-    <div class="min-h-screen w-full flex flex-col justify-between">
+    <div class="min-h-all w-full flex flex-col justify-between">
       @if (game) {
         <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
           <button
