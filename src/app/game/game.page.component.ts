@@ -22,13 +22,16 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
         <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
           <button
             (click)="toggleDataMenu()"
-            class="flex flex-col absolute top-0 transition-all ease-in-out duration-700 {{
+            class="flex flex-col shadow-sideMenuShadow absolute top-0 transition-all ease-in-out duration-700 {{
               isDataMenuVisible ? 'right-64' : 'right-0'
             }} p-2 items-center justify-center bg-lightGray font-mono font-bold border-r-2 border-mainOrange hover:border-green-500 w-12 h-44">
-            <span>D</span><span>A</span><span>T</span><span>A</span>
+            <span
+              class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.45em]"
+              >DATA</span
+            >
           </button>
           <app-data-menu
-            class="flex flex-row absolute top-0 transition-all ease-in-out duration-700 {{
+            class="flex flex-row shadow-sideMenuShadow absolute top-0 transition-all ease-in-out duration-700 {{
               isDataMenuVisible ? 'right-0' : '-right-64'
             }}"
             (logDataEmitter)="logData['data menu'] = $event"
@@ -36,14 +39,16 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
             [setDataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
           <button
             (click)="toggleAISocketMenu()"
-            class="flex flex-col absolute top-52 transition-all ease-in-out duration-700 {{
+            class="flex flex-col shadow-sideMenuShadow absolute top-52 transition-all ease-in-out duration-700 {{
               isAISocketMenuVisible ? 'right-64' : 'right-0'
             }} p-2 items-center justify-center bg-lightGray font-mono font-bold border-r-2 border-mainOrange hover:border-green-500 w-12 h-56">
-            <span>A</span><span class="mb-3">I</span><span>S</span><span>O</span
-            ><span>C</span><span>K</span><span>E</span><span>T</span>
+            <span
+              class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.325em]"
+              >AI&nbsp;SOCKET</span
+            >
           </button>
           <app-ai-socket-menu
-            class="flex flex-row absolute top-52 transition-all ease-in-out duration-700 {{
+            class="flex flex-row shadow-sideMenuShadow absolute top-52 transition-all ease-in-out duration-700 {{
               isAISocketMenuVisible ? 'right-0' : '-right-64'
             }}"
             [setDataToSend]="gameWindowOutputData"
@@ -76,9 +81,9 @@ import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
       }
       <div class="sticky bottom-0 left-0 w-full z-50">
         <button
-          class="w-full bg-lightGray sticky z-50 top-0 transition-all ease-in-out duration-700 border-b-2 border-mainOrange hover:border-green-500 text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer"
+          class="w-full bg-lightGray tracking-[0.15em] sticky z-50 top-0 transition-all ease-in-out duration-700 border-b-2 border-mainOrange hover:border-green-500 text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer"
           (click)="toggleConsole()">
-          {{ isConsoleVisible ? 'hide' : 'show' }} console
+          console
         </button>
         <div
           class="w-full max-h-96 transition-all ease-in-out duration-700 {{

@@ -35,7 +35,7 @@ import { DataSelectCheckboxComponent } from './components/data-select-checkbox/d
           </button>
           <button
             (click)="deleteCollectedData()"
-            class="mt-4 text-center text-red-500 border-red-500 border-[1px]">
+            class="mt-4 text-center font-bold text-red-500 border-red-500 border-[1px]">
             X
           </button>
         }

@@ -9,7 +9,7 @@ import { TGameDataSendingType } from '../../../../models/game-data-sending-type.
     @if (isDataSendingActive) {
       <button
         (click)="stopDataExchange()"
-        class="mt-4 text-center text-red-500 border-red-500 border-[1px]">
+        class="mt-4 text-center text-red-500 font-bold border-red-500 border-[1px]">
         Stop data exchange
       </button>
     } @else {
@@ -26,7 +26,7 @@ import { TGameDataSendingType } from '../../../../models/game-data-sending-type.
         " />
       <button
         (click)="startDataExchange(vSendingInterval.value)"
-        class="mt-4 text-center text-green-500 border-red-500 border-[1px]">
+        class="mt-4 text-center text-green-500 font-bold border-green-500 border-[1px]">
         Start data exchange
       </button>
     }
