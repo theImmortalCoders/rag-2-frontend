@@ -8,7 +8,7 @@ import { ExchangeDataPipe } from '../../../../utils/pipes/exchange-data.pipe';
   standalone: true,
   template: `
     @for (data of logData | keyvalue; track data.key) {
-      <div class="ml-4 overflow-y-auto">
+      <div class="ml-4 max-w-72 overflow-y-auto">
         <span class="font-bold text-lg font-mono">{{ data.key }}:</span>
         @if (isTLogData(data.value)) {
           <app-console [logData]="data.value | exchange_data" />
