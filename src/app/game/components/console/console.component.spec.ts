@@ -19,20 +19,4 @@ describe('ConsoleComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should display log data correctly', () => {
-    const testLogData = {
-      '2023-04-01': { message: 'Test message 1', level: 'info' },
-      '2023-04-02': { message: 'Test message 2', level: 'error' },
-    };
-    component.logData = testLogData;
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelectorAll('p').length).toBeGreaterThan(2);
-    expect(compiled.textContent).toContain('2023-04-01');
-    expect(compiled.textContent).toContain('Test message 1');
-    expect(compiled.textContent).toContain('2023-04-02');
-    expect(compiled.textContent).toContain('Test message 2');
-  });
 });

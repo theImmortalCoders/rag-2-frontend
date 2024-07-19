@@ -7,12 +7,16 @@ import { TGameDataSendingType } from '../../../../models/game-data-sending-type.
   imports: [],
   template: `
     @if (isDataSendingActive) {
-      <button (click)="stopDataExchange()">Stop data exchange</button>
+      <button
+        (click)="stopDataExchange()"
+        class="mt-4 text-center text-red-500 font-bold border-red-500 border-[1px]">
+        Stop data exchange
+      </button>
     } @else {
       <input
         type="number"
         #sendingIntervalInput
-        class="border-2 border-solid border-black"
+        class="custom-input w-52 mb-2"
         min="10"
         max="1000"
         step="10"
@@ -20,7 +24,9 @@ import { TGameDataSendingType } from '../../../../models/game-data-sending-type.
         (change)="
           vSendingInterval.value = sendingIntervalInput.valueAsNumber
         " />
-      <button (click)="startDataExchange(vSendingInterval.value)">
+      <button
+        (click)="startDataExchange(vSendingInterval.value)"
+        class="mt-4 text-center text-green-500 font-bold border-green-500 border-[1px]">
         Start data exchange
       </button>
     }
