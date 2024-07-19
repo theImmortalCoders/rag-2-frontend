@@ -15,8 +15,8 @@ import { DataSelectCheckboxComponent } from './components/data-select-checkbox/d
     DataSelectCheckboxComponent,
   ],
   template: `
-    <div class="border-2 bg-white border-solid border-red-600 p-5">
-      Select data to persist
+    <div class="w-64 h-44 overflow-y-auto p-5 bg-lightGray font-mono text-sm">
+      <span class="font-black">Select data to persist:</span>
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
         <app-data-select-checkbox
           [variable]="variable"
@@ -28,10 +28,16 @@ import { DataSelectCheckboxComponent } from './components/data-select-checkbox/d
         <app-data-collecting-toggle-button
           [vIsDataCollectingActive]="vIsDataCollectingActive" />
         @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
-          <button (click)="generateCsv()">
+          <button
+            (click)="generateCsv()"
+            class="mt-6 text-center text-mainCreme">
             Download CSV ({{ collectedDataArray.length }} records)
           </button>
-          <button (click)="deleteCollectedData()">X</button>
+          <button
+            (click)="deleteCollectedData()"
+            class="mt-4 text-center font-bold text-red-500 border-red-500 border-[1px]">
+            X
+          </button>
         }
       </div>
     </div>
