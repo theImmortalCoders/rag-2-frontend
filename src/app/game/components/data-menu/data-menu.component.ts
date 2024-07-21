@@ -33,12 +33,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
           <button (click)="generateCsv()">
             Download CSV ({{ collectedDataArray.length }} records)
           </button>
-          <button
-            (click)="
-              gameDataSendingService.sendGameData(1, collectedDataArray)
-            ">
-            Save data
-          </button>
+          <button (click)="sendData()">Save data</button>
           <button (click)="deleteCollectedData()">X</button>
         }
       </div>
@@ -77,6 +72,19 @@ export class DataMenuComponent implements OnInit {
     this.dataToPersist = JSON.parse(JSON.stringify(this.dataPossibleToPersist));
 
     this.updateDataToPersistFromURL();
+  }
+
+  public sendData(): void {
+    this.gameDataSendingService
+      .sendGameData(1, this.collectedDataArray)
+      .subscribe({
+        next: () => {
+          console.log('Data saved');
+        },
+        error: error => {
+          console.error('Error saving data', error);
+        },
+      });
   }
 
   public updateDataToPersist = (
