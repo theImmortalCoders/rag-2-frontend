@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
         AUTHORS:
       </div>
       <div
-        class="grid grid-cols-3 md:grid-cols-6 gap-4 text-xs md:text-base w-full md:w-11/12 lg:w-4/5 items-center justify-around text-mainCreme pb-4">
+        class="flex gap-10 text-xs md:text-base w-full md:w-11/12 lg:w-4/5 items-center justify-center text-mainCreme pb-4">
         <span class="text-center">
           <a href="https://github.com/pablitoo1" target="_blank">
             Paweł Buczek
@@ -23,24 +23,6 @@ import { Component } from '@angular/core';
             Marcin Bator
           </a>
         </span>
-        <span class="text-center">
-          <a href="https://github.com/ZegarekPL" target="_blank">
-            Wiktor Mazur
-          </a>
-        </span>
-        <span class="text-center">
-          <a href="https://github.com/fkula5" target="_blank"> Filip Kula </a>
-        </span>
-        <span class="text-center">
-          <a href="https://github.com/Ressobe" target="_blank">
-            Bartosz Sobina
-          </a>
-        </span>
-        <span class="text-center">
-          <a href="https://github.com/AmereQ" target="_blank">
-            Łukasz Skórka
-          </a>
-        </span>
       </div>
       <hr class="w-full h-[2px] bg-gray-900 border-0" />
       <div
@@ -48,17 +30,13 @@ import { Component } from '@angular/core';
         <a href="http://vision.kia.prz.edu.pl/gest/" target="_blank">
           <img
             src=""
-            alt="LogoGest"
+            alt="Logo LKS"
             class="h-20 2xs:h-16 sm:h-20 md:h-28 w-auto" />
         </a>
-        <span
-          class="text-mainOrange text-center text-xs sm:text-sm md:text-base">
-          Project supervisor: Dawid Kalandyk
-        </span>
         <a href="https://w.prz.edu.pl/" target="_blank" class="">
           <img
             src=""
-            alt="LogoRUT"
+            alt="Logo Polonia Hyżne"
             class="h-12 2xs:h-9 sm:h-12 md:h-16 w-auto" />
         </a>
       </div>
