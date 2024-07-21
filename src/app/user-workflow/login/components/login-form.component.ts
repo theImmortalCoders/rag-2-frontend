@@ -5,6 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { FormValidationService } from '../../shared/services/form-validation.service';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login-form',
@@ -59,14 +60,29 @@ export class LoginFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
 
+  public constructor(private _loginService: LoginService) {}
+
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
 
   public submitButton(): void {
-    console.log('Email: ', this.loginForm.value.email);
-    console.log('Password: ', this.loginForm.value.password);
+    if (
+      this.loginForm.value.email != undefined &&
+      this.loginForm.value.password != undefined
+    ) {
+      this._loginService
+        .logIn(this.loginForm.value.email, this.loginForm.value.password)
+        .subscribe({
+          next: r => {
+            localStorage.setItem('jwtToken', r);
+          },
+          error: error => {
+            console.error('Error: ', error);
+          },
+        });
+    }
   }
 
   public shouldShowError(controlName: string): boolean | undefined {

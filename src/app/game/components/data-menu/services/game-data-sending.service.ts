@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { JsonPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +14,12 @@ export class GameDataSendingService {
 
   public sendGameData(gameId: number, data: TExchangeData[]): Observable<void> {
     return this._httpClient.post<void>(
-      this.backendApiUrl + '/api/games?gameId=' + gameId,
-      { value: data.toString() },
+      this.backendApiUrl + '/api/gamerecord?gameId=' + gameId,
+      { value: JSON.stringify(data) },
       {
-        withCredentials: true,
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('jwtToken'),
+        },
       }
     );
   }
