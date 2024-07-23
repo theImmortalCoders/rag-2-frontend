@@ -1,18 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  public backendApiUrl = 'http://localhost:5172';
+  private _httpClient = inject(HttpClient);
 
-  public constructor(private _httpClient: HttpClient) {}
-
-  public logIn(email: string, password: string): Observable<string> {
+  public authenticateUser(email: string, password: string): Observable<string> {
     return this._httpClient.post<string>(
-      this.backendApiUrl + '/api/user/login',
+      environment.backendApiUrl + '/api/user',
       { email, password },
       {
         responseType: 'text' as 'json',
