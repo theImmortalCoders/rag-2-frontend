@@ -4,7 +4,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FormValidationService } from '../../shared/services/form-validation.service';
+import { FormValidationService } from '../../../shared/services/form-validation.service';
 import { LoginService } from '../services/login.service';
 
 @Component({
