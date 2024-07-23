@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import { JsonPipe } from '@angular/common';
 export class GameDataSendingService {
   public backendApiUrl = 'http://localhost:5172';
 
-  public constructor(private _httpClient: HttpClient) {}
+  private _httpClient = inject(HttpClient);
 
   public sendGameData(gameId: number, data: TExchangeData[]): Observable<void> {
     return this._httpClient.post<void>(
