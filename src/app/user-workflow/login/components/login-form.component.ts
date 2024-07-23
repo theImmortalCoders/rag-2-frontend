@@ -69,7 +69,10 @@ export class LoginFormComponent {
   public submitButton(): void {
     if (this.loginForm.value.email && this.loginForm.value.password) {
       this._loginService
-        .logIn(this.loginForm.value.email, this.loginForm.value.password)
+        .authenticateUser(
+          this.loginForm.value.email,
+          this.loginForm.value.password
+        )
         .subscribe({
           next: r => {
             localStorage.setItem('jwtToken', r);
