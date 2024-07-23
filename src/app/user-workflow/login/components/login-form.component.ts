@@ -59,8 +59,7 @@ import { LoginService } from '../services/login.service';
 export class LoginFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
-
-  public constructor(private _loginService: LoginService) {}
+  private _loginService = inject(LoginService);
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -68,10 +67,7 @@ export class LoginFormComponent {
   });
 
   public submitButton(): void {
-    if (
-      this.loginForm.value.email != undefined &&
-      this.loginForm.value.password != undefined
-    ) {
+    if (this.loginForm.value.email && this.loginForm.value.password) {
       this._loginService
         .logIn(this.loginForm.value.email, this.loginForm.value.password)
         .subscribe({
