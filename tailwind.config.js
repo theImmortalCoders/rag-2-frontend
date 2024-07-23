@@ -37,7 +37,7 @@ module.exports = {
       },
       boxShadow: {
         navbarShadow: '0px 1px 7px 2px rgba(255, 96, 0, 1)',
-        footerShadow: 'inset 0px 10px 23px 0px rgba(59, 59, 59, 1)',
+        footerShadow: 'inset 0px 4px 25px -8px rgba(93, 93, 93, 1)',
         sideMenuShadow: '-5px 7px 25px -7px rgba(93, 93, 93, 1)',
       },
       animation: {
