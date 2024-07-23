@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginFormComponent } from './login-form.component';
-import { FormValidationService } from '../../shared/services/form-validation.service';
+import { FormValidationService } from '../../../shared/services/form-validation.service';
 import { By } from '@angular/platform-browser';
 
 describe('LoginFormComponent', () => {
