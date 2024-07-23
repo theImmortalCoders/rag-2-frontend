@@ -10,7 +10,9 @@ import { JsonPipe } from '@angular/common';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
   template: ` <app-navbar />
-    <main class="w-full min-h-screen"><router-outlet /></main>
+    <main class="max-w-full min-h-all overflow-x-hidden">
+      <router-outlet />
+    </main>
     <app-footer />`,
 })
 export class AppComponent {

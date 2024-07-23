@@ -13,7 +13,7 @@ module.exports = {
       colors: {
         mainGray: '#353535',
         lightGray: '#5D5D5D',
-        darkGray: ' #3C3D42',
+        darkGray: '#3C3D42',
         mainOrange: '#FF6000',
         lightOragne: '#FFA559',
         mainCreme: '#FFE6C7',
@@ -37,7 +37,8 @@ module.exports = {
       },
       boxShadow: {
         navbarShadow: '0px 1px 7px 2px rgba(255, 96, 0, 1)',
-        footerShadow: 'inset 0px 10px 23px 0px rgba(59, 59, 59, 1)',
+        footerShadow: 'inset 0px 4px 25px -8px rgba(93, 93, 93, 1)',
+        sideMenuShadow: '-5px 7px 25px -7px rgba(93, 93, 93, 1)',
       },
       animation: {
         typewriter21: 'typewriter 3s steps(21) forwards',
@@ -62,7 +63,15 @@ module.exports = {
     function ({ addUtilities }) {
       addUtilities({
         '.custom-input': {
-          '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-mainCreme focus:outline-none':
+          '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-700 focus:outline-none focus:border-mainOrange':
+            {},
+        },
+        '.side-menu-button': {
+          '@apply flex flex-col shadow-sideMenuShadow absolute transition-all ease-in-out duration-700 p-2 items-center justify-center bg-lightGray font-mono font-bold border-r-2 border-mainOrange hover:border-green-500':
+            {},
+        },
+        '.side-menu-container': {
+          '@apply flex flex-row shadow-sideMenuShadow absolute transition-all ease-in-out duration-700':
             {},
         },
       });

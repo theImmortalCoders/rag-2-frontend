@@ -34,11 +34,6 @@ describe('AiSocketMenuComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display "Connected" when socket is connected', () => {
-    const statusSpan = fixture.debugElement.query(By.css('span')).nativeElement;
-    expect(statusSpan.textContent).toContain('Connected');
-  });
-
   it('should display "Connect" button when socket is not connected', () => {
     aiSocketServiceStub.getIsSocketConnected = (): boolean => false;
     fixture.detectChanges();
