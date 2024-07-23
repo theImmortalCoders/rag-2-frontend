@@ -9,6 +9,7 @@ import { TGameDataSendingType } from './models/game-data-sending-type.enum';
 import { TExchangeData } from './models/exchange-data.type';
 import { By } from '@angular/platform-browser';
 import { EventEmitter } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('GamePageComponent', () => {
   let component: GamePageComponent;
@@ -28,7 +29,12 @@ describe('GamePageComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [GamePageComponent, ConsoleComponent, PongGameWindowComponent],
+      imports: [
+        GamePageComponent,
+        ConsoleComponent,
+        PongGameWindowComponent,
+        HttpClientModule,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Router, useValue: mockRouter },
