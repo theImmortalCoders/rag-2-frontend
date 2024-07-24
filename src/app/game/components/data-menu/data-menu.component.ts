@@ -5,6 +5,8 @@ import { DataTransformService } from '../../../shared/services/data-transform.se
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataCollectingToggleButtonComponent } from './components/collect-toggle-button/collect-toggle-button.component';
 import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
+import { GameDataSendingService } from './services/game-data-sending.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 @Component({
   selector: 'app-data-menu',
@@ -33,6 +35,8 @@ import { DataSelectCheckboxComponent } from './components/data-select-checkbox/d
             class="mt-6 text-center text-mainCreme">
             Download CSV ({{ collectedDataArray.length }} records)
           </button>
+
+          <button (click)="sendData()">Save data</button>
           <button
             (click)="deleteCollectedData()"
             class="mt-4 text-center font-bold text-red-500 border-red-500 border-[1px]">
@@ -65,6 +69,7 @@ export class DataMenuComponent implements OnInit {
 
   public constructor(
     private _dataTransformService: DataTransformService,
+    public gameDataSendingService: GameDataSendingService,
     private _route$: ActivatedRoute,
     private _router: Router
   ) {}
@@ -74,6 +79,19 @@ export class DataMenuComponent implements OnInit {
     this.dataToPersist = JSON.parse(JSON.stringify(this.dataPossibleToPersist));
 
     this.updateDataToPersistFromURL();
+  }
+
+  public sendData(): void {
+    this.gameDataSendingService
+      .sendGameData(1, this.collectedDataArray)
+      .subscribe({
+        next: () => {
+          console.log('Data saved');
+        },
+        error: error => {
+          console.error('Error saving data', error);
+        },
+      });
   }
 
   public updateDataToPersist = (
@@ -99,6 +117,19 @@ export class DataMenuComponent implements OnInit {
 
   public deleteCollectedData(): void {
     this.collectedDataArray = [];
+  }
+
+  public saveData(): void {
+    this.gameDataSendingService
+      .sendGameData(1, this.collectedDataArray)
+      .subscribe({
+        next: () => {
+          console.log('Data saved');
+        },
+        error: error => {
+          console.error('Error saving data', error);
+        },
+      });
   }
 
   //
