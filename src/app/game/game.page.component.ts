@@ -9,9 +9,9 @@ import { TExchangeData } from './models/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
 import { PongGameWindowComponent } from './components/games/pong/pong.component';
-import { AuthRequiredDirective } from '../../utils/directives/auth-required.directive';
+import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
-import { ExchangeDataPipe } from '../../utils/pipes/exchange-data.pipe';
+import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 
 @Component({
   selector: 'app-game',
