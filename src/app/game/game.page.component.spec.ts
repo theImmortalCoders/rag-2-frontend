@@ -1,46 +1,49 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgComponentOutlet } from '@angular/common';
-import { GamePageComponent } from './game.page.component';
-import { PongGameWindowComponent } from './components/games/pong/pong.component';
-import { ConsoleComponent } from './components/console/console.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
+import { GamePageComponent } from './game.page.component';
+import { ConsoleComponent } from './components/console/console.component';
+import { DataMenuComponent } from './components/data-menu/data-menu.component';
+import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
+import { PongGameWindowComponent } from './components/games/pong/pong.component';
+import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
+import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
+import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
+import { games } from './data-access/games';
+import { Game } from './models/game.class';
 import { TGameDataSendingType } from './models/game-data-sending-type.enum';
 import { TExchangeData } from './models/exchange-data.type';
-import { By } from '@angular/platform-browser';
-import { EventEmitter } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('GamePageComponent', () => {
   let component: GamePageComponent;
   let fixture: ComponentFixture<GamePageComponent>;
-  let mockRoute: unknown;
-  let mockRouter: unknown;
 
   beforeEach(async () => {
-    mockRoute = {
-      paramMap: of({
-        get: () => 'pong',
-      }),
-    };
-
-    mockRouter = {
-      navigate: jasmine.createSpy('navigate'),
-    };
-
     await TestBed.configureTestingModule({
       imports: [
         GamePageComponent,
+        RouterTestingModule,
         ConsoleComponent,
+        DataMenuComponent,
+        AiSocketMenuComponent,
         PongGameWindowComponent,
-        HttpClientModule,
+        TictactoeGameWindowComponent,
+        AuthRequiredDirective,
+        ExchangeDataPipe,
       ],
       providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: Router, useValue: mockRouter },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of(convertToParamMap({ gameName: 'pong' })),
+          },
+        },
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(GamePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -50,20 +53,48 @@ describe('GamePageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set gameName based on route parameter', () => {
+  it('should initialize gameName from route parameters', () => {
     expect(component.gameName).toBe('pong');
   });
 
-  it('should pass logData to ConsoleComponent', () => {
-    const testLogData: Record<string, TExchangeData> = {
-      menu: { message: 'Test message', level: 'info' },
-    };
-    component.logData = testLogData;
-    fixture.detectChanges();
+  it('should load the game based on gameName', () => {
+    component.ngOnInit();
+    expect(component.game).toEqual(games['pong']);
+  });
 
-    const consoleComponent = fixture.debugElement.query(
-      By.directive(ConsoleComponent)
-    ).componentInstance;
-    expect(consoleComponent.logData).toEqual(testLogData);
+  it('should toggle console visibility', () => {
+    component.toggleConsole();
+    expect(component.isConsoleVisible).toBe(true);
+    component.toggleConsole();
+    expect(component.isConsoleVisible).toBe(false);
+  });
+
+  it('should toggle data menu visibility', () => {
+    component.toggleDataMenu();
+    expect(component.isDataMenuVisible).toBe(true);
+    component.toggleDataMenu();
+    expect(component.isDataMenuVisible).toBe(false);
+  });
+
+  it('should toggle AI socket menu visibility', () => {
+    component.toggleAISocketMenu();
+    expect(component.isAISocketMenuVisible).toBe(true);
+    component.toggleAISocketMenu();
+    expect(component.isAISocketMenuVisible).toBe(false);
+  });
+
+  it('should update logData when receiveGameOutputData is called', () => {
+    const mockData: TExchangeData = { output: { someKey: 'someValue' } };
+    component.receiveGameOutputData(mockData);
+    expect(component.gameWindowOutputData).toEqual(
+      mockData['output'] as TExchangeData
+    );
+    expect(component.logData['game window']).toEqual(mockData);
+  });
+
+  it('should update socketInputData when receiveSocketInputData is called', () => {
+    const mockData: TExchangeData = { input: { anotherKey: 'anotherValue' } };
+    component.receiveSocketInputData(mockData);
+    expect(component.socketInputData).toEqual(mockData);
   });
 });
