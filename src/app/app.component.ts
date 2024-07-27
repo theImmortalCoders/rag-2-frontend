@@ -9,11 +9,13 @@ import { JsonPipe } from '@angular/common';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
-  template: ` <app-navbar />
+  template: `
+    <app-navbar />
     <main class="max-w-full min-h-all overflow-x-hidden">
       <router-outlet />
     </main>
-    <app-footer />`,
+    <app-footer />
+  `,
 })
 export class AppComponent {
   public title = 'rag-2-frontend';
