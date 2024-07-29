@@ -6,10 +6,12 @@ import { Component } from '@angular/core';
   imports: [],
   template: `
     <ul class="text-lg space-y-2 px-2 pb-2">
-      <li>aaa</li>
-      <li>bbbbbbbbbbbbbbbbbbbbbbbb</li>
-      <li>ccc</li>
-      <li>ddd</li>
+      <li>PONG</li>
+      <li>TIC TAC TOE</li>
+      <li>ARKANOID</li>
+      <li>SNAKE</li>
+      <li>FLAPPY BIRD</li>
+      <li>SPACE RUSH</li>
     </ul>
   `,
 })
