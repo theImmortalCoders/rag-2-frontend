@@ -15,7 +15,7 @@ import * as feather from 'feather-icons';
         class="flex mx-auto w-full flex-row items-center justify-between font-mono text-mainOrange">
         <div
           class="flex w-1/2 xs:w-[60%] sm:w-5/12 lg:w-1/3 justify-between items-center">
-          <a [routerLink]="['/']" class="size-12 relative">
+          <a [routerLink]="['/']" class="size-12 relative -rotate-6">
             <img
               ngSrc="images/rag-2.png"
               alt="Logo"
