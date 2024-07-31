@@ -29,15 +29,25 @@ import * as feather from 'feather-icons';
           <button
             class="flex flex-row w-full items-center justify-center space-x-2 relative z-40"
             (click)="toggleGameList()">
-            <i data-feather="chevrons-down" class="size-6"></i>
-            <span>LET'S PLAY </span>
-            <i data-feather="chevrons-down" class="size-6"></i>
+            <div
+              class="ease-in-out transition-all duration-200 {{
+                isGameListActive ? '-rotate-90' : 'rotate-0'
+              }}">
+              <i data-feather="chevrons-down" class="size-6"></i>
+            </div>
+            <span>LET'S PLAY</span>
+            <div
+              class="ease-in-out transition-all duration-200 {{
+                isGameListActive ? 'rotate-90' : 'rotate-0'
+              }}">
+              <i data-feather="chevrons-down" class="size-6"></i>
+            </div>
           </button>
           <app-game-list
             class="fixed z-20 w-1/6 bg-mainGray ease-in-out transition-all duration-200 {{
               isGameListActive
-                ? 'top-[80px] opacity-100'
-                : 'top-[60px] opacity-0'
+                ? 'top-[60px] pt-5 opacity-100'
+                : 'top-[60px] pt-0 opacity-0'
             }}" />
         </div>
         <a [routerLink]="['/login']" class="mr-10"
