@@ -21,6 +21,7 @@ import { RouterModule } from '@angular/router';
             class="border-mainOrange w-2/5 group-hover:w-full ease-in-out transition-all duration-500" />
         </li>
       }
+      <li class="text-base text-center">Read more about our games...</li>
     </ul>
   `,
 })
