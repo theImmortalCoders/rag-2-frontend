@@ -44,10 +44,10 @@ import * as feather from 'feather-icons';
             </div>
           </button>
           <app-game-list
-            class="fixed z-20 w-1/6 bg-mainGray ease-in-out transition-all duration-200 {{
+            class="absolute z-20 w-full bg-mainGray ease-in-out transition-all duration-200 {{
               isGameListActive
-                ? 'top-[60px] pt-5 opacity-100'
-                : 'top-[60px] pt-0 opacity-0'
+                ? 'top-[60px] opacity-100'
+                : 'top-[60px] opacity-0'
             }}" />
         </div>
         <a [routerLink]="['/login']" class="mr-10"
