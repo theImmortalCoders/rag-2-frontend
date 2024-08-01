@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   template: `
-    <ul class="text-lg space-y-2 px-2 pt-2 pb-4">
+    <ul class="text-lg space-y-2 px-4 py-4">
       @for (game of games; track game.name) {
         <li class="w-full group">
           <a
@@ -18,10 +18,12 @@ import { RouterModule } from '@angular/router';
               class="size-5 ease-in-out transition-all duration-500 opacity-0 group-hover:opacity-100"></i>
           </a>
           <hr
-            class="border-mainOrange w-2/5 group-hover:w-full ease-in-out transition-all duration-500" />
+            class="border-mainOrange w-3/5 2xl:w-2/5 group-hover:w-full ease-in-out transition-all duration-500" />
         </li>
       }
-      <li class="text-base text-center">Read more about our games...</li>
+      <li class="text-base text-start 3xl:text-center">
+        Read more about our games...
+      </li>
     </ul>
   `,
 })
