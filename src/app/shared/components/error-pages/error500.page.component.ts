@@ -18,8 +18,7 @@ import { Component } from '@angular/core';
             ngSrc="images/rag-2.png"
             alt="Logo"
             class="object-contain"
-            fill
-            priority />
+            fill />
         </div>
         <div
           class="text-center py-12 md:py-0 pr-6 md:pr-2 pl-6 md:pl-12 lg:pl-16 xl:md-24">
