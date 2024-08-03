@@ -115,6 +115,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   private _router = inject(Router);
 
   private _routerSubscription: Subscription | null = null;
+  private _previousUrl = '';
 
   public gameName = '';
   public game: Game | null = null;
@@ -149,9 +150,13 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
     this._routerSubscription = this._router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
-        this.isConsoleVisible = false;
-        this.isDataMenuVisible = false;
-        this.isAISocketMenuVisible = false;
+        const currentUrl = event.url.split('?')[0]; // Get the path part of the URL
+        if (this._previousUrl !== currentUrl) {
+          this.isConsoleVisible = false;
+          this.isDataMenuVisible = false;
+          this.isAISocketMenuVisible = false;
+          this._previousUrl = currentUrl; // Update the previous URL
+        }
       }
     });
   }
