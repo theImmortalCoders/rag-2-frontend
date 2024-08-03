@@ -1,9 +1,10 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, AfterViewInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationStart, RouterModule } from '@angular/router';
 import { GameListComponent } from './game-list.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import * as feather from 'feather-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -62,16 +63,29 @@ import * as feather from 'feather-icons';
   `,
   styles: ``,
 })
-export class NavbarComponent implements AfterViewInit {
+export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   public isGameListActive = false;
   public isMinWidthLg = false;
+  private _routerSubscription: Subscription | null = null;
+  private _breakpointSubscription: Subscription | null = null;
 
-  public constructor(private _breakpointObserver: BreakpointObserver) {
-    this._breakpointObserver
+  public constructor(
+    private _breakpointObserver: BreakpointObserver,
+    private _router: Router
+  ) {
+    this._breakpointSubscription = this._breakpointObserver
       .observe(['(min-width: 1024px)'])
       .subscribe((state: BreakpointState) => {
         this.isMinWidthLg = state.matches;
       });
+  }
+
+  public ngOnInit(): void {
+    this._routerSubscription = this._router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.isGameListActive = false;
+      }
+    });
   }
 
   public ngAfterViewInit(): void {
@@ -79,5 +93,14 @@ export class NavbarComponent implements AfterViewInit {
   }
   public toggleGameList(): void {
     this.isGameListActive = !this.isGameListActive;
+  }
+
+  public ngOnDestroy(): void {
+    if (this._routerSubscription) {
+      this._routerSubscription.unsubscribe();
+    }
+    if (this._breakpointSubscription) {
+      this._breakpointSubscription.unsubscribe();
+    }
   }
 }
