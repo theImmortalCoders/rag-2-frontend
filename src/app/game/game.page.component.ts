@@ -1,5 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { Game } from './models/game.class';
 import { games } from './data-access/games';
@@ -12,6 +12,7 @@ import { PongGameWindowComponent } from './components/games/pong/pong.component'
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -109,9 +110,11 @@ import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
     ExchangeDataPipe,
   ],
 })
-export class GamePageComponent implements OnInit {
+export class GamePageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
+
+  private _routerSubscription: Subscription | null = null;
 
   public gameName = '';
   public game: Game | null = null;
@@ -143,6 +146,14 @@ export class GamePageComponent implements OnInit {
     });
 
     this.updateGameLogData();
+
+    this._routerSubscription = this._router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.isConsoleVisible = false;
+        this.isDataMenuVisible = false;
+        this.isAISocketMenuVisible = false;
+      }
+    });
   }
 
   public receiveGameOutputData(data: TExchangeData): void {
@@ -154,6 +165,12 @@ export class GamePageComponent implements OnInit {
 
   public receiveSocketInputData(data: TExchangeData): void {
     this.socketInputData = JSON.parse(JSON.stringify(data));
+  }
+
+  public ngOnDestroy(): void {
+    if (this._routerSubscription) {
+      this._routerSubscription.unsubscribe();
+    }
   }
 
   //
