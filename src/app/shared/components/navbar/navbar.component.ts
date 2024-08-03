@@ -61,7 +61,6 @@ import { Subscription } from 'rxjs';
       </div>
     </nav>
   `,
-  styles: ``,
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   public isGameListActive = false;
