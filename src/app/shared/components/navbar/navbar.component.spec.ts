@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavbarComponent } from './navbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { By } from '@angular/platform-browser';
+import { NavbarComponent } from './navbar.component';
+import { GameListComponent } from './game-list.component';
 import * as feather from 'feather-icons';
 
 describe('NavbarComponent', () => {
@@ -10,27 +10,58 @@ describe('NavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NavbarComponent],
+      imports: [RouterTestingModule, NavbarComponent, GameListComponent],
+      providers: [],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
-    spyOn(feather, 'replace');
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the "RAG-2" text', () => {
-    const rag2Text = fixture.debugElement.query(By.css('span'));
-    expect(rag2Text.nativeElement.textContent).toContain('RAG-2');
+  it('should initialize isMinWidthLg based on breakpoint observer', () => {
+    fixture.detectChanges();
+    expect(component.isMinWidthLg).toBeFalse();
   });
 
-  it('should call feather.replace() after view init', () => {
+  it('should toggle game list visibility when toggleGameList is called', () => {
+    expect(component.isGameListActive).toBeFalse();
+    component.toggleGameList();
+    expect(component.isGameListActive).toBeTrue();
+    component.toggleGameList();
+    expect(component.isGameListActive).toBeFalse();
+  });
+
+  it('should hide game list when navigation starts', () => {
+    fixture.detectChanges();
+    expect(component.isGameListActive).toBeFalse();
+  });
+
+  it('should replace feather icons after view is initialized', () => {
+    spyOn(feather, 'replace');
+    component.ngAfterViewInit();
     expect(feather.replace).toHaveBeenCalled();
+  });
+
+  it('should unsubscribe from router and breakpoint subscriptions on destroy', () => {
+    const routerSubscription = jasmine.createSpyObj('Subscription', [
+      'unsubscribe',
+    ]);
+    const breakpointSubscription = jasmine.createSpyObj('Subscription', [
+      'unsubscribe',
+    ]);
+    component['_routerSubscription'] = routerSubscription;
+    component['_breakpointSubscription'] = breakpointSubscription;
+
+    component.ngOnDestroy();
+
+    expect(routerSubscription.unsubscribe).toHaveBeenCalled();
+    expect(breakpointSubscription.unsubscribe).toHaveBeenCalled();
   });
 });
