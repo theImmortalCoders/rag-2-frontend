@@ -64,4 +64,33 @@ describe('NavbarComponent', () => {
     expect(routerSubscription.unsubscribe).toHaveBeenCalled();
     expect(breakpointSubscription.unsubscribe).toHaveBeenCalled();
   });
+
+  it('should set isGameListActive to false when clicking outside game-list-container', () => {
+    component.isGameListActive = true;
+    fixture.detectChanges();
+
+    const mockEvent = {
+      target: document.createElement('div'),
+    } as unknown as MouseEvent;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (component as any).onDocumentClick(mockEvent);
+
+    expect(component.isGameListActive).toBeFalse();
+  });
+
+  it('should not set isGameListActive to false when clicking inside game-list-container', () => {
+    component.isGameListActive = true;
+    fixture.detectChanges();
+
+    const mockElement = document.createElement('div');
+    mockElement.classList.add('game-list-container');
+
+    const mockEvent = { target: mockElement } as unknown as MouseEvent;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (component as any).onDocumentClick(mockEvent);
+
+    expect(component.isGameListActive).toBeTrue();
+  });
 });

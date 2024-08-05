@@ -103,13 +103,17 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   //marked as unused but it is using by Angular default when click on document :)
   private onDocumentClick(event: MouseEvent): void {
-    if (this.isGameListActive) {
-      const clickedInside = (event.target as HTMLElement).closest(
-        '.game-list-container'
-      );
+    if (!this.isGameListActive) {
+      return;
+    }
+    const target = event.target as HTMLElement;
+    if (target instanceof HTMLElement) {
+      const clickedInside = target.closest('.game-list-container');
       if (!clickedInside) {
         this.isGameListActive = false;
       }
+    } else {
+      this.isGameListActive = false;
     }
   }
 
