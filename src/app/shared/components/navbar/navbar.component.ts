@@ -1,5 +1,11 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnInit,
+  OnDestroy,
+  HostListener,
+} from '@angular/core';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
 import { GameListComponent } from './game-list.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
@@ -30,7 +36,7 @@ import { Subscription } from 'rxjs';
           }}</span>
         </div>
         <div
-          class="text-xl xs:text-2xl flex flex-col w-3/5 2xs:w-1/2 sm:w-2/5 md:w-[30%] lg:w-1/4 xl:w-1/6 relative items-center justify-center">
+          class="game-list-container text-xl xs:text-2xl flex flex-col w-3/5 2xs:w-1/2 sm:w-2/5 md:w-[30%] lg:w-1/4 xl:w-1/6 relative items-center justify-center">
           <button
             class="flex flex-row w-full items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500"
             (click)="toggleGameList()">
@@ -92,6 +98,19 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   }
   public toggleGameList(): void {
     this.isGameListActive = !this.isGameListActive;
+  }
+
+  @HostListener('document:click', ['$event'])
+  //marked as unused but it is using by Angular default when click on document :)
+  private onDocumentClick(event: MouseEvent): void {
+    if (this.isGameListActive) {
+      const clickedInside = (event.target as HTMLElement).closest(
+        '.game-list-container'
+      );
+      if (!clickedInside) {
+        this.isGameListActive = false;
+      }
+    }
   }
 
   public ngOnDestroy(): void {
