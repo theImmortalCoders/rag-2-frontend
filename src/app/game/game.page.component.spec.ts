@@ -97,4 +97,10 @@ describe('GamePageComponent', () => {
     component.receiveSocketInputData(mockData);
     expect(component.socketInputData).toEqual(mockData);
   });
+
+  it('should unsubscribe from router events on component destroy', () => {
+    const routerSubscription = component['_routerSubscription'];
+    component.ngOnDestroy();
+    expect(routerSubscription?.closed).toBeTrue();
+  });
 });
