@@ -7,4 +7,18 @@
 
 body {
   overflow-x: hidden;
+  cursor: url('/cursors/stronghold.png'), auto;
+}
+
+a,
+button {
+  cursor: url('/cursors/stronghold_pointer.png'), pointer;
+}
+
+input,
+textarea,
+label,
+input::selection,
+textarea::selection {
+  cursor: url('/cursors/stronghold_writer.png'), auto;
 }
