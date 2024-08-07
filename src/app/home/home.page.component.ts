@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   imports: [NgOptimizedImage],
   template: ` <div class="flex flex-col w-full bg-mainGray pt-14">
     <div
-      class="flex flex-col md:flex-row w-full justify-evenly text-mainOrange font-mono">
+      class="flex flex-col md:flex-row w-full justify-evenly text-mainOrange font-mono pb-6">
       <div class="flex flex-col space-y-8 mt-4 md:mt-16 px-6 sm:px-8 md:pl-8">
         <h1
           class="text-2xl xs:text-3xl md:text-4xl xl:text-5xl h-8 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainGray after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
@@ -18,48 +18,15 @@ import { Component } from '@angular/core';
         >
         <div
           class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full space-x-0 lg:space-x-8 xl:space-x-4">
-          <a
-            href="https://github.com/pablitoo1"
-            target="_blank"
-            class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-            style="background-image: url('images/user.png');"
-            >Paweł Buczek
-          </a>
-          <a
-            href="https://github.com/marcinbator"
-            target="_blank"
-            class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-            style="background-image: url('images/user.png');"
-            >Marcin Bator
-          </a>
-          <a
-            href="https://github.com/ZegarekPL"
-            target="_blank"
-            class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-            style="background-image: url('images/user.png');"
-            >Wiktor Mazur
-          </a>
-          <a
-            href="https://github.com/fkula5"
-            target="_blank"
-            class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-            style="background-image: url('images/user.png');"
-            >Filip Kula
-          </a>
-          <a
-            href="https://github.com/Ressobe"
-            target="_blank"
-            class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-            style="background-image: url('images/user.png');"
-            >Bartosz Sobina
-          </a>
-          <a
-            href="https://github.com/AmereQ"
-            target="_blank"
-            class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-            style="background-image: url('images/user.png');"
-            >Łukasz Skórka
-          </a>
+          @for (author of authors; track author.name) {
+            <a
+              [href]="'https://github.com/' + author.githubName"
+              target="_blank"
+              class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
+              style="background-image: url('images/user.png');"
+              >{{ author.name }}
+            </a>
+          }
         </div>
       </div>
       <div
@@ -114,4 +81,19 @@ import { Component } from '@angular/core';
     </div>
   </div>`,
 })
-export class HomePageComponent {}
+export class HomePageComponent {
+  public authors = [
+    {
+      name: 'Marcin Bator',
+      githubName: 'marcinbator',
+    },
+    {
+      name: 'Paweł Buczek',
+      githubName: 'pablitoo1',
+    },
+    {
+      name: 'Bartłomiej Krówka',
+      githubName: 'bkrowka',
+    },
+  ];
+}
