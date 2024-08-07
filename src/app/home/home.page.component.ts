@@ -17,16 +17,30 @@ import { Component } from '@angular/core';
           >Authors:</span
         >
         <div
-          class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full space-x-0 lg:space-x-8 xl:space-x-4">
+          class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full space-x-0 lg:space-x-12 xl:space-x-8">
           @for (author of authors; track author.name) {
-            <a
-              [href]="'https://github.com/' + author.githubName"
+            <button
+              (click)="chooseAuthor($index, author.githubName)"
               target="_blank"
-              class="size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-              style="background-image: url('images/user.png');"
-              >{{ author.name }}
-            </a>
+              class="{{
+                $index === currentChoosenAuthor.index ? 'scale-125' : ''
+              }} ease-in-out transition-all duration-200 size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
+              style="background-image: url('images/user.png');">
+              {{ author.name }}
+            </button>
           }
+        </div>
+        <div
+          class="pt-20 text-xl font-bold ease-in-out transition-all duration-200 {{
+            currentChoosenAuthor.githubName === '' ? 'opacity-0' : 'opacity-100'
+          }}">
+          We encourage you to check:
+          <a
+            [href]="'https://github.com/' + currentChoosenAuthor.githubName"
+            target="_blank"
+            class="text-lg bg-mainOrange text-mainGray p-2 rounded-lg"
+            >{{ currentChoosenAuthor.githubName }}</a
+          >
         </div>
       </div>
       <div
@@ -82,6 +96,12 @@ import { Component } from '@angular/core';
   </div>`,
 })
 export class HomePageComponent {
+  public currentChoosenAuthor = { index: -1, githubName: '' };
+
+  public chooseAuthor(index: number, githubName: string): void {
+    this.currentChoosenAuthor = { index, githubName };
+  }
+
   public authors = [
     {
       name: 'Marcin Bator',
