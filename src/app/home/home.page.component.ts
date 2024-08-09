@@ -1,5 +1,13 @@
+/* eslint-disable max-lines */
 import { NgOptimizedImage } from '@angular/common';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
+import feather from 'feather-icons';
 
 @Component({
   selector: 'app-home-page',
@@ -9,7 +17,8 @@ import { Component, ElementRef, OnInit } from '@angular/core';
     <div>
       <div
         class="flex flex-col md:flex-row w-full h-max justify-evenly text-mainOrange font-mono pb-6">
-        <div class="flex flex-col space-y-8 mt-4 md:mt-16 px-6 sm:px-8 md:pl-8">
+        <div
+          class="flex flex-col space-y-8 mt-4 md:mt-16 px-6 pb-40 sm:px-8 md:pl-8">
           <h1
             class="text-2xl xs:text-3xl md:text-4xl xl:text-5xl h-8 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainGray after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
             What's going on here?
@@ -33,22 +42,15 @@ import { Component, ElementRef, OnInit } from '@angular/core';
               </button>
             }
           </div>
-          <div
-            class="pt-20 text-xl font-bold ease-in-out transition-all duration-200 {{
-              currentChoosenAuthor.index === -1 ? 'opacity-0' : 'opacity-100'
-            }}">
-            We encourage you to check:
-            <a
-              [href]="'https://github.com/' + currentChoosenAuthor.githubName"
-              target="_blank"
-              class="text-lg font-semibold bg-mainOrange text-mainGray p-2 rounded-lg"
-              >{{ currentChoosenAuthor.githubName }}</a
-            >
-          </div>
         </div>
         <div
-          class="flex w-full pt-24 md:pt-0 md:w-1/3 items-center justify-center">
-          <div class="h-80 sm:h-96 w-80 sm:w-96 relative">
+          class="flex w-full pt-24 md:pt-0 md:w-1/3 items-center justify-center relative">
+          <div
+            class=" h-80 sm:h-96 w-80 sm:w-96 absolute transition-all ease-in-out duration-300 {{
+              currentChoosenAuthor.index === -1
+                ? 'opacity-100 right-1/3'
+                : 'opacity-0 -right-[50rem]'
+            }}">
             <img
               ngSrc="images/rag-2.png"
               alt="Logo"
@@ -56,6 +58,51 @@ import { Component, ElementRef, OnInit } from '@angular/core';
               fill
               priority />
           </div>
+          @for (author of authors; track author.name) {
+            <div
+              class="flex flex-col space-y-2 w-full h-fit bg-mainCreme text-mainGray rounded-xl p-6 absolute transition-all ease-in-out duration-300 {{
+                currentChoosenAuthor.index === $index
+                  ? 'opacity-100 right-[10%]'
+                  : 'opacity-0 -right-[50rem]'
+              }}">
+              <h1 class="text-4xl font-bold">{{ author.name }}</h1>
+              <hr class="bg-mainGray h-2 rounded-md" />
+              <h2 class="text-2xl italic text-center">{{ author.role }}</h2>
+              <h2 class="text-2xl text-mainOrange font-bold">
+                Main tech-stack:
+              </h2>
+              <div class="grid grid-cols-3 gap-y-2">
+                @for (stackItem of author.techStack; track stackItem) {
+                  <span class="flex flex-row items-center space-x-2"
+                    ><i data-feather="circle" class="size-2 text-mainGray"></i>
+                    <p>{{ stackItem }}</p></span
+                  >
+                }
+              </div>
+              <h2 class="text-2xl text-mainOrange font-bold">
+                Hobbies and interests:
+              </h2>
+              <h3 class="italic">
+                {{ author.hobbies }}
+              </h3>
+              <div class="flex flex-row space-x-8 pt-2">
+                <a
+                  [href]="'https://github.com/' + author.githubName"
+                  target="_blank">
+                  <i
+                    data-feather="github"
+                    class="relative z-40 size-10 text-mainGray"></i>
+                </a>
+                <a
+                  [href]="'https://linkedin.com/in/' + author.linkedinName"
+                  target="_blank">
+                  <i
+                    data-feather="linkedin"
+                    class="relative z-40 size-10 text-mainGray"></i>
+                </a>
+              </div>
+            </div>
+          }
         </div>
       </div>
       <div
@@ -101,21 +148,49 @@ import { Component, ElementRef, OnInit } from '@angular/core';
     </div>
   </div>`,
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent
+  implements OnInit, AfterViewInit, AfterViewChecked
+{
   public currentChoosenAuthor = { index: -1, githubName: '' };
 
   public authors = [
     {
       name: 'Marcin Bator',
       githubName: 'marcinbator',
+      linkedinName: 'mbator',
+      role: 'Tył-dev',
+      techStack: [
+        'sranie',
+        'pedałowanie',
+        'pierdolenie',
+        'wpierdalanie',
+        'spanie',
+      ],
+      hobbies: 'no hobbies',
     },
     {
       name: 'Paweł Buczek',
       githubName: 'pablitoo1',
+      linkedinName: 'pbuczek',
+      role: 'Frontend Developer',
+      techStack: [
+        'TypeScript',
+        'JavaScript',
+        'Angular',
+        'React/Next.js',
+        'Babylon.js',
+        'CSS/TailwindCSS',
+      ],
+      hobbies:
+        'computer engineering student, creating web pages and apps, practicing and watching sports',
     },
     {
       name: 'Bartłomiej Krówka',
       githubName: 'bkrowka',
+      linkedinName: 'bkrowka',
+      role: 'sztuczny dev',
+      techStack: ['Pytong', 'JavaScript', 'CHasz', 'React/Next.js', 'HTML5'],
+      hobbies: 'jebanie karola',
     },
   ];
 
@@ -134,6 +209,14 @@ export class HomePageComponent implements OnInit {
 
     const element = this._el.nativeElement.querySelector('#animatedElement');
     observer.observe(element);
+  }
+
+  public ngAfterViewInit(): void {
+    feather.replace();
+  }
+
+  public ngAfterViewChecked(): void {
+    feather.replace();
   }
 
   public chooseAuthor(index: number, githubName: string): void {
