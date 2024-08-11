@@ -157,7 +157,7 @@ export class HomePageComponent
     {
       name: 'Marcin Bator',
       githubName: 'marcinbator',
-      linkedinName: 'mbator',
+      linkedinName: 'marcin-bator-ofc',
       role: 'Tył-dev',
       techStack: [
         'sranie',
@@ -187,7 +187,7 @@ export class HomePageComponent
     {
       name: 'Bartłomiej Krówka',
       githubName: 'bkrowka',
-      linkedinName: 'bkrowka',
+      linkedinName: '',
       role: 'sztuczny dev',
       techStack: ['Pytong', 'JavaScript', 'CHasz', 'React/Next.js', 'HTML5'],
       hobbies: 'jebanie karola',
