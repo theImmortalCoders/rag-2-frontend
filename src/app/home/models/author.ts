@@ -12,9 +12,17 @@ export const authorsData: IAuthor[] = [
     name: 'Marcin Bator',
     githubName: 'marcinbator',
     linkedinName: 'marcin-bator-ofc',
-    role: 'Tył-dev',
-    techStack: ['aa', 'bb', 'ee', 'dd', 'ee'],
-    hobbies: 'no hobbies',
+    role: 'Backend Developer',
+    techStack: [
+      'Java/Spring Boot',
+      'C#/.NET',
+      'C++',
+      'TypeScript',
+      'Angular',
+      'SQL/PostgreSQL',
+    ],
+    hobbies:
+      'developing backend systems, learning new technologies, riding a bike',
   },
   {
     name: 'Paweł Buczek',
@@ -30,14 +38,20 @@ export const authorsData: IAuthor[] = [
       'CSS/TailwindCSS',
     ],
     hobbies:
-      'computer engineering student, creating web pages and apps, practicing and watching sports',
+      'studying computer science, creating web pages and apps, practicing and watching sports',
   },
   {
     name: 'Bartłomiej Krówka',
     githubName: 'bkrowka',
     linkedinName: '',
-    role: 'sztuczny dev',
-    techStack: ['Pytong', 'JavaScript', 'CHasz', 'React/Next.js', 'HTML5'],
-    hobbies: 'dfgdfg karola',
+    role: 'AI Engineer',
+    techStack: [
+      'Python',
+      'TensorFlow/PyTorch',
+      'JavaScript',
+      'React/Next.js',
+      'CSS/TailwindCSS',
+    ],
+    hobbies: 'programming, playing video games, listening to music',
   },
 ];
