@@ -3,6 +3,8 @@ import { HomePageComponent } from './home/home.page.component';
 import { GamePageComponent } from './game/game.page.component';
 import { LoginPageComponent } from './user-workflow/login/login.page.component';
 import { RegisterPageComponent } from './user-workflow/register/register.page.component';
+import { Error404PageComponent } from './shared/components/error-pages/error404.page.component';
+import { Error500PageComponent } from './shared/components/error-pages/error500.page.component';
 
 export const routes: Routes = [
   {
@@ -31,8 +33,18 @@ export const routes: Routes = [
     title: 'Register Page',
   },
   {
+    path: 'error404',
+    component: Error404PageComponent,
+    title: 'Error 404',
+  },
+  {
+    path: 'error500',
+    component: Error500PageComponent,
+    title: 'Error 500',
+  },
+  {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'error404',
     pathMatch: 'full',
   },
 ];

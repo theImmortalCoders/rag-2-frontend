@@ -4,7 +4,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FormValidationService } from '../../shared/services/form-validation.service';
+import { FormValidationService } from '../../../shared/services/form-validation.service';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login-form',
@@ -58,6 +59,7 @@ import { FormValidationService } from '../../shared/services/form-validation.ser
 export class LoginFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
+  private _loginService = inject(LoginService);
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -65,8 +67,21 @@ export class LoginFormComponent {
   });
 
   public submitButton(): void {
-    console.log('Email: ', this.loginForm.value.email);
-    console.log('Password: ', this.loginForm.value.password);
+    if (this.loginForm.value.email && this.loginForm.value.password) {
+      this._loginService
+        .authenticateUser(
+          this.loginForm.value.email,
+          this.loginForm.value.password
+        )
+        .subscribe({
+          next: r => {
+            localStorage.setItem('jwtToken', r);
+          },
+          error: error => {
+            console.error('Error: ', error);
+          },
+        });
+    }
   }
 
   public shouldShowError(controlName: string): boolean | undefined {

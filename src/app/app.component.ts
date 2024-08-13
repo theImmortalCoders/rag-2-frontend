@@ -7,9 +7,13 @@ import { FooterComponent } from './shared/components/footer/footer.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
-  template: ` <app-navbar />
-    <main class="w-full min-h-screen"><router-outlet /></main>
-    <app-footer />`,
+  template: `
+    <app-navbar />
+    <main class="max-w-full min-h-all overflow-x-hidden relative z-40">
+      <router-outlet />
+    </main>
+    <app-footer />
+  `,
 })
 export class AppComponent {
   public title = 'rag-2-frontend';

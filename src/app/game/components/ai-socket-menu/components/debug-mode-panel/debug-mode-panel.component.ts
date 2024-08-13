@@ -8,13 +8,15 @@ import { KeyValuePipe } from '@angular/common';
   imports: [KeyValuePipe],
   template: ` @for (variable of input | keyvalue; track variable) {
     <div>
-      {{ variable.key }}:
+      <span>{{ variable.key }}:</span>
       <input
         #variableInput
-        class="border-2 border-black border-solid"
+        class="custom-input w-52"
         type="text"
         [defaultValue]="variable.value" />
-      <button (click)="emitInputData(variable.key, variableInput.value)">
+      <button
+        (click)="emitInputData(variable.key, variableInput.value)"
+        class="mt-4 border-b-[1px] border-mainOrange w-full text-center font-black">
         Send
       </button>
     </div>

@@ -5,6 +5,7 @@ import { BenefitsListComponent } from '../shared/components/benefits-list/benefi
 import { SideFormPanelComponent } from '../shared/components/side-form-panel/side-form-panel.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -15,6 +16,7 @@ describe('LoginPageComponent', () => {
       imports: [
         RouterTestingModule,
         LoginFormComponent,
+        HttpClientModule,
         BenefitsListComponent,
         SideFormPanelComponent,
         LoginPageComponent,
