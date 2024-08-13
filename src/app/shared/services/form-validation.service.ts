@@ -9,7 +9,7 @@ export class FormValidationService {
     const errors: string[] = [];
     Object.keys(form.controls).forEach(controlName => {
       const control = form.get(controlName);
-      if (control && control.errors) {
+      if (control && control.errors && (control.touched || control?.dirty)) {
         Object.keys(control.errors).forEach(errorKey => {
           const errorMessage = this.getErrorMessage(
             controlName,

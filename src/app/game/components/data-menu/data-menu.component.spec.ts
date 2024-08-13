@@ -3,6 +3,7 @@ import { DataMenuComponent } from './data-menu.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataTransformService } from '../../../shared/services/data-transform.service';
 import { of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('DataMenuComponent', () => {
   let component: DataMenuComponent;
@@ -12,7 +13,7 @@ describe('DataMenuComponent', () => {
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DataMenuComponent],
+      imports: [DataMenuComponent, HttpClientModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         {

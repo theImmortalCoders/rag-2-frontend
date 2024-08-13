@@ -7,28 +7,40 @@ import { TGameDataSendingType } from '../../../../models/game-data-sending-type.
   imports: [],
   template: `
     @if (isDataSendingActive) {
-      <button (click)="stopDataExchange()">Stop data exchange</button>
+      <button
+        (click)="stopDataExchange()"
+        class="mt-4 text-center text-red-500 font-bold border-red-500 border-[1px]">
+        Stop data exchange
+      </button>
     } @else {
       <input
         type="number"
         #sendingIntervalInput
-        class="border-2 border-solid border-black"
+        class="custom-input w-52 mb-2"
         min="10"
         max="1000"
         step="10"
-        [defaultValue]="sendingInterval"
-        (change)="sendingInterval = sendingIntervalInput.valueAsNumber" />
-      <button (click)="startDataExchange()">Start data exchange</button>
+        [defaultValue]="vSendingInterval.value"
+        (change)="
+          vSendingInterval.value = sendingIntervalInput.valueAsNumber
+        " />
+      <button
+        (click)="startDataExchange(vSendingInterval.value)"
+        class="mt-4 text-center text-green-500 font-bold border-green-500 border-[1px]">
+        Start data exchange
+      </button>
     }
   `,
 })
 export class SocketConnectedMenuComponent {
   @Input({ required: true }) public isDataSendingActive = false;
-  @Input({ required: true }) public sendingInterval = 500;
+  @Input({ required: true }) public vSendingInterval = { value: 500 };
   @Input({ required: true }) public socket: WebSocket | null = null;
 
-  @Input({ required: true }) public startDataExchange = (): void => {
-    console.log('startDataExchange');
+  @Input({ required: true }) public startDataExchange = (
+    sendingInterval: number
+  ): void => {
+    console.log(sendingInterval);
   };
   @Input({ required: true }) public stopDataExchange = (): void => {
     console.log('stopDataExchange');
