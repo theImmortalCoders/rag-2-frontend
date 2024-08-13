@@ -22,7 +22,7 @@ import { NgOptimizedImage } from '@angular/common';
     </div>
     @for (author of authors; track author.name) {
       <div
-        class="flex flex-col space-y-1 2xs:space-y-2 w-[85%] xs:w-3/4 md:w-[130%] lg:w-[120%] 2xl:w-full h-fit bg-mainCreme text-mainGray rounded-xl py-3 2xs:py-4 px-4 2xs:px-5 lg:p-6 absolute transition-all ease-in-out duration-300 {{
+        class="author-card flex flex-col space-y-1 2xs:space-y-2 w-[85%] xs:w-3/4 md:w-[130%] lg:w-[120%] 2xl:w-full h-fit bg-mainCreme text-mainGray rounded-xl py-3 2xs:py-4 px-4 2xs:px-5 lg:p-6 absolute transition-all ease-in-out duration-300 {{
           currentChoosenAuthor.index === $index
             ? 'opacity-100 right-[7.5%] xs:right-[12.5%] md:right-[7%] lg:-right-[5%] 2xl:right-[10%]'
             : 'opacity-0 -right-[50rem]'
