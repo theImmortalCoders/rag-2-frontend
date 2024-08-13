@@ -14,21 +14,22 @@ import { AuthorCardsComponent } from './components/author-cards.component';
   selector: 'app-home-page',
   standalone: true,
   imports: [NgOptimizedImage, AuthorCardsComponent],
-  template: ` <div class="flex flex-col w-full bg-mainGray pt-14">
+  template: ` <div class="flex flex-col w-full bg-mainGray pt-6 xl:pt-14">
     <div>
       <div
-        class="flex flex-col md:flex-row w-full h-max justify-evenly text-mainOrange font-mono pb-6">
+        class="flex flex-col md:flex-row w-full h-max items-center justify-center md:justify-between lg:justify-evenly text-mainOrange font-mono pb-6">
         <div
-          class="flex flex-col space-y-8 mt-4 md:mt-16 px-6 pb-40 sm:px-8 md:pl-8">
+          class="flex flex-col space-y-2 2xs:space-y-4 sm:space-y-6 md:space-y-8 mt-4 md:mt-16 pl-0 xs:pl-64 sm:pl-24 md:pl-14 lg:pl-6 pr-0 lg:pr-6 pb-40">
           <h1
-            class="text-2xl xs:text-3xl md:text-4xl xl:text-5xl h-8 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainGray after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
+            class="text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainGray after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
             What's going on here?
           </h1>
-          <span class="text-sm xs:text-lg sm:text-xl text-mainCreme underline"
+          <span
+            class="text-sm sm:text-base md:text-lg lg:text-xl text-mainCreme underline"
             >Authors:</span
           >
           <div
-            class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full space-x-0 lg:space-x-12 xl:space-x-8">
+            class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full gap-x-6 xs:gap-x-36 md:gap-x-3 lg:gap-x-8">
             @for (author of authors; track author.name) {
               <button
                 (click)="chooseAuthor($index, author.githubName)"
@@ -37,7 +38,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
                   $index === currentChoosenAuthor.index
                     ? 'scale-125 opacity-100'
                     : 'opacity-75'
-                }} ease-in-out transition-all duration-200 size-20 sm:size-24 xl:size-32 bg-center bg-cover rounded-full pt-20 sm:pt-24 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
+                }} ease-in-out transition-all duration-200 size-[90px] xs:size-24 lg:size-28 xl:size-32 bg-center bg-cover rounded-full pt-28 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
                 style="background-image: url('images/user.png');">
                 {{ author.name }}
               </button>
@@ -49,9 +50,9 @@ import { AuthorCardsComponent } from './components/author-cards.component';
           [currentChoosenAuthor]="currentChoosenAuthor" />
       </div>
       <div
-        class="flex w-full text-xl items-end justify-end text-mainCreme font-mono mt-20 xl:mt-10">
+        class="flex w-full items-end justify-end text-mainCreme font-mono mt-36 2xs:mt-44 sm:mt-40 md:mt-2 xl:mt-10">
         <span
-          class="w-[97%] md:w-11/12 lg:w-3/4 pr-1 border-l-2 border-b-2 pl-2 pb-2 border-mainOrange text-xs sm:text-sm md:text-base lg:text-xl">
+          class="w-[97%] lg:w-11/12 xl:w-3/4 pr-2 border-l-2 border-b-2 pl-2 pb-2 border-mainOrange text-justify text-sm md:text-base lg:text-lg xl:text-xl">
           Explore the world of interactive learning and entertainment with our
           innovative web application! Our project is more than just a collection
           of mini-games - it's a true fusion of artificial intelligence and
@@ -84,7 +85,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
     <div class="flex w-full items-center justify-start bg-lightGray pb-10">
       <span
         id="animatedElement"
-        class="transform transition-all duration-1000 flex w-full 2xs:w-[97%] xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-1/2 h-14 xs:h-20 items-center justify-center bg-mainOrange text-2xs 2xs:text-xs xs:text-sm sm:text-base lg:text-lg px-2 xs:px-4 sm:px-10 font-mono mt-0 2xs:mt-4 xs:mt-8 sm:mt-16">
+        class="transform transition-all duration-1000 flex w-full 2xs:w-[97%] xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-1/2 h-14 xs:h-20 text-justify items-center justify-center bg-mainOrange text-2xs 2xs:text-xs xs:text-sm sm:text-base lg:text-lg px-2 xs:px-4 sm:px-10 font-mono mt-0 2xs:mt-4 xs:mt-8 sm:mt-16">
         Don't wait any longer - join our community and start your adventure with
         interactive learning and entertainment today!
       </span>
