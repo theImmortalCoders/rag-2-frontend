@@ -63,10 +63,10 @@ import { AuthorCardsComponent } from './components/author-cards.component';
       </div>
     </div>
     <div
-      class="flex flex-row justify-between mt-10 pl-8 md:pl-16 bg-lightGray pt-10 pb-6 md:py-10">
+      class="flex flex-row justify-between mt-10 pl-2 xs:pl-8 md:pl-16 bg-lightGray pt-10 pb-6 md:py-10">
       <div class="flex items-center justify-center pr-6 md:pr-2 lg:pr-0">
         <div
-          class="h-[4.5rem] 2xs:h-20 xs:h-28 sm:h-44 md:h-56 lg:h-64 w-72 sm:w-80 md:w-[27rem] lg:w-[36rem] relative">
+          class="h-20 2xs:h-24 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-44 2xs:w-52 xs:w-64 sm:w-80 md:w-[30rem] lg:w-[34rem] xl:w-[36rem] relative">
           <img
             ngSrc="images/ai.jpg"
             alt="Logo"
@@ -75,7 +75,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
         </div>
       </div>
       <div
-        class="flex flex-col w-[55%] 2xs:w-2/5 items-start justify-center text-xs 2xs:text-sm xs:text-lg sm:text-xl md:text-2xl lg:text-4xl space-y-1 md:space-y-5 text-mainOrange border-l-2 border-mainOrange font-mono p-2 md:p-4">
+        class="flex flex-col w-[55%] 2xs:w-2/5 items-start justify-center text-xs 2xs:text-sm xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl space-y-1 md:space-y-5 text-mainOrange border-l-2 border-mainOrange font-mono p-2 md:p-4">
         <span>1 different games</span>
         <span>2 gameplays</span>
         <span>3 MB of data</span>
@@ -85,7 +85,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
     <div class="flex w-full items-center justify-start bg-lightGray pb-10">
       <span
         id="animatedElement"
-        class="transform transition-all duration-1000 flex w-full 2xs:w-[97%] xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-1/2 h-14 xs:h-20 text-justify items-center justify-center bg-mainOrange text-2xs 2xs:text-xs xs:text-sm sm:text-base lg:text-lg px-2 xs:px-4 sm:px-10 font-mono mt-0 2xs:mt-4 xs:mt-8 sm:mt-16">
+        class="transform transition-all duration-1000 flex w-full 2xs:w-[97%] xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-[63%] xl:w-[58%] 2xl:w-1/2 h-14 xs:h-20 text-justify items-center justify-center bg-mainOrange text-2xs 2xs:text-xs xs:text-sm sm:text-base lg:text-lg px-2 xs:px-4 sm:px-10 font-mono mt-0 2xs:mt-4 xs:mt-8 sm:mt-16">
         Don't wait any longer - join our community and start your adventure with
         interactive learning and entertainment today!
       </span>
