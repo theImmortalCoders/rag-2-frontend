@@ -4,7 +4,7 @@ import { TRole } from '../models/role.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class RoleService {
+export class AuthenticationService {
   public async isAuthenticated(): Promise<boolean> {
     //todo
     return new Promise<boolean>(resolve => {
