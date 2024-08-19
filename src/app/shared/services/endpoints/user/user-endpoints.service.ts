@@ -45,6 +45,11 @@ export class UserEndpointsService {
         userLoginRequest,
         {
           responseType: 'text' as 'json',
+          withCredentials: true,
+          // headers: {
+          //   Authorization: 'Bearer ' + localStorage.getItem('jwtToken'),
+
+          // },
         }
       )
       .pipe(
