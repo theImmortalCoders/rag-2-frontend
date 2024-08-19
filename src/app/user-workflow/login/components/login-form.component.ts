@@ -5,7 +5,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
-import { LoginService } from '../services/login.service';
+import { UserEndpointsService } from 'app/shared/services/endpoints/user/user-endpoints.service';
+import { IUserLoginRequest } from 'app/shared/models/user.models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -59,7 +61,8 @@ import { LoginService } from '../services/login.service';
 export class LoginFormComponent {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
-  private _loginService = inject(LoginService);
+  private _userEndpointsService = inject(UserEndpointsService);
+  private _router: Router = new Router();
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -68,18 +71,15 @@ export class LoginFormComponent {
 
   public submitButton(): void {
     if (this.loginForm.value.email && this.loginForm.value.password) {
-      this._loginService
-        .authenticateUser(
-          this.loginForm.value.email,
-          this.loginForm.value.password
-        )
-        .subscribe({
-          next: r => {
-            localStorage.setItem('jwtToken', r);
-          },
-          error: error => {
-            console.error('Error: ', error);
-          },
+      const userLoginRequest: IUserLoginRequest = {
+        email: 'user@example.com',
+        password: 'password123',
+      };
+      this._userEndpointsService
+        .login(userLoginRequest)
+        .subscribe((response: string) => {
+          localStorage.setItem('jwtToken', response);
+          // this._router.navigate(['/']);
         });
     }
   }
