@@ -29,6 +29,36 @@ import { FormValidationService } from '../../../shared/services/form-validation.
           placeholder="Type your name"
           class="custom-input" />
       </div>
+      <div class="flex flex-row space-x-2 items-center">
+        <div class="w-1/3">
+          <label
+            for="studyCycleYearA"
+            [class.text-red-500]="shouldShowError('studyCycleYearA')"
+            >Study cycle year</label
+          >
+          <input
+            id="studyCycleYearA"
+            type="number"
+            formControlName="studyCycleYearA"
+            placeholder="Type year A"
+            class="custom-input"
+            (input)="validateNumber($event)" />
+        </div>
+        <div class="w-1/3">
+          <label
+            for="studyCycleYearB"
+            [class.text-red-500]="shouldShowError('studyCycleYearB')"
+            >Study cycle year</label
+          >
+          <input
+            id="studyCycleYearB"
+            type="number"
+            formControlName="studyCycleYearB"
+            placeholder="Type year B"
+            class="custom-input"
+            (input)="validateNumber($event)" />
+        </div>
+      </div>
       <div class="flex flex-col space-y-1">
         <label for="email" [class.text-red-500]="shouldShowError('email')"
           >Email</label
@@ -98,12 +128,19 @@ export class RegisterFormComponent {
 
   public submitButton(): void {
     console.log('Name: ', this.registerForm.value.name);
+    console.log('Year A: ', this.registerForm.value.studyCycleYearA);
+    console.log('Year B: ', this.registerForm.value.studyCycleYearB);
     console.log('Email: ', this.registerForm.value.email);
     console.log('Password: ', this.registerForm.value.password);
     console.log(
       'Repeated password: ',
       this.registerForm.value.repeatedPassword
     );
+  }
+
+  public validateNumber(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
   }
 
   public shouldShowError(controlName: string): boolean | undefined {
