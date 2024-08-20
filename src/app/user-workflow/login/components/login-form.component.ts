@@ -6,7 +6,10 @@ import {
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
 import { UserEndpointsService } from 'app/shared/services/endpoints/user/user-endpoints.service';
-import { IUserLoginRequest } from 'app/shared/models/user.models';
+import {
+  IUserLoginRequest,
+  IUserResponse,
+} from 'app/shared/models/user.models';
 import { Router } from '@angular/router';
 
 @Component({
@@ -72,14 +75,14 @@ export class LoginFormComponent {
   public submitButton(): void {
     if (this.loginForm.value.email && this.loginForm.value.password) {
       const userLoginRequest: IUserLoginRequest = {
-        email: 'user@example.com',
-        password: 'password123',
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password,
       };
       this._userEndpointsService
         .login(userLoginRequest)
         .subscribe((response: string) => {
           localStorage.setItem('jwtToken', response);
-          // this._router.navigate(['/']);
+          this._router.navigate(['/']);
         });
     }
   }
