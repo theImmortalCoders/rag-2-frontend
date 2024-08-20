@@ -92,6 +92,8 @@ export class RegisterFormComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     repeatedPassword: ['', [Validators.required, Validators.minLength(8)]],
+    studyCycleYearA: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+    studyCycleYearB: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
   });
 
   public submitButton(): void {

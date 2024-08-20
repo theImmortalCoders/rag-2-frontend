@@ -34,6 +34,7 @@ export class FormValidationService {
       required: `${controlName.toUpperCase()} is required`,
       email: 'EMAIL must be a valid email address',
       minlength: `${controlName.toUpperCase()} must be at least ${(errorValue as { requiredLength: number })?.requiredLength} characters long`,
+      maxlength: `${controlName.toUpperCase()} must be at most ${(errorValue as { requiredLength: number })?.requiredLength} characters long`,
     };
     return errorMessages[errorKey] || null;
   }
