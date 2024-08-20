@@ -8,6 +8,8 @@ import {
   IUserRequest,
   IUserResponse,
 } from 'app/shared/models/user.models';
+import { errorHandler } from '@utils/helpers/errorHandler';
+import { jwtTokenAuthHeader } from '@utils/helpers/jwtTokenAuthHeader';
 
 @Injectable({
   providedIn: 'root',
@@ -28,11 +30,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 400) {
-            console.error('User already exists or wrong study cycle year');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -45,27 +43,16 @@ export class UserEndpointsService {
         userLoginRequest,
         {
           responseType: 'text' as 'json',
-          withCredentials: true,
-          // headers: {
-          //   Authorization: 'Bearer ' + localStorage.getItem('jwtToken'),
-
-          // },
         }
       )
       .pipe(
         tap({
-          next: (response: string) => {
-            console.log('User logged in successfully:', response);
+          next: () => {
+            console.log('User logged in successfully');
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            console.error(
-              'Invalid password or mail not confirmed or user banned'
-            );
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          console.error(JSON.parse(error.error)['description']);
           return throwError(() => error);
         })
       );
@@ -84,11 +71,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 400) {
-            console.error('User is already confirmed');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -107,11 +90,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 400) {
-            console.error('Invalid token');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -130,7 +109,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error(`Unexpected error: ${error.message}`);
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -152,11 +131,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 400) {
-            console.error('Invalid token');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -164,7 +139,9 @@ export class UserEndpointsService {
 
   public logout(): Observable<void> {
     return this._httpClient
-      .post<void>(environment.backendApiUrl + '/api/User/auth/logout', {})
+      .post<void>(environment.backendApiUrl + '/api/User/auth/logout', {
+        headers: jwtTokenAuthHeader,
+      })
       .pipe(
         tap({
           next: () => {
@@ -172,11 +149,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            console.error('Unauthorized, you have to be logged in');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -186,6 +159,7 @@ export class UserEndpointsService {
     return this._httpClient
       .get<IUserResponse>(environment.backendApiUrl + '/api/User/auth/me', {
         responseType: 'json',
+        headers: jwtTokenAuthHeader,
       })
       .pipe(
         tap({
@@ -194,11 +168,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            console.error('Unauthorized, you have to be logged in.');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -211,7 +181,10 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl + '/api/User/auth/change-password',
-        { oldPassword, newPassword }
+        { oldPassword, newPassword },
+        {
+          headers: jwtTokenAuthHeader,
+        }
       )
       .pipe(
         tap({
@@ -220,15 +193,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 400) {
-            console.error(
-              'Invalid old password or given the same password as old'
-            );
-          } else if (error.status === 401) {
-            console.error('Unauthorized, you have to be logged in');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
@@ -236,7 +201,12 @@ export class UserEndpointsService {
 
   public deleteAccount(): Observable<void> {
     return this._httpClient
-      .delete<void>(environment.backendApiUrl + '/api/User/auth/delete-account')
+      .delete<void>(
+        environment.backendApiUrl + '/api/User/auth/delete-account',
+        {
+          headers: jwtTokenAuthHeader,
+        }
+      )
       .pipe(
         tap({
           next: () => {
@@ -244,11 +214,7 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            console.error('Unauthorized, you have to be logged in.');
-          } else {
-            console.error(`Unexpected error: ${error.message}`);
-          }
+          errorHandler(error);
           return throwError(() => error);
         })
       );
