@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -11,6 +11,7 @@ import {
   IUserResponse,
 } from 'app/shared/models/user.models';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login-form',
@@ -61,11 +62,13 @@ import { Router } from '@angular/router';
     </form>
   `,
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
   private _router: Router = new Router();
+
+  private _loginSubscription: Subscription | null = null;
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -73,12 +76,13 @@ export class LoginFormComponent {
   });
 
   public submitButton(): void {
-    if (this.loginForm.value.email && this.loginForm.value.password) {
+    if (this.loginForm.valid) {
+      const formValues = this.loginForm.value as IUserLoginRequest;
       const userLoginRequest: IUserLoginRequest = {
-        email: this.loginForm.value.email,
-        password: this.loginForm.value.password,
+        email: formValues.email,
+        password: formValues.password,
       };
-      this._userEndpointsService
+      this._loginSubscription = this._userEndpointsService
         .login(userLoginRequest)
         .subscribe((response: string) => {
           localStorage.setItem('jwtToken', response);
@@ -96,5 +100,11 @@ export class LoginFormComponent {
 
   public getFormErrors(): string[] {
     return this._formValidationService.getFormErrors(this.loginForm);
+  }
+
+  public ngOnDestroy(): void {
+    if (this._loginSubscription) {
+      this._loginSubscription.unsubscribe();
+    }
   }
 }

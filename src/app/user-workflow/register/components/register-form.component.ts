@@ -1,10 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
+import { IUserRequest } from 'app/shared/models/user.models';
+import { UserEndpointsService } from 'app/shared/services/endpoints/user/user-endpoints.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register-form',
@@ -102,45 +106,67 @@ import { FormValidationService } from '../../../shared/services/form-validation.
         Register now
       </button>
       @if (
-        registerForm.invalid && (registerForm.dirty || registerForm.touched)
+        (registerForm.invalid &&
+          (registerForm.dirty || registerForm.touched)) ||
+        isPasswordsMatching === false
       ) {
         <div class="text-red-500">
           @for (error of getFormErrors(); track error) {
             <p>{{ error }}</p>
+          }
+          @if (isPasswordsMatching === false) {
+            <p>The PASSWORDS must match each other</p>
           }
         </div>
       }
     </form>
   `,
 })
-export class RegisterFormComponent {
+export class RegisterFormComponent implements OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
+  private _userEndpointsService = inject(UserEndpointsService);
+  private _router: Router = new Router();
+
+  public isPasswordsMatching: boolean | undefined;
+  private _registerSubscription: Subscription | null = null;
 
   public registerForm = this._formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     repeatedPassword: ['', [Validators.required, Validators.minLength(8)]],
-    studyCycleYearA: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
-    studyCycleYearB: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+    studyCycleYearA: [NaN, [Validators.required]],
+    studyCycleYearB: [NaN, [Validators.required]],
   });
 
   public submitButton(): void {
-    console.log('Name: ', this.registerForm.value.name);
-    console.log('Year A: ', this.registerForm.value.studyCycleYearA);
-    console.log('Year B: ', this.registerForm.value.studyCycleYearB);
-    console.log('Email: ', this.registerForm.value.email);
-    console.log('Password: ', this.registerForm.value.password);
-    console.log(
-      'Repeated password: ',
-      this.registerForm.value.repeatedPassword
-    );
+    this.isPasswordsMatching =
+      this.registerForm.value.password ===
+      this.registerForm.value.repeatedPassword;
+    if (this.registerForm.valid && this.isPasswordsMatching === true) {
+      const formValues = this.registerForm.value as IUserRequest;
+      const userRequest: IUserRequest = {
+        email: formValues.email,
+        password: formValues.password,
+        name: formValues.name,
+        studyCycleYearA: formValues.studyCycleYearA,
+        studyCycleYearB: formValues.studyCycleYearB,
+      };
+      this._registerSubscription = this._userEndpointsService
+        .register(userRequest)
+        .subscribe(() => {
+          this._router.navigate(['/']);
+        });
+    }
   }
 
   public validateNumber(event: Event): void {
     const input = event.target as HTMLInputElement;
     input.value = input.value.replace(/[^0-9]/g, '');
+    if (input.value.length > 4) {
+      input.value = input.value.substring(0, 4);
+    }
   }
 
   public shouldShowError(controlName: string): boolean | undefined {
@@ -152,5 +178,11 @@ export class RegisterFormComponent {
 
   public getFormErrors(): string[] {
     return this._formValidationService.getFormErrors(this.registerForm);
+  }
+
+  public ngOnDestroy(): void {
+    if (this._registerSubscription) {
+      this._registerSubscription.unsubscribe();
+    }
   }
 }
