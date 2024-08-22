@@ -46,4 +46,12 @@ export class FormValidationService {
     const control = groupName.get(controlName);
     return control?.invalid && (control?.dirty || control?.touched);
   }
+
+  public validateNumber4Digit(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^0-9]/g, '');
+    if (input.value.length > 4) {
+      input.value = input.value.substring(0, 4);
+    }
+  }
 }
