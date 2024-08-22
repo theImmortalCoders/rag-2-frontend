@@ -21,7 +21,10 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl + '/api/User/auth/register',
-        userRequest
+        userRequest,
+        {
+          responseType: 'text' as 'json',
+        }
       )
       .pipe(
         tap({
@@ -64,7 +67,10 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl + '/api/User/auth/resend-confirmation-email',
-        { email }
+        { email },
+        {
+          responseType: 'text' as 'json',
+        }
       )
       .pipe(
         tap({
@@ -84,7 +90,10 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl + '/api/User/auth/confirm-account',
-        { token }
+        { token },
+        {
+          responseType: 'text' as 'json',
+        }
       )
       .pipe(
         tap({
@@ -104,7 +113,10 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl + '/api/User/auth/request-password-reset',
-        { email }
+        { email },
+        {
+          responseType: 'text' as 'json',
+        }
       )
       .pipe(
         tap({
@@ -125,10 +137,16 @@ export class UserEndpointsService {
     newPassword: string
   ): Observable<void> {
     return this._httpClient
-      .post<void>(environment.backendApiUrl + '/api/User/auth/reset-password', {
-        tokenValue,
-        newPassword,
-      })
+      .post<void>(
+        environment.backendApiUrl + '/api/User/auth/reset-password',
+        {
+          tokenValue,
+          newPassword,
+        },
+        {
+          responseType: 'text' as 'json',
+        }
+      )
       .pipe(
         tap({
           next: () => {
@@ -145,9 +163,14 @@ export class UserEndpointsService {
 
   public logout(): Observable<void> {
     return this._httpClient
-      .post<void>(environment.backendApiUrl + '/api/User/auth/logout', {
-        headers: jwtTokenAuthHeader,
-      })
+      .post<void>(
+        environment.backendApiUrl + '/api/User/auth/logout',
+        {},
+        {
+          headers: jwtTokenAuthHeader,
+          responseType: 'text' as 'json',
+        }
+      )
       .pipe(
         tap({
           next: () => {
@@ -192,6 +215,7 @@ export class UserEndpointsService {
         { oldPassword, newPassword },
         {
           headers: jwtTokenAuthHeader,
+          responseType: 'text' as 'json',
         }
       )
       .pipe(
@@ -214,6 +238,7 @@ export class UserEndpointsService {
         environment.backendApiUrl + '/api/User/auth/delete-account',
         {
           headers: jwtTokenAuthHeader,
+          responseType: 'text' as 'json',
         }
       )
       .pipe(

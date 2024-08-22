@@ -6,13 +6,9 @@ import {
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
 import { UserEndpointsService } from 'app/shared/services/endpoints/user/user-endpoints.service';
-import {
-  IUserLoginRequest,
-  IUserResponse,
-} from 'app/shared/models/user.models';
+import { IUserLoginRequest } from 'app/shared/models/user.models';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-form',
@@ -58,10 +54,9 @@ import { HttpErrorResponse } from '@angular/common/http';
           @for (error of getFormErrors(); track error) {
             <p>{{ error }}</p>
           }
-          <p>{{ errorMessage }}</p>
-          <!-- trzeba moze cos wyswietlac jak back zwroci jakis blad/endpoint nie przejdzie albo cos -->
-          <!-- bo aktualnie nie ma nic jak sie zle wpisze, to samo w rejestracji i tam jeszcze sprawdzac te lata moze (chyba ze blad zwraca to) -->
-          <!-- testy napisac -->
+          @if (errorMessage !== null) {
+            <p>{{ errorMessage }}</p>
+          }
         </div>
       }
     </form>

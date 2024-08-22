@@ -108,7 +108,8 @@ import { Subscription } from 'rxjs';
       @if (
         (registerForm.invalid &&
           (registerForm.dirty || registerForm.touched)) ||
-        isPasswordsMatching === false
+        isPasswordsMatching === false ||
+        errorMessage !== null
       ) {
         <div class="text-red-500">
           @for (error of getFormErrors(); track error) {
@@ -116,6 +117,9 @@ import { Subscription } from 'rxjs';
           }
           @if (isPasswordsMatching === false) {
             <p>The PASSWORDS must match each other</p>
+          }
+          @if (errorMessage !== null) {
+            <p>{{ errorMessage }}</p>
           }
         </div>
       }
@@ -126,10 +130,12 @@ export class RegisterFormComponent implements OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
+
   private _router: Router = new Router();
+  private _registerSubscription: Subscription | null = null;
 
   public isPasswordsMatching: boolean | undefined;
-  private _registerSubscription: Subscription | null = null;
+  public errorMessage: string | null = null;
 
   public registerForm = this._formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -155,18 +161,20 @@ export class RegisterFormComponent implements OnDestroy {
       };
       this._registerSubscription = this._userEndpointsService
         .register(userRequest)
-        .subscribe(() => {
-          this._router.navigate(['/']);
+        .subscribe({
+          next: () => {
+            this._router.navigate(['/']);
+            this.errorMessage = null;
+          },
+          error: (error: string) => {
+            this.errorMessage = error;
+          },
         });
     }
   }
 
   public validateNumber(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    input.value = input.value.replace(/[^0-9]/g, '');
-    if (input.value.length > 4) {
-      input.value = input.value.substring(0, 4);
-    }
+    this._formValidationService.validateNumber4Digit(event);
   }
 
   public shouldShowError(controlName: string): boolean | undefined {
