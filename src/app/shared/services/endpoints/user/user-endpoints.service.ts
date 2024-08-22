@@ -30,8 +30,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -52,8 +53,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error(JSON.parse(error.error)['description']);
-          return throwError(() => error);
+          const errorMessage = JSON.parse(error.error)['description'];
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -71,8 +73,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -90,8 +93,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -109,8 +113,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -131,8 +136,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -149,8 +155,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -168,8 +175,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -193,8 +201,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
@@ -214,8 +223,9 @@ export class UserEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          errorHandler(error);
-          return throwError(() => error);
+          const errorMessage = errorHandler(error);
+          console.error(errorMessage);
+          return throwError(() => errorMessage);
         })
       );
   }
