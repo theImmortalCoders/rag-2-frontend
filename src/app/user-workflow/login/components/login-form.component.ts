@@ -78,6 +78,7 @@ export class LoginFormComponent implements OnDestroy {
   });
 
   public submitButton(): void {
+    this.errorMessage = null;
     if (this.loginForm.valid) {
       const formValues = this.loginForm.value as IUserLoginRequest;
       const userLoginRequest: IUserLoginRequest = {
