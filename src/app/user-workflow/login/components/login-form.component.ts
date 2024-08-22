@@ -12,6 +12,7 @@ import {
 } from 'app/shared/models/user.models';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-form',
@@ -52,11 +53,15 @@ import { Subscription } from 'rxjs';
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Log in
       </button>
-      @if (loginForm.invalid && loginForm.touched) {
+      @if ((loginForm.invalid && loginForm.touched) || errorMessage !== null) {
         <div class="text-red-500">
           @for (error of getFormErrors(); track error) {
             <p>{{ error }}</p>
           }
+          <p>{{ errorMessage }}</p>
+          <!-- trzeba moze cos wyswietlac jak back zwroci jakis blad/endpoint nie przejdzie albo cos -->
+          <!-- bo aktualnie nie ma nic jak sie zle wpisze, to samo w rejestracji i tam jeszcze sprawdzac te lata moze (chyba ze blad zwraca to) -->
+          <!-- testy napisac -->
         </div>
       }
     </form>
@@ -69,6 +74,8 @@ export class LoginFormComponent implements OnDestroy {
   private _router: Router = new Router();
 
   private _loginSubscription: Subscription | null = null;
+
+  public errorMessage: string | null = null;
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -84,9 +91,15 @@ export class LoginFormComponent implements OnDestroy {
       };
       this._loginSubscription = this._userEndpointsService
         .login(userLoginRequest)
-        .subscribe((response: string) => {
-          localStorage.setItem('jwtToken', response);
-          this._router.navigate(['/']);
+        .subscribe({
+          next: (response: string) => {
+            localStorage.setItem('jwtToken', response);
+            this._router.navigate(['/']);
+            this.errorMessage = null;
+          },
+          error: (error: string) => {
+            this.errorMessage = error;
+          },
         });
     }
   }
