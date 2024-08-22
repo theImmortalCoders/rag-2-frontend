@@ -123,6 +123,7 @@ import { Subscription } from 'rxjs';
           }
         </div>
       }
+      <!-- dorobic przycisk wyslij email potwierdzajacy ponownie -->
     </form>
   `,
 })
@@ -147,6 +148,7 @@ export class RegisterFormComponent implements OnDestroy {
   });
 
   public submitButton(): void {
+    this.errorMessage = null;
     this.isPasswordsMatching =
       this.registerForm.value.password ===
       this.registerForm.value.repeatedPassword;
@@ -163,7 +165,7 @@ export class RegisterFormComponent implements OnDestroy {
         .register(userRequest)
         .subscribe({
           next: () => {
-            this._router.navigate(['/']);
+            this._router.navigate(['/login']);
             this.errorMessage = null;
           },
           error: (error: string) => {

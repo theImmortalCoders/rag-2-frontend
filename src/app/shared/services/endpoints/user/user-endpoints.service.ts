@@ -66,8 +66,9 @@ export class UserEndpointsService {
   public resendConfirmationEmail(email: string): Observable<void> {
     return this._httpClient
       .post<void>(
-        environment.backendApiUrl + '/api/User/auth/resend-confirmation-email',
-        { email },
+        environment.backendApiUrl +
+          `/api/User/auth/resend-confirmation-email?email=${email}`,
+        {},
         {
           responseType: 'text' as 'json',
         }
@@ -89,8 +90,9 @@ export class UserEndpointsService {
   public confirmAccount(token: string): Observable<void> {
     return this._httpClient
       .post<void>(
-        environment.backendApiUrl + '/api/User/auth/confirm-account',
-        { token },
+        environment.backendApiUrl +
+          `/api/User/auth/confirm-account?token=${token}`,
+        {},
         {
           responseType: 'text' as 'json',
         }
@@ -112,8 +114,9 @@ export class UserEndpointsService {
   public requestPasswordReset(email: string): Observable<void> {
     return this._httpClient
       .post<void>(
-        environment.backendApiUrl + '/api/User/auth/request-password-reset',
-        { email },
+        environment.backendApiUrl +
+          `/api/User/auth/request-password-reset?email=${email}`,
+        {},
         {
           responseType: 'text' as 'json',
         }
@@ -138,11 +141,9 @@ export class UserEndpointsService {
   ): Observable<void> {
     return this._httpClient
       .post<void>(
-        environment.backendApiUrl + '/api/User/auth/reset-password',
-        {
-          tokenValue,
-          newPassword,
-        },
+        environment.backendApiUrl +
+          `/api/User/auth/reset-password?tokenValue=${tokenValue}&newPassword=${newPassword}`,
+        {},
         {
           responseType: 'text' as 'json',
         }
@@ -211,8 +212,9 @@ export class UserEndpointsService {
   ): Observable<void> {
     return this._httpClient
       .post<void>(
-        environment.backendApiUrl + '/api/User/auth/change-password',
-        { oldPassword, newPassword },
+        environment.backendApiUrl +
+          `/api/User/auth/change-password?oldPassword=${oldPassword}&newPassword=${newPassword}`,
+        {},
         {
           headers: jwtTokenAuthHeader,
           responseType: 'text' as 'json',
