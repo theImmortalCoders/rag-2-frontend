@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
 import { IUserRequest } from 'app/shared/models/user.models';
-import { UserEndpointsService } from 'app/shared/services/endpoints/user/user-endpoints.service';
+import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoints.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
