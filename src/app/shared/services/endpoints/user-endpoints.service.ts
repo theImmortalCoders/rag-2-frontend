@@ -186,7 +186,7 @@ export class UserEndpointsService {
       );
   }
 
-  public me(): Observable<IUserResponse> {
+  public getMe(): Observable<IUserResponse> {
     return this._httpClient
       .get<IUserResponse>(environment.backendApiUrl + '/api/User/auth/me', {
         responseType: 'json',
@@ -195,7 +195,7 @@ export class UserEndpointsService {
       .pipe(
         tap({
           next: () => {
-            console.log('User data retrieved successfully');
+            console.log('Current user data retrieved successfully');
           },
         }),
         catchError((error: HttpErrorResponse) => {
