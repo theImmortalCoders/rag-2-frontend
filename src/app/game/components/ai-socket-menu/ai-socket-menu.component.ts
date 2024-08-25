@@ -7,6 +7,8 @@ import { SocketConnectedMenuComponent } from './components/socket-connected-menu
 import { DebugModeMenuComponent } from './components/debug-mode-menu/debug-mode-menu.component';
 import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mode-panel.component';
 import { AiSocketService } from './services/ai-socket.service';
+import { Player } from 'app/game/models/player.class';
+import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 
 @Component({
   selector: 'app-ai-socket-menu',
@@ -19,50 +21,53 @@ import { AiSocketService } from './services/ai-socket.service';
   ],
   template: `
     <div class="w-64 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm">
-      <app-debug-mode-menu (debugModeEmitter)="isDebugModeActive = $event" />
-      @if (isDebugModeActive) {
-        <app-debug-mode-panel
-          [expectedInput]="expectedDataToReceive"
-          (inputEmitter)="emitDebugSocketInput($event)" />
-      } @else {
-        <div class="flex flex-col w-full">
-          <app-socket-domain-input
-            class="mb-2"
-            (socketDomainEmitter)="socketUrl = $event"
-            [recentPhrases]="recentPhrases" />
-          <span class="text-mainCreme w-full text-start">{{
-            aiSocketService.getIsSocketConnected()
-              ? 'Connected'
-              : 'Disconnected'
-          }}</span>
-          <div class="mt-2">
-            @if (aiSocketService.getIsSocketConnected()) {
-              <button
-                (click)="aiSocketService.getSocket()?.close()"
-                class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
-                Disconnect
-              </button>
-              @if (gameDataSendingType === tGameDataSendingType.TimeGame) {
-                <app-socket-connected-menu
-                  [isDataSendingActive]="
-                    aiSocketService.getIsDataSendingActive()
-                  "
-                  [vSendingInterval]="vSendingInterval"
-                  [socket]="aiSocketService.getSocket()"
-                  [startDataExchange]="onStartDataExchangeClick"
-                  [stopDataExchange]="
-                    aiSocketService.stopDataExchange
-                  "></app-socket-connected-menu>
+      @for (player of players; track player.id) {
+        {{ player.name }}
+        <app-debug-mode-menu (debugModeEmitter)="isDebugModeActive = $event" />
+        @if (isDebugModeActive) {
+          <app-debug-mode-panel
+            [expectedInput]="expectedDataToReceive"
+            (inputEmitter)="emitDebugSocketInput($event)" />
+        } @else {
+          <div class="flex flex-col w-full">
+            <app-socket-domain-input
+              class="mb-2"
+              (socketDomainEmitter)="socketUrl = $event"
+              [recentPhrases]="recentPhrases" />
+            <span class="text-mainCreme w-full text-start">{{
+              aiSocketService.getIsSocketConnected()
+                ? 'Connected'
+                : 'Disconnected'
+            }}</span>
+            <div class="mt-2">
+              @if (aiSocketService.getIsSocketConnected()) {
+                <button
+                  (click)="aiSocketService.getSocket()?.close()"
+                  class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
+                  Disconnect
+                </button>
+                @if (gameDataSendingType === tGameDataSendingType.TimeGame) {
+                  <app-socket-connected-menu
+                    [isDataSendingActive]="
+                      aiSocketService.getIsDataSendingActive()
+                    "
+                    [vSendingInterval]="vSendingInterval"
+                    [socket]="aiSocketService.getSocket()"
+                    [startDataExchange]="onStartDataExchangeClick"
+                    [stopDataExchange]="
+                      aiSocketService.stopDataExchange
+                    "></app-socket-connected-menu>
+                }
+              } @else {
+                <button
+                  (click)="onConnectButtonClick()"
+                  class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
+                  Connect
+                </button>
               }
-            } @else {
-              <button
-                (click)="onConnectButtonClick()"
-                class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
-                Connect
-              </button>
-            }
+            </div>
           </div>
-        </div>
+        }
       }
     </div>
   `,
@@ -81,6 +86,7 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
       );
     }
   }
+  @Input({ required: true }) public players: Player[] = [];
 
   @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
@@ -97,6 +103,7 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
     socketURL: this.socketUrl,
     sendingInterval: this.vSendingInterval.value,
   };
+  public playerSourceType = PlayerSourceType;
 
   public constructor(public aiSocketService: AiSocketService) {
     console.log('AiSocketMenuComponent constructor');
