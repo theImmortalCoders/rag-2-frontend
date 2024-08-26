@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterFormComponent } from './register-form.component';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
 import { By } from '@angular/platform-browser';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
@@ -12,7 +13,7 @@ describe('RegisterFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RegisterFormComponent],
-      providers: [FormValidationService],
+      providers: [FormValidationService, HttpClient, HttpHandler],
     }).compileComponents();
   });
 

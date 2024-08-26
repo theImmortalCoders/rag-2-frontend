@@ -5,6 +5,7 @@ import { BenefitsListComponent } from '../shared/components/benefits-list/benefi
 import { SideFormPanelComponent } from '../shared/components/side-form-panel/side-form-panel.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('RegisterPageComponent', () => {
   let component: RegisterPageComponent;
@@ -19,6 +20,7 @@ describe('RegisterPageComponent', () => {
         SideFormPanelComponent,
         RegisterPageComponent,
       ],
+      providers: [HttpClient, HttpHandler],
     }).compileComponents();
   });
 
