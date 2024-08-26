@@ -19,7 +19,8 @@ import { BaseGameWindowComponent } from '../base-game.component';
       type="text"
       [value]="defaultText + '2'"
       (input)="updateOutputData2(inputElement2.value)" />
-    <div>Ai input: {{ p1Move }}</div>
+    <div>P1 Move: {{ p1Move }}</div>
+    <div>P2 Move: {{ p2Move }}</div>
   `,
 })
 export class PongGameWindowComponent
@@ -27,25 +28,29 @@ export class PongGameWindowComponent
   implements OnInit
 {
   public p1Move = 0;
+  public p2Move = 0;
   public defaultText = 'PONG';
 
   public override ngOnInit(): void {
     this.emitOutputData();
-    // this.players[0].inputData = {
-    //   p1Move: 0,
-    // };
+    this.players[0].inputData = {
+      p1Move: 0,
+    };
+    this.players[1].inputData = {
+      p2Move: 0,
+    };
   }
 
   protected override gameWindowOutputData: TExchangeData = {
     text: this.defaultText,
     text2: this.defaultText + '2',
-    score: this.p1Move,
+    p1Move: this.p1Move,
+    p2Move: this.p2Move,
   };
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    this.p1Move = (value['p1Move'] as number) | 0;
-    this.gameWindowOutputData['p1Move'] = this.p1Move;
-    this.emitOutputData();
+    this.p1Move = (value['p1Move'] as number) | this.p1Move;
+    this.p2Move = (value['p2Move'] as number) | this.p2Move;
   }
 
   public updateOutputData1(value: string): void {

@@ -9,7 +9,7 @@ export const games: Record<string, Game> = {
     'pong',
     PongGameWindowComponent,
     TGameDataSendingType.TimeGame,
-    [new Player(1, false, 'Player 1'), new Player(2, true, 'Player 2')]
+    [new Player(1, true, 'Player 1'), new Player(2, true, 'Player 2')]
   ),
   tictactoe: new Game(
     'tictactoe',
