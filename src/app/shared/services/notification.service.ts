@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-export interface INotification {
-  message: string;
-  duration?: number;
-  dismissible: boolean;
-}
+import { INotification } from '../models/notification';
 
 @Injectable({
   providedIn: 'root',
