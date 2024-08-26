@@ -24,6 +24,7 @@ import { SocketConnectedMenuComponent } from './components/socket-connected-menu
     SocketDomainInputComponent,
     SocketConnectedMenuComponent,
   ],
+  providers: [AiSocketService],
   template: `
     {{ player.name }}
     <app-debug-mode-menu (debugModeEmitter)="isDebugModeActive = $event" />
@@ -121,7 +122,7 @@ export class PlayerSocketMenuComponent implements OnInit {
   }
 
   public emitSocketInput(data: TExchangeData): void {
-    this.receivedDataEmitter.emit(data);
+    this.receivedDataEmitter.emit({ player: this.player, data: data });
   }
 
   //

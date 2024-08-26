@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
 import { BaseGameWindowComponent } from '../base-game.component';
+import { Player } from 'app/game/models/player.class';
+import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-pong',
@@ -34,12 +36,12 @@ export class PongGameWindowComponent
   public override ngOnInit(): void {
     this.emitOutputData();
     this.players[0].inputData = {
-      p1Move: 0,
+      move: 0,
     };
     this.players[0].expectedDataDescription =
       'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up';
     this.players[1].inputData = {
-      p2Move: 0,
+      move: 0,
     };
     this.players[1].expectedDataDescription =
       'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up';
@@ -53,8 +55,19 @@ export class PongGameWindowComponent
   };
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    this.p1Move = (value['p1Move'] as number) ? (value['p1Move'] as number) : 0;
-    this.p2Move = (value['p2Move'] as number) ? (value['p2Move'] as number) : 0;
+    const data = value['data'] as TExchangeData;
+    if (!data) return;
+    if (
+      JSON.stringify(value['player'] as Player) ===
+      JSON.stringify(this.players[0])
+    ) {
+      this.p1Move = data['move'] ? (data['move'] as number) : 0;
+    } else if (
+      JSON.stringify(value['player'] as Player) ===
+      JSON.stringify(this.players[1])
+    ) {
+      this.p2Move = data['move'] ? (data['move'] as number) : 0;
+    }
   }
 
   public updateOutputData1(value: string): void {
