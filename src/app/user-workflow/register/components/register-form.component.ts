@@ -168,7 +168,7 @@ export class RegisterFormComponent implements OnDestroy {
         .subscribe({
           next: () => {
             this._notificationService.addNotification(
-              'Confirm your email address!'
+              'Please confirm your email address!'
             );
             this._router.navigate(['/login']);
             this.errorMessage = null;
