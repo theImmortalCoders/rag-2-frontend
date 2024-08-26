@@ -68,6 +68,9 @@ export class PongGameWindowComponent
     ) {
       this.p2Move = data['move'] ? (data['move'] as number) : 0;
     }
+    this.gameWindowOutputData['p1Move'] = this.p1Move;
+    this.gameWindowOutputData['p2Move'] = this.p2Move;
+    this.emitOutputData();
   }
 
   public updateOutputData1(value: string): void {

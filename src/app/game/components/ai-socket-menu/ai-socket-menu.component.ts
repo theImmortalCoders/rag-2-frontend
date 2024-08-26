@@ -29,7 +29,7 @@ import { PlayerSocketMenuComponent } from './components/player-socket-menu.compo
           <app-player-socket-menu
             [player]="player"
             [gameName]="gameName"
-            [setDataToSend]="dataToSend"
+            [dataToSend]="dataToSend"
             (receivedDataEmitter)="
               receiveInputData($event)
             "></app-player-socket-menu>

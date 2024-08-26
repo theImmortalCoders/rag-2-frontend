@@ -73,19 +73,9 @@ export class PlayerSocketMenuComponent implements OnInit {
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gameName = '';
   public recentPhrases: string[] = [];
-  @Input({ required: true }) public set setDataToSend(value: TExchangeData) {
-    this._dataToSend = value;
-
-    this.aiSocketService.sendDataToSocket(
-      this._dataToSend,
-      this.player.inputData,
-      this.player.expectedDataDescription
-    );
-  }
+  @Input({ required: true }) public dataToSend: TExchangeData = {};
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
-
-  private _dataToSend: TExchangeData = {};
 
   public isDebugModeActive = false;
   public vSendingInterval = { value: 500 };
@@ -100,7 +90,7 @@ export class PlayerSocketMenuComponent implements OnInit {
   public onStartDataExchangeClick = (): void => {
     this.aiSocketService.startDataExchange(
       this.vSendingInterval.value,
-      this._dataToSend,
+      this.dataToSend,
       this.player.inputData,
       this.player.expectedDataDescription
     );
