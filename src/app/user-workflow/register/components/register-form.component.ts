@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Component, inject, OnDestroy } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -9,6 +10,7 @@ import { IUserRequest } from 'app/shared/models/user.models';
 import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoints.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { NotificationService } from 'app/shared/services/notification.service';
 
 @Component({
   selector: 'app-register-form',
@@ -123,7 +125,6 @@ import { Subscription } from 'rxjs';
           }
         </div>
       }
-      <!-- dorobic przycisk wyslij email potwierdzajacy ponownie -->
     </form>
   `,
 })
@@ -131,6 +132,7 @@ export class RegisterFormComponent implements OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
+  private _notificationService = inject(NotificationService);
 
   private _router: Router = new Router();
   private _registerSubscription: Subscription | null = null;
@@ -165,6 +167,9 @@ export class RegisterFormComponent implements OnDestroy {
         .register(userRequest)
         .subscribe({
           next: () => {
+            this._notificationService.addNotification(
+              'Confirm your email address!'
+            );
             this._router.navigate(['/login']);
             this.errorMessage = null;
           },
