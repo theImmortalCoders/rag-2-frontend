@@ -61,7 +61,6 @@ export class AiSocketService {
     expectedDataToReceive: TExchangeData,
     expectedDataDescription: string
   ): void => {
-    console.log(sendingInterval);
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
       this.sendDataToSocket(
