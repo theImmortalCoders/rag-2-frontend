@@ -16,8 +16,7 @@ export interface IUserLoginRequest {
 export interface IUserResponse {
   id: number;
   email: string;
-  //do rzutowania na TRole po odebraniu danych
-  role: string;
+  role: TRole;
   name: string;
   studyCycleYearA: number;
   studyCycleYearB: number;
@@ -26,8 +25,7 @@ export interface IUserResponse {
 export interface IUserDetailsResponse {
   id: number;
   email: string;
-  //do rzutowania na TRole po odebraniu danych
-  role: string;
+  role: TRole;
   name: string;
   studyCycleYearA: number;
   studyCycleYearB: number;
