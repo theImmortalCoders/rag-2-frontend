@@ -12,7 +12,6 @@ import { AuthRequiredDirective } from '@utils/directives/auth-required.directive
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 import { games } from './data-access/games';
 import { Game } from './models/game.class';
-import { TGameDataSendingType } from './models/game-data-sending-type.enum';
 import { TExchangeData } from './models/exchange-data.type';
 
 describe('GamePageComponent', () => {

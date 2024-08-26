@@ -26,7 +26,6 @@ import { PlayerSourceType } from './models/player-source-type.enum';
         <app-player-menu
           class="absolute top-52 left-0"
           [players]="players"
-          (logDataEmitter)="receivePlayerMenuOutputData($event)"
           (playerSourceChangeEmitter)="updatePlayers($event)"></app-player-menu>
         <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
           <button

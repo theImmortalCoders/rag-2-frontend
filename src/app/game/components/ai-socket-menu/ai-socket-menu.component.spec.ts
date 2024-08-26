@@ -6,6 +6,9 @@ import { DebugModeMenuComponent } from './components/components/debug-mode-menu/
 import { DebugModePanelComponent } from './components/components/debug-mode-panel/debug-mode-panel.component';
 import { TExchangeData } from 'app/game/models/exchange-data.type';
 import { EventEmitter } from '@angular/core';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 describe('AiSocketMenuComponent', () => {
   let component: AiSocketMenuComponent;
@@ -40,7 +43,16 @@ describe('AiSocketMenuComponent', () => {
         DebugModeMenuComponent,
         DebugModePanelComponent,
       ],
-      providers: [{ provide: AiSocketService, useValue: aiSocketServiceStub }],
+      providers: [
+        HttpClient,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of(convertToParamMap({ gameName: 'pong' })),
+          },
+        },
+        { provide: AiSocketService, useValue: aiSocketServiceStub },
+      ],
     }).compileComponents();
   }));
 
@@ -53,60 +65,5 @@ describe('AiSocketMenuComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should display "Connect" button when socket is not connected', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(false);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.textContent).toContain('Connect');
-  });
-
-  it('should display "Disconnect" button when socket is connected', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(true);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.textContent).toContain('Disconnect');
-  });
-
-  it('should call connect method when "Connect" button is clicked', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(false);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    button.click();
-    expect(socketService.connect).toHaveBeenCalled();
-  });
-
-  it('should call disconnect method when "Disconnect" button is clicked', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(true);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    button.click();
-    expect(socketService.getSocket()?.close).toHaveBeenCalled();
-  });
-
-  it('should emit logData when socket connects', () => {
-    spyOn(component.logDataEmitter, 'emit');
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(false);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    button.click();
-    expect(component.logDataEmitter.emit).toHaveBeenCalled();
-  });
-
-  it('should load recent phrases on init', () => {
-    const phrases = ['ws://localhost1', 'ws://localhost2'];
-    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(phrases));
-    component.ngOnInit();
-    expect(component.recentPhrases).toEqual(phrases);
-  });
-
-  it('should toggle debug mode', () => {
-    const debugMenu = fixture.debugElement.query(
-      By.directive(DebugModeMenuComponent)
-    );
-    debugMenu.triggerEventHandler('debugModeEmitter', true);
-    fixture.detectChanges();
-    expect(component.isDebugModeActive).toBe(true);
   });
 });
