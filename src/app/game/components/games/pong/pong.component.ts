@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
 import { BaseGameWindowComponent } from '../base-game.component';
+import { Player } from 'app/game/models/player.class';
+import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-pong',
@@ -19,26 +21,56 @@ import { BaseGameWindowComponent } from '../base-game.component';
       type="text"
       [value]="defaultText + '2'"
       (input)="updateOutputData2(inputElement2.value)" />
-    <div>Ai input: {{ score }}</div>
+    <div>P1 Move: {{ p1Move }}</div>
+    <div>P2 Move: {{ p2Move }}</div>
   `,
 })
-export class PongGameWindowComponent extends BaseGameWindowComponent {
-  public score = 0;
+export class PongGameWindowComponent
+  extends BaseGameWindowComponent
+  implements OnInit
+{
+  public p1Move = 0;
+  public p2Move = 0;
   public defaultText = 'PONG';
+
+  public override ngOnInit(): void {
+    this.emitOutputData();
+    this.players[0].inputData = {
+      move: 0,
+    };
+    this.players[0].expectedDataDescription =
+      'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up';
+    this.players[1].inputData = {
+      move: 0,
+    };
+    this.players[1].expectedDataDescription =
+      'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up';
+  }
 
   protected override gameWindowOutputData: TExchangeData = {
     text: this.defaultText,
     text2: this.defaultText + '2',
-    score: this.score,
-  };
-  protected override gameWindowInputData: TExchangeData = {
-    score: this.score,
+    p1Move: this.p1Move,
+    p2Move: this.p2Move,
   };
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    this.score = (value['score'] as number) | 0;
-    this.gameWindowInputData['score'] = this.score;
-    this.gameWindowOutputData['score'] = this.score;
+    const playerInputData = this.mapReceivedToPlayerAndData(value);
+    if (!playerInputData.data || !playerInputData.player) return;
+
+    if (
+      JSON.stringify(playerInputData.player) === JSON.stringify(this.players[0])
+    ) {
+      this.p1Move = playerInputData.data['move']
+        ? (playerInputData.data['move'] as number)
+        : 0;
+    } else {
+      this.p2Move = playerInputData.data['move']
+        ? (playerInputData.data['move'] as number)
+        : 0;
+    }
+    this.gameWindowOutputData['p1Move'] = this.p1Move;
+    this.gameWindowOutputData['p2Move'] = this.p2Move;
     this.emitOutputData();
   }
 

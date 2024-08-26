@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TExchangeData } from '../../../../models/exchange-data.type';
+import { TExchangeData } from '../../../../../models/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
 
 @Component({
