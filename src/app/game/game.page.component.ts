@@ -5,7 +5,6 @@ import { NgComponentOutlet } from '@angular/common';
 import { Game } from './models/game.class';
 import { games } from './data-access/games';
 import { ConsoleComponent } from './components/console/console.component';
-import { TGameDataSendingType } from './models/game-data-sending-type.enum';
 import { TExchangeData } from './models/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
@@ -63,7 +62,6 @@ import { PlayerSourceType } from './models/player-source-type.enum';
                 isAISocketMenuVisible ? 'right-0' : '-right-64'
               }}"
               [dataToSend]="gameWindowOutputData"
-              [gameDataSendingType]="game.getGameDataSendingType()"
               [gameName]="game.getName()"
               [players]="playersSelected"
               (receivedDataEmitter)="
@@ -217,7 +215,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
     this.logData['game'] = {
       game: this.game.getName(),
-      dataSendingType: TGameDataSendingType[this.game.getGameDataSendingType()],
     };
   }
 }

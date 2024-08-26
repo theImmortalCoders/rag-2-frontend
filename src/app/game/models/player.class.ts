@@ -8,6 +8,7 @@ export class Player {
   private _playerType: PlayerSourceType;
   private isActive: boolean;
   private _inputData: TExchangeData = {};
+  private _expectedDataDescription = '';
 
   public constructor(
     id: number,
@@ -56,5 +57,13 @@ export class Player {
 
   public set inputData(value: TExchangeData) {
     this._inputData = value;
+  }
+
+  public get expectedDataDescription(): string {
+    return this._expectedDataDescription;
+  }
+
+  public set expectedDataDescription(value: string) {
+    this._expectedDataDescription = value;
   }
 }
