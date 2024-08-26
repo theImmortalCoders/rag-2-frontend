@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
+import { E } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +13,15 @@ export class AiSocketService {
 
   public sendDataToSocket(
     dataToSend: TExchangeData,
-    expectedDataToReceive: TExchangeData
+    expectedDataToReceive: TExchangeData,
+    expectedDataDescription: string
   ): void {
     if (this._socket && this.isSocketConnected) {
       this._socket.send(
         JSON.stringify({
           output: dataToSend,
           expected_input: expectedDataToReceive,
+          expected_input_description: expectedDataDescription,
         })
       );
       console.log('Data sent');
@@ -55,12 +58,16 @@ export class AiSocketService {
   public startDataExchange = (
     sendingInterval: number,
     dataToSend: TExchangeData,
-    expectedDataToReceive: TExchangeData
+    expectedDataToReceive: TExchangeData,
+    expectedDataDescription: string
   ): void => {
-    console.log(sendingInterval);
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
-      this.sendDataToSocket(dataToSend, expectedDataToReceive);
+      this.sendDataToSocket(
+        dataToSend,
+        expectedDataToReceive,
+        expectedDataDescription
+      );
     }, sendingInterval);
   };
 

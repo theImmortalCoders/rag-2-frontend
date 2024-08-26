@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { TGameDataSendingType } from '../../../../models/game-data-sending-type.enum';
 
 @Component({
   selector: 'app-socket-connected-menu',
