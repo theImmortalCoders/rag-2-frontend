@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AiSocketMenuComponent } from './ai-socket-menu.component';
 import { AiSocketService } from './services/ai-socket.service';
-import { DebugModeMenuComponent } from './components/debug-mode-menu/debug-mode-menu.component';
-import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mode-panel.component';
+import { DebugModeMenuComponent } from './components/components/debug-mode-menu/debug-mode-menu.component';
+import { DebugModePanelComponent } from './components/components/debug-mode-panel/debug-mode-panel.component';
 import { TExchangeData } from 'app/game/models/exchange-data.type';
 import { EventEmitter } from '@angular/core';
 

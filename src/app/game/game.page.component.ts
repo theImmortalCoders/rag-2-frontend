@@ -62,13 +62,12 @@ import { PlayerSourceType } from './models/player-source-type.enum';
               class="side-menu-container top-52 {{
                 isAISocketMenuVisible ? 'right-0' : '-right-64'
               }}"
-              [setDataToSend]="gameWindowOutputData"
+              [dataToSend]="gameWindowOutputData"
               [gameDataSendingType]="game.getGameDataSendingType()"
               [gameName]="game.getName()"
               [players]="playersSelected"
-              (receivedDataEmitter)="receiveSocketInputData($event)"
-              (logDataEmitter)="
-                logData['ai-socket menu'] = $event
+              (receivedDataEmitter)="
+                receiveSocketInputData($event)
               "></app-ai-socket-menu>
           }
         </div>
@@ -209,12 +208,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
     } else {
       this.game = game;
       this.players = game.getPlayers();
-      this.playersSelected = game
-        .getPlayers()
-        .filter(
-          player =>
-            player.active && player.getPlayerType === PlayerSourceType.SOCKET
-        );
+      this.playersSelected = game.getPlayers();
     }
   }
 
