@@ -1,3 +1,4 @@
+import { TExchangeData } from './exchange-data.type';
 import { PlayerSourceType } from './player-source-type.enum';
 
 export class Player {
@@ -6,6 +7,7 @@ export class Player {
   private isObligatory: boolean;
   private _playerType: PlayerSourceType;
   private isActive: boolean;
+  private _inputData: TExchangeData = {};
 
   public constructor(
     id: number,
@@ -46,5 +48,13 @@ export class Player {
 
   public set setPlayerType(value: PlayerSourceType) {
     this._playerType = value;
+  }
+
+  public get inputData(): TExchangeData {
+    return this._inputData;
+  }
+
+  public set inputData(value: TExchangeData) {
+    this._inputData = value;
   }
 }

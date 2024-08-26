@@ -26,7 +26,7 @@ import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
         <app-debug-mode-menu (debugModeEmitter)="isDebugModeActive = $event" />
         @if (isDebugModeActive) {
           <app-debug-mode-panel
-            [expectedInput]="expectedDataToReceive"
+            [expectedInput]="player.inputData"
             (inputEmitter)="emitDebugSocketInput($event)" />
         } @else {
           <div class="flex flex-col w-full">
@@ -76,13 +76,13 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public gameDataSendingType: TGameDataSendingType =
     TGameDataSendingType.TimeGame;
-  @Input({ required: true }) public expectedDataToReceive: TExchangeData = {};
   @Input({ required: true }) public set setDataToSend(value: TExchangeData) {
     this._dataToSend = value;
     if (this.gameDataSendingType === TGameDataSendingType.EventGame) {
       this.aiSocketService.sendDataToSocket(
         this._dataToSend,
-        this.expectedDataToReceive
+        this._dataToSend
+        // this.expectedDataToReceive
       );
     }
   }
@@ -118,7 +118,8 @@ export class AiSocketMenuComponent implements OnInit, ILoggableDataComponent {
     this.aiSocketService.startDataExchange(
       this.vSendingInterval.value,
       this._dataToSend,
-      this.expectedDataToReceive
+      this._dataToSend
+      // this.expectedDataToReceive
     );
     this.emitLogData();
   };

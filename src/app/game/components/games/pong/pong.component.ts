@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
 import { BaseGameWindowComponent } from '../base-game.component';
 
@@ -19,26 +19,32 @@ import { BaseGameWindowComponent } from '../base-game.component';
       type="text"
       [value]="defaultText + '2'"
       (input)="updateOutputData2(inputElement2.value)" />
-    <div>Ai input: {{ score }}</div>
+    <div>Ai input: {{ p1Move }}</div>
   `,
 })
-export class PongGameWindowComponent extends BaseGameWindowComponent {
-  public score = 0;
+export class PongGameWindowComponent
+  extends BaseGameWindowComponent
+  implements OnInit
+{
+  public p1Move = 0;
   public defaultText = 'PONG';
+
+  public override ngOnInit(): void {
+    this.emitOutputData();
+    // this.players[0].inputData = {
+    //   p1Move: 0,
+    // };
+  }
 
   protected override gameWindowOutputData: TExchangeData = {
     text: this.defaultText,
     text2: this.defaultText + '2',
-    score: this.score,
-  };
-  protected override gameWindowInputData: TExchangeData = {
-    score: this.score,
+    score: this.p1Move,
   };
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    this.score = (value['score'] as number) | 0;
-    this.gameWindowInputData['score'] = this.score;
-    this.gameWindowOutputData['score'] = this.score;
+    this.p1Move = (value['p1Move'] as number) | 0;
+    this.gameWindowOutputData['p1Move'] = this.p1Move;
     this.emitOutputData();
   }
 

@@ -63,9 +63,6 @@ import { PlayerSourceType } from './models/player-source-type.enum';
                 isAISocketMenuVisible ? 'right-0' : '-right-64'
               }}"
               [setDataToSend]="gameWindowOutputData"
-              [expectedDataToReceive]="
-                logData['game window']['input'] | exchange_data
-              "
               [gameDataSendingType]="game.getGameDataSendingType()"
               [gameName]="game.getName()"
               [players]="playersSelected"
@@ -79,16 +76,14 @@ import { PlayerSourceType } from './models/player-source-type.enum';
           @case ('pong') {
             <app-pong
               [setSocketInputDataReceive]="socketInputData"
-              (gameWindowOutputDataEmitter)="
-                receiveGameOutputData($event)
-              "></app-pong>
+              (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
+              [players]="playersSelected"></app-pong>
           }
           @case ('tictactoe') {
             <app-tictactoe
               [setSocketInputDataReceive]="socketInputData"
-              (gameWindowOutputDataEmitter)="
-                receiveGameOutputData($event)
-              "></app-tictactoe>
+              (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
+              [players]="playersSelected"></app-tictactoe>
           }
         }
       }
