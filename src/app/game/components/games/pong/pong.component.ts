@@ -36,9 +36,13 @@ export class PongGameWindowComponent
     this.players[0].inputData = {
       p1Move: 0,
     };
+    this.players[0].expectedDataDescription =
+      'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up';
     this.players[1].inputData = {
       p2Move: 0,
     };
+    this.players[1].expectedDataDescription =
+      'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up';
   }
 
   protected override gameWindowOutputData: TExchangeData = {
@@ -49,8 +53,8 @@ export class PongGameWindowComponent
   };
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    this.p1Move = (value['p1Move'] as number) | this.p1Move;
-    this.p2Move = (value['p2Move'] as number) | this.p2Move;
+    this.p1Move = (value['p1Move'] as number) ? (value['p1Move'] as number) : 0;
+    this.p2Move = (value['p2Move'] as number) ? (value['p2Move'] as number) : 0;
   }
 
   public updateOutputData1(value: string): void {

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { ILoggableDataComponent } from '../../models/loggable-data-component';
-import { TGameDataSendingType } from '../../models/game-data-sending-type.enum';
 import { SocketDomainInputComponent } from './components/components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/components/socket-connected-menu/socket-connected-menu.component';
 import { DebugModeMenuComponent } from './components/components/debug-mode-menu/debug-mode-menu.component';
@@ -26,15 +25,15 @@ import { PlayerSocketMenuComponent } from './components/player-socket-menu.compo
       @for (player of players; track player.id) {
         @if (
           player.active && player.getPlayerType === playerSourceType.SOCKET
-        ) {}
-        <app-player-socket-menu
-          [player]="player"
-          [gameName]="gameName"
-          [gameDataSendingType]="gameDataSendingType"
-          [setDataToSend]="dataToSend"
-          (receivedDataEmitter)="
-            receiveInputData($event)
-          "></app-player-socket-menu>
+        ) {
+          <app-player-socket-menu
+            [player]="player"
+            [gameName]="gameName"
+            [setDataToSend]="dataToSend"
+            (receivedDataEmitter)="
+              receiveInputData($event)
+            "></app-player-socket-menu>
+        }
       }
     </div>
   `,
@@ -42,8 +41,6 @@ import { PlayerSocketMenuComponent } from './components/player-socket-menu.compo
 export class AiSocketMenuComponent {
   @Input({ required: true }) public players: Player[] = [];
   @Input({ required: true }) public gameName = '';
-  @Input({ required: true }) public gameDataSendingType: TGameDataSendingType =
-    TGameDataSendingType.TimeGame;
   @Input({ required: true }) public dataToSend: TExchangeData = {};
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();

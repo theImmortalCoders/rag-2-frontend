@@ -7,7 +7,6 @@ import {
   inject,
 } from '@angular/core';
 import { TExchangeData } from 'app/game/models/exchange-data.type';
-import { TGameDataSendingType } from 'app/game/models/game-data-sending-type.enum';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { AiSocketService } from '../services/ai-socket.service';
 import { Player } from 'app/game/models/player.class';
@@ -48,16 +47,15 @@ import { SocketConnectedMenuComponent } from './components/socket-connected-menu
               class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
               Disconnect
             </button>
-            @if (gameDataSendingType === tGameDataSendingType.TimeGame) {
-              <app-socket-connected-menu
-                [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"
-                [vSendingInterval]="vSendingInterval"
-                [socket]="aiSocketService.getSocket()"
-                [startDataExchange]="onStartDataExchangeClick"
-                [stopDataExchange]="
-                  aiSocketService.stopDataExchange
-                "></app-socket-connected-menu>
-            }
+
+            <app-socket-connected-menu
+              [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"
+              [vSendingInterval]="vSendingInterval"
+              [socket]="aiSocketService.getSocket()"
+              [startDataExchange]="onStartDataExchangeClick"
+              [stopDataExchange]="
+                aiSocketService.stopDataExchange
+              "></app-socket-connected-menu>
           } @else {
             <button
               (click)="onConnectButtonClick()"
@@ -74,16 +72,14 @@ export class PlayerSocketMenuComponent implements OnInit {
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gameName = '';
   public recentPhrases: string[] = [];
-  @Input({ required: true }) public gameDataSendingType: TGameDataSendingType =
-    TGameDataSendingType.TimeGame;
   @Input({ required: true }) public set setDataToSend(value: TExchangeData) {
     this._dataToSend = value;
-    if (this.gameDataSendingType === TGameDataSendingType.EventGame) {
-      this.aiSocketService.sendDataToSocket(
-        this._dataToSend,
-        this.player.inputData
-      );
-    }
+
+    this.aiSocketService.sendDataToSocket(
+      this._dataToSend,
+      this.player.inputData,
+      this.player.expectedDataDescription
+    );
   }
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
@@ -93,7 +89,6 @@ export class PlayerSocketMenuComponent implements OnInit {
   public isDebugModeActive = false;
   public vSendingInterval = { value: 500 };
   public socketUrl = '';
-  public tGameDataSendingType = TGameDataSendingType;
   public playerSourceType = PlayerSourceType;
   public aiSocketService = inject(AiSocketService);
 
@@ -105,7 +100,8 @@ export class PlayerSocketMenuComponent implements OnInit {
     this.aiSocketService.startDataExchange(
       this.vSendingInterval.value,
       this._dataToSend,
-      this.player.inputData
+      this.player.inputData,
+      this.player.expectedDataDescription
     );
   };
 
