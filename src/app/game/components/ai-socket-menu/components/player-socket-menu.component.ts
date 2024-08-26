@@ -72,11 +72,11 @@ import { SocketConnectedMenuComponent } from './components/socket-connected-menu
 export class PlayerSocketMenuComponent implements OnInit {
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gameName = '';
-  public recentPhrases: string[] = [];
   @Input({ required: true }) public dataToSend: TExchangeData = {};
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
+  public recentPhrases: string[] = [];
   public isDebugModeActive = false;
   public vSendingInterval = { value: 500 };
   public socketUrl = '';

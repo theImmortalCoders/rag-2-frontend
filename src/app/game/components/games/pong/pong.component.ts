@@ -55,18 +55,19 @@ export class PongGameWindowComponent
   };
 
   public override set setSocketInputDataReceive(value: TExchangeData) {
-    const data = value['data'] as TExchangeData;
-    if (!data) return;
+    const playerInputData = this.mapReceivedToPlayerAndData(value);
+    if (!playerInputData.data || !playerInputData.player) return;
+
     if (
-      JSON.stringify(value['player'] as Player) ===
-      JSON.stringify(this.players[0])
+      JSON.stringify(playerInputData.player) === JSON.stringify(this.players[0])
     ) {
-      this.p1Move = data['move'] ? (data['move'] as number) : 0;
-    } else if (
-      JSON.stringify(value['player'] as Player) ===
-      JSON.stringify(this.players[1])
-    ) {
-      this.p2Move = data['move'] ? (data['move'] as number) : 0;
+      this.p1Move = playerInputData.data['move']
+        ? (playerInputData.data['move'] as number)
+        : 0;
+    } else {
+      this.p2Move = playerInputData.data['move']
+        ? (playerInputData.data['move'] as number)
+        : 0;
     }
     this.gameWindowOutputData['p1Move'] = this.p1Move;
     this.gameWindowOutputData['p2Move'] = this.p2Move;

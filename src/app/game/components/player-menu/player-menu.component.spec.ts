@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerMenuComponent } from './player-menu.component';
 import { By } from '@angular/platform-browser';
-import { EventEmitter } from '@angular/core';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { Player } from 'app/game/models/player.class';
 import { AiSocketService } from '../ai-socket-menu/services/ai-socket.service';

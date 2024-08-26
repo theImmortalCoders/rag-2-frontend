@@ -1,6 +1,4 @@
-import { KeyValuePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { Player } from 'app/game/models/player.class';
 
@@ -16,7 +14,7 @@ import { Player } from 'app/game/models/player.class';
         <select
           #playerSourceSelect
           [attr.disabled]="!player.active ? 'disabled' : null"
-          (change)="updatePlayerSource(player, playerSourceSelect.value)">
+          (change)="updateSources(player, playerSourceSelect.value)">
           @for (source of playerSourceType; track source) {
             <option [value]="source">
               {{ source }}
@@ -45,7 +43,7 @@ export class PlayerMenuComponent {
     isNaN(Number(key))
   );
 
-  public updatePlayerSource(player: Player, value: string): void {
+  public updateSources(player: Player, value: string): void {
     player.setPlayerType = value as unknown as PlayerSourceType;
     this.playerSourceChangeEmitter.emit(this.players);
   }
