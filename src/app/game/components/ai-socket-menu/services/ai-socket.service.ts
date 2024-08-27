@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TExchangeData } from '../../../models/exchange-data.type';
-import { E } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root',
@@ -10,23 +9,7 @@ export class AiSocketService {
   private isSocketConnected = false;
   private _sendingIntervalID: unknown | null = null;
   private isDataSendingActive = false;
-
-  public sendDataToSocket(
-    dataToSend: TExchangeData,
-    expectedDataToReceive: TExchangeData,
-    expectedDataDescription: string
-  ): void {
-    if (this._socket && this.isSocketConnected) {
-      this._socket.send(
-        JSON.stringify({
-          output: dataToSend,
-          expected_input: expectedDataToReceive,
-          expected_input_description: expectedDataDescription,
-        })
-      );
-      console.log('Data sent');
-    }
-  }
+  private _dataToSend: TExchangeData = {};
 
   public connect(
     socketUrl: string,
@@ -57,14 +40,13 @@ export class AiSocketService {
 
   public startDataExchange = (
     sendingInterval: number,
-    dataToSend: TExchangeData,
     expectedDataToReceive: TExchangeData,
     expectedDataDescription: string
   ): void => {
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
       this.sendDataToSocket(
-        dataToSend,
+        this._dataToSend,
         expectedDataToReceive,
         expectedDataDescription
       );
@@ -77,6 +59,23 @@ export class AiSocketService {
       clearInterval(this._sendingIntervalID as number);
     }
   };
+
+  private sendDataToSocket(
+    dataToSend: TExchangeData,
+    expectedDataToReceive: TExchangeData,
+    expectedDataDescription: string
+  ): void {
+    if (this._socket && this.isSocketConnected) {
+      this._socket.send(
+        JSON.stringify({
+          output: dataToSend,
+          expected_input: expectedDataToReceive,
+          expected_input_description: expectedDataDescription,
+        })
+      );
+      console.log('Data sent');
+    }
+  }
 
   //
 
@@ -94,5 +93,9 @@ export class AiSocketService {
 
   public getSendingInterval(): number {
     return this._sendingIntervalID as number;
+  }
+
+  public setDataToSend(data: TExchangeData): void {
+    this._dataToSend = data;
   }
 }

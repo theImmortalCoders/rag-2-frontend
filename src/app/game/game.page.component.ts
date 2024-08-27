@@ -1,5 +1,11 @@
 /* eslint-disable max-lines */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  AfterViewInit,
+} from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { Game } from './models/game.class';
@@ -45,7 +51,7 @@ import { PlayerSourceType } from './models/player-source-type.enum';
             (logDataEmitter)="logData['data menu'] = $event"
             [gameName]="game.getName()"
             [setDataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
-          @if (playersSelected.length > 0) {
+          @if (getSocketPlayers().length > 0) {
             <button
               (click)="toggleAISocketMenu()"
               class="side-menu-button top-52 w-12 h-56 {{
@@ -73,13 +79,13 @@ import { PlayerSourceType } from './models/player-source-type.enum';
             <app-pong
               [setSocketInputDataReceive]="socketInputData"
               (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
-              [players]="playersSelected"></app-pong>
+              [players]="players"></app-pong>
           }
           @case ('tictactoe') {
             <app-tictactoe
               [setSocketInputDataReceive]="socketInputData"
               (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
-              [players]="playersSelected"></app-tictactoe>
+              [players]="players"></app-tictactoe>
           }
         }
       }
@@ -191,6 +197,13 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public updatePlayers(players: Player[]): void {
     this.players = players;
     this.playersSelected = players.filter(
+      player =>
+        player.active && player.getPlayerType === PlayerSourceType.SOCKET
+    );
+  }
+
+  public getSocketPlayers(): Player[] {
+    return this.playersSelected.filter(
       player =>
         player.active && player.getPlayerType === PlayerSourceType.SOCKET
     );
