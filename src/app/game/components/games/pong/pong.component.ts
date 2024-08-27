@@ -58,9 +58,7 @@ export class PongGameWindowComponent
     const playerInputData = this.mapReceivedToPlayerAndData(value);
     if (!playerInputData.data || !playerInputData.player) return;
 
-    if (
-      JSON.stringify(playerInputData.player) === JSON.stringify(this.players[0])
-    ) {
+    if (playerInputData.player.id === this.players[0].id) {
       this.p1Move = playerInputData.data['move']
         ? (playerInputData.data['move'] as number)
         : 0;

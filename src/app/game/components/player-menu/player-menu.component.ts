@@ -16,7 +16,7 @@ import { Player } from 'app/game/models/player.class';
           [attr.disabled]="!player.active ? 'disabled' : null"
           (change)="updateSources(player, playerSourceSelect.value)">
           @for (source of playerSourceType; track source) {
-            <option [value]="source">
+            <option [value]="source" [selected]="source === player.playerType">
               {{ source }}
             </option>
           }

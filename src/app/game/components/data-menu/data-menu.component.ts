@@ -151,9 +151,8 @@ export class DataMenuComponent implements OnInit {
     for (const key in newData) {
       newData[key] = this.dataPossibleToPersist[key];
     }
-    delete this.dataToPersist['timestamp'];
     if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
-      this.dataToPersist['timestamp'] = new Date().toISOString();
+      newData['timestamp'] = new Date().toISOString();
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);
     }
