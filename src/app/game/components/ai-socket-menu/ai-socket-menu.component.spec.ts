@@ -34,7 +34,6 @@ describe('AiSocketMenuComponent', () => {
         .and.callFake((_url, onOpen, _onMessage, _onClose) => {
           onOpen();
         }),
-      sendDataToSocket: jasmine.createSpy('sendDataToSocket'),
     };
 
     TestBed.configureTestingModule({

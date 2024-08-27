@@ -72,10 +72,14 @@ import { SocketConnectedMenuComponent } from './components/socket-connected-menu
 export class PlayerSocketMenuComponent implements OnInit {
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gameName = '';
-  @Input({ required: true }) public dataToSend: TExchangeData = {};
+  @Input({ required: true }) public set setDataToSend(data: TExchangeData) {
+    this.dataToSend = data;
+    this.aiSocketService.setDataToSend(data);
+  }
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
+  public dataToSend: TExchangeData = {};
   public recentPhrases: string[] = [];
   public isDebugModeActive = false;
   public vSendingInterval = { value: 500 };
@@ -90,7 +94,6 @@ export class PlayerSocketMenuComponent implements OnInit {
   public onStartDataExchangeClick = (): void => {
     this.aiSocketService.startDataExchange(
       this.vSendingInterval.value,
-      this.dataToSend,
       this.player.inputData,
       this.player.expectedDataDescription
     );
