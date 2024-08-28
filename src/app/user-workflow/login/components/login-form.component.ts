@@ -49,6 +49,13 @@ import { Subscription } from 'rxjs';
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Log in
       </button>
+      <button class="w-fit text-start text-sm hover:underline">
+        Forget your password?
+      </button>
+      <button
+        class=" rounded-md px-2 py-[6px] bg-mainGray text-mainOrange border-[1px] border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-sm">
+        Resend your activation email
+      </button>
       @if ((loginForm.invalid && loginForm.touched) || errorMessage !== null) {
         <div class="text-red-500">
           @for (error of getFormErrors(); track error) {
