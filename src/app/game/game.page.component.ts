@@ -7,9 +7,9 @@ import { ConsoleComponent } from './components/console/console.component';
 import { TExchangeData } from './models/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
-import { PongGameWindowComponent } from './components/games/pong/pong.component';
+import { PongGameWindowComponent } from './games/pong/pong.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
-import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
+import { TictactoeGameWindowComponent } from './games/tictactoe/tictactoe.component';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 import { Subscription } from 'rxjs';
 import { Player } from './models/player.class';
@@ -43,28 +43,13 @@ import { PlayerSourceType } from './models/player-source-type.enum';
             }}"
             (logDataEmitter)="logData['data menu'] = $event"
             [gameName]="game.getName()"
-            [setDataPossibleToPersist]="gameWindowOutputData"></app-data-menu>
+            [setDataPossibleToPersist]="gameWindowOutputData" />
           @if (getSocketPlayers().length > 0) {
-            <button
-              (click)="toggleAISocketMenu()"
-              class="side-menu-button top-52 w-12 h-56 {{
-                isAISocketMenuVisible ? 'right-64' : 'right-0'
-              }}">
-              <span
-                class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.325em]"
-                >AI&nbsp;SOCKET</span
-              >
-            </button>
             <app-ai-socket-menu
-              class="side-menu-container top-52 {{
-                isAISocketMenuVisible ? 'right-0' : '-right-64'
-              }}"
               [dataToSend]="gameWindowOutputData"
               [gameName]="game.getName()"
               [players]="playersSelected"
-              (receivedDataEmitter)="
-                receiveSocketInputData($event)
-              "></app-ai-socket-menu>
+              (receivedDataEmitter)="receiveSocketInputData($event)" />
           }
         </div>
         @switch (game.getName()) {
@@ -72,13 +57,13 @@ import { PlayerSourceType } from './models/player-source-type.enum';
             <app-pong
               [setSocketInputDataReceive]="socketInputData"
               (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
-              [players]="players"></app-pong>
+              [players]="players" />
           }
           @case ('tictactoe') {
             <app-tictactoe
               [setSocketInputDataReceive]="socketInputData"
               (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
-              [players]="players"></app-tictactoe>
+              [players]="players" />
           }
         }
       }
@@ -113,14 +98,9 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public socketInputData: TExchangeData = {};
   public gameWindowOutputData: TExchangeData = {};
   public isDataMenuVisible = false;
-  public isAISocketMenuVisible = false;
 
   public toggleDataMenu(): void {
     this.isDataMenuVisible = !this.isDataMenuVisible;
-  }
-
-  public toggleAISocketMenu(): void {
-    this.isAISocketMenuVisible = !this.isAISocketMenuVisible;
   }
 
   public ngOnInit(): void {
@@ -136,7 +116,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
         const currentUrl = event.url.split('?')[0]; // Get the path part of the URL
         if (this._previousUrl !== currentUrl) {
           this.isDataMenuVisible = false;
-          this.isAISocketMenuVisible = false;
           this._previousUrl = currentUrl; // Update the previous URL
         }
       }

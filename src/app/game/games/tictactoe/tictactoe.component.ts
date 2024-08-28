@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { TExchangeData } from '../../../models/exchange-data.type';
+import { TExchangeData } from '../../models/exchange-data.type';
 
 @Component({
   selector: 'app-tictactoe',

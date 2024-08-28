@@ -1,6 +1,6 @@
-import { PongGameWindowComponent } from '../components/games/pong/pong.component';
+import { PongGameWindowComponent } from '../games/pong/pong.component';
 import { Game } from '../models/game.class';
-import { TictactoeGameWindowComponent } from '../components/games/tictactoe/tictactoe.component';
+import { TictactoeGameWindowComponent } from '../games/tictactoe/tictactoe.component';
 import { Player } from '../models/player.class';
 import { PlayerSourceType } from '../models/player-source-type.enum';
 

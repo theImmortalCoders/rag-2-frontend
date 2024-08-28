@@ -1,68 +1,77 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AiSocketMenuComponent } from './ai-socket-menu.component';
-import { AiSocketService } from './services/ai-socket.service';
-import { DebugModeMenuComponent } from './components/components/debug-mode-menu/debug-mode-menu.component';
-import { DebugModePanelComponent } from './components/components/debug-mode-panel/debug-mode-panel.component';
+import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { TExchangeData } from 'app/game/models/exchange-data.type';
-import { EventEmitter } from '@angular/core';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Player } from 'app/game/models/player.class';
+
+@Component({
+  selector: 'app-player-socket-menu',
+  template: '',
+})
+class MockPlayerSocketMenuComponent {
+  @Input() public player!: Player;
+  @Input() public gameName!: string;
+  @Input() public setDataToSend!: TExchangeData;
+  @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
+}
 
 describe('AiSocketMenuComponent', () => {
   let component: AiSocketMenuComponent;
   let fixture: ComponentFixture<AiSocketMenuComponent>;
-  let aiSocketServiceStub: Partial<AiSocketService>;
-  let socketService: AiSocketService;
 
-  beforeEach(waitForAsync(() => {
-    aiSocketServiceStub = {
-      getIsSocketConnected: jasmine
-        .createSpy('getIsSocketConnected')
-        .and.returnValue(false),
-      getIsDataSendingActive: jasmine
-        .createSpy('getIsDataSendingActive')
-        .and.returnValue(false),
-      getSocket: jasmine.createSpy('getSocket').and.returnValue({
-        close: jasmine.createSpy('close'),
-      } as unknown as WebSocket),
-      stopDataExchange: jasmine.createSpy('stopDataExchange'),
-      startDataExchange: jasmine.createSpy('startDataExchange'),
-      connect: jasmine
-        .createSpy('connect')
-        .and.callFake((_url, onOpen, _onMessage, _onClose) => {
-          onOpen();
-        }),
-    };
-
-    TestBed.configureTestingModule({
-      imports: [
-        AiSocketMenuComponent,
-        DebugModeMenuComponent,
-        DebugModePanelComponent,
-      ],
-      providers: [
-        HttpClient,
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            paramMap: of(convertToParamMap({ gameName: 'pong' })),
-          },
-        },
-        { provide: AiSocketService, useValue: aiSocketServiceStub },
-      ],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AiSocketMenuComponent],
+      declarations: [MockPlayerSocketMenuComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AiSocketMenuComponent);
     component = fixture.componentInstance;
-    socketService = TestBed.inject(AiSocketService);
+    component.players = [
+      { id: 1, active: true, getPlayerType: PlayerSourceType.SOCKET } as Player,
+      {
+        id: 2,
+        active: false,
+        getPlayerType: PlayerSourceType.SOCKET,
+      } as Player,
+    ];
+    component.gameName = 'Test Game';
+    component.dataToSend = { key: 'value' } as TExchangeData;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should toggle AI socket menu visibility', () => {
+    expect(component.isAISocketMenuVisible).toBeFalse();
+    component.toggleAISocketMenu();
+    expect(component.isAISocketMenuVisible).toBeTrue();
+    component.toggleAISocketMenu();
+    expect(component.isAISocketMenuVisible).toBeFalse();
+  });
+
+  it('should emit received data', () => {
+    spyOn(component.receivedDataEmitter, 'emit');
+    const data: TExchangeData = { key: 'value' };
+    component.receiveInputData(data);
+    expect(component.receivedDataEmitter.emit).toHaveBeenCalledWith(data);
+  });
+
+  it('should apply correct classes based on AI socket menu visibility', () => {
+    const menuDiv = fixture.debugElement.query(
+      By.css('div.side-menu-container')
+    );
+    expect(menuDiv.nativeElement.className).toContain('-right-64');
+
+    component.toggleAISocketMenu();
+    fixture.detectChanges();
+
+    expect(menuDiv.nativeElement.className).toContain('right-0');
   });
 });

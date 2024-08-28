@@ -6,8 +6,8 @@ import { GamePageComponent } from './game.page.component';
 import { ConsoleComponent } from './components/console/console.component';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
-import { PongGameWindowComponent } from './components/games/pong/pong.component';
-import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
+import { PongGameWindowComponent } from './games/pong/pong.component';
+import { TictactoeGameWindowComponent } from './games/tictactoe/tictactoe.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 import { games } from './data-access/games';
@@ -66,13 +66,6 @@ describe('GamePageComponent', () => {
     expect(component.isDataMenuVisible).toBe(true);
     component.toggleDataMenu();
     expect(component.isDataMenuVisible).toBe(false);
-  });
-
-  it('should toggle AI socket menu visibility', () => {
-    component.toggleAISocketMenu();
-    expect(component.isAISocketMenuVisible).toBe(true);
-    component.toggleAISocketMenu();
-    expect(component.isAISocketMenuVisible).toBe(false);
   });
 
   it('should update logData when receiveGameOutputData is called', () => {
