@@ -25,23 +25,9 @@ import { PlayerSourceType } from './models/player-source-type.enum';
         <app-player-menu
           class="absolute top-52 left-0"
           [players]="players"
-          (playerSourceChangeEmitter)="updatePlayers($event)"></app-player-menu>
+          (playerSourceChangeEmitter)="updatePlayers($event)" />
         <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
-          <button
-            (click)="toggleDataMenu()"
-            class="side-menu-button top-0 w-12 h-44 {{
-              isDataMenuVisible ? 'right-64' : 'right-0'
-            }}">
-            <span
-              class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.45em]"
-              >DATA</span
-            >
-          </button>
           <app-data-menu
-            class="side-menu-container top-0 {{
-              isDataMenuVisible ? 'right-0' : '-right-64'
-            }}"
-            (logDataEmitter)="logData['data menu'] = $event"
             [gameName]="game.getName()"
             [setDataPossibleToPersist]="gameWindowOutputData" />
           @if (getSocketPlayers().length > 0) {
@@ -97,11 +83,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   public socketInputData: TExchangeData = {};
   public gameWindowOutputData: TExchangeData = {};
-  public isDataMenuVisible = false;
-
-  public toggleDataMenu(): void {
-    this.isDataMenuVisible = !this.isDataMenuVisible;
-  }
 
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
@@ -115,7 +96,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationStart) {
         const currentUrl = event.url.split('?')[0]; // Get the path part of the URL
         if (this._previousUrl !== currentUrl) {
-          this.isDataMenuVisible = false;
           this._previousUrl = currentUrl; // Update the previous URL
         }
       }

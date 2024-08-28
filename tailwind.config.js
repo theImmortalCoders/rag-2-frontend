@@ -71,7 +71,7 @@ module.exports = {
             {},
         },
         '.side-menu-container': {
-          '@apply flex flex-row shadow-sideMenuShadow absolute transition-all ease-in-out duration-700':
+          '@apply flex flex-col shadow-sideMenuShadow absolute transition-all ease-in-out duration-700':
             {},
         },
       });
