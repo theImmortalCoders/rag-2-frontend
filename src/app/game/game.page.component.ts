@@ -1,8 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { NgComponentOutlet } from '@angular/common';
 import { Game } from './models/game.class';
-import { games } from './data-access/games';
 import { ConsoleComponent } from './components/console/console.component';
 import { TExchangeData } from './models/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
@@ -10,15 +7,25 @@ import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-men
 import { PongGameWindowComponent } from './games/pong/pong.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { TictactoeGameWindowComponent } from './games/tictactoe/tictactoe.component';
-import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 import { Subscription } from 'rxjs';
 import { Player } from './models/player.class';
 import { PlayerMenuComponent } from './components/player-menu/player-menu.component';
 import { PlayerSourceType } from './models/player-source-type.enum';
+import { games } from './data/games';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-game',
   standalone: true,
+  imports: [
+    PlayerMenuComponent,
+    DataMenuComponent,
+    AiSocketMenuComponent,
+    PongGameWindowComponent,
+    TictactoeGameWindowComponent,
+    ConsoleComponent,
+    AuthRequiredDirective,
+  ],
   template: `
     <div class="min-h-all w-full flex flex-col justify-between">
       @if (game) {
@@ -30,7 +37,7 @@ import { PlayerSourceType } from './models/player-source-type.enum';
           <app-data-menu
             [gameName]="game.getName()"
             [setDataPossibleToPersist]="gameWindowOutputData" />
-          @if (getSocketPlayers().length > 0) {
+          @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
             <app-ai-socket-menu
               [dataToSend]="gameWindowOutputData"
               [gameName]="game.getName()"
@@ -56,22 +63,10 @@ import { PlayerSourceType } from './models/player-source-type.enum';
       <app-console [logData]="logData" />
     </div>
   `,
-  imports: [
-    NgComponentOutlet,
-    ConsoleComponent,
-    DataMenuComponent,
-    AuthRequiredDirective,
-    AiSocketMenuComponent,
-    PongGameWindowComponent,
-    TictactoeGameWindowComponent,
-    ExchangeDataPipe,
-    PlayerMenuComponent,
-  ],
 })
 export class GamePageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
-
   private _routerSubscription: Subscription | null = null;
   private _previousUrl = '';
 
@@ -90,20 +85,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
       this.loadGame();
     });
 
-    this.updateGameLogData();
-
-    this._routerSubscription = this._router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        const currentUrl = event.url.split('?')[0]; // Get the path part of the URL
-        if (this._previousUrl !== currentUrl) {
-          this._previousUrl = currentUrl; // Update the previous URL
-        }
-      }
-    });
-  }
-
-  public receivePlayerMenuOutputData(data: TExchangeData): void {
-    this.logData['player menu'] = data;
+    this.handleRouterParams();
   }
 
   public receiveGameOutputData(data: TExchangeData): void {
@@ -125,14 +107,11 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   public updatePlayers(players: Player[]): void {
     this.players = players;
-    this.playersSelected = players.filter(
-      player =>
-        player.active && player.getPlayerType === PlayerSourceType.SOCKET
-    );
+    this.playersSelected = this.filterPlayersByActiveAndSocket(players);
   }
 
-  public getSocketPlayers(): Player[] {
-    return this.playersSelected.filter(
+  public filterPlayersByActiveAndSocket(players: Player[]): Player[] {
+    return players.filter(
       player =>
         player.active && player.getPlayerType === PlayerSourceType.SOCKET
     );
@@ -151,11 +130,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateGameLogData(): void {
-    if (!this.game) return;
-
-    this.logData['game'] = {
-      game: this.game.getName(),
-    };
+  private handleRouterParams(): void {
+    this._routerSubscription = this._router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        const currentUrl = event.url.split('?')[0]; // Get the path part of the URL
+        if (this._previousUrl !== currentUrl) {
+          this._previousUrl = currentUrl;
+        }
+      }
+    });
   }
 }

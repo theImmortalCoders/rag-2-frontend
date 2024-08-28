@@ -66,7 +66,6 @@ export class DataMenuComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dataToPersist = JSON.parse(JSON.stringify(this.dataPossibleToPersist));
-
     this.updateDataToPersistFromURL();
   }
 
