@@ -1,11 +1,4 @@
-/* eslint-disable max-lines */
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  inject,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { NgComponentOutlet } from '@angular/common';
 import { Game } from './models/game.class';
@@ -89,23 +82,7 @@ import { PlayerSourceType } from './models/player-source-type.enum';
           }
         }
       }
-      <div class="sticky bottom-0 left-0 w-full z-50">
-        <button
-          class="w-full bg-lightGray tracking-[0.15em] sticky z-50 top-0 transition-all ease-in-out duration-700 border-b-2 border-mainOrange hover:border-green-500 text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer"
-          (click)="toggleConsole()">
-          console
-        </button>
-        <div
-          class="w-full max-h-96 transition-all ease-in-out duration-700 {{
-            isConsoleVisible ? 'h-72' : 'h-0'
-          }} bg-lightGray overflow-y-scroll z-50">
-          <app-console
-            [logData]="logData"
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-start gap-y-6 transition-all ease-in-out duration-700 {{
-              isConsoleVisible ? 'p-10' : 'p-0'
-            }}" />
-        </div>
-      </div>
+      <app-console [logData]="logData" />
     </div>
   `,
   imports: [
@@ -135,14 +112,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   public socketInputData: TExchangeData = {};
   public gameWindowOutputData: TExchangeData = {};
-
-  public isConsoleVisible = false;
   public isDataMenuVisible = false;
   public isAISocketMenuVisible = false;
-
-  public toggleConsole(): void {
-    this.isConsoleVisible = !this.isConsoleVisible;
-  }
 
   public toggleDataMenu(): void {
     this.isDataMenuVisible = !this.isDataMenuVisible;
@@ -164,7 +135,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationStart) {
         const currentUrl = event.url.split('?')[0]; // Get the path part of the URL
         if (this._previousUrl !== currentUrl) {
-          this.isConsoleVisible = false;
           this.isDataMenuVisible = false;
           this.isAISocketMenuVisible = false;
           this._previousUrl = currentUrl; // Update the previous URL
