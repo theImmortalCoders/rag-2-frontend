@@ -9,11 +9,13 @@ import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoin
 import { IUserLoginRequest } from 'app/shared/models/user.models';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ForgotPasswordComponent } from './forgot-password.component';
+import { NotificationService } from 'app/shared/services/notification.service';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ForgotPasswordComponent],
   template: `
     <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
     <form
@@ -49,9 +51,7 @@ import { Subscription } from 'rxjs';
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Log in
       </button>
-      <button class="w-fit text-start text-sm hover:underline">
-        Forget your password?
-      </button>
+      <app-forgot-password class="flex flex-col space-y-4" />
       @if ((loginForm.invalid && loginForm.touched) || errorMessage !== null) {
         <div class="text-red-500">
           @for (error of getFormErrors(); track error) {
@@ -66,16 +66,13 @@ import { Subscription } from 'rxjs';
         <button
           type="button"
           (click)="resendConfirmationEmail(loginForm.value.email || '')"
-          class=" rounded-md px-2 py-[6px] bg-mainGray text-mainOrange border-[1px] border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-sm">
+          class="rounded-md px-2 py-[6px] bg-mainGray text-mainOrange border-[1px] border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-sm">
           Resend your activation email
         </button>
       }
-      @if (resendMessage.message !== '') {
-        <p
-          class="{{
-            resendMessage.color === 'red' ? 'text-red-500' : 'text-green-500'
-          }}">
-          {{ resendMessage.message }}
+      @if (resendMessage !== '') {
+        <p class="text-red-500">
+          {{ resendMessage }}
         </p>
       }
     </form>
@@ -85,6 +82,7 @@ export class LoginFormComponent implements OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
+  private _notificationService = inject(NotificationService);
   private _router: Router = new Router();
 
   private _loginSubscription: Subscription | null = null;
@@ -92,7 +90,7 @@ export class LoginFormComponent implements OnDestroy {
 
   public errorMessage: string | null = null;
 
-  public resendMessage = { message: '', color: 'red' };
+  public resendMessage = '';
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -127,13 +125,13 @@ export class LoginFormComponent implements OnDestroy {
       .resendConfirmationEmail(email)
       .subscribe({
         next: () => {
-          this.resendMessage = {
-            message: 'Confirmation email resend successfully',
-            color: 'green',
-          };
+          this._notificationService.addNotification(
+            'The confirmation link has been resend!'
+          );
+          this.resendMessage = '';
         },
         error: (error: string) => {
-          this.resendMessage = { message: error, color: 'red' };
+          this.resendMessage = error;
         },
       });
   }
