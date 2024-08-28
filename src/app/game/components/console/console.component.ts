@@ -1,33 +1,44 @@
 import { Component, Input } from '@angular/core';
-import { JsonPipe, KeyValuePipe } from '@angular/common';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
+import { ConsoleFieldsetComponent } from './console-fieldset/console-fieldset.component';
 
 @Component({
   selector: 'app-console',
   standalone: true,
+  imports: [ExchangeDataPipe, ConsoleFieldsetComponent],
   template: `
-    @for (data of logData | keyvalue; track data.key) {
-      <div class="ml-4 max-w-60 lg:max-w-72 overflow-y-auto">
-        <span class="font-bold text-base xl:text-lg font-mono"
-          >{{ data.key }}:</span
-        >
-        @if (isTLogData(data.value)) {
-          <app-console [logData]="data.value | exchange_data" />
-        } @else {
-          <span class="ml-2 text-sm xl:text-base text-mainCreme">{{
-            data.value
-          }}</span>
-        }
+    <div class="sticky bottom-0 left-0 w-full z-50">
+      <button [className]="consoleClasses['button']" (click)="toggleConsole()">
+        console
+      </button>
+      <div
+        [className]="
+          consoleClasses['consoleContainer'] +
+          (isConsoleVisible ? ' h-72' : ' h-0')
+        ">
+        <app-console-fieldset
+          [logData]="logData | exchange_data"
+          [className]="
+            consoleClasses['consoleFieldset'] +
+            (isConsoleVisible ? ' p-10' : ' p-0')
+          " />
       </div>
-    }
+    </div>
   `,
-  imports: [KeyValuePipe, ExchangeDataPipe],
 })
 export class ConsoleComponent {
   @Input({ required: true }) public logData: TExchangeData = {};
+  public isConsoleVisible = false;
 
-  public isTLogData(value: unknown): boolean {
-    return value instanceof Object;
+  public consoleClasses: TExchangeData = {
+    button: `w-full bg-lightGray tracking-[0.15em] sticky z-50 top-0 transition-all ease-in-out duration-700 border-b-2 
+      border-mainOrange hover:border-green-500 text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer`,
+    consoleContainer: `w-full max-h-96 transition-all ease-in-out duration-700 bg-lightGray overflow-y-scroll z-50 `,
+    consoleFieldset: `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-start gap-y-6 transition-all ease-in-out duration-700`,
+  };
+
+  public toggleConsole(): void {
+    this.isConsoleVisible = !this.isConsoleVisible;
   }
 }

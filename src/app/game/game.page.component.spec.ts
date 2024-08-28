@@ -61,13 +61,6 @@ describe('GamePageComponent', () => {
     expect(component.game).toEqual(games['pong']);
   });
 
-  it('should toggle console visibility', () => {
-    component.toggleConsole();
-    expect(component.isConsoleVisible).toBe(true);
-    component.toggleConsole();
-    expect(component.isConsoleVisible).toBe(false);
-  });
-
   it('should toggle data menu visibility', () => {
     component.toggleDataMenu();
     expect(component.isDataMenuVisible).toBe(true);
