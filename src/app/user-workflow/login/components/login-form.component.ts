@@ -52,10 +52,6 @@ import { Subscription } from 'rxjs';
       <button class="w-fit text-start text-sm hover:underline">
         Forget your password?
       </button>
-      <button
-        class=" rounded-md px-2 py-[6px] bg-mainGray text-mainOrange border-[1px] border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-sm">
-        Resend your activation email
-      </button>
       @if ((loginForm.invalid && loginForm.touched) || errorMessage !== null) {
         <div class="text-red-500">
           @for (error of getFormErrors(); track error) {
@@ -65,6 +61,22 @@ import { Subscription } from 'rxjs';
             <p>{{ errorMessage }}</p>
           }
         </div>
+      }
+      @if (errorMessage === 'Mail not confirmed') {
+        <button
+          type="button"
+          (click)="resendConfirmationEmail(loginForm.value.email || '')"
+          class=" rounded-md px-2 py-[6px] bg-mainGray text-mainOrange border-[1px] border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-sm">
+          Resend your activation email
+        </button>
+      }
+      @if (resendMessage.message !== '') {
+        <p
+          class="{{
+            resendMessage.color === 'red' ? 'text-red-500' : 'text-green-500'
+          }}">
+          {{ resendMessage.message }}
+        </p>
       }
     </form>
   `,
@@ -76,8 +88,11 @@ export class LoginFormComponent implements OnDestroy {
   private _router: Router = new Router();
 
   private _loginSubscription: Subscription | null = null;
+  private _resendEmailSubscription: Subscription | null = null;
 
   public errorMessage: string | null = null;
+
+  public resendMessage = { message: '', color: 'red' };
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -107,6 +122,22 @@ export class LoginFormComponent implements OnDestroy {
     }
   }
 
+  public resendConfirmationEmail(email: string): void {
+    this._resendEmailSubscription = this._userEndpointsService
+      .resendConfirmationEmail(email)
+      .subscribe({
+        next: () => {
+          this.resendMessage = {
+            message: 'Confirmation email resend successfully',
+            color: 'green',
+          };
+        },
+        error: (error: string) => {
+          this.resendMessage = { message: error, color: 'red' };
+        },
+      });
+  }
+
   public shouldShowError(controlName: string): boolean | undefined {
     return this._formValidationService.shouldShowError(
       this.loginForm,
@@ -121,6 +152,9 @@ export class LoginFormComponent implements OnDestroy {
   public ngOnDestroy(): void {
     if (this._loginSubscription) {
       this._loginSubscription.unsubscribe();
+    }
+    if (this._resendEmailSubscription) {
+      this._resendEmailSubscription.unsubscribe();
     }
   }
 }
