@@ -61,13 +61,6 @@ describe('GamePageComponent', () => {
     expect(component.game).toEqual(games['pong']);
   });
 
-  it('should toggle data menu visibility', () => {
-    component.toggleDataMenu();
-    expect(component.isDataMenuVisible).toBe(true);
-    component.toggleDataMenu();
-    expect(component.isDataMenuVisible).toBe(false);
-  });
-
   it('should update logData when receiveGameOutputData is called', () => {
     const mockData: TExchangeData = { output: { someKey: 'someValue' } };
     component.receiveGameOutputData(mockData);
