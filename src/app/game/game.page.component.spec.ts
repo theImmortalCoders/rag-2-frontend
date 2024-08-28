@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 import { GamePageComponent } from './game.page.component';
 import { ConsoleComponent } from './components/console/console.component';
@@ -10,9 +8,10 @@ import { PongGameWindowComponent } from './games/pong/pong.component';
 import { TictactoeGameWindowComponent } from './games/tictactoe/tictactoe.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
-import { games } from './data-access/games';
-import { Game } from './models/game.class';
+import { games } from './data/games';
 import { TExchangeData } from './models/exchange-data.type';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('GamePageComponent', () => {
   let component: GamePageComponent;
