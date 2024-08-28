@@ -74,6 +74,8 @@ export class ForgotPasswordComponent implements OnDestroy {
               'The password reset link has been sent!'
             );
             this.resendMessage = '';
+            this.shouldShowInput = false;
+            this.forgotPasswordForm.setValue({ email: '' });
           },
           error: (error: string) => {
             this.resendMessage = error;
