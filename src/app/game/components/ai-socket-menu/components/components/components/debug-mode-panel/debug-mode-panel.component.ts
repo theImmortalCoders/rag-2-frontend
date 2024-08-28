@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TExchangeData } from '../../../../../models/exchange-data.type';
+import { TExchangeData } from '../../../../../../models/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-debug-mode-panel',
   standalone: true,
   imports: [KeyValuePipe],
-  template: ` @for (variable of input | keyvalue; track variable) {
+  template: ` @for (variable of inputData | keyvalue; track variable) {
     <div>
       <span>{{ variable.key }}:</span>
       <input
@@ -27,10 +27,10 @@ export class DebugModePanelComponent implements OnInit {
   @Input({ required: true }) public expectedInput: TExchangeData = {};
   @Output() public inputEmitter = new EventEmitter<TExchangeData>();
 
-  public input: TExchangeData = {};
+  public inputData: TExchangeData = {};
 
   public ngOnInit(): void {
-    this.input = JSON.parse(JSON.stringify(this.expectedInput));
+    this.inputData = JSON.parse(JSON.stringify(this.expectedInput));
   }
 
   public emitInputData(key: string, value: string): void {

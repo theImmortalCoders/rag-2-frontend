@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TExchangeData } from '../../models/exchange-data.type';
+import { TExchangeData } from '../models/exchange-data.type';
 import { Player } from 'app/game/models/player.class';
 import { IPlayerInputData } from 'app/game/models/player-input-data.type';
 

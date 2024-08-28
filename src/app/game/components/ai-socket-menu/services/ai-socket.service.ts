@@ -60,6 +60,24 @@ export class AiSocketService {
     }
   };
 
+  public getSocket(): WebSocket | null {
+    return this._socket;
+  }
+
+  public getIsSocketConnected(): boolean {
+    return this.isSocketConnected;
+  }
+
+  public getIsDataSendingActive(): boolean {
+    return this.isDataSendingActive;
+  }
+
+  public setDataToSend(data: TExchangeData): void {
+    this._dataToSend = data;
+  }
+
+  //
+
   private sendDataToSocket(
     dataToSend: TExchangeData,
     expectedDataToReceive: TExchangeData,
@@ -75,27 +93,5 @@ export class AiSocketService {
       );
       console.log('Data sent');
     }
-  }
-
-  //
-
-  public getSocket(): WebSocket | null {
-    return this._socket;
-  }
-
-  public getIsSocketConnected(): boolean {
-    return this.isSocketConnected;
-  }
-
-  public getIsDataSendingActive(): boolean {
-    return this.isDataSendingActive;
-  }
-
-  public getSendingInterval(): number {
-    return this._sendingIntervalID as number;
-  }
-
-  public setDataToSend(data: TExchangeData): void {
-    this._dataToSend = data;
   }
 }

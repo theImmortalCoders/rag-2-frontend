@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugModePanelComponent } from './debug-mode-panel.component';
-import { By } from '@angular/platform-browser';
 
 describe('DebugModePanelComponent', () => {
   let component: DebugModePanelComponent;
@@ -23,7 +22,7 @@ describe('DebugModePanelComponent', () => {
     const mockInput = { key1: 'value1', key2: 'value2' };
     component.expectedInput = mockInput;
     component.ngOnInit();
-    expect(component.input).toEqual(mockInput);
+    expect(component.inputData).toEqual(mockInput);
   });
 
   it('should emit input data when emitInputData is called', () => {
