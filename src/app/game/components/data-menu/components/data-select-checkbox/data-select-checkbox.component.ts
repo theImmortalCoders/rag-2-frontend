@@ -5,7 +5,6 @@ import { TExchangeData } from '../../../../models/exchange-data.type';
 @Component({
   selector: 'app-data-select-checkbox',
   standalone: true,
-  imports: [],
   template: `
     <span class="flex gap-2">
       @if (variable.key && variable.key !== '1') {

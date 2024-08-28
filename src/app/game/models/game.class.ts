@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { BaseGameWindowComponent } from '../components/games/base-game.component';
+import { BaseGameWindowComponent } from '../games/base-game.component';
 import { Player } from './player.class';
 
 export class Game {

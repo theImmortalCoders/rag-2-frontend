@@ -5,6 +5,11 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
+    <button
+      (click)="socket?.close()"
+      class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
+      Disconnect
+    </button>
     @if (isDataSendingActive) {
       <button
         (click)="stopDataExchange()"
@@ -35,7 +40,6 @@ export class SocketConnectedMenuComponent {
   @Input({ required: true }) public isDataSendingActive = false;
   @Input({ required: true }) public vSendingInterval = { value: 500 };
   @Input({ required: true }) public socket: WebSocket | null = null;
-
   @Input({ required: true }) public startDataExchange = (
     sendingInterval: number
   ): void => {

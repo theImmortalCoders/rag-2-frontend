@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerSocketMenuComponent } from './player-socket-menu.component';
 import { Player } from 'app/game/models/player.class';
-import { DebugModeMenuComponent } from './components/debug-mode-menu/debug-mode-menu.component';
-import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mode-panel.component';
-import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
-import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
+import { DebugModeMenuComponent } from './components/components/debug-mode-menu/debug-mode-menu.component';
+import { DebugModePanelComponent } from './components/components/debug-mode-panel/debug-mode-panel.component';
+import { SocketDomainInputComponent } from './components/components/socket-domain-input/socket-domain-input.component';
+import { SocketConnectedMenuComponent } from './components/components/socket-connected-menu/socket-connected-menu.component';
 import { AiSocketService } from '../services/ai-socket.service';
 import { By } from '@angular/platform-browser';
-import { EventEmitter } from '@angular/core';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 
 describe('PlayerSocketMenuComponent', () => {

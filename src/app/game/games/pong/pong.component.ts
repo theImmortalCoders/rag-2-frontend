@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TExchangeData } from '../../../models/exchange-data.type';
+import { TExchangeData } from '../../models/exchange-data.type';
 import { BaseGameWindowComponent } from '../base-game.component';
 import { Player } from 'app/game/models/player.class';
 import { V } from '@angular/cdk/keycodes';
