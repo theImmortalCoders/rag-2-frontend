@@ -1,19 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
 import { GamePageComponent } from './game.page.component';
 import { ConsoleComponent } from './components/console/console.component';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
-import { PongGameWindowComponent } from './components/games/pong/pong.component';
-import { TictactoeGameWindowComponent } from './components/games/tictactoe/tictactoe.component';
+import { PongGameWindowComponent } from './games/pong/pong.component';
+import { TictactoeGameWindowComponent } from './games/tictactoe/tictactoe.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
-import { games } from './data-access/games';
-import { Game } from './models/game.class';
-import { TGameDataSendingType } from './models/game-data-sending-type.enum';
+import { games } from './data/games';
 import { TExchangeData } from './models/exchange-data.type';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('GamePageComponent', () => {
   let component: GamePageComponent;
@@ -60,27 +58,6 @@ describe('GamePageComponent', () => {
   it('should load the game based on gameName', () => {
     component.ngOnInit();
     expect(component.game).toEqual(games['pong']);
-  });
-
-  it('should toggle console visibility', () => {
-    component.toggleConsole();
-    expect(component.isConsoleVisible).toBe(true);
-    component.toggleConsole();
-    expect(component.isConsoleVisible).toBe(false);
-  });
-
-  it('should toggle data menu visibility', () => {
-    component.toggleDataMenu();
-    expect(component.isDataMenuVisible).toBe(true);
-    component.toggleDataMenu();
-    expect(component.isDataMenuVisible).toBe(false);
-  });
-
-  it('should toggle AI socket menu visibility', () => {
-    component.toggleAISocketMenu();
-    expect(component.isAISocketMenuVisible).toBe(true);
-    component.toggleAISocketMenu();
-    expect(component.isAISocketMenuVisible).toBe(false);
   });
 
   it('should update logData when receiveGameOutputData is called', () => {

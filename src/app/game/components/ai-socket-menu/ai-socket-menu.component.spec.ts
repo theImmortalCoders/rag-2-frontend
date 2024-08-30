@@ -1,53 +1,46 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AiSocketMenuComponent } from './ai-socket-menu.component';
-import { AiSocketService } from './services/ai-socket.service';
-import { DebugModeMenuComponent } from './components/debug-mode-menu/debug-mode-menu.component';
-import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mode-panel.component';
+import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { TExchangeData } from 'app/game/models/exchange-data.type';
-import { EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Player } from 'app/game/models/player.class';
+
+@Component({
+  selector: 'app-player-socket-menu',
+  template: '',
+})
+class MockPlayerSocketMenuComponent {
+  @Input() public player!: Player;
+  @Input() public gameName!: string;
+  @Input() public setDataToSend!: TExchangeData;
+  @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
+}
 
 describe('AiSocketMenuComponent', () => {
   let component: AiSocketMenuComponent;
   let fixture: ComponentFixture<AiSocketMenuComponent>;
-  let aiSocketServiceStub: Partial<AiSocketService>;
-  let socketService: AiSocketService;
 
-  beforeEach(waitForAsync(() => {
-    aiSocketServiceStub = {
-      getIsSocketConnected: jasmine
-        .createSpy('getIsSocketConnected')
-        .and.returnValue(false),
-      getIsDataSendingActive: jasmine
-        .createSpy('getIsDataSendingActive')
-        .and.returnValue(false),
-      getSocket: jasmine.createSpy('getSocket').and.returnValue({
-        close: jasmine.createSpy('close'),
-      } as unknown as WebSocket),
-      stopDataExchange: jasmine.createSpy('stopDataExchange'),
-      startDataExchange: jasmine.createSpy('startDataExchange'),
-      connect: jasmine
-        .createSpy('connect')
-        .and.callFake((_url, onOpen, _onMessage, _onClose) => {
-          onOpen();
-        }),
-      sendDataToSocket: jasmine.createSpy('sendDataToSocket'),
-    };
-
-    TestBed.configureTestingModule({
-      imports: [
-        AiSocketMenuComponent,
-        DebugModeMenuComponent,
-        DebugModePanelComponent,
-      ],
-      providers: [{ provide: AiSocketService, useValue: aiSocketServiceStub }],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AiSocketMenuComponent],
+      declarations: [MockPlayerSocketMenuComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AiSocketMenuComponent);
     component = fixture.componentInstance;
-    socketService = TestBed.inject(AiSocketService);
+    component.players = [
+      { id: 1, active: true, getPlayerType: PlayerSourceType.SOCKET } as Player,
+      {
+        id: 2,
+        active: false,
+        getPlayerType: PlayerSourceType.SOCKET,
+      } as Player,
+    ];
+    component.gameName = 'Test Game';
+    component.dataToSend = { key: 'value' } as TExchangeData;
     fixture.detectChanges();
   });
 
@@ -55,58 +48,30 @@ describe('AiSocketMenuComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display "Connect" button when socket is not connected', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(false);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.textContent).toContain('Connect');
+  it('should toggle AI socket menu visibility', () => {
+    expect(component.isAISocketMenuVisible).toBeFalse();
+    component.toggleAISocketMenu();
+    expect(component.isAISocketMenuVisible).toBeTrue();
+    component.toggleAISocketMenu();
+    expect(component.isAISocketMenuVisible).toBeFalse();
   });
 
-  it('should display "Disconnect" button when socket is connected', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(true);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.textContent).toContain('Disconnect');
+  it('should emit received data', () => {
+    spyOn(component.receivedDataEmitter, 'emit');
+    const data: TExchangeData = { key: 'value' };
+    component.receiveInputData(data);
+    expect(component.receivedDataEmitter.emit).toHaveBeenCalledWith(data);
   });
 
-  it('should call connect method when "Connect" button is clicked', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(false);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    button.click();
-    expect(socketService.connect).toHaveBeenCalled();
-  });
-
-  it('should call disconnect method when "Disconnect" button is clicked', () => {
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(true);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    button.click();
-    expect(socketService.getSocket()?.close).toHaveBeenCalled();
-  });
-
-  it('should emit logData when socket connects', () => {
-    spyOn(component.logDataEmitter, 'emit');
-    (socketService.getIsSocketConnected as jasmine.Spy).and.returnValue(false);
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    button.click();
-    expect(component.logDataEmitter.emit).toHaveBeenCalled();
-  });
-
-  it('should load recent phrases on init', () => {
-    const phrases = ['ws://localhost1', 'ws://localhost2'];
-    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(phrases));
-    component.ngOnInit();
-    expect(component.recentPhrases).toEqual(phrases);
-  });
-
-  it('should toggle debug mode', () => {
-    const debugMenu = fixture.debugElement.query(
-      By.directive(DebugModeMenuComponent)
+  it('should apply correct classes based on AI socket menu visibility', () => {
+    const menuDiv = fixture.debugElement.query(
+      By.css('div.side-menu-container')
     );
-    debugMenu.triggerEventHandler('debugModeEmitter', true);
+    expect(menuDiv.nativeElement.className).toContain('-right-64');
+
+    component.toggleAISocketMenu();
     fixture.detectChanges();
-    expect(component.isDebugModeActive).toBe(true);
+
+    expect(menuDiv.nativeElement.className).toContain('right-0');
   });
 });

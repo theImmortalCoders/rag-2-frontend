@@ -1,16 +1,21 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
-import { LoginService } from '../services/login.service';
+import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoints.service';
+import { IUserLoginRequest } from 'app/shared/models/user.models';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ForgotPasswordComponent } from './forgot-password.component';
+import { NotificationService } from 'app/shared/services/notification.service';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ForgotPasswordComponent],
   template: `
     <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
     <form
@@ -46,20 +51,46 @@ import { LoginService } from '../services/login.service';
         class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
         Log in
       </button>
-      @if (loginForm.invalid && loginForm.touched) {
+      <app-forgot-password class="flex flex-col space-y-4" />
+      @if ((loginForm.invalid && loginForm.touched) || errorMessage !== null) {
         <div class="text-red-500">
           @for (error of getFormErrors(); track error) {
             <p>{{ error }}</p>
           }
+          @if (errorMessage !== null) {
+            <p>{{ errorMessage }}</p>
+          }
         </div>
+      }
+      @if (errorMessage === 'Mail not confirmed') {
+        <button
+          type="button"
+          (click)="resendConfirmationEmail(loginForm.value.email || '')"
+          class="rounded-md px-2 py-[6px] bg-mainGray text-mainOrange border-[1px] border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-sm">
+          Resend your activation email
+        </button>
+      }
+      @if (resendMessage !== '') {
+        <p class="text-red-500">
+          {{ resendMessage }}
+        </p>
       }
     </form>
   `,
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
-  private _loginService = inject(LoginService);
+  private _userEndpointsService = inject(UserEndpointsService);
+  private _notificationService = inject(NotificationService);
+  private _router: Router = new Router();
+
+  private _loginSubscription: Subscription | null = null;
+  private _resendEmailSubscription: Subscription | null = null;
+
+  public errorMessage: string | null = null;
+
+  public resendMessage = '';
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -67,21 +98,42 @@ export class LoginFormComponent {
   });
 
   public submitButton(): void {
-    if (this.loginForm.value.email && this.loginForm.value.password) {
-      this._loginService
-        .authenticateUser(
-          this.loginForm.value.email,
-          this.loginForm.value.password
-        )
+    this.errorMessage = null;
+    if (this.loginForm.valid) {
+      const formValues = this.loginForm.value as IUserLoginRequest;
+      const userLoginRequest: IUserLoginRequest = {
+        email: formValues.email,
+        password: formValues.password,
+      };
+      this._loginSubscription = this._userEndpointsService
+        .login(userLoginRequest)
         .subscribe({
-          next: r => {
-            localStorage.setItem('jwtToken', r);
+          next: (response: string) => {
+            localStorage.setItem('jwtToken', response);
+            this._router.navigate(['/']);
+            this.errorMessage = null;
           },
-          error: error => {
-            console.error('Error: ', error);
+          error: (error: string) => {
+            this.errorMessage = error;
           },
         });
     }
+  }
+
+  public resendConfirmationEmail(email: string): void {
+    this._resendEmailSubscription = this._userEndpointsService
+      .resendConfirmationEmail(email)
+      .subscribe({
+        next: () => {
+          this._notificationService.addNotification(
+            'The confirmation link has been resend!'
+          );
+          this.resendMessage = '';
+        },
+        error: (error: string) => {
+          this.resendMessage = error;
+        },
+      });
   }
 
   public shouldShowError(controlName: string): boolean | undefined {
@@ -93,5 +145,14 @@ export class LoginFormComponent {
 
   public getFormErrors(): string[] {
     return this._formValidationService.getFormErrors(this.loginForm);
+  }
+
+  public ngOnDestroy(): void {
+    if (this._loginSubscription) {
+      this._loginSubscription.unsubscribe();
+    }
+    if (this._resendEmailSubscription) {
+      this._resendEmailSubscription.unsubscribe();
+    }
   }
 }
