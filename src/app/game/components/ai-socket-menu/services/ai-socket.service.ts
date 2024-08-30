@@ -9,21 +9,7 @@ export class AiSocketService {
   private isSocketConnected = false;
   private _sendingIntervalID: unknown | null = null;
   private isDataSendingActive = false;
-
-  public sendDataToSocket(
-    dataToSend: TExchangeData,
-    expectedDataToReceive: TExchangeData
-  ): void {
-    if (this._socket && this.isSocketConnected) {
-      this._socket.send(
-        JSON.stringify({
-          output: dataToSend,
-          expected_input: expectedDataToReceive,
-        })
-      );
-      console.log('Data sent');
-    }
-  }
+  private _dataToSend: TExchangeData = {};
 
   public connect(
     socketUrl: string,
@@ -54,13 +40,16 @@ export class AiSocketService {
 
   public startDataExchange = (
     sendingInterval: number,
-    dataToSend: TExchangeData,
-    expectedDataToReceive: TExchangeData
+    expectedDataToReceive: TExchangeData,
+    expectedDataDescription: string
   ): void => {
-    console.log(sendingInterval);
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
-      this.sendDataToSocket(dataToSend, expectedDataToReceive);
+      this.sendDataToSocket(
+        this._dataToSend,
+        expectedDataToReceive,
+        expectedDataDescription
+      );
     }, sendingInterval);
   };
 
@@ -70,8 +59,6 @@ export class AiSocketService {
       clearInterval(this._sendingIntervalID as number);
     }
   };
-
-  //
 
   public getSocket(): WebSocket | null {
     return this._socket;
@@ -85,7 +72,26 @@ export class AiSocketService {
     return this.isDataSendingActive;
   }
 
-  public getSendingInterval(): number {
-    return this._sendingIntervalID as number;
+  public setDataToSend(data: TExchangeData): void {
+    this._dataToSend = data;
+  }
+
+  //
+
+  private sendDataToSocket(
+    dataToSend: TExchangeData,
+    expectedDataToReceive: TExchangeData,
+    expectedDataDescription: string
+  ): void {
+    if (this._socket && this.isSocketConnected) {
+      this._socket.send(
+        JSON.stringify({
+          output: dataToSend,
+          expected_input: expectedDataToReceive,
+          expected_input_description: expectedDataDescription,
+        })
+      );
+      console.log('Data sent');
+    }
   }
 }
