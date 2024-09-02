@@ -24,7 +24,7 @@ import { CanvasComponent } from '../../components/canvas/canvas.component';
       <div>P1 Move: {{ players[0].inputData['move'] }}</div>
       <div>P2 Move: {{ players[1].inputData['move'] }}</div>
     </div>
-    <app-canvas #gameCanvas [width]="800" [height]="600"></app-canvas>
+    <app-canvas #gameCanvas [width]="1000" [height]="600"></app-canvas>
     <button (click)="gameCanvas.drawSomething()">Draw Something</button>
   `,
 })
