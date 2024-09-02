@@ -17,25 +17,40 @@ import { Observable, Subscription } from 'rxjs';
   template: ``,
 })
 export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
-  //called when received data from socket (override)
-  @Input() public set setSocketInputDataReceive(value: TExchangeData) {
-    this.emitOutputData();
-  }
   @Input({ required: true }) public gameRestart = new Observable<void>();
   @Input({ required: true }) public gamePause = new Observable<boolean>();
   @Input({ required: true }) public players: Player[] = [];
+  @Input() public set setSocketInputDataReceive(value: TExchangeData) {
+    const playerInputData = this.mapReceivedToPlayerAndData(value);
+    if (!playerInputData.data || !playerInputData.player) return;
 
-  @Output() public gameWindowOutputDataEmitter =
-    new EventEmitter<TExchangeData>();
+    this.players.forEach(player => {
+      if (player.id === playerInputData.player.id) {
+        player.inputData = playerInputData.data;
+      }
+    });
+
+    this.gameStateData['players'] = JSON.stringify(this.players);
+    this.emitOutputData();
+  }
+
+  @Output() public gameStateDataEmitter = new EventEmitter<TExchangeData>();
 
   private _restartSubscription = new Subscription();
   private _pauseSubscription = new Subscription();
 
-  protected gameWindowOutputData: TExchangeData = {};
   protected isPaused = false;
+  protected gameStateData: TExchangeData = {
+    players: JSON.stringify(this.players),
+  };
+
+  protected arePlayersReady(): boolean {
+    return this.players
+      .filter(p => p.obligatory)
+      .every(player => player != undefined && player.inputData !== undefined);
+  }
 
   public ngOnInit(): void {
-    this.emitOutputData();
     this.restart();
     this._restartSubscription = this.gameRestart.subscribe(() => {
       this.restart();
@@ -45,6 +60,7 @@ export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
       this.isPaused = value;
       console.info('Pause state: ', this.isPaused);
     });
+    this.gameStateData['players'] = JSON.stringify(this.players);
   }
 
   public ngOnDestroy(): void {
@@ -52,18 +68,19 @@ export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
     this._pauseSubscription.unsubscribe();
   }
 
-  //called on reset (override)
+  //called on restart (override)
   public abstract restart(): void;
 
   //send data to data menu (do not override, call when want to send data)
   protected emitOutputData(): void {
-    this.gameWindowOutputDataEmitter.emit({
-      output: this.gameWindowOutputData,
+    this.gameStateDataEmitter.emit({
+      output: this.gameStateData,
     });
   }
 
-  //map received input data to player and data (do not override, call when received data from socket)
-  protected mapReceivedToPlayerAndData(value: TExchangeData): IPlayerInputData {
+  //
+
+  private mapReceivedToPlayerAndData(value: TExchangeData): IPlayerInputData {
     const data = value['data'] as TExchangeData;
     const player = value['player'] as Player;
 

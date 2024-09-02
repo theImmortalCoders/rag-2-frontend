@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameDataSendingService } from '../../services/game-data-sending.service';
-import { DataTransformService } from 'app/shared/services/data-transform.service';
 import { TExchangeData } from 'app/game/models/exchange-data.type';
 
 @Component({
@@ -17,10 +16,9 @@ import { TExchangeData } from 'app/game/models/exchange-data.type';
       }
     </button>
     @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
-      <button (click)="generateCsv()" class="mt-6 text-center text-mainCreme">
-        Download CSV ({{ collectedDataArray.length }} records)
+      <button (click)="generateJSON()" class="mt-6 text-center text-mainCreme">
+        Download JSON ({{ collectedDataArray.length }} records)
       </button>
-
       <button (click)="sendData()">Save data</button>
       <button
         (click)="deleteCollectedData()"
@@ -37,20 +35,14 @@ export class DataDownloadComponent {
 
   @Output() public deleteCollectedDataArrayEmitter = new EventEmitter<void>();
 
-  public constructor(
-    public gameDataSendingService: GameDataSendingService,
-    private _dataTransformService: DataTransformService
-  ) {}
+  public constructor(public gameDataSendingService: GameDataSendingService) {}
 
   public sendData(): void {
     this.gameDataSendingService.sendGameData(1, this.collectedDataArray);
   }
 
-  public generateCsv(): void {
-    const csvContent = this._dataTransformService.exchangeDataToCsv(
-      this.collectedDataArray
-    );
-    this.downloadCsv(csvContent);
+  public generateJSON(): void {
+    this.downloadCsv(JSON.stringify(this.collectedDataArray));
   }
 
   public saveData(): void {
@@ -73,14 +65,14 @@ export class DataDownloadComponent {
   //
 
   private downloadCsv(csv: string): void {
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const blob = new Blob([csv], { type: 'text/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.setAttribute('hidden', '');
     a.setAttribute('href', url);
     a.setAttribute(
       'download',
-      `${this.gameName}_${new Date().toISOString()}.csv`
+      `${this.gameName}_${new Date().toISOString()}.json`
     );
     document.body.appendChild(a);
     a.click();

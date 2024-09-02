@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Game } from './models/game.class';
 import { ConsoleComponent } from './components/console/console.component';
 import { TExchangeData } from './models/exchange-data.type';
@@ -14,7 +14,6 @@ import { PlayerSourceType } from './models/player-source-type.enum';
 import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
-import { BaseGameWindowComponent } from './games/base-game.component';
 
 @Component({
   selector: 'app-game',
@@ -55,7 +54,7 @@ import { BaseGameWindowComponent } from './games/base-game.component';
           @case ('pong') {
             <app-pong
               [setSocketInputDataReceive]="socketInputData"
-              (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
+              (gameStateDataEmitter)="receiveGameOutputData($event)"
               [players]="players"
               [gameRestart]="gameRestartSubject.asObservable()"
               [gamePause]="gamePauseSubject.asObservable()" />
@@ -63,7 +62,7 @@ import { BaseGameWindowComponent } from './games/base-game.component';
           @case ('tictactoe') {
             <app-tictactoe
               [setSocketInputDataReceive]="socketInputData"
-              (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
+              (gameStateDataEmitter)="receiveGameOutputData($event)"
               [players]="players"
               [gameRestart]="gameRestartSubject.asObservable()"
               [gamePause]="gamePauseSubject.asObservable()" />
