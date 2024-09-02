@@ -52,27 +52,29 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
             (pauseEmitter)="gamePauseSubject.next($event)"
             (restartEmitter)="gameRestartSubject.next()" />
         </div>
-        @switch (game.getName()) {
-          @case ('pong') {
-            <app-pong
-              [setSocketInputDataReceive]="socketInputData"
-              (gameStateDataEmitter)="receiveGameOutputData($event)"
-              [players]="players"
-              [gameRestart]="gameRestartSubject.asObservable()"
-              [gamePause]="gamePauseSubject.asObservable()" />
+        <div class="flex w-2/3 items-center justify-center pt-12">
+          @switch (game.getName()) {
+            @case ('pong') {
+              <app-pong
+                [setSocketInputDataReceive]="socketInputData"
+                (gameStateDataEmitter)="receiveGameOutputData($event)"
+                [players]="players"
+                [gameRestart]="gameRestartSubject.asObservable()"
+                [gamePause]="gamePauseSubject.asObservable()" />
+            }
+            @case ('tictactoe') {
+              <app-tictactoe
+                [setSocketInputDataReceive]="socketInputData"
+                (gameStateDataEmitter)="receiveGameOutputData($event)"
+                [players]="players"
+                [gameRestart]="gameRestartSubject.asObservable()"
+                [gamePause]="gamePauseSubject.asObservable()" />
+            }
           }
-          @case ('tictactoe') {
-            <app-tictactoe
-              [setSocketInputDataReceive]="socketInputData"
-              (gameStateDataEmitter)="receiveGameOutputData($event)"
-              [players]="players"
-              [gameRestart]="gameRestartSubject.asObservable()"
-              [gamePause]="gamePauseSubject.asObservable()" />
-          }
-        }
+        </div>
       }
+      <app-console [logData]="logData" />
     </div>
-    <app-console [logData]="logData" />
   `,
 })
 export class GamePageComponent implements OnInit, OnDestroy {
