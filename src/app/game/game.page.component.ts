@@ -47,7 +47,8 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
               [dataToSend]="gameWindowOutputData"
               [gameName]="game.getName()"
               [players]="playersSelected"
-              (receivedDataEmitter)="receiveSocketInputData($event)" />
+              (receivedDataEmitter)="receiveSocketInputData($event)"
+              [gamePause]="gamePauseSubject.asObservable()" />
           }
         </div>
         @switch (game.getName()) {

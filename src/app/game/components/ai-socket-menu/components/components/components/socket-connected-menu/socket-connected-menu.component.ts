@@ -29,8 +29,11 @@ import { Component, Input } from '@angular/core';
           vSendingInterval.value = sendingIntervalInput.valueAsNumber
         " />
       <button
+        [attr.disabled]="isPaused ? 'disabled' : null"
         (click)="startDataExchange(vSendingInterval.value)"
-        class="mt-4 text-center text-green-500 font-bold border-green-500 border-[1px]">
+        class="mt-4 text-center {{
+          !isPaused ? 'text-green-500 font-bold border-green-500' : ''
+        }}  border-[1px]">
         Start data exchange
       </button>
     }
@@ -48,4 +51,5 @@ export class SocketConnectedMenuComponent {
   @Input({ required: true }) public stopDataExchange = (): void => {
     console.log('stopDataExchange');
   };
+  @Input({ required: true }) public isPaused = false;
 }

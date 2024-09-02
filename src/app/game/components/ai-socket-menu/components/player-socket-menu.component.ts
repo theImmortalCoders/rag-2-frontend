@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { TExchangeData } from 'app/game/models/exchange-data.type';
 import { Player } from 'app/game/models/player.class';
 import { DebugModeMenuComponent } from './components/components/debug-mode-menu/debug-mode-menu.component';
@@ -6,6 +13,7 @@ import { DebugModePanelComponent } from './components/components/debug-mode-pane
 import { SocketDomainInputComponent } from './components/components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/components/socket-connected-menu/socket-connected-menu.component';
 import { PlayerSocketConnectionMenuComponent } from './components/player-socket-connection-menu.component';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-player-socket-menu',
@@ -30,7 +38,8 @@ import { PlayerSocketConnectionMenuComponent } from './components/player-socket-
         [player]="player"
         [setDataToSend]="dataToSend"
         (receivedDataEmitter)="receivedDataEmitter.emit($event)"
-        [gameName]="gameName" />
+        [gameName]="gameName"
+        [gamePause]="gamePause" />
     }
   `,
 })
@@ -38,6 +47,7 @@ export class PlayerSocketMenuComponent {
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public dataToSend: TExchangeData = {};
+  @Input({ required: true }) public gamePause = new Observable<boolean>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
