@@ -23,7 +23,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
     <form
       [formGroup]="registerForm"
       (submit)="submitButton()"
-      class="flex flex-col space-y-4">
+      class="flex flex-col space-y-4 w-full">
       <div class="flex flex-col space-y-1">
         <label for="name" [class.text-red-500]="shouldShowError('name')"
           >Name</label
@@ -35,8 +35,9 @@ import { NotificationService } from 'app/shared/services/notification.service';
           placeholder="Type your name"
           class="custom-input" />
       </div>
-      <div class="flex flex-row space-x-2 items-center">
-        <div class="w-1/3">
+      <div
+        class="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
+        <div class="flex flex-col max-w-fit">
           <label
             for="studyCycleYearA"
             [class.text-red-500]="shouldShowError('studyCycleYearA')"
@@ -50,7 +51,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
             class="custom-input"
             (input)="validateNumber($event)" />
         </div>
-        <div class="w-1/3">
+        <div class="flex flex-col max-w-fit">
           <label
             for="studyCycleYearB"
             [class.text-red-500]="shouldShowError('studyCycleYearB')"

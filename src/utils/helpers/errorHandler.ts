@@ -9,5 +9,6 @@ export function errorHandler(error: HttpErrorResponse): string {
   } else {
     errorMessage = JSON.parse(error.error)['description'];
   }
+  console.error(errorMessage);
   return errorMessage;
 }
