@@ -12,7 +12,7 @@ import { DataDownloadComponent } from './components/data-download/data-download.
   template: `
     <button
       (click)="toggleDataMenu()"
-      class="side-menu-button top-0 w-12 h-44 {{
+      class="side-menu-right-button top-0 w-12 h-52 {{
         isDataMenuVisible ? 'right-64' : 'right-0'
       }}">
       <span
@@ -21,7 +21,7 @@ import { DataDownloadComponent } from './components/data-download/data-download.
       >
     </button>
     <div
-      class="w-64 h-44 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
+      class="w-64 h-52 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
         isDataMenuVisible ? 'right-0' : '-right-64'
       }}">
       <span class="font-black">Select data to persist:</span>
