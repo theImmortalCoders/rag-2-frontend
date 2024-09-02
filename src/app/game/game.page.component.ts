@@ -29,7 +29,7 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
     GameMenuComponent,
   ],
   template: `
-    <div class="min-h-all w-full flex flex-col">
+    <div class="flex flex-col min-h-all w-full items-center bg-gray-700">
       @if (game) {
         <div *appAuthRequired class="absolute top-20 left-0 flex flex-col">
           <app-player-menu
@@ -52,10 +52,11 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
             (pauseEmitter)="gamePauseSubject.next($event)"
             (restartEmitter)="gameRestartSubject.next()" />
         </div>
-        <div class="flex w-2/3 items-center justify-center pt-12">
+        <div class="flex w-full items-center justify-center py-12">
           @switch (game.getName()) {
             @case ('pong') {
               <app-pong
+                class="flex flex-col items-center w-3/4"
                 [setSocketInputDataReceive]="socketInputData"
                 (gameStateDataEmitter)="receiveGameOutputData($event)"
                 [players]="players"
@@ -73,8 +74,8 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
           }
         </div>
       }
-      <app-console [logData]="logData" />
     </div>
+    <app-console [logData]="logData" />
   `,
 })
 export class GamePageComponent implements OnInit, OnDestroy {
