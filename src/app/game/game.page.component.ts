@@ -13,6 +13,7 @@ import { PlayerMenuComponent } from './components/player-menu/player-menu.compon
 import { PlayerSourceType } from './models/player-source-type.enum';
 import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { GameMenuComponent } from './components/game-menu/game-menu.component';
 
 @Component({
   selector: 'app-game',
@@ -25,10 +26,14 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
     TictactoeGameWindowComponent,
     ConsoleComponent,
     AuthRequiredDirective,
+    GameMenuComponent,
   ],
   template: `
-    <div class="min-h-all w-full flex flex-col justify-between">
+    <div class="min-h-all w-full flex flex-col">
       @if (game) {
+        <app-game-menu
+          (pauseEmitter)="handlePause($event)"
+          (restartEmitter)="handleRestart()" />
         <app-player-menu
           class="absolute top-52 left-0"
           [players]="players"
@@ -60,8 +65,8 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
           }
         }
       }
-      <app-console [logData]="logData" />
     </div>
+    <app-console [logData]="logData" />
   `,
 })
 export class GamePageComponent implements OnInit, OnDestroy {
@@ -115,6 +120,14 @@ export class GamePageComponent implements OnInit, OnDestroy {
       player =>
         player.active && player.getPlayerType === PlayerSourceType.SOCKET
     );
+  }
+
+  public handlePause(isPaused: boolean): void {
+    console.log(isPaused);
+  }
+
+  public handleRestart(): void {
+    console.log('restart');
   }
 
   //

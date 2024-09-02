@@ -8,7 +8,7 @@ import { ConsoleFieldsetComponent } from './console-fieldset/console-fieldset.co
   standalone: true,
   imports: [ExchangeDataPipe, ConsoleFieldsetComponent],
   template: `
-    <div class="sticky bottom-0 left-0 w-full z-50">
+    <div class="fixed bottom-0 left-0 w-full z-50">
       <button [className]="consoleClasses['button']" (click)="toggleConsole()">
         console
       </button>
