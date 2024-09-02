@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { SocketDomainInputComponent } from './components/components/components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/components/components/socket-connected-menu/socket-connected-menu.component';
@@ -7,6 +14,7 @@ import { DebugModePanelComponent } from './components/components/components/debu
 import { Player } from 'app/game/models/player.class';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { PlayerSocketMenuComponent } from './components/player-socket-menu.component';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ai-socket-menu',
@@ -41,9 +49,8 @@ import { PlayerSocketMenuComponent } from './components/player-socket-menu.compo
             [player]="player"
             [gameName]="gameName"
             [dataToSend]="dataToSend"
-            (receivedDataEmitter)="
-              receiveInputData($event)
-            "></app-player-socket-menu>
+            (receivedDataEmitter)="receiveInputData($event)"
+            [gamePause]="gamePause"></app-player-socket-menu>
         }
       }
     </div>
@@ -53,6 +60,7 @@ export class AiSocketMenuComponent {
   @Input({ required: true }) public players: Player[] = [];
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public dataToSend: TExchangeData = {};
+  @Input({ required: true }) public gamePause = new Observable<boolean>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 

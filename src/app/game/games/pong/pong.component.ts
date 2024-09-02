@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { TExchangeData } from '../../models/exchange-data.type';
+import { Component } from '@angular/core';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { Player } from 'app/game/models/player.class';
-import { V } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-pong',
@@ -21,20 +18,17 @@ import { V } from '@angular/cdk/keycodes';
       type="text"
       [value]="defaultText + '2'"
       (input)="updateOutputData2(inputElement2.value)" />
-    <div>P1 Move: {{ p1Move }}</div>
-    <div>P2 Move: {{ p2Move }}</div>
+    <div>P1 Move: {{ players[0].inputData['move'] }}</div>
+    <div>P2 Move: {{ players[1].inputData['move'] }}</div>
   `,
 })
-export class PongGameWindowComponent
-  extends BaseGameWindowComponent
-  implements OnInit
-{
-  public p1Move = 0;
-  public p2Move = 0;
+export class PongGameWindowComponent extends BaseGameWindowComponent {
   public defaultText = 'PONG';
 
-  public override ngOnInit(): void {
-    this.emitOutputData();
+  public override restart(): void {
+    this.gameStateData['text'] = this.defaultText;
+    this.gameStateData['text2'] = this.defaultText + '2';
+
     this.players[0].inputData = {
       move: 0,
     };
@@ -45,40 +39,17 @@ export class PongGameWindowComponent
     };
     this.players[1].expectedDataDescription =
       'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up';
-  }
 
-  protected override gameWindowOutputData: TExchangeData = {
-    text: this.defaultText,
-    text2: this.defaultText + '2',
-    p1Move: this.p1Move,
-    p2Move: this.p2Move,
-  };
-
-  public override set setSocketInputDataReceive(value: TExchangeData) {
-    const playerInputData = this.mapReceivedToPlayerAndData(value);
-    if (!playerInputData.data || !playerInputData.player) return;
-
-    if (playerInputData.player.id === this.players[0].id) {
-      this.p1Move = playerInputData.data['move']
-        ? (playerInputData.data['move'] as number)
-        : 0;
-    } else {
-      this.p2Move = playerInputData.data['move']
-        ? (playerInputData.data['move'] as number)
-        : 0;
-    }
-    this.gameWindowOutputData['p1Move'] = this.p1Move;
-    this.gameWindowOutputData['p2Move'] = this.p2Move;
     this.emitOutputData();
   }
 
   public updateOutputData1(value: string): void {
-    this.gameWindowOutputData['text'] = value;
+    this.gameStateData['text'] = value;
     this.emitOutputData();
   }
 
   public updateOutputData2(value: string): void {
-    this.gameWindowOutputData['text2'] = value;
+    this.gameStateData['text2'] = value;
     this.emitOutputData();
   }
 }
