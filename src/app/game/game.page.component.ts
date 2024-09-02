@@ -29,19 +29,12 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
     GameMenuComponent,
   ],
   template: `
-    <div class="min-h-all w-full flex flex-col">
+    <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
       @if (game) {
-        <app-game-menu
-          (pauseEmitter)="gamePauseSubject.next($event)"
-          (restartEmitter)="gameRestartSubject.next()" />
-        <app-player-menu
-          class="absolute top-52 left-0"
-          [players]="players"
-          (playerSourceChangeEmitter)="updatePlayers($event)" />
-        <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
-          <app-data-menu
-            [gameName]="game.getName()"
-            [setDataPossibleToPersist]="gameWindowOutputData" />
+        <div *appAuthRequired class="absolute top-20 left-0 flex flex-col">
+          <app-player-menu
+            [players]="players"
+            (playerSourceChangeEmitter)="updatePlayers($event)" />
           @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
             <app-ai-socket-menu
               [dataToSend]="gameWindowOutputData"
@@ -51,24 +44,35 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
               [gamePause]="gamePauseSubject.asObservable()" />
           }
         </div>
-        @switch (game.getName()) {
-          @case ('pong') {
-            <app-pong
-              [setSocketInputDataReceive]="socketInputData"
-              (gameStateDataEmitter)="receiveGameOutputData($event)"
-              [players]="players"
-              [gameRestart]="gameRestartSubject.asObservable()"
-              [gamePause]="gamePauseSubject.asObservable()" />
+        <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
+          <app-data-menu
+            [gameName]="game.getName()"
+            [setDataPossibleToPersist]="gameWindowOutputData" />
+          <app-game-menu
+            (pauseEmitter)="gamePauseSubject.next($event)"
+            (restartEmitter)="gameRestartSubject.next()" />
+        </div>
+        <div class="flex w-full items-center justify-center py-12">
+          @switch (game.getName()) {
+            @case ('pong') {
+              <app-pong
+                class="flex flex-col items-center w-3/4"
+                [setSocketInputDataReceive]="socketInputData"
+                (gameStateDataEmitter)="receiveGameOutputData($event)"
+                [players]="players"
+                [gameRestart]="gameRestartSubject.asObservable()"
+                [gamePause]="gamePauseSubject.asObservable()" />
+            }
+            @case ('tictactoe') {
+              <app-tictactoe
+                [setSocketInputDataReceive]="socketInputData"
+                (gameStateDataEmitter)="receiveGameOutputData($event)"
+                [players]="players"
+                [gameRestart]="gameRestartSubject.asObservable()"
+                [gamePause]="gamePauseSubject.asObservable()" />
+            }
           }
-          @case ('tictactoe') {
-            <app-tictactoe
-              [setSocketInputDataReceive]="socketInputData"
-              (gameStateDataEmitter)="receiveGameOutputData($event)"
-              [players]="players"
-              [gameRestart]="gameRestartSubject.asObservable()"
-              [gamePause]="gamePauseSubject.asObservable()" />
-          }
-        }
+        </div>
       }
     </div>
     <app-console [logData]="logData" />

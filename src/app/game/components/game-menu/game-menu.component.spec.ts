@@ -35,7 +35,7 @@ describe('GameMenuComponent', () => {
 
   it('should emit restartEmitter on restart button click', () => {
     spyOn(component.restartEmitter, 'emit');
-    const button = fixture.debugElement.queryAll(By.css('button'))[1]
+    const button = fixture.debugElement.queryAll(By.css('button'))[2]
       .nativeElement;
     button.click();
     expect(component.restartEmitter.emit).toHaveBeenCalled();
@@ -44,14 +44,16 @@ describe('GameMenuComponent', () => {
   it('should display "Pause" when isPaused is false', () => {
     component.isPaused = false;
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
+    const button = fixture.debugElement.queryAll(By.css('button'))[1]
+      .nativeElement;
     expect(button.textContent).toContain('Pause');
   });
 
   it('should display "Resume" when isPaused is true', () => {
     component.isPaused = true;
     fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
+    const button = fixture.debugElement.queryAll(By.css('button'))[1]
+      .nativeElement;
     expect(button.textContent).toContain('Resume');
   });
 });

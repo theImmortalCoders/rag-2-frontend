@@ -16,13 +16,19 @@ import { TExchangeData } from 'app/game/models/exchange-data.type';
       }
     </button>
     @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
-      <button (click)="generateJSON()" class="mt-6 text-center text-mainCreme">
+      <button
+        (click)="generateJSON()"
+        class="mt-4 py-1 text-center text-mainCreme border-mainCreme border-[1px] hover:bg-mainCreme hover:text-darkGray transition-all ease-in-out duration-300">
         Download JSON ({{ collectedDataArray.length }} records)
       </button>
-      <button (click)="sendData()">Save data</button>
+      <button
+        (click)="sendData()"
+        class="mt-3 py-1 text-blue-900 border-blue-900 border-[1px] hover:bg-blue-900 hover:text-mainCreme transition-all ease-in-out duration-300">
+        Save data
+      </button>
       <button
         (click)="deleteCollectedData()"
-        class="mt-4 text-center font-bold text-red-500 border-red-500 border-[1px]">
+        class="mt-3 py-1 text-center font-bold text-red-500 border-red-500 border-[1px] hover:bg-red-500 hover:text-darkGray transition-all ease-in-out duration-300">
         X
       </button>
     }
