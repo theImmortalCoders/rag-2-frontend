@@ -82,7 +82,7 @@ describe('DataDownloadComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.queryAll(By.css('button'))[1]
       .nativeElement;
-    expect(button.textContent).toContain('Download CSV');
+    expect(button.textContent).toContain('Download JSON');
   });
 
   it('should not render download CSV button when collectedDataArray is empty', () => {

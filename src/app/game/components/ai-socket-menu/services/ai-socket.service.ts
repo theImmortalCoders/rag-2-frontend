@@ -11,6 +11,7 @@ export class AiSocketService {
   private isDataSendingActive = false;
   private _dataToSend: TExchangeData = {};
 
+  public isDataExchangeDesired = false;
   public connect(
     socketUrl: string,
     onOpen: () => void,
@@ -43,6 +44,32 @@ export class AiSocketService {
     expectedDataToReceive: TExchangeData,
     expectedDataDescription: string
   ): void => {
+    this.isDataExchangeDesired = true;
+    this.resumeDataExchange(
+      sendingInterval,
+      expectedDataToReceive,
+      expectedDataDescription
+    );
+  };
+
+  public stopDataExchange = (): void => {
+    if (this._sendingIntervalID != null) {
+      this.isDataExchangeDesired = false;
+      this.pauseDataExchange();
+    }
+  };
+
+  public pauseDataExchange = (): void => {
+    this.isDataSendingActive = false;
+    clearInterval(this._sendingIntervalID as number);
+  };
+
+  public resumeDataExchange = (
+    sendingInterval: number,
+    expectedDataToReceive: TExchangeData,
+    expectedDataDescription: string
+  ): void => {
+    if (!this.isDataExchangeDesired) return;
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
       this.sendDataToSocket(
@@ -51,13 +78,6 @@ export class AiSocketService {
         expectedDataDescription
       );
     }, sendingInterval);
-  };
-
-  public stopDataExchange = (): void => {
-    if (this._sendingIntervalID != null) {
-      this.isDataSendingActive = false;
-      clearInterval(this._sendingIntervalID as number);
-    }
   };
 
   public getSocket(): WebSocket | null {
