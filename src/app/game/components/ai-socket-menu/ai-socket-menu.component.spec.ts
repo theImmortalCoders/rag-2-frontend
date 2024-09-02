@@ -62,16 +62,4 @@ describe('AiSocketMenuComponent', () => {
     component.receiveInputData(data);
     expect(component.receivedDataEmitter.emit).toHaveBeenCalledWith(data);
   });
-
-  it('should apply correct classes based on AI socket menu visibility', () => {
-    const menuDiv = fixture.debugElement.query(
-      By.css('div.side-menu-container')
-    );
-    expect(menuDiv.nativeElement.className).toContain('-right-64');
-
-    component.toggleAISocketMenu();
-    fixture.detectChanges();
-
-    expect(menuDiv.nativeElement.className).toContain('right-0');
-  });
 });

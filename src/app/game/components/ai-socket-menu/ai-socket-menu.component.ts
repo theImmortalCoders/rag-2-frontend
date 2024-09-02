@@ -29,8 +29,8 @@ import { Observable, Subscription } from 'rxjs';
   template: `
     <button
       (click)="toggleAISocketMenu()"
-      class="side-menu-button top-52 w-12 h-56 {{
-        isAISocketMenuVisible ? 'right-64' : 'right-0'
+      class="side-menu-left-button top-60 w-12 h-56 {{
+        isAISocketMenuVisible ? 'left-64' : 'left-0'
       }}">
       <span
         class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.325em]"
@@ -38,21 +38,23 @@ import { Observable, Subscription } from 'rxjs';
       >
     </button>
     <div
-      class="w-64 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-52 {{
-        isAISocketMenuVisible ? 'right-0' : '-right-64'
+      class="w-64 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-60 {{
+        isAISocketMenuVisible ? 'left-0' : '-left-64'
       }}">
-      @for (player of players; track player.id) {
-        @if (
-          player.active && player.getPlayerType === playerSourceType.SOCKET
-        ) {
-          <app-player-socket-menu
-            [player]="player"
-            [gameName]="gameName"
-            [dataToSend]="dataToSend"
-            (receivedDataEmitter)="receiveInputData($event)"
-            [gamePause]="gamePause"></app-player-socket-menu>
+      <div class="flex flex-col space-y-8">
+        @for (player of players; track player.id) {
+          @if (
+            player.active && player.getPlayerType === playerSourceType.SOCKET
+          ) {
+            <app-player-socket-menu
+              [player]="player"
+              [gameName]="gameName"
+              [dataToSend]="dataToSend"
+              (receivedDataEmitter)="receiveInputData($event)"
+              [gamePause]="gamePause"></app-player-socket-menu>
+          }
         }
-      }
+      </div>
     </div>
   `,
 })
