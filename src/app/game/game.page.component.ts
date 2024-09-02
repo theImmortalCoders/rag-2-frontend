@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { Game } from './models/game.class';
 import { ConsoleComponent } from './components/console/console.component';
 import { TExchangeData } from './models/exchange-data.type';
@@ -7,13 +7,14 @@ import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-men
 import { PongGameWindowComponent } from './games/pong/pong.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { TictactoeGameWindowComponent } from './games/tictactoe/tictactoe.component';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Player } from './models/player.class';
 import { PlayerMenuComponent } from './components/player-menu/player-menu.component';
 import { PlayerSourceType } from './models/player-source-type.enum';
 import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
+import { BaseGameWindowComponent } from './games/base-game.component';
 
 @Component({
   selector: 'app-game',
@@ -32,8 +33,8 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
     <div class="min-h-all w-full flex flex-col">
       @if (game) {
         <app-game-menu
-          (pauseEmitter)="handlePause($event)"
-          (restartEmitter)="handleRestart()" />
+          (pauseEmitter)="gamePauseSubject.next($event)"
+          (restartEmitter)="gameRestartSubject.next()" />
         <app-player-menu
           class="absolute top-52 left-0"
           [players]="players"
@@ -55,13 +56,17 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
             <app-pong
               [setSocketInputDataReceive]="socketInputData"
               (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
-              [players]="players" />
+              [players]="players"
+              [gameRestart]="gameRestartSubject.asObservable()"
+              [gamePause]="gamePauseSubject.asObservable()" />
           }
           @case ('tictactoe') {
             <app-tictactoe
               [setSocketInputDataReceive]="socketInputData"
               (gameWindowOutputDataEmitter)="receiveGameOutputData($event)"
-              [players]="players" />
+              [players]="players"
+              [gameRestart]="gameRestartSubject.asObservable()"
+              [gamePause]="gamePauseSubject.asObservable()" />
           }
         }
       }
@@ -80,9 +85,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public logData: Record<string, TExchangeData> = {};
   public players: Player[] = [];
   public playersSelected: Player[] = [];
-
   public socketInputData: TExchangeData = {};
   public gameWindowOutputData: TExchangeData = {};
+  public gameRestartSubject = new Subject<void>();
+  public gamePauseSubject = new Subject<boolean>();
 
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
@@ -120,14 +126,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
       player =>
         player.active && player.getPlayerType === PlayerSourceType.SOCKET
     );
-  }
-
-  public handlePause(isPaused: boolean): void {
-    console.log(isPaused);
-  }
-
-  public handleRestart(): void {
-    console.log('restart');
   }
 
   //

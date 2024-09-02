@@ -25,16 +25,14 @@ import { V } from '@angular/cdk/keycodes';
     <div>P2 Move: {{ p2Move }}</div>
   `,
 })
-export class PongGameWindowComponent
-  extends BaseGameWindowComponent
-  implements OnInit
-{
+export class PongGameWindowComponent extends BaseGameWindowComponent {
   public p1Move = 0;
   public p2Move = 0;
   public defaultText = 'PONG';
 
-  public override ngOnInit(): void {
-    this.emitOutputData();
+  public override restart(): void {
+    this.p1Move = 0;
+    this.p2Move = 0;
     this.players[0].inputData = {
       move: 0,
     };
