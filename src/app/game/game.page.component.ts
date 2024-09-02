@@ -29,7 +29,7 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
     GameMenuComponent,
   ],
   template: `
-    <div class="flex flex-col min-h-all w-full items-center bg-gray-700">
+    <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
       @if (game) {
         <div *appAuthRequired class="absolute top-20 left-0 flex flex-col">
           <app-player-menu
