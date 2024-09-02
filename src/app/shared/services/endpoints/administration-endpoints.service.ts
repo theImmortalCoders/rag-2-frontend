@@ -34,9 +34,7 @@ export class AdministrationEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          const errorMessage = errorHandler(error);
-          console.error(errorMessage);
-          return throwError(() => errorMessage);
+          return throwError(() => errorHandler(error));
         })
       );
   }
@@ -59,9 +57,7 @@ export class AdministrationEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          const errorMessage = errorHandler(error);
-          console.error(errorMessage);
-          return throwError(() => errorMessage);
+          return throwError(() => errorHandler(error));
         })
       );
   }
@@ -82,9 +78,7 @@ export class AdministrationEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          const errorMessage = errorHandler(error);
-          console.error(errorMessage);
-          return throwError(() => errorMessage);
+          return throwError(() => errorHandler(error));
         })
       );
   }
@@ -109,9 +103,7 @@ export class AdministrationEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          const errorMessage = errorHandler(error);
-          console.error(errorMessage);
-          return throwError(() => errorMessage);
+          return throwError(() => errorHandler(error));
         })
       );
   }
