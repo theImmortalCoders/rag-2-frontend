@@ -7,18 +7,25 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CanvasUtilsService } from './services/canvas-utils.service';
+import * as feather from 'feather-icons';
 
 @Component({
   selector: 'app-canvas',
   standalone: true,
   imports: [],
   template: `
-    <canvas
-      #canvasElement
-      [attr.width]="width"
-      [attr.height]="height"
-      class="border-mainOrange border-2"></canvas>
-    <button (click)="toggleFullscreen()">Toggle Fullscreen</button>
+    <div class="relative">
+      <canvas
+        #canvasElement
+        [attr.width]="width"
+        [attr.height]="height"
+        class="border-mainOrange border-2"></canvas>
+      <button (click)="toggleFullscreen()" class="absolute bottom-4 right-4">
+        <i
+          data-feather="maximize"
+          class="size-9 hover:size-10 opacity-70 hover:opacity-100 transition-all ease-in-out duration-100"></i>
+      </button>
+    </div>
   `,
 })
 export class CanvasComponent implements AfterViewInit {
@@ -36,6 +43,7 @@ export class CanvasComponent implements AfterViewInit {
   private _savedImageData: ImageData | null = null;
 
   public ngAfterViewInit(): void {
+    feather.replace();
     this.initializeCanvas();
     this.addFullscreenEventListeners();
     window.addEventListener('resize', this.handleResize.bind(this));
