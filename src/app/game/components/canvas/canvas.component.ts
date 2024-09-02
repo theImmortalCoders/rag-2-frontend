@@ -2,9 +2,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  inject,
   Input,
   ViewChild,
 } from '@angular/core';
+import { CanvasUtilsService } from './services/canvas-utils.service';
 
 @Component({
   selector: 'app-canvas',
@@ -22,6 +24,8 @@ import {
 export class CanvasComponent implements AfterViewInit {
   @Input({ required: true }) public width!: number;
   @Input({ required: true }) public height!: number;
+
+  private _canvasUtilsService = inject(CanvasUtilsService);
 
   @ViewChild('canvasElement', { static: true })
   public canvasElement!: ElementRef<HTMLCanvasElement>;
@@ -58,81 +62,49 @@ export class CanvasComponent implements AfterViewInit {
 
   private enterFullscreen(): void {
     const canvas = this.canvasElement.nativeElement;
-    if (canvas.requestFullscreen) {
-      this.saveCanvasContent();
-      canvas.requestFullscreen().then(() => {
-        this.isFullscreen = true;
-        this.resizeCanvasToFullscreen();
-        this.restoreCanvasContent();
-      });
-    }
+    this._savedImageData = this._canvasUtilsService.saveCanvasContent(canvas);
+    this._canvasUtilsService.enterFullscreen(canvas).then(() => {
+      this.isFullscreen = true;
+      this._canvasUtilsService.resizeCanvasToFullscreen(canvas);
+      this._canvasUtilsService.scaleCanvasContent(
+        canvas,
+        this._savedImageData,
+        this._originalWidth,
+        this._originalHeight,
+        canvas.width,
+        canvas.height
+      );
+    });
   }
 
   private exitFullscreen(): void {
-    if (document.exitFullscreen) {
-      document.exitFullscreen().then(() => {
-        this.isFullscreen = false;
-        this.restoreCanvasSize();
-        this.restoreCanvasContent();
-      });
-    }
-  }
-
-  private resizeCanvasToFullscreen(): void {
-    const canvas = this.canvasElement.nativeElement;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    this.scaleCanvasContent(
-      this._originalWidth,
-      this._originalHeight,
-      canvas.width,
-      canvas.height
-    );
-  }
-
-  private restoreCanvasSize(): void {
-    const canvas = this.canvasElement.nativeElement;
-    canvas.width = this._originalWidth;
-    canvas.height = this._originalHeight;
-  }
-
-  private scaleCanvasContent(
-    originalWidth: number,
-    originalHeight: number,
-    newWidth: number,
-    newHeight: number
-  ): void {
-    const canvas = this.canvasElement.nativeElement;
-    const context = canvas.getContext('2d');
-    if (context && this._savedImageData) {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = originalWidth;
-      tempCanvas.height = originalHeight;
-      const tempContext = tempCanvas.getContext('2d');
-      if (tempContext) {
-        tempContext.putImageData(this._savedImageData, 0, 0);
-
-        context.drawImage(
-          tempCanvas,
-          0,
-          0,
-          originalWidth,
-          originalHeight,
-          0,
-          0,
-          newWidth,
-          newHeight
-        );
-      }
-    }
+    this._canvasUtilsService.exitFullscreen().then(() => {
+      this.isFullscreen = false;
+      const canvas = this.canvasElement.nativeElement;
+      this._canvasUtilsService.restoreCanvasSize(
+        canvas,
+        this._originalWidth,
+        this._originalHeight
+      );
+      this._canvasUtilsService.restoreCanvasContent(
+        canvas,
+        this._savedImageData
+      );
+    });
   }
 
   private handleResize(): void {
     if (this.isFullscreen) {
-      this.resizeCanvasToFullscreen();
+      const canvas = this.canvasElement.nativeElement;
+      this._canvasUtilsService.resizeCanvasToFullscreen(canvas);
+      this._canvasUtilsService.scaleCanvasContent(
+        canvas,
+        this._savedImageData,
+        this._originalWidth,
+        this._originalHeight,
+        canvas.width,
+        canvas.height
+      );
     }
   }
 
@@ -140,31 +112,18 @@ export class CanvasComponent implements AfterViewInit {
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         this.isFullscreen = false;
-        this.restoreCanvasSize();
-        this.restoreCanvasContent();
+        const canvas = this.canvasElement.nativeElement;
+        this._canvasUtilsService.restoreCanvasSize(
+          canvas,
+          this._originalWidth,
+          this._originalHeight
+        );
+        this._canvasUtilsService.restoreCanvasContent(
+          canvas,
+          this._savedImageData
+        );
       }
     });
-  }
-
-  private saveCanvasContent(): void {
-    const canvas = this.canvasElement.nativeElement;
-    const context = canvas.getContext('2d');
-    if (context) {
-      this._savedImageData = context.getImageData(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-    }
-  }
-
-  private restoreCanvasContent(): void {
-    const canvas = this.canvasElement.nativeElement;
-    const context = canvas.getContext('2d');
-    if (context && this._savedImageData) {
-      context.putImageData(this._savedImageData, 0, 0);
-    }
   }
 
   public drawSomething(): void {
