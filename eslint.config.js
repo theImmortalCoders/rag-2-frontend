@@ -122,7 +122,7 @@ module.exports = tseslint.config(
         },
       ],
       'max-depth': ['warn', 2],
-      complexity: ['warn', { max: 6 }],
+      complexity: ['warn', { max: 7 }],
       'max-lines': ['warn', 200],
       'no-else-return': 'warn',
       'no-console': 'off',

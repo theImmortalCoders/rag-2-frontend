@@ -41,7 +41,7 @@ import { Component, Input } from '@angular/core';
 })
 export class SocketConnectedMenuComponent {
   @Input({ required: true }) public isDataSendingActive = false;
-  @Input({ required: true }) public vSendingInterval = { value: 500 };
+  @Input({ required: true }) public vSendingInterval = { value: 100 };
   @Input({ required: true }) public socket: WebSocket | null = null;
   @Input({ required: true }) public startDataExchange = (
     sendingInterval: number

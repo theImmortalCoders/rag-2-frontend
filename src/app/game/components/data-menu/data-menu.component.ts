@@ -73,7 +73,7 @@ export class DataMenuComponent implements OnInit {
   public collectedDataArray: TExchangeData[] = [];
   public vIsDataCollectingActive = { value: false };
   public isDataMenuVisible = false;
-  public dataSavingIntervalLimit = 500;
+  public dataSavingIntervalLimit = 100;
 
   public constructor(
     private _route$: ActivatedRoute,
