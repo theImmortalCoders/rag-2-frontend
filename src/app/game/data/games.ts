@@ -12,6 +12,7 @@ export class Pong extends Game {
   public ballY = 0;
   public ballSpeedX = 0;
   public ballSpeedY = 0;
+  public ballSpeedMultiplier = 1;
   public scoreLeft = 0;
   public scoreRight = 0;
 
