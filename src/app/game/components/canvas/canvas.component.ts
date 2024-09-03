@@ -19,7 +19,9 @@ import * as feather from 'feather-icons';
         [attr.width]="width"
         [attr.height]="height"
         class="border-mainOrange border-2"></canvas>
-      <button (click)="toggleFullscreen()" class="absolute bottom-4 right-4">
+      <button
+        (click)="toggleFullscreen()"
+        class="absolute bottom-[-4rem] right-[-4rem]">
         <i
           data-feather="maximize"
           class="size-9 hover:size-10 opacity-70 hover:opacity-100 transition-all ease-in-out duration-100"></i>

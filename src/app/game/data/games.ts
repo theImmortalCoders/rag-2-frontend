@@ -37,7 +37,26 @@ export class Pong extends Game {
 export class TicTacToe extends Game {
   public leftPadleY = 0;
 }
+// `
+// output:
+//   leftPadleY: number, <0, 600>;
+//   rightPadleY: number, <0, 600>;
+//   leftPaddleSpeed: number, <-20, 20>;
+//   rightPaddleSpeed: number, <-20, 20>;
+//   ballX: number, <0, 1000>;
+//   ballY: number, <0, 600>;
+//   ballSpeedX: number, <-inf, inf>;
+//   ballSpeedY: number, <-inf, inf>;
+//   ballSpeedMultiplier: number, <1, inf>;
+//   scoreLeft: number, <0, inf>;
+//   scoreRight: number, <0, inf>;
 
+// default values:
+//   ballX: 500;
+//   ballY: 300;
+//   leftPadleY: 250;
+//   rightPadleY: 250;
+// `
 //
 
 export const games: Record<string, Game> = {

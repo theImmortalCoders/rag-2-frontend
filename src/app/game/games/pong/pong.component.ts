@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable max-lines */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { BaseGameWindowComponent } from '../base-game.component';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
@@ -121,16 +123,14 @@ export class PongGameWindowComponent
   private checkPointScored(): void {
     if (
       this.game.ballX <= 0 - this._ballWidth ||
-      (Math.abs(this.game.ballX) <= this._ballWidth &&
-        this.game.ballSpeedX == 0)
+      Math.abs(this.game.ballSpeedX) < 1
     ) {
       this.resetPaddlesAndBall();
       this.game.scoreRight++;
     }
     if (
       this.game.ballX >= this._canvas.width + this._ballWidth ||
-      (Math.abs(this.game.ballX - this._canvas.width) <= this._ballWidth &&
-        this.game.ballSpeedX == 0)
+      Math.abs(this.game.ballSpeedX) < 1
     ) {
       this.resetPaddlesAndBall();
       this.game.scoreLeft++;
@@ -152,7 +152,7 @@ export class PongGameWindowComponent
       this.game.ballY >= this.game.leftPadleY &&
       this.game.ballY <= this.game.leftPadleY + this._paddleHeight
     ) {
-      const rotation = this.game.leftPaddleSpeed / 4;
+      const rotation = this.game.leftPaddleSpeed / 6;
       this.game.ballSpeedY = this.game.ballSpeedY + rotation;
       this.game.ballSpeedX = -this.game.ballSpeedX;
       this.game.ballSpeedMultiplier += 0.05;

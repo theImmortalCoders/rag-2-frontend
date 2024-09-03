@@ -80,7 +80,7 @@ export abstract class BaseGameWindowComponent
 
   private emitGameStateData(): void {
     this.gameStateDataEmitter.emit({
-      output: this.game || {}, //check
+      output: this.game || {},
     });
   }
 
