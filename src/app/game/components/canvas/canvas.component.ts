@@ -16,8 +16,8 @@ import * as feather from 'feather-icons';
     <div class="relative">
       <canvas
         #canvasElement
-        [attr.width]="1000"
-        [attr.height]="600"
+        [attr.width]="width"
+        [attr.height]="height"
         class="border-mainOrange border-2"></canvas>
       <button (click)="toggleFullscreen()" class="absolute bottom-4 right-4">
         <i
@@ -32,6 +32,9 @@ export class CanvasComponent implements AfterViewInit {
 
   @ViewChild('canvasElement', { static: true })
   public canvasElement!: ElementRef<HTMLCanvasElement>;
+
+  public height = 600;
+  public width = 1000;
 
   private isFullscreen = false;
   private _originalWidth!: number;

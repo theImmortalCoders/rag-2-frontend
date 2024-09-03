@@ -5,6 +5,9 @@ import { Player } from '../models/player.class';
 
 export class Pong extends Game {
   public leftPadleY = 0;
+  public rightPadleY = 0;
+  public leftPaddleSpeed = 0;
+  public rightPaddleSpeed = 0;
   public override players = [
     new Player(
       1,
