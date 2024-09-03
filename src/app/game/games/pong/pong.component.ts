@@ -8,15 +8,17 @@ import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
   selector: 'app-pong',
   standalone: true,
   imports: [CanvasComponent],
-  template: ` <app-canvas #gameCanvas></app-canvas> `,
+  template: `<div>{{ game.scoreLeft }}:{{ game.scoreRight }}</div>
+    <app-canvas #gameCanvas></app-canvas> `,
 })
 export class PongGameWindowComponent
   extends BaseGameWindowComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  private _paddleHeight = 100;
+  private _paddleHeight = 150;
   private _paddleWidth = 10;
   private _paddleJump = 20;
+  private _ballInitialSpeed = 7;
   private _canvas!: HTMLCanvasElement;
 
   public override game!: Pong;
@@ -29,12 +31,10 @@ export class PongGameWindowComponent
   public ngAfterViewInit(): void {
     this._canvas = this.gameCanvas.canvasElement.nativeElement;
 
-    this.game.leftPadleY = (this._canvas.height - this._paddleHeight) / 2;
-    this.game.rightPadleY = (this._canvas.height - this._paddleHeight) / 2;
-
     window.addEventListener('keydown', event => this.onKeyDown(event));
     window.addEventListener('keyup', event => this.onKeyUp(event));
 
+    this.resetPaddlesAndBall();
     this.update();
   }
 
@@ -46,8 +46,7 @@ export class PongGameWindowComponent
 
   public override restart(): void {
     this.game = new Pong('pong', PongGameWindowComponent);
-    this.game.leftPadleY = (this._canvas.height - this._paddleHeight) / 2;
-    this.game.rightPadleY = (this._canvas.height - this._paddleHeight) / 2;
+    this.resetPaddlesAndBall();
   }
 
   //
@@ -56,6 +55,7 @@ export class PongGameWindowComponent
     if (!this.isPaused) {
       this.updatePaddlesSpeeds();
       this.updatePaddlesPositions();
+      this.updateBallPosition();
       this.render();
     }
     requestAnimationFrame(() => this.update());
@@ -67,18 +67,98 @@ export class PongGameWindowComponent
       context.clearRect(0, 0, this._canvas.width, this._canvas.height);
       context.fillStyle = 'red';
       context.fillRect(
-        10,
+        0,
         this.game.leftPadleY,
         this._paddleWidth,
         this._paddleHeight
       );
       context.fillRect(
-        this._canvas.width - 20,
+        this._canvas.width - 10,
         this.game.rightPadleY,
         this._paddleWidth,
         this._paddleHeight
       );
+      context.beginPath();
+      context.arc(
+        this.game.ballX,
+        this.game.ballY,
+        this._paddleWidth,
+        0,
+        2 * Math.PI
+      );
+      context.fillStyle = 'blue';
+      context.fill();
     }
+  }
+
+  private resetPaddlesAndBall(): void {
+    this.game.leftPadleY = (this._canvas.height - this._paddleHeight) / 2;
+    this.game.rightPadleY = (this._canvas.height - this._paddleHeight) / 2;
+    this.game.ballX = this._canvas.width / 2;
+    this.game.ballY = this._canvas.height / 2;
+  }
+
+  private updateBallPosition(): void {
+    this.game.ballX += this.game.ballSpeedX;
+    this.game.ballY += this.game.ballSpeedY;
+
+    if (this.game.ballSpeedX === 0 && this.game.ballSpeedY === 0) {
+      this.initializeBallSpeed();
+    }
+
+    this.checkCollisionWithWalls();
+    this.checkCollisionWithPaddles();
+
+    if (this.game.ballX <= 0 - this._paddleWidth) {
+      this.resetPaddlesAndBall();
+      this.game.scoreRight++;
+    }
+    if (this.game.ballX >= this._canvas.width + this._paddleWidth) {
+      this.resetPaddlesAndBall();
+      this.game.scoreLeft++;
+    }
+  }
+
+  private checkCollisionWithWalls(): void {
+    if (
+      this.game.ballY <= 0 + this._paddleWidth ||
+      this.game.ballY >= this._canvas.height - this._paddleWidth
+    ) {
+      this.game.ballSpeedY = -this.game.ballSpeedY;
+    }
+  }
+
+  private checkCollisionWithPaddles(): void {
+    if (
+      this.game.ballX <= this._paddleWidth * 2 &&
+      this.game.ballY >= this.game.leftPadleY &&
+      this.game.ballY <= this.game.leftPadleY + this._paddleHeight
+    ) {
+      this.game.ballSpeedX = -this.game.ballSpeedX;
+    }
+
+    if (
+      this.game.ballX >= this._canvas.width - 2 * this._paddleWidth &&
+      this.game.ballY >= this.game.rightPadleY &&
+      this.game.ballY <= this.game.rightPadleY + this._paddleHeight
+    ) {
+      this.game.ballSpeedX = -this.game.ballSpeedX;
+    }
+  }
+
+  private initializeBallSpeed(): void {
+    this.game.ballSpeedX =
+      this.random(0, 1) === 0
+        ? this._ballInitialSpeed
+        : -this._ballInitialSpeed;
+    this.game.ballSpeedY =
+      this.random(0, 1) === 0
+        ? this._ballInitialSpeed
+        : -this._ballInitialSpeed;
+  }
+
+  private random(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   private updatePaddlesSpeeds(): void {

@@ -8,6 +8,13 @@ export class Pong extends Game {
   public rightPadleY = 0;
   public leftPaddleSpeed = 0;
   public rightPaddleSpeed = 0;
+  public ballX = 0;
+  public ballY = 0;
+  public ballSpeedX = 0;
+  public ballSpeedY = 0;
+  public scoreLeft = 0;
+  public scoreRight = 0;
+
   public override players = [
     new Player(
       1,
