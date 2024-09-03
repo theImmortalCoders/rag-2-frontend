@@ -67,15 +67,15 @@ module.exports = {
             {},
         },
         '.side-menu-right-button': {
-          '@apply flex flex-col shadow-sideMenuShadow absolute transition-all ease-in-out duration-700 p-2 items-center justify-center bg-lightGray font-mono font-bold border-r-2 border-mainOrange hover:border-green-500':
+          '@apply flex flex-col shadow-sideMenuShadow z-20 absolute transition-all ease-in-out duration-700 p-2 items-center justify-center bg-lightGray font-mono font-bold border-r-2 border-mainOrange hover:border-green-500':
             {},
         },
         '.side-menu-left-button': {
-          '@apply flex flex-col shadow-sideMenuShadow absolute transition-all ease-in-out duration-700 p-2 items-center justify-center bg-lightGray font-mono font-bold border-l-2 border-mainOrange hover:border-green-500':
+          '@apply flex flex-col shadow-sideMenuShadow z-20 absolute transition-all ease-in-out duration-700 p-2 items-center justify-center bg-lightGray font-mono font-bold border-l-2 border-mainOrange hover:border-green-500':
             {},
         },
         '.side-menu-container': {
-          '@apply flex flex-col shadow-sideMenuShadow absolute transition-all ease-in-out duration-700':
+          '@apply flex flex-col shadow-sideMenuShadow z-20 absolute transition-all ease-in-out duration-700':
             {},
         },
       });

@@ -5,11 +5,13 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { TExchangeData } from '../models/exchange-data.type';
 import { Player } from 'app/game/models/player.class';
 import { IPlayerInputData } from 'app/game/models/player-input-data.type';
 import { Observable, Subscription } from 'rxjs';
+import { CanvasComponent } from '../components/canvas/canvas.component';
 
 @Component({
   selector: 'app-base-game-window',
@@ -35,6 +37,7 @@ export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
   }
 
   @Output() public gameStateDataEmitter = new EventEmitter<TExchangeData>();
+  @ViewChild('gameCanvas') public gameCanvas!: CanvasComponent;
 
   private _restartSubscription = new Subscription();
   private _pauseSubscription = new Subscription();

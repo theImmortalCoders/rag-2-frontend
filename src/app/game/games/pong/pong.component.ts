@@ -9,23 +9,11 @@ import { CanvasComponent } from '../../components/canvas/canvas.component';
   template: `
     <div class="w-2/3 pb-4 text-sm">
       PONG
-      <input
-        class="w-full h-10 border-2 border-gray-300 rounded-lg p-2"
-        #inputElement1
-        type="text"
-        [value]="defaultText"
-        (input)="updateOutputData1(inputElement1.value)" />
-      <input
-        class="w-full h-10 border-2 border-gray-300 rounded-lg p-2"
-        #inputElement2
-        type="text"
-        [value]="defaultText + '2'"
-        (input)="updateOutputData2(inputElement2.value)" />
       <div>P1 Move: {{ players[0].inputData['move'] }}</div>
       <div>P2 Move: {{ players[1].inputData['move'] }}</div>
     </div>
-    <app-canvas #gameCanvas [width]="1000" [height]="600"></app-canvas>
-    <button (click)="gameCanvas.drawSomething()">Draw Something</button>
+    <app-canvas #gameCanvas></app-canvas>
+    <button (click)="draw()">Draw Something</button>
   `,
 })
 export class PongGameWindowComponent extends BaseGameWindowComponent {
@@ -57,5 +45,14 @@ export class PongGameWindowComponent extends BaseGameWindowComponent {
   public updateOutputData2(value: string): void {
     this.gameStateData['text2'] = value;
     this.emitOutputData();
+  }
+
+  public draw(): void {
+    const canvas = this.gameCanvas.canvasElement.nativeElement;
+    const context = canvas.getContext('2d');
+    if (context) {
+      context.fillStyle = 'red';
+      context.fillRect(10, 10, 100, 100);
+    }
   }
 }
