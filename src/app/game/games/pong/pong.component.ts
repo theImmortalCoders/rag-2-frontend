@@ -18,7 +18,7 @@ export class PongGameWindowComponent
   private _paddleHeight = 150;
   private _paddleWidth = 10;
   private _paddleJump = 20;
-  private _ballInitialSpeed = 7;
+  private _ballWidth = 10;
   private _canvas!: HTMLCanvasElement;
 
   public override game!: Pong;
@@ -73,7 +73,7 @@ export class PongGameWindowComponent
         this._paddleHeight
       );
       context.fillRect(
-        this._canvas.width - 10,
+        this._canvas.width - this._paddleWidth,
         this.game.rightPadleY,
         this._paddleWidth,
         this._paddleHeight
@@ -82,7 +82,7 @@ export class PongGameWindowComponent
       context.arc(
         this.game.ballX,
         this.game.ballY,
-        this._paddleWidth,
+        this._ballWidth,
         0,
         2 * Math.PI
       );
@@ -96,24 +96,42 @@ export class PongGameWindowComponent
     this.game.rightPadleY = (this._canvas.height - this._paddleHeight) / 2;
     this.game.ballX = this._canvas.width / 2;
     this.game.ballY = this._canvas.height / 2;
+    this.game.ballSpeedX = 0;
+    this.game.ballSpeedY = 0;
+    this.game.ballSpeedMultiplier = 1;
   }
 
   private updateBallPosition(): void {
-    this.game.ballX += this.game.ballSpeedX;
+    this.game.ballX += this.game.ballSpeedX * this.game.ballSpeedMultiplier;
     this.game.ballY += this.game.ballSpeedY;
 
     if (this.game.ballSpeedX === 0 && this.game.ballSpeedY === 0) {
       this.initializeBallSpeed();
     }
 
-    this.checkCollisionWithWalls();
-    this.checkCollisionWithPaddles();
+    if (this.game.ballSpeedY == 0) {
+      this.game.ballSpeedY = this.random(-1, 1);
+    }
 
-    if (this.game.ballX <= 0 - this._paddleWidth) {
+    this.checkCollisionWithPaddles();
+    this.checkCollisionWithWalls();
+    this.checkPointScored();
+  }
+
+  private checkPointScored(): void {
+    if (
+      this.game.ballX <= 0 - this._ballWidth ||
+      (Math.abs(this.game.ballX) <= this._ballWidth &&
+        this.game.ballSpeedX == 0)
+    ) {
       this.resetPaddlesAndBall();
       this.game.scoreRight++;
     }
-    if (this.game.ballX >= this._canvas.width + this._paddleWidth) {
+    if (
+      this.game.ballX >= this._canvas.width + this._ballWidth ||
+      (Math.abs(this.game.ballX - this._canvas.width) <= this._ballWidth &&
+        this.game.ballSpeedX == 0)
+    ) {
       this.resetPaddlesAndBall();
       this.game.scoreLeft++;
     }
@@ -121,8 +139,8 @@ export class PongGameWindowComponent
 
   private checkCollisionWithWalls(): void {
     if (
-      this.game.ballY <= 0 + this._paddleWidth ||
-      this.game.ballY >= this._canvas.height - this._paddleWidth
+      this.game.ballY <= 0 + this._ballWidth ||
+      this.game.ballY >= this._canvas.height - this._ballWidth
     ) {
       this.game.ballSpeedY = -this.game.ballSpeedY;
     }
@@ -130,31 +148,36 @@ export class PongGameWindowComponent
 
   private checkCollisionWithPaddles(): void {
     if (
-      this.game.ballX <= this._paddleWidth * 2 &&
+      this.game.ballX <= this._ballWidth * 2 &&
       this.game.ballY >= this.game.leftPadleY &&
       this.game.ballY <= this.game.leftPadleY + this._paddleHeight
     ) {
+      const rotation = this.game.leftPaddleSpeed / 4;
+      this.game.ballSpeedY = this.game.ballSpeedY + rotation;
       this.game.ballSpeedX = -this.game.ballSpeedX;
+      this.game.ballSpeedMultiplier += 0.05;
     }
 
     if (
-      this.game.ballX >= this._canvas.width - 2 * this._paddleWidth &&
+      this.game.ballX >= this._canvas.width - 2 * this._ballWidth &&
       this.game.ballY >= this.game.rightPadleY &&
       this.game.ballY <= this.game.rightPadleY + this._paddleHeight
     ) {
+      const rotation = this.game.rightPaddleSpeed / 4;
+      this.game.ballSpeedY = this.game.ballSpeedY + rotation;
       this.game.ballSpeedX = -this.game.ballSpeedX;
+      this.game.ballSpeedMultiplier += 0.05;
     }
   }
 
   private initializeBallSpeed(): void {
+    const ballXInitialSpeed = this.random(5, 8);
+    const ballYInitialSpeed = this.random(3, 5);
+
     this.game.ballSpeedX =
-      this.random(0, 1) === 0
-        ? this._ballInitialSpeed
-        : -this._ballInitialSpeed;
+      this.random(0, 1) === 0 ? ballXInitialSpeed : -ballXInitialSpeed;
     this.game.ballSpeedY =
-      this.random(0, 1) === 0
-        ? this._ballInitialSpeed
-        : -this._ballInitialSpeed;
+      this.random(0, 1) === 0 ? ballYInitialSpeed : -ballYInitialSpeed;
   }
 
   private random(min: number, max: number): number {
@@ -211,9 +234,11 @@ export class PongGameWindowComponent
     if (player1.getPlayerType === PlayerSourceType.KEYBOARD) {
       switch (event.key) {
         case 'w':
+        case 'W':
           player1.inputData['move'] = 1;
           break;
         case 's':
+        case 'S':
           player1.inputData['move'] = -1;
           break;
       }
@@ -240,7 +265,9 @@ export class PongGameWindowComponent
     if (player1.getPlayerType === PlayerSourceType.KEYBOARD) {
       switch (event.key) {
         case 'w':
+        case 'W':
         case 's':
+        case 'S':
           player1.inputData['move'] = 0;
           break;
       }
