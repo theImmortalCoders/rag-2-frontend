@@ -15,6 +15,7 @@ import { Player } from 'app/game/models/player.class';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { PlayerSocketMenuComponent } from './components/player-socket-menu.component';
 import { Observable, Subscription } from 'rxjs';
+import { AiSocketService } from './services/ai-socket.service';
 
 @Component({
   selector: 'app-ai-socket-menu',
@@ -51,7 +52,8 @@ import { Observable, Subscription } from 'rxjs';
               [gameName]="gameName"
               [dataToSend]="dataToSend"
               (receivedDataEmitter)="receiveInputData($event)"
-              [gamePause]="gamePause"></app-player-socket-menu>
+              [gamePause]="gamePause"
+              [gameRestart]="gameRestart"></app-player-socket-menu>
           }
         }
       </div>
@@ -63,6 +65,7 @@ export class AiSocketMenuComponent {
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public dataToSend: TExchangeData = {};
   @Input({ required: true }) public gamePause = new Observable<boolean>();
+  @Input({ required: true }) public gameRestart = new Observable<void>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 

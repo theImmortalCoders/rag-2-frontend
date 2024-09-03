@@ -14,6 +14,8 @@ export class Player {
     id: number,
     isObligatory: boolean,
     name: string,
+    inputData: TExchangeData = {},
+    expectedDataDescription: string,
     playerType: PlayerSourceType = PlayerSourceType.KEYBOARD
   ) {
     this.isObligatory = isObligatory;
@@ -21,6 +23,8 @@ export class Player {
     this.id = id;
     this.isActive = isObligatory;
     this._playerType = playerType;
+    this._expectedDataDescription = expectedDataDescription;
+    this._inputData = inputData;
   }
 
   public get name(): string {

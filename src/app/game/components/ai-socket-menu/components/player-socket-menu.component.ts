@@ -39,7 +39,8 @@ import { Observable, Subscription } from 'rxjs';
         [setDataToSend]="dataToSend"
         (receivedDataEmitter)="receivedDataEmitter.emit($event)"
         [gameName]="gameName"
-        [gamePause]="gamePause" />
+        [gamePause]="gamePause"
+        [gameRestart]="gameRestart" />
     }
   `,
 })
@@ -48,6 +49,7 @@ export class PlayerSocketMenuComponent {
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public dataToSend: TExchangeData = {};
   @Input({ required: true }) public gamePause = new Observable<boolean>();
+  @Input({ required: true }) public gameRestart = new Observable<void>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 

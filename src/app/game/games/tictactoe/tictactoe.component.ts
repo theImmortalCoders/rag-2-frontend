@@ -17,14 +17,8 @@ export class TictactoeGameWindowComponent extends BaseGameWindowComponent {
   public input = 0;
   public clicks = 0;
 
-  protected override gameStateData: TExchangeData = {
-    clicks: this.clicks,
-  };
-
   public onClick(): void {
     this.clicks++;
-    this.gameStateData['clicks'] = this.clicks;
-    this.emitOutputData();
   }
 
   public override set setSocketInputDataReceive(value: TExchangeData) {

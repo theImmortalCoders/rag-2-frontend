@@ -37,29 +37,30 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
             (playerSourceChangeEmitter)="updatePlayers($event)" />
           @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
             <app-ai-socket-menu
-              [dataToSend]="gameWindowOutputData"
-              [gameName]="game.getName()"
+              [dataToSend]="gameStateData"
+              [gameName]="game.name"
               [players]="playersSelected"
               (receivedDataEmitter)="receiveSocketInputData($event)"
-              [gamePause]="gamePauseSubject.asObservable()" />
+              [gamePause]="gamePauseSubject.asObservable()"
+              [gameRestart]="gameRestartSubject.asObservable()" />
           }
         </div>
         <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
           <app-data-menu
-            [gameName]="game.getName()"
-            [setDataPossibleToPersist]="gameWindowOutputData" />
+            [gameName]="game.name"
+            [setDataPossibleToPersist]="gameStateData" />
           <app-game-menu
             (pauseEmitter)="gamePauseSubject.next($event)"
             (restartEmitter)="gameRestartSubject.next()" />
         </div>
         <div class="flex w-full items-center justify-center py-12">
-          @switch (game.getName()) {
+          @switch (game.name) {
             @case ('pong') {
               <app-pong
                 class="flex flex-col items-center w-3/4"
                 [setSocketInputDataReceive]="socketInputData"
                 (gameStateDataEmitter)="receiveGameOutputData($event)"
-                [players]="players"
+                [abstractGame]="game"
                 [gameRestart]="gameRestartSubject.asObservable()"
                 [gamePause]="gamePauseSubject.asObservable()" />
             }
@@ -67,7 +68,7 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
               <app-tictactoe
                 [setSocketInputDataReceive]="socketInputData"
                 (gameStateDataEmitter)="receiveGameOutputData($event)"
-                [players]="players"
+                [abstractGame]="game"
                 [gameRestart]="gameRestartSubject.asObservable()"
                 [gamePause]="gamePauseSubject.asObservable()" />
             }
@@ -90,7 +91,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public players: Player[] = [];
   public playersSelected: Player[] = [];
   public socketInputData: TExchangeData = {};
-  public gameWindowOutputData: TExchangeData = {};
+  public gameStateData: TExchangeData = {};
   public gameRestartSubject = new Subject<void>();
   public gamePauseSubject = new Subject<boolean>();
 
@@ -104,7 +105,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   public receiveGameOutputData(data: TExchangeData): void {
-    this.gameWindowOutputData = JSON.parse(
+    this.gameStateData = JSON.parse(
       JSON.stringify((data as TExchangeData)['output'])
     );
     this.logData['game window'] = data;
@@ -140,8 +141,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
       this._router.navigate(['']);
     } else {
       this.game = game;
-      this.players = game.getPlayers();
-      this.playersSelected = game.getPlayers();
+      this.players = game.players;
+      this.playersSelected = game.players;
     }
   }
 

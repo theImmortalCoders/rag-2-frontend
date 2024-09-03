@@ -31,7 +31,7 @@ describe('PlayerSocketMenuComponent', () => {
     fixture = TestBed.createComponent(PlayerSocketMenuComponent);
     component = fixture.componentInstance;
 
-    mockPlayer = new Player(1, true, 'Player 1', PlayerSourceType.KEYBOARD);
+    mockPlayer = new Player(1, true, 'p1', {}, PlayerSourceType.KEYBOARD);
     component.player = mockPlayer;
     fixture.detectChanges();
   });
