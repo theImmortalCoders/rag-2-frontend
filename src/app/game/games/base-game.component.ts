@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -6,34 +7,36 @@ import {
   OnInit,
   Output,
   ViewChild,
+  DoCheck,
 } from '@angular/core';
 import { TExchangeData } from '../models/exchange-data.type';
 import { Player } from 'app/game/models/player.class';
 import { IPlayerInputData } from 'app/game/models/player-input-data.type';
 import { Observable, Subscription } from 'rxjs';
 import { CanvasComponent } from '../components/canvas/canvas.component';
+import { Game } from '../models/game.class';
 
 @Component({
   selector: 'app-base-game-window',
   standalone: true,
   template: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
+export abstract class BaseGameWindowComponent
+  implements OnInit, OnDestroy, DoCheck
+{
   @Input({ required: true }) public gameRestart = new Observable<void>();
   @Input({ required: true }) public gamePause = new Observable<boolean>();
-  @Input({ required: true }) public players: Player[] = [];
+  @Input({ required: true }) public abstractGame!: Game;
   @Input() public set setSocketInputDataReceive(value: TExchangeData) {
     const playerInputData = this.mapReceivedToPlayerAndData(value);
     if (!playerInputData.data || !playerInputData.player) return;
 
-    this.players.forEach(player => {
+    this.game.players.forEach(player => {
       if (player.id === playerInputData.player.id) {
         player.inputData = playerInputData.data;
       }
     });
-
-    this.gameStateData['players'] = JSON.stringify(this.players);
-    this.emitOutputData();
   }
 
   @Output() public gameStateDataEmitter = new EventEmitter<TExchangeData>();
@@ -43,12 +46,10 @@ export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
   private _pauseSubscription = new Subscription();
 
   protected isPaused = false;
-  protected gameStateData: TExchangeData = {
-    players: JSON.stringify(this.players),
-  };
+  protected game: Game = this.abstractGame;
 
   protected arePlayersReady(): boolean {
-    return this.players
+    return this.game.players
       .filter(p => p.obligatory)
       .every(player => player != undefined && player.inputData !== undefined);
   }
@@ -63,7 +64,6 @@ export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
       this.isPaused = value;
       console.info('Pause state: ', this.isPaused);
     });
-    this.gameStateData['players'] = JSON.stringify(this.players);
   }
 
   public ngOnDestroy(): void {
@@ -71,17 +71,19 @@ export abstract class BaseGameWindowComponent implements OnInit, OnDestroy {
     this._pauseSubscription.unsubscribe();
   }
 
-  //called on restart (override)
-  public abstract restart(): void;
-
-  //send data to data menu (do not override, call when want to send data)
-  protected emitOutputData(): void {
-    this.gameStateDataEmitter.emit({
-      output: this.gameStateData,
-    });
+  public ngDoCheck(): void {
+    this.emitGameStateData();
   }
 
+  public abstract restart(): void;
+
   //
+
+  private emitGameStateData(): void {
+    this.gameStateDataEmitter.emit({
+      output: this.game || {}, //check
+    });
+  }
 
   private mapReceivedToPlayerAndData(value: TExchangeData): IPlayerInputData {
     const data = value['data'] as TExchangeData;

@@ -56,10 +56,12 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   }
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gamePause = new Observable<boolean>();
+  @Input({ required: true }) public gameRestart = new Observable<void>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
   private _pauseSubscription = new Subscription();
+  private _restartSubscription = new Subscription();
 
   public dataToSend: TExchangeData = {};
   public socketUrl = '';
@@ -70,6 +72,9 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public isPaused = false;
 
   public ngOnInit(): void {
+    this._restartSubscription = this.gameRestart.subscribe(() => {
+      console.log('Restart - ai socket');
+    });
     this._pauseSubscription = this.gamePause.subscribe(value => {
       if (value) {
         this.isPaused = true;
@@ -87,6 +92,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this._pauseSubscription.unsubscribe();
+    this._restartSubscription.unsubscribe();
   }
 
   public onConnectButtonClick(): void {

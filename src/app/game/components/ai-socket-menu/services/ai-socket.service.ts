@@ -62,6 +62,7 @@ export class AiSocketService {
   public pauseDataExchange = (): void => {
     this.isDataSendingActive = false;
     clearInterval(this._sendingIntervalID as number);
+    console.log('Data exchange stopped', this._sendingIntervalID as number);
   };
 
   public resumeDataExchange = (
@@ -111,7 +112,7 @@ export class AiSocketService {
           expected_input_description: expectedDataDescription,
         })
       );
-      console.log('Data sent');
+      console.log('Data sent', this._sendingIntervalID as number);
     }
   }
 }
