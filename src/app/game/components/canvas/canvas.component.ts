@@ -12,13 +12,12 @@ import * as feather from 'feather-icons';
 @Component({
   selector: 'app-canvas',
   standalone: true,
-  imports: [],
   template: `
     <div class="relative">
       <canvas
         #canvasElement
-        [attr.width]="width"
-        [attr.height]="height"
+        [attr.width]="1000"
+        [attr.height]="600"
         class="border-mainOrange border-2"></canvas>
       <button (click)="toggleFullscreen()" class="absolute bottom-4 right-4">
         <i
@@ -29,9 +28,6 @@ import * as feather from 'feather-icons';
   `,
 })
 export class CanvasComponent implements AfterViewInit {
-  @Input({ required: true }) public width!: number;
-  @Input({ required: true }) public height!: number;
-
   private _canvasUtilsService = inject(CanvasUtilsService);
 
   @ViewChild('canvasElement', { static: true })
@@ -67,6 +63,8 @@ export class CanvasComponent implements AfterViewInit {
       this.exitFullscreen();
     }
   }
+
+  //
 
   private enterFullscreen(): void {
     const canvas = this.canvasElement.nativeElement;
@@ -132,14 +130,5 @@ export class CanvasComponent implements AfterViewInit {
         );
       }
     });
-  }
-
-  public drawSomething(): void {
-    const canvas = this.canvasElement.nativeElement;
-    const context = canvas.getContext('2d');
-    if (context) {
-      context.fillStyle = 'red';
-      context.fillRect(10, 10, 100, 100);
-    }
   }
 }
