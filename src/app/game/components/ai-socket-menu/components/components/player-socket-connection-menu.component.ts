@@ -68,7 +68,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public aiSocketService = inject(AiSocketService);
   public recentPhrases: string[] = [];
   public playerSourceType = PlayerSourceType;
-  public vSendingInterval = { value: 500 };
+  public vSendingInterval = { value: 100 };
   public isPaused = false;
 
   public ngOnInit(): void {

@@ -55,7 +55,6 @@ export abstract class BaseGameWindowComponent
   }
 
   public ngOnInit(): void {
-    this.restart();
     this._restartSubscription = this.gameRestart.subscribe(() => {
       this.restart();
       console.info('Game restarted');
