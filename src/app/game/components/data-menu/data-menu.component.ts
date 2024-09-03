@@ -32,6 +32,20 @@ import { DataDownloadComponent } from './components/data-download/data-download.
           [dataToPersist]="dataToPersist"
           [updateDataToPersist]="updateDataToPersist" />
       }
+      <span class="font-black mt-2 border-t-[1px] border-mainOrange"
+        >Data saving interval limit:</span
+      >
+      <input
+        type="number"
+        #dataSavingIntervalLimitInput
+        class="custom-input w-52 mb-2"
+        min="10"
+        max="1000"
+        step="10"
+        [defaultValue]="dataSavingIntervalLimit"
+        (change)="
+          dataSavingIntervalLimit = dataSavingIntervalLimitInput.valueAsNumber
+        " />
       <app-data-download
         [vIsDataCollectingActive]="vIsDataCollectingActive"
         [gameName]="gameName"
@@ -53,11 +67,13 @@ export class DataMenuComponent implements OnInit {
   }
 
   private _dataToPersistQueryParams: TExchangeData = {};
+  private _lastSavedTime = 0;
 
   public dataToPersist: TExchangeData = {};
   public collectedDataArray: TExchangeData[] = [];
   public vIsDataCollectingActive = { value: false };
   public isDataMenuVisible = false;
+  public dataSavingIntervalLimit = 500;
 
   public constructor(
     private _route$: ActivatedRoute,
@@ -106,10 +122,14 @@ export class DataMenuComponent implements OnInit {
     for (const key in newData) {
       newData[key] = this.dataPossibleToPersist[key];
     }
-    if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
+    if (
+      JSON.stringify(newData) !== JSON.stringify(this.dataToPersist) &&
+      Date.now() - this._lastSavedTime > this.dataSavingIntervalLimit
+    ) {
       newData['timestamp'] = new Date().toISOString();
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);
+      this._lastSavedTime = Date.now();
     }
   }
 
