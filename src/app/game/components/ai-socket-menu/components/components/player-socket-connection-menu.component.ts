@@ -56,20 +56,25 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   }
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gamePause = new Observable<boolean>();
+  @Input({ required: true }) public gameRestart = new Observable<void>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
   private _pauseSubscription = new Subscription();
+  private _restartSubscription = new Subscription();
 
   public dataToSend: TExchangeData = {};
   public socketUrl = '';
   public aiSocketService = inject(AiSocketService);
   public recentPhrases: string[] = [];
   public playerSourceType = PlayerSourceType;
-  public vSendingInterval = { value: 500 };
+  public vSendingInterval = { value: 100 };
   public isPaused = false;
 
   public ngOnInit(): void {
+    this._restartSubscription = this.gameRestart.subscribe(() => {
+      console.log('Restart - ai socket');
+    });
     this._pauseSubscription = this.gamePause.subscribe(value => {
       if (value) {
         this.isPaused = true;
@@ -78,8 +83,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this.isPaused = false;
         this.aiSocketService.resumeDataExchange(
           this.vSendingInterval.value,
-          this.player.inputData,
-          this.player.expectedDataDescription
+          this.player.inputData
         );
       }
     });
@@ -87,6 +91,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this._pauseSubscription.unsubscribe();
+    this._restartSubscription.unsubscribe();
   }
 
   public onConnectButtonClick(): void {
@@ -107,8 +112,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public onStartDataExchangeClick = (): void => {
     this.aiSocketService.startDataExchange(
       this.vSendingInterval.value,
-      this.player.inputData,
-      this.player.expectedDataDescription
+      this.player.inputData
     );
   };
 

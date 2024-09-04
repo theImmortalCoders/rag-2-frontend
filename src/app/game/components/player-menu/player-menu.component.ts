@@ -27,7 +27,7 @@ import { Player } from 'app/game/models/player.class';
           <select
             #playerSourceSelect
             class="custom-input w-40"
-            [attr.disabled]="!player.active ? 'disabled' : null"
+            [attr.disabled]="!player.isActive ? 'disabled' : null"
             (change)="updateSources(player, playerSourceSelect.value)">
             @for (source of playerSourceType; track source) {
               <option
@@ -37,14 +37,14 @@ import { Player } from 'app/game/models/player.class';
               </option>
             }
           </select>
-          @if (!player.obligatory) {
+          @if (!player.isObligatory) {
             <div>
               Active:
               <input
                 #playerActive
                 type="checkbox"
                 (change)="updatePlayerActive(player, playerActive.checked)"
-                [defaultValue]="player.active" />
+                [defaultValue]="player.isActive" />
             </div>
           }
         </div>
@@ -67,12 +67,12 @@ export class PlayerMenuComponent {
   }
 
   public updateSources(player: Player, value: string): void {
-    player.setPlayerType = value as unknown as PlayerSourceType;
+    player.playerType = value as unknown as PlayerSourceType;
     this.playerSourceChangeEmitter.emit(this.players);
   }
 
   public updatePlayerActive(player: Player, value: boolean): void {
-    player.active = value;
+    player.isActive = value;
     this.playerSourceChangeEmitter.emit(this.players);
   }
 }

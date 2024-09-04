@@ -12,7 +12,6 @@ import * as feather from 'feather-icons';
 @Component({
   selector: 'app-canvas',
   standalone: true,
-  imports: [],
   template: `
     <div class="relative">
       <canvas
@@ -20,7 +19,9 @@ import * as feather from 'feather-icons';
         [attr.width]="width"
         [attr.height]="height"
         class="border-mainOrange border-2"></canvas>
-      <button (click)="toggleFullscreen()" class="absolute bottom-4 right-4">
+      <button
+        (click)="toggleFullscreen()"
+        class="absolute -bottom-16 -right-16">
         <i
           data-feather="maximize"
           class="size-9 hover:size-10 opacity-70 hover:opacity-100 transition-all ease-in-out duration-100"></i>
@@ -29,13 +30,13 @@ import * as feather from 'feather-icons';
   `,
 })
 export class CanvasComponent implements AfterViewInit {
-  @Input({ required: true }) public width!: number;
-  @Input({ required: true }) public height!: number;
-
   private _canvasUtilsService = inject(CanvasUtilsService);
 
   @ViewChild('canvasElement', { static: true })
   public canvasElement!: ElementRef<HTMLCanvasElement>;
+
+  public height = 600;
+  public width = 1000;
 
   private isFullscreen = false;
   private _originalWidth!: number;
@@ -67,6 +68,8 @@ export class CanvasComponent implements AfterViewInit {
       this.exitFullscreen();
     }
   }
+
+  //
 
   private enterFullscreen(): void {
     const canvas = this.canvasElement.nativeElement;
@@ -132,14 +135,5 @@ export class CanvasComponent implements AfterViewInit {
         );
       }
     });
-  }
-
-  public drawSomething(): void {
-    const canvas = this.canvasElement.nativeElement;
-    const context = canvas.getContext('2d');
-    if (context) {
-      context.fillStyle = 'red';
-      context.fillRect(10, 10, 100, 100);
-    }
   }
 }

@@ -32,11 +32,11 @@ describe('AiSocketMenuComponent', () => {
     fixture = TestBed.createComponent(AiSocketMenuComponent);
     component = fixture.componentInstance;
     component.players = [
-      { id: 1, active: true, getPlayerType: PlayerSourceType.SOCKET } as Player,
+      { id: 1, isActive: true, playerType: PlayerSourceType.SOCKET } as Player,
       {
         id: 2,
-        active: false,
-        getPlayerType: PlayerSourceType.SOCKET,
+        isActive: false,
+        playerType: PlayerSourceType.SOCKET,
       } as Player,
     ];
     component.gameName = 'Test Game';

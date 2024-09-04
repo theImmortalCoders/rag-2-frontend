@@ -53,8 +53,6 @@ export class GameMenuComponent {
   }
 
   public onRestartClick(): void {
-    this.isPaused = false;
-    this.pauseEmitter.emit(this.isPaused);
     this.restartEmitter.emit();
   }
 }
