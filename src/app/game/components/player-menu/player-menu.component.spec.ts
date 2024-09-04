@@ -57,7 +57,7 @@ describe('PlayerMenuComponent', () => {
 
     component.updatePlayerActive(player, isNewActiveStatus);
 
-    expect(player.active).toBe(isNewActiveStatus);
+    expect(player.isActive).toBe(isNewActiveStatus);
     expect(component.playerSourceChangeEmitter.emit).toHaveBeenCalledWith(
       mockPlayers
     );

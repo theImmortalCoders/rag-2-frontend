@@ -6,7 +6,6 @@ import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
 import { PongGameWindowComponent } from './games/pong/pong.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
-import { TictactoeGameWindowComponent } from './games/tictactoe/tictactoe.component';
 import { Subject, Subscription } from 'rxjs';
 import { Player } from './models/player.class';
 import { PlayerMenuComponent } from './components/player-menu/player-menu.component';
@@ -23,7 +22,6 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
     DataMenuComponent,
     AiSocketMenuComponent,
     PongGameWindowComponent,
-    TictactoeGameWindowComponent,
     ConsoleComponent,
     AuthRequiredDirective,
     GameMenuComponent,
@@ -64,14 +62,6 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
                 [gameRestart]="gameRestartSubject.asObservable()"
                 [gamePause]="gamePauseSubject.asObservable()" />
             }
-            @case ('tictactoe') {
-              <app-tictactoe
-                [setSocketInputDataReceive]="socketInputData"
-                (gameStateDataEmitter)="receiveGameOutputData($event)"
-                [abstractGame]="game"
-                [gameRestart]="gameRestartSubject.asObservable()"
-                [gamePause]="gamePauseSubject.asObservable()" />
-            }
           }
         </div>
       }
@@ -106,7 +96,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   public receiveGameOutputData(data: TExchangeData): void {
     this.gameStateData = JSON.parse(
-      JSON.stringify((data as TExchangeData)['output'])
+      JSON.stringify((data as TExchangeData)['state'])
     );
     this.logData['game window'] = data;
   }
@@ -128,8 +118,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   public filterPlayersByActiveAndSocket(players: Player[]): Player[] {
     return players.filter(
-      player =>
-        player.active && player.getPlayerType === PlayerSourceType.SOCKET
+      player => player.isActive && player.playerType === PlayerSourceType.SOCKET
     );
   }
 

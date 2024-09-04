@@ -1,17 +1,9 @@
-import { KeyValueDiffer, KeyValueDiffers, Type } from '@angular/core';
-import { BaseGameWindowComponent } from '../games/base-game.component';
 import { Player } from './player.class';
+import { TGameState } from './game-state.type';
 
 export abstract class Game {
-  public name: string;
-  public gameWindowComponent: Type<BaseGameWindowComponent>;
-  public players: Player[] = [];
-
-  public constructor(
-    name: string,
-    gameWindowComponent: Type<BaseGameWindowComponent>
-  ) {
-    this.name = name;
-    this.gameWindowComponent = gameWindowComponent;
-  }
+  public abstract name: string;
+  public abstract players: Player[];
+  public abstract state: TGameState;
+  public abstract outputSpec: string;
 }
