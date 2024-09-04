@@ -1,16 +1,16 @@
 /* eslint-disable complexity */
 /* eslint-disable max-lines */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { BaseGameWindowComponent } from '../base-game.component';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
-import { Pong } from 'app/game/data/games';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
+import { BaseGameWindowComponent } from '../base-game.component';
+import { Pong } from '../models/pong.class';
 
 @Component({
   selector: 'app-pong',
   standalone: true,
   imports: [CanvasComponent],
-  template: `<div>{{ game.scoreLeft }}:{{ game.scoreRight }}</div>
+  template: `<div>{{ game.state.scoreLeft }}:{{ game.state.scoreRight }}</div>
     <app-canvas #gameCanvas></app-canvas> `,
 })
 export class PongGameWindowComponent
@@ -47,7 +47,7 @@ export class PongGameWindowComponent
   }
 
   public override restart(): void {
-    this.game = new Pong('pong', PongGameWindowComponent);
+    this.game = new Pong();
     this.resetPaddlesAndBall();
   }
 
@@ -70,20 +70,20 @@ export class PongGameWindowComponent
       context.fillStyle = 'red';
       context.fillRect(
         0,
-        this.game.leftPadleY,
+        this.game.state.leftPadleY,
         this._paddleWidth,
         this._paddleHeight
       );
       context.fillRect(
         this._canvas.width - this._paddleWidth,
-        this.game.rightPadleY,
+        this.game.state.rightPadleY,
         this._paddleWidth,
         this._paddleHeight
       );
       context.beginPath();
       context.arc(
-        this.game.ballX,
-        this.game.ballY,
+        this.game.state.ballX,
+        this.game.state.ballY,
         this._ballWidth,
         0,
         2 * Math.PI
@@ -94,25 +94,27 @@ export class PongGameWindowComponent
   }
 
   private resetPaddlesAndBall(): void {
-    this.game.leftPadleY = (this._canvas.height - this._paddleHeight) / 2;
-    this.game.rightPadleY = (this._canvas.height - this._paddleHeight) / 2;
-    this.game.ballX = this._canvas.width / 2;
-    this.game.ballY = this._canvas.height / 2;
-    this.game.ballSpeedX = 0;
-    this.game.ballSpeedY = 0;
-    this.game.ballSpeedMultiplier = 1;
+    this.game.state.leftPadleY = (this._canvas.height - this._paddleHeight) / 2;
+    this.game.state.rightPadleY =
+      (this._canvas.height - this._paddleHeight) / 2;
+    this.game.state.ballX = this._canvas.width / 2;
+    this.game.state.ballY = this._canvas.height / 2;
+    this.game.state.ballSpeedX = 0;
+    this.game.state.ballSpeedY = 0;
+    this.game.state.ballSpeedMultiplier = 1;
   }
 
   private updateBallPosition(): void {
-    this.game.ballX += this.game.ballSpeedX * this.game.ballSpeedMultiplier;
-    this.game.ballY += this.game.ballSpeedY;
+    this.game.state.ballX +=
+      this.game.state.ballSpeedX * this.game.state.ballSpeedMultiplier;
+    this.game.state.ballY += this.game.state.ballSpeedY;
 
-    if (this.game.ballSpeedX === 0 && this.game.ballSpeedY === 0) {
+    if (this.game.state.ballSpeedX === 0 && this.game.state.ballSpeedY === 0) {
       this.initializeBallSpeed();
     }
 
-    if (this.game.ballSpeedY == 0) {
-      this.game.ballSpeedY = this.random(-1, 1);
+    if (this.game.state.ballSpeedY == 0) {
+      this.game.state.ballSpeedY = this.random(-1, 1);
     }
 
     this.checkCollisionWithPaddles();
@@ -122,51 +124,51 @@ export class PongGameWindowComponent
 
   private checkPointScored(): void {
     if (
-      this.game.ballX <= 0 - this._ballWidth ||
-      Math.abs(this.game.ballSpeedX) < 1
+      this.game.state.ballX <= 0 - this._ballWidth ||
+      Math.abs(this.game.state.ballSpeedX) < 1
     ) {
       this.resetPaddlesAndBall();
-      this.game.scoreRight++;
+      this.game.state.scoreRight++;
     }
     if (
-      this.game.ballX >= this._canvas.width + this._ballWidth ||
-      Math.abs(this.game.ballSpeedX) < 1
+      this.game.state.ballX >= this._canvas.width + this._ballWidth ||
+      Math.abs(this.game.state.ballSpeedX) < 1
     ) {
       this.resetPaddlesAndBall();
-      this.game.scoreLeft++;
+      this.game.state.scoreLeft++;
     }
   }
 
   private checkCollisionWithWalls(): void {
     if (
-      this.game.ballY <= 0 + this._ballWidth ||
-      this.game.ballY >= this._canvas.height - this._ballWidth
+      this.game.state.ballY <= 0 + this._ballWidth ||
+      this.game.state.ballY >= this._canvas.height - this._ballWidth
     ) {
-      this.game.ballSpeedY = -this.game.ballSpeedY;
+      this.game.state.ballSpeedY = -this.game.state.ballSpeedY;
     }
   }
 
   private checkCollisionWithPaddles(): void {
     if (
-      this.game.ballX <= this._ballWidth * 2 &&
-      this.game.ballY >= this.game.leftPadleY &&
-      this.game.ballY <= this.game.leftPadleY + this._paddleHeight
+      this.game.state.ballX <= this._ballWidth * 2 &&
+      this.game.state.ballY >= this.game.state.leftPadleY &&
+      this.game.state.ballY <= this.game.state.leftPadleY + this._paddleHeight
     ) {
-      const rotation = this.game.leftPaddleSpeed / 6;
-      this.game.ballSpeedY = this.game.ballSpeedY + rotation;
-      this.game.ballSpeedX = -this.game.ballSpeedX;
-      this.game.ballSpeedMultiplier += 0.05;
+      const rotation = this.game.state.leftPaddleSpeed / 6;
+      this.game.state.ballSpeedY = this.game.state.ballSpeedY + rotation;
+      this.game.state.ballSpeedX = -this.game.state.ballSpeedX;
+      this.game.state.ballSpeedMultiplier += 0.05;
     }
 
     if (
-      this.game.ballX >= this._canvas.width - 2 * this._ballWidth &&
-      this.game.ballY >= this.game.rightPadleY &&
-      this.game.ballY <= this.game.rightPadleY + this._paddleHeight
+      this.game.state.ballX >= this._canvas.width - 2 * this._ballWidth &&
+      this.game.state.ballY >= this.game.state.rightPadleY &&
+      this.game.state.ballY <= this.game.state.rightPadleY + this._paddleHeight
     ) {
-      const rotation = this.game.rightPaddleSpeed / 4;
-      this.game.ballSpeedY = this.game.ballSpeedY + rotation;
-      this.game.ballSpeedX = -this.game.ballSpeedX;
-      this.game.ballSpeedMultiplier += 0.05;
+      const rotation = this.game.state.rightPaddleSpeed / 4;
+      this.game.state.ballSpeedY = this.game.state.ballSpeedY + rotation;
+      this.game.state.ballSpeedX = -this.game.state.ballSpeedX;
+      this.game.state.ballSpeedMultiplier += 0.05;
     }
   }
 
@@ -174,9 +176,9 @@ export class PongGameWindowComponent
     const ballXInitialSpeed = this.random(5, 8);
     const ballYInitialSpeed = this.random(3, 5);
 
-    this.game.ballSpeedX =
+    this.game.state.ballSpeedX =
       this.random(0, 1) === 0 ? ballXInitialSpeed : -ballXInitialSpeed;
-    this.game.ballSpeedY =
+    this.game.state.ballSpeedY =
       this.random(0, 1) === 0 ? ballYInitialSpeed : -ballYInitialSpeed;
   }
 
@@ -187,42 +189,42 @@ export class PongGameWindowComponent
   private updatePaddlesSpeeds(): void {
     switch (this.game.players[0].inputData['move']) {
       case 1:
-        this.game.leftPaddleSpeed = -this._paddleJump;
+        this.game.state.leftPaddleSpeed = -this._paddleJump;
         break;
       case -1:
-        this.game.leftPaddleSpeed = this._paddleJump;
+        this.game.state.leftPaddleSpeed = this._paddleJump;
         break;
       default:
-        this.game.leftPaddleSpeed = 0;
+        this.game.state.leftPaddleSpeed = 0;
         break;
     }
     switch (this.game.players[1].inputData['move']) {
       case 1:
-        this.game.rightPaddleSpeed = -this._paddleJump;
+        this.game.state.rightPaddleSpeed = -this._paddleJump;
         break;
       case -1:
-        this.game.rightPaddleSpeed = this._paddleJump;
+        this.game.state.rightPaddleSpeed = this._paddleJump;
         break;
       default:
-        this.game.rightPaddleSpeed = 0;
+        this.game.state.rightPaddleSpeed = 0;
         break;
     }
   }
 
   private updatePaddlesPositions(): void {
-    this.game.rightPadleY = Math.max(
+    this.game.state.rightPadleY = Math.max(
       0,
       Math.min(
         this._canvas.height - this._paddleHeight,
-        this.game.rightPadleY + this.game.rightPaddleSpeed
+        this.game.state.rightPadleY + this.game.state.rightPaddleSpeed
       )
     );
 
-    this.game.leftPadleY = Math.max(
+    this.game.state.leftPadleY = Math.max(
       0,
       Math.min(
         this._canvas.height - this._paddleHeight,
-        this.game.leftPadleY + this.game.leftPaddleSpeed
+        this.game.state.leftPadleY + this.game.state.leftPaddleSpeed
       )
     );
   }
@@ -231,7 +233,7 @@ export class PongGameWindowComponent
     const player1 = this.game.players[0];
     const player2 = this.game.players[1];
 
-    if (player1.getPlayerType === PlayerSourceType.KEYBOARD) {
+    if (player1.playerType === PlayerSourceType.KEYBOARD) {
       switch (event.key) {
         case 'w':
         case 'W':
@@ -244,7 +246,7 @@ export class PongGameWindowComponent
       }
     }
 
-    if (player2.getPlayerType === PlayerSourceType.KEYBOARD) {
+    if (player2.playerType === PlayerSourceType.KEYBOARD) {
       switch (event.key) {
         case 'ArrowUp':
           event.preventDefault();
@@ -262,7 +264,7 @@ export class PongGameWindowComponent
     const player1 = this.game.players[0];
     const player2 = this.game.players[1];
 
-    if (player1.getPlayerType === PlayerSourceType.KEYBOARD) {
+    if (player1.playerType === PlayerSourceType.KEYBOARD) {
       switch (event.key) {
         case 'w':
         case 'W':
@@ -273,7 +275,7 @@ export class PongGameWindowComponent
       }
     }
 
-    if (player2.getPlayerType === PlayerSourceType.KEYBOARD) {
+    if (player2.playerType === PlayerSourceType.KEYBOARD) {
       switch (event.key) {
         case 'ArrowUp':
         case 'ArrowDown':

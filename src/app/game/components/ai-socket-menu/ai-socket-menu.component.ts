@@ -45,7 +45,7 @@ import { AiSocketService } from './services/ai-socket.service';
       <div class="flex flex-col space-y-8">
         @for (player of players; track player.id) {
           @if (
-            player.active && player.getPlayerType === playerSourceType.SOCKET
+            player.isActive && player.playerType === playerSourceType.SOCKET
           ) {
             <app-player-socket-menu
               [player]="player"

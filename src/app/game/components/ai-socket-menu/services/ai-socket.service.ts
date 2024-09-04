@@ -41,15 +41,10 @@ export class AiSocketService {
 
   public startDataExchange = (
     sendingInterval: number,
-    expectedDataToReceive: TExchangeData,
-    expectedDataDescription: string
+    expectedDataToReceive: TExchangeData
   ): void => {
     this.isDataExchangeDesired = true;
-    this.resumeDataExchange(
-      sendingInterval,
-      expectedDataToReceive,
-      expectedDataDescription
-    );
+    this.resumeDataExchange(sendingInterval, expectedDataToReceive);
   };
 
   public stopDataExchange = (): void => {
@@ -67,17 +62,12 @@ export class AiSocketService {
 
   public resumeDataExchange = (
     sendingInterval: number,
-    expectedDataToReceive: TExchangeData,
-    expectedDataDescription: string
+    expectedDataToReceive: TExchangeData
   ): void => {
     if (!this.isDataExchangeDesired) return;
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
-      this.sendDataToSocket(
-        this._dataToSend,
-        expectedDataToReceive,
-        expectedDataDescription
-      );
+      this.sendDataToSocket(this._dataToSend, expectedDataToReceive);
     }, sendingInterval);
   };
 
@@ -101,15 +91,15 @@ export class AiSocketService {
 
   private sendDataToSocket(
     dataToSend: TExchangeData,
-    expectedDataToReceive: TExchangeData,
-    expectedDataDescription: string
+    expectedDataToReceive: TExchangeData
   ): void {
     if (this._socket && this.isSocketConnected) {
       this._socket.send(
         JSON.stringify({
-          output: dataToSend,
+          name: dataToSend['name'],
+          state: dataToSend['state'],
+          players: dataToSend['players'],
           expected_input: expectedDataToReceive,
-          expected_input_description: expectedDataDescription,
         })
       );
       console.log('Data sent', this._sendingIntervalID as number);

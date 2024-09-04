@@ -50,7 +50,7 @@ export abstract class BaseGameWindowComponent
 
   protected arePlayersReady(): boolean {
     return this.game.players
-      .filter(p => p.obligatory)
+      .filter(p => p.isObligatory)
       .every(player => player != undefined && player.inputData !== undefined);
   }
 
@@ -80,7 +80,7 @@ export abstract class BaseGameWindowComponent
 
   private emitGameStateData(): void {
     this.gameStateDataEmitter.emit({
-      output: this.game || {},
+      state: this.game || {},
     });
   }
 
