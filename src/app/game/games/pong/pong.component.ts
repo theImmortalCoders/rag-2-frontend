@@ -70,13 +70,13 @@ export class PongGameWindowComponent
       context.fillStyle = 'red';
       context.fillRect(
         0,
-        this.game.state.leftPadleY,
+        this.game.state.leftPaddleY,
         this._paddleWidth,
         this._paddleHeight
       );
       context.fillRect(
         this._canvas.width - this._paddleWidth,
-        this.game.state.rightPadleY,
+        this.game.state.rightPaddleY,
         this._paddleWidth,
         this._paddleHeight
       );
@@ -94,8 +94,9 @@ export class PongGameWindowComponent
   }
 
   private resetPaddlesAndBall(): void {
-    this.game.state.leftPadleY = (this._canvas.height - this._paddleHeight) / 2;
-    this.game.state.rightPadleY =
+    this.game.state.leftPaddleY =
+      (this._canvas.height - this._paddleHeight) / 2;
+    this.game.state.rightPaddleY =
       (this._canvas.height - this._paddleHeight) / 2;
     this.game.state.ballX = this._canvas.width / 2;
     this.game.state.ballY = this._canvas.height / 2;
@@ -151,8 +152,8 @@ export class PongGameWindowComponent
   private checkCollisionWithPaddles(): void {
     if (
       this.game.state.ballX <= this._ballWidth * 2 &&
-      this.game.state.ballY >= this.game.state.leftPadleY &&
-      this.game.state.ballY <= this.game.state.leftPadleY + this._paddleHeight
+      this.game.state.ballY >= this.game.state.leftPaddleY &&
+      this.game.state.ballY <= this.game.state.leftPaddleY + this._paddleHeight
     ) {
       const rotation = this.game.state.leftPaddleSpeed / 6;
       this.game.state.ballSpeedY = this.game.state.ballSpeedY + rotation;
@@ -162,8 +163,8 @@ export class PongGameWindowComponent
 
     if (
       this.game.state.ballX >= this._canvas.width - 2 * this._ballWidth &&
-      this.game.state.ballY >= this.game.state.rightPadleY &&
-      this.game.state.ballY <= this.game.state.rightPadleY + this._paddleHeight
+      this.game.state.ballY >= this.game.state.rightPaddleY &&
+      this.game.state.ballY <= this.game.state.rightPaddleY + this._paddleHeight
     ) {
       const rotation = this.game.state.rightPaddleSpeed / 4;
       this.game.state.ballSpeedY = this.game.state.ballSpeedY + rotation;
@@ -212,19 +213,19 @@ export class PongGameWindowComponent
   }
 
   private updatePaddlesPositions(): void {
-    this.game.state.rightPadleY = Math.max(
+    this.game.state.rightPaddleY = Math.max(
       0,
       Math.min(
         this._canvas.height - this._paddleHeight,
-        this.game.state.rightPadleY + this.game.state.rightPaddleSpeed
+        this.game.state.rightPaddleY + this.game.state.rightPaddleSpeed
       )
     );
 
-    this.game.state.leftPadleY = Math.max(
+    this.game.state.leftPaddleY = Math.max(
       0,
       Math.min(
         this._canvas.height - this._paddleHeight,
-        this.game.state.leftPadleY + this.game.state.leftPaddleSpeed
+        this.game.state.leftPaddleY + this.game.state.leftPaddleSpeed
       )
     );
   }
