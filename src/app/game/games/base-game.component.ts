@@ -28,7 +28,9 @@ export abstract class BaseGameWindowComponent
   @Input({ required: true }) public gameRestart = new Observable<void>();
   @Input({ required: true }) public gamePause = new Observable<boolean>();
   @Input({ required: true }) public abstractGame!: Game;
-  @Input() public set setSocketInputDataReceive(value: TExchangeData) {
+  @Input({ required: true }) public set setSocketInputDataReceive(
+    value: TExchangeData
+  ) {
     const playerInputData = this.mapReceivedToPlayerAndData(value);
     if (!playerInputData.data || !playerInputData.player) return;
 

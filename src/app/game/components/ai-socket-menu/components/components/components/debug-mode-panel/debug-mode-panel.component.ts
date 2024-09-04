@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TExchangeData } from '../../../../../../models/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
+import { Player } from 'app/game/models/player.class';
 
 @Component({
   selector: 'app-debug-mode-panel',
@@ -25,6 +26,7 @@ import { KeyValuePipe } from '@angular/common';
 })
 export class DebugModePanelComponent implements OnInit {
   @Input({ required: true }) public expectedInput: TExchangeData = {};
+  @Input({ required: true }) public player!: Player;
   @Output() public inputEmitter = new EventEmitter<TExchangeData>();
 
   public inputData: TExchangeData = {};
@@ -34,6 +36,7 @@ export class DebugModePanelComponent implements OnInit {
   }
 
   public emitInputData(key: string, value: string): void {
-    this.inputEmitter.emit({ [key]: value } as TExchangeData);
+    const data = { [key]: Number(value) } as TExchangeData;
+    this.inputEmitter.emit({ player: this.player, data: data });
   }
 }

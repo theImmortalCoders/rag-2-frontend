@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { SocketDomainInputComponent } from './components/components/components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/components/components/socket-connected-menu/socket-connected-menu.component';
@@ -15,7 +8,6 @@ import { Player } from 'app/game/models/player.class';
 import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
 import { PlayerSocketMenuComponent } from './components/player-socket-menu.component';
 import { Observable, Subscription } from 'rxjs';
-import { AiSocketService } from './services/ai-socket.service';
 
 @Component({
   selector: 'app-ai-socket-menu',
