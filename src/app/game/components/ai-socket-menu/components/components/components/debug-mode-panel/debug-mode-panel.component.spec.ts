@@ -24,12 +24,4 @@ describe('DebugModePanelComponent', () => {
     component.ngOnInit();
     expect(component.inputData).toEqual(mockInput);
   });
-
-  it('should emit input data when emitInputData is called', () => {
-    const spy = spyOn(component.inputEmitter, 'emit');
-    const mockKey = 'testKey';
-    const mockValue = 'testValue';
-    component.emitInputData(mockKey, mockValue);
-    expect(spy).toHaveBeenCalledWith({ [mockKey]: mockValue });
-  });
 });

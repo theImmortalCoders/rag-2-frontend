@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { SocketDomainInputComponent } from './components/components/components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/components/components/socket-connected-menu/socket-connected-menu.component';
@@ -44,14 +37,15 @@ import { Observable, Subscription } from 'rxjs';
       <div class="flex flex-col space-y-8">
         @for (player of players; track player.id) {
           @if (
-            player.active && player.getPlayerType === playerSourceType.SOCKET
+            player.isActive && player.playerType === playerSourceType.SOCKET
           ) {
             <app-player-socket-menu
               [player]="player"
               [gameName]="gameName"
               [dataToSend]="dataToSend"
               (receivedDataEmitter)="receiveInputData($event)"
-              [gamePause]="gamePause"></app-player-socket-menu>
+              [gamePause]="gamePause"
+              [gameRestart]="gameRestart"></app-player-socket-menu>
           }
         }
       </div>
@@ -63,6 +57,7 @@ export class AiSocketMenuComponent {
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public dataToSend: TExchangeData = {};
   @Input({ required: true }) public gamePause = new Observable<boolean>();
+  @Input({ required: true }) public gameRestart = new Observable<void>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
