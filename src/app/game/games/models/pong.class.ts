@@ -3,8 +3,8 @@ import { Game } from 'app/game/models/game.class';
 import { Player } from 'app/game/models/player.class';
 
 class PongState implements TGameState {
-  public leftPadleY = 0;
-  public rightPadleY = 0;
+  public leftPaddleY = 0;
+  public rightPaddleY = 0;
   public leftPaddleSpeed = 0;
   public rightPaddleSpeed = 0;
   public ballX = 0;
@@ -21,8 +21,8 @@ export class Pong extends Game {
   public override state = new PongState();
   public override outputSpec = `
       output:
-        leftPadleY: number, <0, 600>;
-        rightPadleY: number, <0, 600>;
+        leftPaddleY: number, <0, 600>;
+        rightPaddleY: number, <0, 600>;
         leftPaddleSpeed: number, <-20, 20>;
         rightPaddleSpeed: number, <-20, 20>;
         ballX: number, <0, 1000>;
@@ -36,8 +36,8 @@ export class Pong extends Game {
       default values:
         ballX: 500;
         ballY: 300;
-        leftPadleY: 250;
-        rightPadleY: 250;
+        leftPaddleY: 250;
+        rightPaddleY: 250;
     `;
   public override players = [
     new Player(
