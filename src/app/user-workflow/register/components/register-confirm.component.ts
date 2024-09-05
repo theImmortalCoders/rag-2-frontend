@@ -1,7 +1,7 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoints.service';
+import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { Subscription } from 'rxjs';
 
 @Component({

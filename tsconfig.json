@@ -22,7 +22,11 @@
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
     "baseUrl": "src",
-    "paths": { "@env/*": ["environments/*"], "@utils/*": ["utils/*"] }
+    "paths": {
+      "@env/*": ["environments/*"],
+      "@utils/*": ["utils/*"],
+      "@endpoints/*": ["app/shared/services/endpoints/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -4,7 +4,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoints.service';
+import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
 
