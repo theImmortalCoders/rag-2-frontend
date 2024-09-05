@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
-import { Player } from 'app/game/models/player.class';
+import { PlayerSourceType } from '@gameModels/player-source-type.enum';
+import { Player } from '@gameModels/player.class';
 
 @Component({
   selector: 'app-player-menu',

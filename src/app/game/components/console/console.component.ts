@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TExchangeData } from '../../models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 import { ConsoleFieldsetComponent } from './console-fieldset/console-fieldset.component';
 

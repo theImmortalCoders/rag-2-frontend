@@ -9,12 +9,12 @@ import {
   ViewChild,
   DoCheck,
 } from '@angular/core';
-import { TExchangeData } from '../models/exchange-data.type';
-import { Player } from 'app/game/models/player.class';
-import { IPlayerInputData } from 'app/game/models/player-input-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
+import { Player } from '@gameModels/player.class';
 import { Observable, Subscription } from 'rxjs';
 import { CanvasComponent } from '../components/canvas/canvas.component';
-import { Game } from '../models/game.class';
+import { Game } from '@gameModels/game.class';
+import { IPlayerInputData } from '@gameModels/player-input-data.type';
 
 @Component({
   selector: 'app-base-game-window',

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TExchangeData } from '../../../../../../models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
-import { Player } from 'app/game/models/player.class';
+import { Player } from '@gameModels/player.class';
 
 @Component({
   selector: 'app-debug-mode-panel',

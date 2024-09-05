@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataDownloadComponent } from './data-download.component';
 import { GameDataSendingService } from '../../services/game-data-sending.service';
 import { DataTransformService } from 'app/shared/services/data-transform.service';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { HttpClient, HttpHandler } from '@angular/common/http';

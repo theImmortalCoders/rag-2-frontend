@@ -25,7 +25,8 @@
     "paths": {
       "@env/*": ["environments/*"],
       "@utils/*": ["utils/*"],
-      "@endpoints/*": ["app/shared/services/endpoints/*"]
+      "@endpoints/*": ["app/shared/services/endpoints/*"],
+      "@gameModels/*": ["app/game/models/*"]
     }
   },
   "angularCompilerOptions": {

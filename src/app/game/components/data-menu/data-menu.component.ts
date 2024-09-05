@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TExchangeData } from '../../models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';

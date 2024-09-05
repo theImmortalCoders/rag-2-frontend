@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameDataSendingService } from '../../services/game-data-sending.service';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 
 @Component({
   selector: 'app-data-download',

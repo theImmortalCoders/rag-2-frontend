@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TExchangeData } from '../../app/game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 
 @Pipe({
   name: 'exchange_data',

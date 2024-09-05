@@ -1,7 +1,7 @@
 import { KeyValuePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 
 @Component({
   selector: 'app-console-fieldset',
