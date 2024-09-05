@@ -9,22 +9,9 @@ export class AiSocketService {
   private isSocketConnected = false;
   private _sendingIntervalID: unknown | null = null;
   private isDataSendingActive = false;
+  private _dataToSend: TExchangeData = {};
 
-  public sendDataToSocket(
-    dataToSend: TExchangeData,
-    expectedDataToReceive: TExchangeData
-  ): void {
-    if (this._socket && this.isSocketConnected) {
-      this._socket.send(
-        JSON.stringify({
-          output: dataToSend,
-          expected_input: expectedDataToReceive,
-        })
-      );
-      console.log('Data sent');
-    }
-  }
-
+  public isDataExchangeDesired = false;
   public connect(
     socketUrl: string,
     onOpen: () => void,
@@ -54,24 +41,35 @@ export class AiSocketService {
 
   public startDataExchange = (
     sendingInterval: number,
-    dataToSend: TExchangeData,
     expectedDataToReceive: TExchangeData
   ): void => {
-    console.log(sendingInterval);
-    this.isDataSendingActive = true;
-    this._sendingIntervalID = setInterval(() => {
-      this.sendDataToSocket(dataToSend, expectedDataToReceive);
-    }, sendingInterval);
+    this.isDataExchangeDesired = true;
+    this.resumeDataExchange(sendingInterval, expectedDataToReceive);
   };
 
   public stopDataExchange = (): void => {
     if (this._sendingIntervalID != null) {
-      this.isDataSendingActive = false;
-      clearInterval(this._sendingIntervalID as number);
+      this.isDataExchangeDesired = false;
+      this.pauseDataExchange();
     }
   };
 
-  //
+  public pauseDataExchange = (): void => {
+    this.isDataSendingActive = false;
+    clearInterval(this._sendingIntervalID as number);
+    console.log('Data exchange stopped', this._sendingIntervalID as number);
+  };
+
+  public resumeDataExchange = (
+    sendingInterval: number,
+    expectedDataToReceive: TExchangeData
+  ): void => {
+    if (!this.isDataExchangeDesired) return;
+    this.isDataSendingActive = true;
+    this._sendingIntervalID = setInterval(() => {
+      this.sendDataToSocket(this._dataToSend, expectedDataToReceive);
+    }, sendingInterval);
+  };
 
   public getSocket(): WebSocket | null {
     return this._socket;
@@ -85,7 +83,26 @@ export class AiSocketService {
     return this.isDataSendingActive;
   }
 
-  public getSendingInterval(): number {
-    return this._sendingIntervalID as number;
+  public setDataToSend(data: TExchangeData): void {
+    this._dataToSend = data;
+  }
+
+  //
+
+  private sendDataToSocket(
+    dataToSend: TExchangeData,
+    expectedDataToReceive: TExchangeData
+  ): void {
+    if (this._socket && this.isSocketConnected) {
+      this._socket.send(
+        JSON.stringify({
+          name: dataToSend['name'],
+          state: dataToSend['state'],
+          players: dataToSend['players'],
+          expected_input: expectedDataToReceive,
+        })
+      );
+      console.log('Data sent', this._sendingIntervalID as number);
+    }
   }
 }

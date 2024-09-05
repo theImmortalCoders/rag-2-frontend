@@ -10,6 +10,7 @@ import { environment } from '@env/environment';
 export class GameDataSendingService {
   private _httpClient = inject(HttpClient);
 
+  //maybe need to change location of this service + error handling in service instead of in component
   public sendGameData(gameId: number, data: TExchangeData[]): Observable<void> {
     return this._httpClient.post<void>(
       environment.backendApiUrl + '/api/gamerecord?gameId=' + gameId,

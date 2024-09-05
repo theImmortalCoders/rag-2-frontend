@@ -1,23 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TExchangeData } from '../../models/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
-import { DataTransformService } from '../../../shared/services/data-transform.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataCollectingToggleButtonComponent } from './components/collect-toggle-button/collect-toggle-button.component';
 import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
-import { GameDataSendingService } from './services/game-data-sending.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { DataDownloadComponent } from './components/data-download/data-download.component';
 
 @Component({
   selector: 'app-data-menu',
   standalone: true,
-  imports: [
-    KeyValuePipe,
-    DataCollectingToggleButtonComponent,
-    DataSelectCheckboxComponent,
-  ],
+  imports: [KeyValuePipe, DataSelectCheckboxComponent, DataDownloadComponent],
   template: `
-    <div class="w-64 h-44 overflow-y-auto p-5 bg-lightGray font-mono text-sm">
+    <button
+      (click)="toggleDataMenu()"
+      class="side-menu-right-button top-0 w-12 h-52 {{
+        isDataMenuVisible ? 'right-64' : 'right-0'
+      }}">
+      <span
+        class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.45em]"
+        >DATA</span
+      >
+    </button>
+    <div
+      class="w-64 h-52 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
+        isDataMenuVisible ? 'right-0' : '-right-64'
+      }}">
       <span class="font-black">Select data to persist:</span>
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
         <app-data-select-checkbox
@@ -26,24 +32,25 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
           [dataToPersist]="dataToPersist"
           [updateDataToPersist]="updateDataToPersist" />
       }
-      <div class="flex flex-col">
-        <app-data-collecting-toggle-button
-          [vIsDataCollectingActive]="vIsDataCollectingActive" />
-        @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
-          <button
-            (click)="generateCsv()"
-            class="mt-6 text-center text-mainCreme">
-            Download CSV ({{ collectedDataArray.length }} records)
-          </button>
-
-          <button (click)="sendData()">Save data</button>
-          <button
-            (click)="deleteCollectedData()"
-            class="mt-4 text-center font-bold text-red-500 border-red-500 border-[1px]">
-            X
-          </button>
-        }
-      </div>
+      <span class="font-black mt-2 border-t-[1px] border-mainOrange"
+        >Data saving interval limit:</span
+      >
+      <input
+        type="number"
+        #dataSavingIntervalLimitInput
+        class="custom-input w-52 mb-2"
+        min="10"
+        max="1000"
+        step="10"
+        [defaultValue]="dataSavingIntervalLimit"
+        (change)="
+          dataSavingIntervalLimit = dataSavingIntervalLimitInput.valueAsNumber
+        " />
+      <app-data-download
+        [vIsDataCollectingActive]="vIsDataCollectingActive"
+        [gameName]="gameName"
+        [collectedDataArray]="collectedDataArray"
+        (deleteCollectedDataArrayEmitter)="collectedDataArray = []" />
     </div>
   `,
 })
@@ -58,40 +65,28 @@ export class DataMenuComponent implements OnInit {
       this.updateCollectedData();
     }
   }
-  @Output() public logDataEmitter = new EventEmitter<TExchangeData>();
 
   private _dataToPersistQueryParams: TExchangeData = {};
+  private _lastSavedTime = 0;
 
-  public logData: TExchangeData = this._dataToPersistQueryParams;
   public dataToPersist: TExchangeData = {};
   public collectedDataArray: TExchangeData[] = [];
   public vIsDataCollectingActive = { value: false };
+  public isDataMenuVisible = false;
+  public dataSavingIntervalLimit = 100;
 
   public constructor(
-    private _dataTransformService: DataTransformService,
-    public gameDataSendingService: GameDataSendingService,
     private _route$: ActivatedRoute,
     private _router: Router
   ) {}
 
   public ngOnInit(): void {
-    this.logDataEmitter.emit(this.logData);
     this.dataToPersist = JSON.parse(JSON.stringify(this.dataPossibleToPersist));
-
     this.updateDataToPersistFromURL();
   }
 
-  public sendData(): void {
-    this.gameDataSendingService
-      .sendGameData(1, this.collectedDataArray)
-      .subscribe({
-        next: () => {
-          console.log('Data saved');
-        },
-        error: error => {
-          console.error('Error saving data', error);
-        },
-      });
+  public toggleDataMenu(): void {
+    this.isDataMenuVisible = !this.isDataMenuVisible;
   }
 
   public updateDataToPersist = (
@@ -107,30 +102,6 @@ export class DataMenuComponent implements OnInit {
 
     this.updateURLByDataToPersist(key, isPresent);
   };
-
-  public generateCsv(): void {
-    const csvContent = this._dataTransformService.exchangeDataToCsv(
-      this.collectedDataArray
-    );
-    this.downloadCsv(csvContent);
-  }
-
-  public deleteCollectedData(): void {
-    this.collectedDataArray = [];
-  }
-
-  public saveData(): void {
-    this.gameDataSendingService
-      .sendGameData(1, this.collectedDataArray)
-      .subscribe({
-        next: () => {
-          console.log('Data saved');
-        },
-        error: error => {
-          console.error('Error saving data', error);
-        },
-      });
-  }
 
   //
 
@@ -151,27 +122,15 @@ export class DataMenuComponent implements OnInit {
     for (const key in newData) {
       newData[key] = this.dataPossibleToPersist[key];
     }
-    delete this.dataToPersist['timestamp'];
-    if (JSON.stringify(newData) !== JSON.stringify(this.dataToPersist)) {
-      this.dataToPersist['timestamp'] = new Date().toISOString();
+    if (
+      JSON.stringify(newData) !== JSON.stringify(this.dataToPersist) &&
+      Date.now() - this._lastSavedTime > this.dataSavingIntervalLimit
+    ) {
+      newData['timestamp'] = new Date().toISOString();
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);
+      this._lastSavedTime = Date.now();
     }
-  }
-
-  private downloadCsv(csv: string): void {
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('hidden', '');
-    a.setAttribute('href', url);
-    a.setAttribute(
-      'download',
-      `${this.gameName}_${new Date().toISOString()}.csv`
-    );
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   }
 
   private updateURLByDataToPersist(key: string, isPresent: boolean): void {

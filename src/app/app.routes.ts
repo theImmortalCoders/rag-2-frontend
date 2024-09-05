@@ -5,6 +5,8 @@ import { LoginPageComponent } from './user-workflow/login/login.page.component';
 import { RegisterPageComponent } from './user-workflow/register/register.page.component';
 import { Error404PageComponent } from './shared/components/error-pages/error404.page.component';
 import { Error500PageComponent } from './shared/components/error-pages/error500.page.component';
+import { RegisterConfirmComponent } from './user-workflow/register/components/register-confirm.component';
+import { ResetPasswordComponent } from './user-workflow/login/components/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -24,13 +26,33 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginPageComponent,
-    title: 'Login Page',
+    children: [
+      {
+        path: '',
+        component: LoginPageComponent,
+        title: 'Login Page',
+      },
+      {
+        path: 'reset-password',
+        component: ResetPasswordComponent,
+        title: 'Reset Password Page',
+      },
+    ],
   },
   {
     path: 'register',
-    component: RegisterPageComponent,
-    title: 'Register Page',
+    children: [
+      {
+        path: '',
+        component: RegisterPageComponent,
+        title: 'Register Page',
+      },
+      {
+        path: 'confirm',
+        component: RegisterConfirmComponent,
+        title: 'Register Confirm Page',
+      },
+    ],
   },
   {
     path: 'error404',

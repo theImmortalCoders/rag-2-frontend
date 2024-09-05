@@ -5,7 +5,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { RoleService } from '../../app/shared/services/permission.service';
+import { AuthenticationService } from '../../app/shared/services/authentication.service';
 
 @Directive({
   selector: '[appAuthRequired]',
@@ -15,7 +15,7 @@ export class AuthRequiredDirective implements OnInit {
   public constructor(
     private _templateRef: TemplateRef<unknown>,
     private _vc: ViewContainerRef,
-    private _permissionService: RoleService
+    private _permissionService: AuthenticationService
   ) {}
 
   public async ngOnInit(): Promise<void> {
