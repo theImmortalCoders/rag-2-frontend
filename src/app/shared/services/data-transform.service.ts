@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TExchangeData } from '../../game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 
 @Injectable({
   providedIn: 'root',

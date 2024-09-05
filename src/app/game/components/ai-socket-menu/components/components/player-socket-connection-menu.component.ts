@@ -8,9 +8,9 @@ import {
   Output,
 } from '@angular/core';
 import { AiSocketService } from '../../services/ai-socket.service';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
-import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
-import { Player } from 'app/game/models/player.class';
+import { TExchangeData } from '@gameModels/exchange-data.type';
+import { PlayerSourceType } from '@gameModels/player-source-type.enum';
+import { Player } from '@gameModels/player.class';
 import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
 import { Observable, Subscription } from 'rxjs';

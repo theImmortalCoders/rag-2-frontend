@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { TExchangeData } from '../../../models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
