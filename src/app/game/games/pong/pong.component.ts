@@ -125,15 +125,13 @@ export class PongGameWindowComponent
 
   private checkPointScored(): void {
     if (
-      this.game.state.ballX <= 0 - this._ballWidth ||
-      Math.abs(this.game.state.ballSpeedX) < 1
+      this.game.state.ballX <= 0 - this._ballWidth
     ) {
       this.resetPaddlesAndBall();
       this.game.state.scoreRight++;
     }
     if (
-      this.game.state.ballX >= this._canvas.width + this._ballWidth ||
-      Math.abs(this.game.state.ballSpeedX) < 1
+      this.game.state.ballX >= this._canvas.width + this._ballWidth
     ) {
       this.resetPaddlesAndBall();
       this.game.state.scoreLeft++;
