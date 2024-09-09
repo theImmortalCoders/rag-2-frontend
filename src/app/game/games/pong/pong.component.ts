@@ -22,6 +22,8 @@ export class PongGameWindowComponent
   private _paddleJump = 20;
   private _ballWidth = 10;
   private _canvas!: HTMLCanvasElement;
+  private _leftPaddleX = 10;
+  private _rightPaddleX!: number;
 
   public override game!: Pong;
 
@@ -69,13 +71,13 @@ export class PongGameWindowComponent
       context.clearRect(0, 0, this._canvas.width, this._canvas.height);
       context.fillStyle = 'red';
       context.fillRect(
-        0,
+        this._leftPaddleX,
         this.game.state.leftPaddleY,
         this._paddleWidth,
         this._paddleHeight
       );
       context.fillRect(
-        this._canvas.width - this._paddleWidth,
+        this._rightPaddleX,
         this.game.state.rightPaddleY,
         this._paddleWidth,
         this._paddleHeight
@@ -103,6 +105,8 @@ export class PongGameWindowComponent
     this.game.state.ballSpeedX = 0;
     this.game.state.ballSpeedY = 0;
     this.game.state.ballSpeedMultiplier = 1;
+
+    this._rightPaddleX = this._canvas.width - this._paddleWidth - 10;
   }
 
   private updateBallPosition(): void {
@@ -124,15 +128,11 @@ export class PongGameWindowComponent
   }
 
   private checkPointScored(): void {
-    if (
-      this.game.state.ballX <= 0 - this._ballWidth
-    ) {
+    if (this.game.state.ballX <= 0 - this._ballWidth) {
       this.resetPaddlesAndBall();
       this.game.state.scoreRight++;
     }
-    if (
-      this.game.state.ballX >= this._canvas.width + this._ballWidth
-    ) {
+    if (this.game.state.ballX >= this._canvas.width + this._ballWidth) {
       this.resetPaddlesAndBall();
       this.game.state.scoreLeft++;
     }
@@ -148,26 +148,30 @@ export class PongGameWindowComponent
   }
 
   private checkCollisionWithPaddles(): void {
+    // left paddle
     if (
-      this.game.state.ballX <= this._ballWidth * 2 &&
+      this.game.state.ballX <= this._leftPaddleX + this._ballWidth &&
       this.game.state.ballY >= this.game.state.leftPaddleY &&
       this.game.state.ballY <= this.game.state.leftPaddleY + this._paddleHeight
     ) {
       const rotation = this.game.state.leftPaddleSpeed / 6;
-      this.game.state.ballSpeedY = this.game.state.ballSpeedY + rotation;
-      this.game.state.ballSpeedX = -this.game.state.ballSpeedX;
+      this.game.state.ballSpeedY += rotation;
+      this.game.state.ballSpeedX = Math.abs(this.game.state.ballSpeedX);
       this.game.state.ballSpeedMultiplier += 0.05;
+      this.game.state.ballX = this._leftPaddleX + this._ballWidth;
     }
 
+    // right paddle
     if (
-      this.game.state.ballX >= this._canvas.width - 2 * this._ballWidth &&
+      this.game.state.ballX >= this._rightPaddleX - this._ballWidth &&
       this.game.state.ballY >= this.game.state.rightPaddleY &&
       this.game.state.ballY <= this.game.state.rightPaddleY + this._paddleHeight
     ) {
       const rotation = this.game.state.rightPaddleSpeed / 4;
-      this.game.state.ballSpeedY = this.game.state.ballSpeedY + rotation;
-      this.game.state.ballSpeedX = -this.game.state.ballSpeedX;
+      this.game.state.ballSpeedY += rotation;
+      this.game.state.ballSpeedX = -Math.abs(this.game.state.ballSpeedX);
       this.game.state.ballSpeedMultiplier += 0.05;
+      this.game.state.ballX = this._rightPaddleX - this._ballWidth;
     }
   }
 

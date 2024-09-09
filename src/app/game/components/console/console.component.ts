@@ -34,8 +34,8 @@ export class ConsoleComponent {
   public consoleClasses: TExchangeData = {
     button: `w-full bg-lightGray tracking-[0.15em] sticky z-50 top-0 transition-all ease-in-out duration-700 border-b-2
       border-mainOrange hover:border-green-500 text-center py-2 uppercase font-bold font-mono text-xl cursor-pointer`,
-    consoleContainer: `w-full max-h-96 transition-all ease-in-out duration-700 bg-lightGray overflow-y-scroll z-50 `,
-    consoleFieldset: `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-start gap-y-6 transition-all ease-in-out duration-700`,
+    consoleContainer: `w-full max-h-96 transition-all ease-in-out duration-700 bg-lightGray overflow-y-scroll z-50 px-5`,
+    consoleFieldset: `items-start gap-y-6 transition-all ease-in-out duration-700`,
   };
 
   public toggleConsole(): void {
