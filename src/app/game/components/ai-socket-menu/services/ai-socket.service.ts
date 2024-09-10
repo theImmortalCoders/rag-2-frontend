@@ -103,7 +103,7 @@ export class AiSocketService {
           playerId: playerId,
           state: dataToSend['state'],
           players: dataToSend['players'],
-          expected_input: expectedDataToReceive,
+          expectedInput: expectedDataToReceive,
         })
       );
       console.log('Data sent', this._sendingIntervalID as number);
