@@ -44,24 +44,13 @@ export class DataDownloadComponent {
   public constructor(public gameDataSendingService: GameDataSendingService) {}
 
   public sendData(): void {
-    this.gameDataSendingService.sendGameData(1, this.collectedDataArray);
+    this.gameDataSendingService
+      .sendGameData(this.gameName, this.collectedDataArray)
+      .subscribe(r => console.log(r)); //todo
   }
 
   public generateJSON(): void {
     this.downloadCsv(JSON.stringify(this.collectedDataArray));
-  }
-
-  public saveData(): void {
-    this.gameDataSendingService
-      .sendGameData(1, this.collectedDataArray)
-      .subscribe({
-        next: () => {
-          console.log('Data saved');
-        },
-        error: error => {
-          console.error('Error saving data', error);
-        },
-      });
   }
 
   public deleteCollectedData(): void {
