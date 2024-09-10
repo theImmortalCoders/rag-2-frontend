@@ -83,7 +83,8 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this.isPaused = false;
         this.aiSocketService.resumeDataExchange(
           this.vSendingInterval.value,
-          this.player.inputData
+          this.player.inputData,
+          this.player.id
         );
       }
     });
@@ -112,7 +113,8 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public onStartDataExchangeClick = (): void => {
     this.aiSocketService.startDataExchange(
       this.vSendingInterval.value,
-      this.player.inputData
+      this.player.inputData,
+      this.player.id
     );
   };
 

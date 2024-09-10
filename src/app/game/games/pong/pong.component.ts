@@ -4,7 +4,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
 import { PlayerSourceType } from '@gameModels/player-source-type.enum';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { Pong } from '../models/pong.class';
+import { Pong } from './models/pong.class';
 
 @Component({
   selector: 'app-pong',

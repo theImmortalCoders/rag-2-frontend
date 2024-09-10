@@ -41,14 +41,14 @@ export class Pong extends Game {
     `;
   public override players = [
     new Player(
-      1,
+      0,
       true,
       'Player 1',
       { move: 0 },
       'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up'
     ),
     new Player(
-      2,
+      1,
       true,
       'Player 2',
       { move: 0 },
