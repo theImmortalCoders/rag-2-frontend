@@ -18,7 +18,7 @@ export class GameDataSendingService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl + '/api/gamerecord',
-        { gameName: gameName, value: JSON.stringify(data) },
+        { gameName: gameName, values: data },
         {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('jwtToken'),
