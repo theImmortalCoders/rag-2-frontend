@@ -4,10 +4,7 @@ import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { jwtTokenAuthHeader } from '@utils/helpers/jwtTokenAuthHeader';
 import { TRole } from 'app/shared/models/role.enum';
-import {
-  IUserDetailsResponse,
-  IUserResponse,
-} from 'app/shared/models/user.models';
+import { IUserResponse } from 'app/shared/models/user.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -62,9 +59,9 @@ export class AdministrationEndpointsService {
       );
   }
 
-  public getUserDetails(userId: number): Observable<IUserDetailsResponse> {
+  public getUserDetails(userId: number): Observable<IUserResponse> {
     return this._httpClient
-      .get<IUserDetailsResponse>(
+      .get<IUserResponse>(
         environment.backendApiUrl + `/api/Administration/${userId}/details`,
         {
           responseType: 'json',

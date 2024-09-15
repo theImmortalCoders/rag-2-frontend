@@ -21,12 +21,3 @@ export interface IUserResponse {
   studyCycleYearA: number;
   studyCycleYearB: number;
 }
-
-export interface IUserDetailsResponse {
-  id: number;
-  email: string;
-  role: TRole;
-  name: string;
-  studyCycleYearA: number;
-  studyCycleYearB: number;
-}
