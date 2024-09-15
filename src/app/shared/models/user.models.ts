@@ -21,3 +21,11 @@ export interface IUserResponse {
   studyCycleYearA: number;
   studyCycleYearB: number;
 }
+
+export interface IUserStatsResponse {
+  games: number;
+  plays: number;
+  totalStorageMb: number;
+  firstPlayed: string;
+  lastPlayed: string;
+}
