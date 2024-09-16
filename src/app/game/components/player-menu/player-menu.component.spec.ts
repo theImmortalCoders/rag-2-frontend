@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerMenuComponent } from './player-menu.component';
 import { By } from '@angular/platform-browser';
-import { PlayerSourceType } from '@gameModels/player-source-type.enum';
 import { Player } from '@gameModels/player.class';
 import { AiSocketService } from '../ai-socket-menu/services/ai-socket.service';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 describe('PlayerMenuComponent', () => {
   let component: PlayerMenuComponent;
