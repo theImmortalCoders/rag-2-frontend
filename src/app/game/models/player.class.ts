@@ -1,5 +1,5 @@
 import { TExchangeData } from '@gameModels/exchange-data.type';
-import { PlayerSourceType } from '@gameModels/player-source-type.enum';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 export class Player {
   public id: number;

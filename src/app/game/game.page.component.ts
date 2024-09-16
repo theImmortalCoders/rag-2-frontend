@@ -9,7 +9,7 @@ import { AuthRequiredDirective } from '@utils/directives/auth-required.directive
 import { Subject, Subscription } from 'rxjs';
 import { Player } from '@gameModels/player.class';
 import { PlayerMenuComponent } from './components/player-menu/player-menu.component';
-import { PlayerSourceType } from '@gameModels/player-source-type.enum';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
