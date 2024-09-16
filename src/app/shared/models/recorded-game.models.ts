@@ -1,14 +1,5 @@
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { IPlayer } from './player.models';
-
-export interface IRecordedGameValue {
-  name: string;
-  state: TExchangeData;
-  players: IPlayer[];
-  timestamp: string;
-  outputSpec: string;
-}
-
 export interface IRecordedGameResponse {
   id: number;
   players: IPlayer[];
@@ -20,5 +11,5 @@ export interface IRecordedGameResponse {
 
 export interface IRecordedGameRequest {
   gameName: string;
-  values: IRecordedGameValue[];
+  values: TExchangeData[];
 }
