@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { GameDataSendingService } from '../../services/game-data-sending.service';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
+import { IRecordedGameRequest } from 'app/shared/models/recorded-game.models';
 
 @Component({
   selector: 'app-data-download',
@@ -41,11 +42,14 @@ export class DataDownloadComponent {
 
   @Output() public deleteCollectedDataArrayEmitter = new EventEmitter<void>();
 
-  public constructor(public gameDataSendingService: GameDataSendingService) {}
+  private _gameRecordEndpointsService = inject(GameRecordEndpointsService);
 
   public sendData(): void {
-    this.gameDataSendingService
-      .sendGameData(this.gameName, this.collectedDataArray)
+    const gameRecordData: IRecordedGameRequest[] = [
+      { gameName: this.gameName, values: this.collectedDataArray },
+    ];
+    this._gameRecordEndpointsService
+      .addGameRecording(gameRecordData)
       .subscribe(r => console.log(r)); //todo
   }
 

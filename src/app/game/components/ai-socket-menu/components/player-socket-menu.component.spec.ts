@@ -7,7 +7,7 @@ import { SocketDomainInputComponent } from './components/components/socket-domai
 import { SocketConnectedMenuComponent } from './components/components/socket-connected-menu/socket-connected-menu.component';
 import { AiSocketService } from '../services/ai-socket.service';
 import { By } from '@angular/platform-browser';
-import { PlayerSourceType } from '@gameModels/player-source-type.enum';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 describe('PlayerSocketMenuComponent', () => {
   let component: PlayerSocketMenuComponent;

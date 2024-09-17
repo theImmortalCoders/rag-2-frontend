@@ -5,7 +5,7 @@ import { SocketConnectedMenuComponent } from './components/components/components
 import { DebugModeMenuComponent } from './components/components/components/debug-mode-menu/debug-mode-menu.component';
 import { DebugModePanelComponent } from './components/components/components/debug-mode-panel/debug-mode-panel.component';
 import { Player } from '@gameModels/player.class';
-import { PlayerSourceType } from '@gameModels/player-source-type.enum';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { PlayerSocketMenuComponent } from './components/player-socket-menu.component';
 import { Observable, Subscription } from 'rxjs';
 

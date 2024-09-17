@@ -3,8 +3,8 @@ import { By } from '@angular/platform-browser';
 import { AiSocketMenuComponent } from './ai-socket-menu.component';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
-import { PlayerSourceType } from '@gameModels/player-source-type.enum';
 import { Player } from '@gameModels/player.class';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 @Component({
   selector: 'app-player-socket-menu',
