@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataDownloadComponent } from './data-download.component';
-import { GameDataSendingService } from '../../services/game-data-sending.service';
 import { DataTransformService } from 'app/shared/services/data-transform.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 
 describe('DataDownloadComponent', () => {
   let component: DataDownloadComponent;
@@ -15,7 +15,7 @@ describe('DataDownloadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataDownloadComponent],
       providers: [
-        GameDataSendingService,
+        GameRecordEndpointsService,
         DataTransformService,
         HttpClient,
         HttpHandler,
