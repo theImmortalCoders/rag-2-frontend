@@ -66,13 +66,13 @@ describe('DataDownloadComponent', () => {
     ];
     component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();
-    const button = fixture.debugElement.queryAll(By.css('button'))[3]
+    const button = fixture.debugElement.queryAll(By.css('button'))[2]
       .nativeElement;
     button.click();
     expect(component.deleteCollectedData).toHaveBeenCalled();
   });
 
-  it('should render download CSV button when collectedDataArray is not empty and vIsDataCollectingActive is false', () => {
+  it('should render download JSON button when collectedDataArray is not empty and vIsDataCollectingActive is false', () => {
     component.collectedDataArray = [
       {
         /* mock data */
@@ -85,7 +85,7 @@ describe('DataDownloadComponent', () => {
     expect(button.textContent).toContain('Download JSON');
   });
 
-  it('should not render download CSV button when collectedDataArray is empty', () => {
+  it('should not render download JSON button when collectedDataArray is empty', () => {
     component.collectedDataArray = [];
     component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();
