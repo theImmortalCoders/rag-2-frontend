@@ -39,7 +39,7 @@ export class GameRecordEndpointsService {
   }
 
   public addGameRecording(
-    gameRecordData: IRecordedGameRequest[]
+    gameRecordData: IRecordedGameRequest
   ): Observable<void> {
     return this._httpClient
       .post<void>(

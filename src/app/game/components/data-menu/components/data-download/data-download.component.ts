@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { IRecordedGameRequest } from 'app/shared/models/recorded-game.models';
+import { NotificationService } from 'app/shared/services/notification.service';
 
 @Component({
   selector: 'app-data-download',
@@ -9,7 +10,7 @@ import { IRecordedGameRequest } from 'app/shared/models/recorded-game.models';
   template: `<div class="flex flex-col">
     <button
       class="font-bold mt-2 border-b-[1px] border-mainOrange w-full text-center"
-      (click)="vIsDataCollectingActive.value = !vIsDataCollectingActive.value">
+      (click)="handleCollectingData()">
       @if (!vIsDataCollectingActive.value) {
         Start collecting data
       } @else {
@@ -21,11 +22,6 @@ import { IRecordedGameRequest } from 'app/shared/models/recorded-game.models';
         (click)="generateJSON()"
         class="mt-4 py-1 text-center text-mainCreme border-mainCreme border-[1px] hover:bg-mainCreme hover:text-darkGray transition-all ease-in-out duration-300">
         Download JSON ({{ collectedDataArray.length }} records)
-      </button>
-      <button
-        (click)="sendData()"
-        class="mt-3 py-1 text-blue-900 border-blue-900 border-[1px] hover:bg-blue-900 hover:text-mainCreme transition-all ease-in-out duration-300">
-        Save data
       </button>
       <button
         (click)="deleteCollectedData()"
@@ -43,14 +39,29 @@ export class DataDownloadComponent {
   @Output() public deleteCollectedDataArrayEmitter = new EventEmitter<void>();
 
   private _gameRecordEndpointsService = inject(GameRecordEndpointsService);
+  private _notificationService = inject(NotificationService);
 
-  public sendData(): void {
-    const gameRecordData: IRecordedGameRequest[] = [
-      { gameName: this.gameName, values: this.collectedDataArray },
-    ];
-    this._gameRecordEndpointsService
-      .addGameRecording(gameRecordData)
-      .subscribe(r => console.log(r)); //todo
+  public handleCollectingData(): void {
+    this.vIsDataCollectingActive.value = !this.vIsDataCollectingActive.value;
+
+    if (!this.vIsDataCollectingActive.value) {
+      const gameRecordData: IRecordedGameRequest = {
+        gameName: this.gameName,
+        values: this.collectedDataArray,
+      };
+      this._gameRecordEndpointsService
+        .addGameRecording(gameRecordData)
+        .subscribe({
+          next: () => {
+            this._notificationService.addNotification(
+              'Game record data has been saved correctly'
+            );
+          },
+          error: (error: string) => {
+            this._notificationService.addNotification(error);
+          },
+        });
+    }
   }
 
   public generateJSON(): void {
