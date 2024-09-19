@@ -23,6 +23,7 @@ export class AuthenticationService implements OnDestroy {
       });
     });
   }
+
   public async getCurrentRole(): Promise<TRole> {
     return new Promise<TRole>(resolve => {
       setTimeout(() => {
