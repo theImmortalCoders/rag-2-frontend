@@ -33,7 +33,7 @@ export class AllowedRolesDirective implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._roleSubscription = this._authService.currentRole$.subscribe(role => {
-      if (role !== null && this.appAllowedRoles.includes(role)) {
+      if (role && this.appAllowedRoles.includes(role)) {
         this._vc.createEmbeddedView(this._templateRef);
       } else {
         this._vc.clear();

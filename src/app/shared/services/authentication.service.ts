@@ -46,7 +46,7 @@ export class AuthenticationService implements OnDestroy {
     if (isAuthenticated) {
       setTimeout(() => {
         this.loadCurrentUser();
-      }, 1000);
+      }, 1000); //time to wait for jwt being set
     } else {
       this._currentRoleSubject.next(null);
     }
