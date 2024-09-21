@@ -1,32 +1,44 @@
 import {
   Directive,
   Input,
+  OnDestroy,
   OnInit,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
 import { AuthenticationService } from '../../app/shared/services/authentication.service';
+import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[appAuthRequired]',
   standalone: true,
 })
-export class AuthRequiredDirective implements OnInit {
+export class AuthRequiredDirective implements OnInit, OnDestroy {
+  private _authSubscription: Subscription | null = null;
+
   public constructor(
     private _templateRef: TemplateRef<unknown>,
     private _vc: ViewContainerRef,
-    private _permissionService: AuthenticationService
+    private _authService: AuthenticationService
   ) {}
 
-  public async ngOnInit(): Promise<void> {
-    if (await this._permissionService.isAuthenticated()) {
-      this._vc.createEmbeddedView(this._templateRef);
-    } else {
-      //mozna dorobic powiadomienie ze wiekszosc opcji jest dostepna dla zalogowanych
-      //mozliwe ze w authentication serwisie bede musial dorobic jeszcze observable zeby patrzyl czy sie zmienia stan zalogowania
-      //+ pasuje przerobic promise na observable
-      //trzeba bedzie zrobic ngrx-em pewnie zeby przechowywac stan zalogowania w subjectcie
-      this._vc.clear();
+  public ngOnInit(): void {
+    this._authSubscription = this._authService.authStatus$.subscribe(
+      isAuthenticated => {
+        if (isAuthenticated) {
+          this._vc.createEmbeddedView(this._templateRef);
+        } else {
+          this._vc.clear();
+          console.log('nie mozna');
+          //ew powiadomienie ze wiekszosc opcji jest dostepna po zalogowaniu
+        }
+      }
+    );
+  }
+
+  public ngOnDestroy(): void {
+    if (this._authSubscription) {
+      this._authSubscription.unsubscribe();
     }
   }
 }

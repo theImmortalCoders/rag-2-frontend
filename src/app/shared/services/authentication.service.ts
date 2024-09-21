@@ -1,27 +1,19 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { TRole } from '../models/role.enum';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService implements OnDestroy {
-  private _userEndpointsService = inject(UserEndpointsService);
-
   private _getMeSubscription: Subscription | null = null;
 
-  public async isAuthenticated(): Promise<boolean> {
-    return new Promise<boolean>(resolve => {
-      this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
-        next: () => {
-          resolve(true);
-        },
-        error: () => {
-          resolve(false);
-        },
-      });
-    });
+  private _authStatusSubject = new BehaviorSubject<boolean>(false);
+  public authStatus$: Observable<boolean> =
+    this._authStatusSubject.asObservable();
+
+  public setAuthStatus(isAuthenticated: boolean): void {
+    this._authStatusSubject.next(isAuthenticated);
   }
 
   public async getCurrentRole(): Promise<TRole> {

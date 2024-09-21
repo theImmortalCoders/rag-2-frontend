@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { NotificationService } from 'app/shared/services/notification.service';
+import { AuthenticationService } from 'app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-login-form',
@@ -83,6 +84,7 @@ export class LoginFormComponent implements OnDestroy {
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
+  private _authService = inject(AuthenticationService);
   private _router: Router = new Router();
 
   private _loginSubscription: Subscription | null = null;
@@ -110,10 +112,12 @@ export class LoginFormComponent implements OnDestroy {
         .subscribe({
           next: (response: string) => {
             localStorage.setItem('jwtToken', response);
+            this._authService.setAuthStatus(true);
             this._router.navigate(['/']);
             this.errorMessage = null;
           },
           error: (error: string) => {
+            this._authService.setAuthStatus(false);
             this.errorMessage = error;
           },
         });
