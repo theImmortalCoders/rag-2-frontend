@@ -1,5 +1,6 @@
 import {
   Directive,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -8,18 +9,21 @@ import {
 } from '@angular/core';
 import { AuthenticationService } from '../../app/shared/services/authentication.service';
 import { Subscription } from 'rxjs';
+import { NotificationService } from 'app/shared/services/notification.service';
 
 @Directive({
   selector: '[appAuthRequired]',
   standalone: true,
 })
 export class AuthRequiredDirective implements OnInit, OnDestroy {
+  private _authService = inject(AuthenticationService);
+  private _notificationService = inject(NotificationService);
+
   private _authSubscription: Subscription | null = null;
 
   public constructor(
     private _templateRef: TemplateRef<unknown>,
-    private _vc: ViewContainerRef,
-    private _authService: AuthenticationService
+    private _vc: ViewContainerRef
   ) {}
 
   public ngOnInit(): void {
@@ -29,8 +33,9 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
           this._vc.createEmbeddedView(this._templateRef);
         } else {
           this._vc.clear();
-          console.log('nie mozna');
-          //ew powiadomienie ze wiekszosc opcji jest dostepna po zalogowaniu
+          this._notificationService.addNotification(
+            'Some functionalities are available only for logged in users'
+          );
         }
       }
     );

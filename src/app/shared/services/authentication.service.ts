@@ -12,6 +12,15 @@ export class AuthenticationService implements OnDestroy {
   public authStatus$: Observable<boolean> =
     this._authStatusSubject.asObservable();
 
+  private constructor() {
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      this._authStatusSubject.next(true);
+    } else {
+      this._authStatusSubject.next(false);
+    }
+  }
+
   public setAuthStatus(isAuthenticated: boolean): void {
     this._authStatusSubject.next(isAuthenticated);
   }
