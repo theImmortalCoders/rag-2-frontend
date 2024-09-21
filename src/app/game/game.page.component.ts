@@ -29,27 +29,29 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
       @if (game) {
-        <div *appAuthRequired class="absolute top-20 left-0 flex flex-col">
-          <app-player-menu
-            [players]="players"
-            (playerSourceChangeEmitter)="updatePlayers($event)" />
-          @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
-            <app-ai-socket-menu
-              [dataToSend]="gameStateData"
+        <div *appAuthRequired>
+          <div class="absolute top-20 left-0 flex flex-col">
+            <app-player-menu
+              [players]="players"
+              (playerSourceChangeEmitter)="updatePlayers($event)" />
+            @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
+              <app-ai-socket-menu
+                [dataToSend]="gameStateData"
+                [gameName]="game.name"
+                [players]="playersSelected"
+                (receivedDataEmitter)="receiveSocketInputData($event)"
+                [gamePause]="gamePauseSubject.asObservable()"
+                [gameRestart]="gameRestartSubject.asObservable()" />
+            }
+          </div>
+          <div class="absolute top-20 right-0 flex flex-col">
+            <app-data-menu
               [gameName]="game.name"
-              [players]="playersSelected"
-              (receivedDataEmitter)="receiveSocketInputData($event)"
-              [gamePause]="gamePauseSubject.asObservable()"
-              [gameRestart]="gameRestartSubject.asObservable()" />
-          }
-        </div>
-        <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
-          <app-data-menu
-            [gameName]="game.name"
-            [setDataPossibleToPersist]="gameStateData" />
-          <app-game-menu
-            (pauseEmitter)="gamePauseSubject.next($event)"
-            (restartEmitter)="gameRestartSubject.next()" />
+              [setDataPossibleToPersist]="gameStateData" />
+            <app-game-menu
+              (pauseEmitter)="gamePauseSubject.next($event)"
+              (restartEmitter)="gameRestartSubject.next()" />
+          </div>
         </div>
         <div class="flex w-full items-center justify-center py-12">
           @switch (game.name) {
