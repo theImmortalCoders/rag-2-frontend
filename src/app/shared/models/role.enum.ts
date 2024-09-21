@@ -1,6 +1,6 @@
 export enum TRole {
-  Student,
-  Teacher,
-  Special,
-  Admin,
+  Student = 'Student',
+  Teacher = 'Teacher',
+  Special = 'Special',
+  Admin = 'Admin',
 }

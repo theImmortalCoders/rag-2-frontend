@@ -1,34 +1,49 @@
 import {
   Directive,
+  inject,
   Input,
+  OnDestroy,
   OnInit,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
 import { TRole } from '../../app/shared/models/role.enum';
 import { AuthenticationService } from '../../app/shared/services/authentication.service';
+import { Subscription } from 'rxjs';
 @Directive({
   selector: '[appAllowedRoles]',
   standalone: true,
 })
-export class AllowedRolesDirective implements OnInit {
+export class AllowedRolesDirective implements OnInit, OnDestroy {
+  //example how to use:
+  //
+  //<div *appAllowedRoles="allowedRoles">
+  //public allowedRoles: TRole[] = [TRole.Admin];
+  //
   @Input({ required: true }) public appAllowedRoles: TRole[] = [];
+
+  private _authService = inject(AuthenticationService);
+
+  private _roleSubscription: Subscription | null = null;
 
   public constructor(
     private _templateRef: TemplateRef<unknown>,
-    private _vc: ViewContainerRef,
-    private _permissionService: AuthenticationService
+    private _vc: ViewContainerRef
   ) {}
 
-  public async ngOnInit(): Promise<void> {
-    if (
-      this.appAllowedRoles.includes(
-        await this._permissionService.getCurrentRole()
-      )
-    ) {
-      this._vc.createEmbeddedView(this._templateRef);
-    } else {
-      this._vc.clear();
+  public ngOnInit(): void {
+    this._roleSubscription = this._authService.currentRole$.subscribe(role => {
+      if (role !== null && this.appAllowedRoles.includes(role)) {
+        this._vc.createEmbeddedView(this._templateRef);
+      } else {
+        this._vc.clear();
+      }
+    });
+  }
+
+  public ngOnDestroy(): void {
+    if (this._roleSubscription) {
+      this._roleSubscription.unsubscribe();
     }
   }
 }
