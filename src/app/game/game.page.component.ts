@@ -29,7 +29,7 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
       @if (game) {
-        <div *appAuthRequired>
+        <div>
           <div class="absolute top-20 left-0 flex flex-col">
             <app-player-menu
               [players]="players"
@@ -46,6 +46,7 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
           </div>
           <div class="absolute top-20 right-0 flex flex-col">
             <app-data-menu
+              *appAuthRequired
               [gameName]="game.name"
               [setDataPossibleToPersist]="gameStateData" />
             <app-game-menu
