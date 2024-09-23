@@ -78,6 +78,10 @@ export abstract class BaseGameWindowComponent
 
   public abstract restart(): void;
 
+  protected update(): void {
+    setTimeout(() => this.update(), 1000 / 60);
+  }
+
   //
 
   private emitGameStateData(): void {

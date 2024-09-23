@@ -55,14 +55,14 @@ export class PongGameWindowComponent
 
   //
 
-  private update(): void {
+  protected override update(): void {
     if (!this.isPaused) {
       this.updatePaddlesSpeeds();
       this.updatePaddlesPositions();
       this.updateBallPosition();
       this.render();
     }
-    requestAnimationFrame(() => this.update());
+    super.update();
   }
 
   private render(): void {
