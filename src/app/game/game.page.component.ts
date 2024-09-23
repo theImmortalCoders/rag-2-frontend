@@ -126,6 +126,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   //
+
   private loadGame(): void {
     const game = games[this.gameName];
     if (!game) {
