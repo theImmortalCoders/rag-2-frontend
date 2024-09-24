@@ -21,21 +21,17 @@ export class AuthenticationService implements OnDestroy {
     this._currentRoleSubject.asObservable();
 
   private constructor() {
-    const token = localStorage.getItem('jwtToken');
-    if (token) {
-      this._authStatusSubject.next(true);
-      this.loadCurrentUser();
-    } else {
-      this._authStatusSubject.next(false);
-    }
+    this.loadCurrentUser();
   }
 
   public loadCurrentUser(): void {
     this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
+        this._authStatusSubject.next(true);
         this._currentRoleSubject.next(response.role);
       },
       error: () => {
+        this._authStatusSubject.next(false);
         this._currentRoleSubject.next(null);
       },
     });
