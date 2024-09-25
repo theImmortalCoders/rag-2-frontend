@@ -56,7 +56,7 @@ export class AuthenticationService implements OnDestroy {
     if (isAuthenticated) {
       setTimeout(() => {
         this.loadCurrentUser();
-      }, 3000);
+      }, 5000);
     }
   }
 
