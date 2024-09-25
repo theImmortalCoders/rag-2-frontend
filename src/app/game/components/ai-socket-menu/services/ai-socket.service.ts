@@ -106,7 +106,7 @@ export class AiSocketService {
           expectedInput: expectedDataToReceive,
         })
       );
-      // console.log('Data sent', this._sendingIntervalID as number);
+      console.log('Data sent', this._sendingIntervalID as number);
     }
   }
 }
