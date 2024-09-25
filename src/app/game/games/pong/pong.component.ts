@@ -11,7 +11,7 @@ import { Pong } from './models/pong.class';
   standalone: true,
   imports: [CanvasComponent],
   template: `<div>{{ game.state.scoreLeft }}:{{ game.state.scoreRight }}</div>
-    <app-canvas #gameCanvas></app-canvas> `,
+    <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
 })
 export class PongGameWindowComponent
   extends BaseGameWindowComponent
@@ -21,7 +21,6 @@ export class PongGameWindowComponent
   private _paddleWidth = 10;
   private _paddleJump = 20;
   private _ballWidth = 10;
-  private _canvas!: HTMLCanvasElement;
   private _leftPaddleX = 10;
   private _rightPaddleX!: number;
 
@@ -29,21 +28,22 @@ export class PongGameWindowComponent
 
   public override ngOnInit(): void {
     super.ngOnInit();
+
     this.game = this.abstractGame as Pong;
   }
 
-  public ngAfterViewInit(): void {
-    this._canvas = this.gameCanvas.canvasElement.nativeElement;
+  public override ngAfterViewInit(): void {
+    super.ngAfterViewInit();
 
     window.addEventListener('keydown', event => this.onKeyDown(event));
     window.addEventListener('keyup', event => this.onKeyUp(event));
 
     this.resetPaddlesAndBall();
-    this.update();
   }
 
   public override ngOnDestroy(): void {
     super.ngOnDestroy();
+
     window.removeEventListener('keydown', event => this.onKeyDown(event));
     window.removeEventListener('keyup', event => this.onKeyUp(event));
   }
@@ -56,13 +56,14 @@ export class PongGameWindowComponent
   //
 
   protected override update(): void {
+    super.update();
+
     if (!this.isPaused) {
       this.updatePaddlesSpeeds();
       this.updatePaddlesPositions();
       this.updateBallPosition();
       this.render();
     }
-    super.update();
   }
 
   private render(): void {
@@ -120,6 +121,10 @@ export class PongGameWindowComponent
 
     if (this.game.state.ballSpeedY == 0) {
       this.game.state.ballSpeedY = this.random(-1, 1);
+    }
+
+    if (Math.abs(this.game.state.ballSpeedY) > 12) {
+      this.game.state.ballSpeedY = 12;
     }
 
     this.checkCollisionWithPaddles();

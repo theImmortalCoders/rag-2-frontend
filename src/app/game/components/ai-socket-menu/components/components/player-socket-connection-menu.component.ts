@@ -14,6 +14,7 @@ import { Player } from '@gameModels/player.class';
 import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
 import { Observable, Subscription } from 'rxjs';
+import { VisibilityService } from 'app/shared/services/visibility.service';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
@@ -60,6 +61,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
+  private _visibilityService = inject(VisibilityService);
   private _pauseSubscription = new Subscription();
   private _restartSubscription = new Subscription();
 
@@ -81,6 +83,19 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this.aiSocketService.pauseDataExchange();
       } else {
         this.isPaused = false;
+        this.aiSocketService.resumeDataExchange(
+          this.vSendingInterval.value,
+          this.player.inputData,
+          this.player.id
+        );
+      }
+    });
+
+    this._visibilityService.getVisibilityState().subscribe(isVisible => {
+      console.log(isVisible);
+      if (!isVisible) {
+        this.aiSocketService.pauseDataExchange();
+      } else if (!this.isPaused) {
         this.aiSocketService.resumeDataExchange(
           this.vSendingInterval.value,
           this.player.inputData,
