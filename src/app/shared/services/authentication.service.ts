@@ -21,17 +21,31 @@ export class AuthenticationService implements OnDestroy {
     this._currentRoleSubject.asObservable();
 
   private constructor() {
-    this.loadCurrentUser();
+    const token = localStorage.getItem('jwtToken');
+    if (token && this.isTokenExpired(token)) {
+      console.log('logout');
+      this._userEndpointsService.logout();
+      this._authStatusSubject.next(false);
+      this._currentRoleSubject.next(null);
+    } else if (token) {
+      this._authStatusSubject.next(true);
+      this.loadCurrentUser();
+    }
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const payloadBase64 = token.split('.')[1];
+    const payload = JSON.parse(atob(payloadBase64));
+    const expiryTime = payload.exp * 1000;
+    return Date.now() > expiryTime;
   }
 
   public loadCurrentUser(): void {
     this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
-        this._authStatusSubject.next(true);
         this._currentRoleSubject.next(response.role);
       },
       error: () => {
-        this._authStatusSubject.next(false);
         this._currentRoleSubject.next(null);
       },
     });
@@ -42,9 +56,7 @@ export class AuthenticationService implements OnDestroy {
     if (isAuthenticated) {
       setTimeout(() => {
         this.loadCurrentUser();
-      }, 1000); //time to wait for jwt being set
-    } else {
-      this._currentRoleSubject.next(null);
+      }, 3000);
     }
   }
 

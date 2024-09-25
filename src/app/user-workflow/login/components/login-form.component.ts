@@ -49,7 +49,9 @@ import { AuthenticationService } from 'app/shared/services/authentication.servic
         type="submit"
         [disabled]="loginForm.invalid"
         [class.opacity-50]="loginForm.invalid"
-        class="rounded-md px-2 py-1 bg-mainOrange text-mainGray">
+        class="rounded-md px-2 py-1 bg-mainOrange text-mainGray {{
+          isLoginClicked ? 'cursor-wait' : ''
+        }}">
         Log in
       </button>
       <app-forgot-password class="flex flex-col space-y-4" />
@@ -90,6 +92,8 @@ export class LoginFormComponent implements OnDestroy {
   private _loginSubscription: Subscription | null = null;
   private _resendEmailSubscription: Subscription | null = null;
 
+  public isLoginClicked = false;
+
   public errorMessage: string | null = null;
 
   public resendMessage = '';
@@ -111,12 +115,20 @@ export class LoginFormComponent implements OnDestroy {
         .login(userLoginRequest)
         .subscribe({
           next: (response: string) => {
+            this.isLoginClicked = true;
             localStorage.setItem('jwtToken', response);
             this._authService.setAuthStatus(true);
-            this._router.navigate(['/']);
-            this.errorMessage = null;
+            setTimeout(() => {
+              this._router.navigate(['/']);
+              this.errorMessage = null;
+              this._notificationService.addNotification(
+                "You've been logged in successfully!",
+                3000
+              );
+            }, 3000);
           },
           error: (error: string) => {
+            this.isLoginClicked = false;
             this._authService.setAuthStatus(false);
             this.errorMessage = error;
           },

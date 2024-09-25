@@ -166,6 +166,7 @@ export class UserEndpointsService {
         tap({
           next: () => {
             console.log('Logout successfully');
+            localStorage.removeItem('jwtToken');
           },
         }),
         catchError((error: HttpErrorResponse) => {
