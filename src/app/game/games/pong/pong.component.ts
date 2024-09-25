@@ -123,6 +123,10 @@ export class PongGameWindowComponent
       this.game.state.ballSpeedY = this.random(-1, 1);
     }
 
+    if (Math.abs(this.game.state.ballSpeedY) > 12) {
+      this.game.state.ballSpeedY = 12;
+    }
+
     this.checkCollisionWithPaddles();
     this.checkCollisionWithWalls();
     this.checkPointScored();

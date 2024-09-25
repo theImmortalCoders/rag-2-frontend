@@ -50,6 +50,7 @@ export abstract class BaseGameWindowComponent
   private _restartSubscription = new Subscription();
   private _pauseSubscription = new Subscription();
 
+  private _fpsLimit = 60;
   public fps = 0;
   private _fpsMeasureInterval = 500;
   private _lastFrameTime = performance.now();
@@ -98,7 +99,7 @@ export abstract class BaseGameWindowComponent
   protected update(): void {
     this.calculateFPS();
 
-    requestAnimationFrame(() => this.update());
+    setTimeout(() => this.update(), 1000 / this._fpsLimit);
   }
 
   //
