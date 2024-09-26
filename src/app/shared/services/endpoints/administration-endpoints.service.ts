@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
-import { jwtTokenAuthHeader } from '@utils/helpers/jwtTokenAuthHeader';
+import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import { TRole } from 'app/shared/models/role.enum';
 import { IUserResponse } from 'app/shared/models/user.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -20,7 +20,7 @@ export class AdministrationEndpointsService {
           `/api/Administration/${userId}/ban-status?isBanned=${isBanned}`,
         {},
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'text' as 'json',
         }
       )
@@ -43,7 +43,7 @@ export class AdministrationEndpointsService {
           `/api/Administration/${userId}/role=${TRole[role]}`,
         {},
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'text' as 'json',
         }
       )
@@ -65,7 +65,7 @@ export class AdministrationEndpointsService {
         environment.backendApiUrl + `/api/Administration/${userId}/details`,
         {
           responseType: 'json',
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
         }
       )
       .pipe(
@@ -90,7 +90,7 @@ export class AdministrationEndpointsService {
           `/api/Administration/students?studyCycleYearA=${studyCycleYearA}&studyCycleYearB=${studyCycleYearB}`,
         {
           responseType: 'json',
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
         }
       )
       .pipe(

@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
-import { jwtTokenAuthHeader } from '@utils/helpers/jwtTokenAuthHeader';
+import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import {
   IRecordedGameRequest,
   IRecordedGameResponse,
@@ -22,7 +22,7 @@ export class GameRecordEndpointsService {
       .get<IRecordedGameResponse[]>(
         environment.backendApiUrl + `/api/GameRecord?gameId=${gameId}`,
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'json',
         }
       )
@@ -46,7 +46,7 @@ export class GameRecordEndpointsService {
         environment.backendApiUrl + `/api/GameRecord`,
         gameRecordData,
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'text' as 'json',
         }
       )
@@ -68,7 +68,7 @@ export class GameRecordEndpointsService {
         environment.backendApiUrl +
           `/api/GameRecord?recordedGameId=${recordedGameId}`,
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'text' as 'json',
         }
       )
@@ -91,7 +91,7 @@ export class GameRecordEndpointsService {
       .get<void>(
         environment.backendApiUrl + `/api/GameRecord/${recordedGameId}`,
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'json',
         }
       )

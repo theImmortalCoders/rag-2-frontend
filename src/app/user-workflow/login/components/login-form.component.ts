@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -32,7 +32,13 @@ import { AuthenticationService } from 'app/shared/services/authentication.servic
           type="email"
           formControlName="email"
           placeholder="Type your email"
-          class="custom-input" />
+          class="custom-input"
+          list="recentEmails" />
+        <datalist id="recentEmails">
+          @for (email of recentEmails; track email) {
+            <option [value]="email"></option>
+          }
+        </datalist>
       </div>
       <div class="flex flex-col space-y-1">
         <label for="password" [class.text-red-500]="shouldShowError('password')"
@@ -79,7 +85,7 @@ import { AuthenticationService } from 'app/shared/services/authentication.servic
     </form>
   `,
 })
-export class LoginFormComponent implements OnDestroy {
+export class LoginFormComponent implements OnInit, OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
@@ -90,14 +96,33 @@ export class LoginFormComponent implements OnDestroy {
   private _loginSubscription: Subscription | null = null;
   private _resendEmailSubscription: Subscription | null = null;
 
+  public recentEmails: string[] = [];
   public errorMessage: string | null = null;
-
   public resendMessage = '';
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
+
+  public ngOnInit(): void {
+    this.loadRecentEmails();
+  }
+
+  private loadRecentEmails(): void {
+    const cachedEmails = localStorage.getItem('recentEmails');
+    if (cachedEmails) {
+      this.recentEmails = JSON.parse(cachedEmails);
+    }
+  }
+
+  private saveEmailToHistory(email: string): void {
+    if (!this.recentEmails.includes(email)) {
+      this.recentEmails.unshift(email);
+      this.recentEmails = this.recentEmails.slice(0, 5);
+      localStorage.setItem('recentEmails', JSON.stringify(this.recentEmails));
+    }
+  }
 
   public submitButton(): void {
     this.errorMessage = null;
@@ -110,11 +135,18 @@ export class LoginFormComponent implements OnDestroy {
       this._loginSubscription = this._userEndpointsService
         .login(userLoginRequest)
         .subscribe({
-          next: (response: string) => {
-            localStorage.setItem('jwtToken', response);
+          next: () => {
+            // document.body.classList.add('cursor-wait');
             this._authService.setAuthStatus(true);
-            this._router.navigate(['/']);
             this.errorMessage = null;
+            this.saveEmailToHistory(formValues.email);
+            this._notificationService.addNotification(
+              "You've been logged in successfully!",
+              3000
+            );
+            this._router.navigate(['/']);
+            // window.location.replace('/');
+            // document.body.classList.remove('cursor-wait');
           },
           error: (error: string) => {
             this._authService.setAuthStatus(false);
