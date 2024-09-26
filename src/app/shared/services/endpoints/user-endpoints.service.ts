@@ -9,7 +9,7 @@ import {
   IUserResponse,
 } from 'app/shared/models/user.models';
 import { errorHandler } from '@utils/helpers/errorHandler';
-import { jwtTokenAuthHeader } from '@utils/helpers/jwtTokenAuthHeader';
+import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 
 @Injectable({
   providedIn: 'root',
@@ -159,7 +159,7 @@ export class UserEndpointsService {
         environment.backendApiUrl + '/api/User/auth/logout',
         {},
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'text' as 'json',
         }
       )
@@ -180,7 +180,7 @@ export class UserEndpointsService {
     return this._httpClient
       .get<IUserResponse>(environment.backendApiUrl + '/api/User/auth/me', {
         responseType: 'json',
-        headers: jwtTokenAuthHeader,
+        headers: getAuthHeaders(),
       })
       .pipe(
         tap({
@@ -204,7 +204,7 @@ export class UserEndpointsService {
           `/api/User/auth/change-password?oldPassword=${oldPassword}&newPassword=${newPassword}`,
         {},
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'text' as 'json',
         }
       )
@@ -225,7 +225,7 @@ export class UserEndpointsService {
       .delete<void>(
         environment.backendApiUrl + '/api/User/auth/delete-account',
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'text' as 'json',
         }
       )
