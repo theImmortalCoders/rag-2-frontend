@@ -54,9 +54,7 @@ export class AuthenticationService implements OnDestroy {
   public setAuthStatus(isAuthenticated: boolean): void {
     this._authStatusSubject.next(isAuthenticated);
     if (isAuthenticated) {
-      setTimeout(() => {
-        this.loadCurrentUser();
-      }, 5000);
+      this.loadCurrentUser();
     }
   }
 

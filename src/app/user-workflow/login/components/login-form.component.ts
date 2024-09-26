@@ -135,20 +135,18 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       this._loginSubscription = this._userEndpointsService
         .login(userLoginRequest)
         .subscribe({
-          next: (response: string) => {
-            document.body.classList.add('cursor-wait');
-            localStorage.setItem('jwtToken', response);
+          next: () => {
+            // document.body.classList.add('cursor-wait');
             this._authService.setAuthStatus(true);
-            setTimeout(() => {
-              this._router.navigate(['/']);
-              this.errorMessage = null;
-              this._notificationService.addNotification(
-                "You've been logged in successfully!",
-                3000
-              );
-              this.saveEmailToHistory(formValues.email);
-              document.body.classList.remove('cursor-wait');
-            }, 3000);
+            this.errorMessage = null;
+            this.saveEmailToHistory(formValues.email);
+            this._notificationService.addNotification(
+              "You've been logged in successfully!",
+              3000
+            );
+            this._router.navigate(['/']);
+            // window.location.replace('/');
+            // document.body.classList.remove('cursor-wait');
           },
           error: (error: string) => {
             this._authService.setAuthStatus(false);

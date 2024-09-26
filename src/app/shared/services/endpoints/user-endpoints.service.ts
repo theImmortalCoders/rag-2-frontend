@@ -49,7 +49,8 @@ export class UserEndpointsService {
       )
       .pipe(
         tap({
-          next: () => {
+          next: (response: string) => {
+            localStorage.setItem('jwtToken', response);
             console.log('User logged in successfully');
           },
         }),
