@@ -136,7 +136,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         .login(userLoginRequest)
         .subscribe({
           next: () => {
-            // document.body.classList.add('cursor-wait');
             this._authService.setAuthStatus(true);
             this.errorMessage = null;
             this.saveEmailToHistory(formValues.email);
@@ -145,8 +144,6 @@ export class LoginFormComponent implements OnInit, OnDestroy {
               3000
             );
             this._router.navigate(['/']);
-            // window.location.replace('/');
-            // document.body.classList.remove('cursor-wait');
           },
           error: (error: string) => {
             this._authService.setAuthStatus(false);

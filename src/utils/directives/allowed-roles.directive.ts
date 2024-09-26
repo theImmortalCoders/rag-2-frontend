@@ -19,7 +19,6 @@ export class AllowedRolesDirective implements OnInit, OnDestroy {
   //
   //<div *appAllowedRoles="allowedRoles">
   //public allowedRoles: TRole[] = [TRole.Admin];
-  //
   @Input({ required: true }) public appAllowedRoles: TRole[] = [];
 
   private _authService = inject(AuthenticationService);
