@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
-import { jwtTokenAuthHeader } from '@utils/helpers/jwtTokenAuthHeader';
+import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import { IGameStatsResponse } from 'app/shared/models/game.models';
 import { IUserStatsResponse } from 'app/shared/models/user.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
@@ -18,7 +18,7 @@ export class StatsEndpointsService {
       .get<IUserStatsResponse>(
         environment.backendApiUrl + `/api/Stats/user?userId=${userId}`,
         {
-          headers: jwtTokenAuthHeader,
+          headers: getAuthHeaders(),
           responseType: 'json',
         }
       )

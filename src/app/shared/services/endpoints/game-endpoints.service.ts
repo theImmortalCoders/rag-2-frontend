@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
-import { jwtTokenAuthHeader } from '@utils/helpers/jwtTokenAuthHeader';
+import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import { IGameRequest, IGameResponse } from 'app/shared/models/game.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
@@ -32,7 +32,7 @@ export class GameEndpointsService {
   public addGame(gameData: IGameRequest): Observable<void> {
     return this._httpClient
       .post<void>(environment.backendApiUrl + `/api/Game`, gameData, {
-        headers: jwtTokenAuthHeader,
+        headers: getAuthHeaders(),
         responseType: 'text' as 'json',
       })
       .pipe(
@@ -50,7 +50,7 @@ export class GameEndpointsService {
   public updateGame(gameId: number, gameData: IGameRequest): Observable<void> {
     return this._httpClient
       .put<void>(environment.backendApiUrl + `/api/Game/${gameId}`, gameData, {
-        headers: jwtTokenAuthHeader,
+        headers: getAuthHeaders(),
         responseType: 'text' as 'json',
       })
       .pipe(
@@ -68,7 +68,7 @@ export class GameEndpointsService {
   public deleteGame(gameId: number): Observable<void> {
     return this._httpClient
       .delete<void>(environment.backendApiUrl + `/api/Game/${gameId}`, {
-        headers: jwtTokenAuthHeader,
+        headers: getAuthHeaders(),
         responseType: 'text' as 'json',
       })
       .pipe(
