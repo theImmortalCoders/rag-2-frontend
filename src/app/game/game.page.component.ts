@@ -45,13 +45,13 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
             }
           </div>
           <div class="absolute top-20 right-0 flex flex-col">
+            <app-game-menu
+              (pauseEmitter)="gamePauseSubject.next($event)"
+              (restartEmitter)="gameRestartSubject.next()" />
             <app-data-menu
               *appAuthRequired
               [gameName]="game.name"
               [setDataPossibleToPersist]="gameStateData" />
-            <app-game-menu
-              (pauseEmitter)="gamePauseSubject.next($event)"
-              (restartEmitter)="gameRestartSubject.next()" />
           </div>
         </div>
         <div class="flex w-full items-center justify-center py-12">

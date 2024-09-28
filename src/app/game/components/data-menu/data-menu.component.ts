@@ -12,8 +12,8 @@ import { DataDownloadComponent } from './components/data-download/data-download.
   template: `
     <button
       (click)="toggleDataMenu()"
-      class="side-menu-right-button top-0 w-12 h-52 {{
-        isDataMenuVisible ? 'right-64' : 'right-0'
+      class="side-menu-right-button top-40 w-12 h-64 {{
+        isDataMenuVisible ? 'right-72' : 'right-0'
       }}">
       <span
         class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.45em]"
@@ -21,8 +21,8 @@ import { DataDownloadComponent } from './components/data-download/data-download.
       >
     </button>
     <div
-      class="w-64 h-52 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
-        isDataMenuVisible ? 'right-0' : '-right-64'
+      class="w-72 h-64 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-40 {{
+        isDataMenuVisible ? 'right-0' : '-right-72'
       }}">
       <span class="font-black">Select data to persist:</span>
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
@@ -32,7 +32,7 @@ import { DataDownloadComponent } from './components/data-download/data-download.
           [dataToPersist]="dataToPersist"
           [updateDataToPersist]="updateDataToPersist" />
       }
-      <span class="font-black mt-2 border-t-[1px] border-mainOrange"
+      <span class="font-black mt-2 pt-2 border-t-[1px] border-mainOrange"
         >Data saving interval limit:</span
       >
       <input
