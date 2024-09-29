@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class VisibilityService {
+export class PageVisibilityService {
   private _renderer: Renderer2;
   private _visibilityState$ = new BehaviorSubject<boolean>(true);
 

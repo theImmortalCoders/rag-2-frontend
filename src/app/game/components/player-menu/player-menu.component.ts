@@ -61,7 +61,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
     </div>
   `,
 })
-export class PlayerMenuComponent implements AfterViewInit {
+export class PlayerMenuComponent implements OnInit {
   @Input({ required: true }) public players: Player[] = [];
   @Output() public playerSourceChangeEmitter = new EventEmitter<Player[]>();
 
@@ -69,7 +69,7 @@ export class PlayerMenuComponent implements AfterViewInit {
 
   public isPlayerMenuVisible = false;
 
-  public ngAfterViewInit(): void {
+  public ngOnInit(): void {
     this.players.forEach(player => {
       this.syncPropsWithUrl(player);
     });

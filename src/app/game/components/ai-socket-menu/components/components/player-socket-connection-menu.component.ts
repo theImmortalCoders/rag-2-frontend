@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   inject,
@@ -14,7 +15,8 @@ import { Player } from '@gameModels/player.class';
 import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
 import { Observable, Subscription } from 'rxjs';
-import { VisibilityService } from 'app/shared/services/visibility.service';
+import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
+import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
@@ -25,6 +27,7 @@ import { VisibilityService } from 'app/shared/services/visibility.service';
     <div class="flex flex-col w-full">
       <app-socket-domain-input
         class="mb-2"
+        [initialValue]="socketUrl"
         [gameName]="gameName"
         (socketDomainEmitter)="socketUrl = $event"
         (recentPhrasesEmitter)="recentPhrases = $event" />
@@ -38,7 +41,8 @@ import { VisibilityService } from 'app/shared/services/visibility.service';
           [socket]="aiSocketService.getSocket()"
           [startDataExchange]="onStartDataExchangeClick"
           [stopDataExchange]="aiSocketService.stopDataExchange"
-          [isPaused]="isPaused" />
+          [isPaused]="isPaused"
+          [playerId]="player.id" />
       } @else {
         <button
           (click)="onConnectButtonClick()"
@@ -61,7 +65,8 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
-  private _visibilityService = inject(VisibilityService);
+  private _pageVisibilityService = inject(PageVisibilityService);
+  private _urlParamService = inject(UrlParamService);
   private _pauseSubscription = new Subscription();
   private _restartSubscription = new Subscription();
 
@@ -75,7 +80,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
-      console.log('Restart - ai socket');
+      console.log('Restart - ai socket'); //can be used
     });
     this._pauseSubscription = this.gamePause.subscribe(value => {
       if (value) {
@@ -91,7 +96,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       }
     });
 
-    this._visibilityService.getVisibilityState().subscribe(isVisible => {
+    this._pageVisibilityService.getVisibilityState().subscribe(isVisible => {
       if (!isVisible) {
         this.aiSocketService.pauseDataExchange();
       } else if (!this.isPaused) {
@@ -102,6 +107,8 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         );
       }
     });
+
+    this.syncPropsWithUrl();
   }
 
   public ngOnDestroy(): void {
@@ -121,6 +128,11 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       () => {
         console.log('onConnectButtonClick');
       }
+    );
+
+    this._urlParamService.setQueryParam(
+      'player-' + this.player.id + '-socketUrl',
+      this.socketUrl
     );
   }
 
@@ -150,5 +162,22 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       'recentPhrases_' + this.gameName,
       JSON.stringify(this.recentPhrases)
     );
+  }
+
+  private syncPropsWithUrl(): void {
+    setTimeout(() => {
+      const socketUrl = this._urlParamService.getQueryParam(
+        'player-' + this.player.id + '-socketUrl'
+      );
+
+      if (socketUrl !== null) {
+        this.socketUrl = socketUrl;
+      } else {
+        this._urlParamService.setQueryParam(
+          'player-' + this.player.id + '-socketUrl',
+          this.socketUrl
+        );
+      }
+    });
   }
 }

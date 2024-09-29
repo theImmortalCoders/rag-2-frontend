@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  OnInit,
   Output,
 } from '@angular/core';
 import { UrlParamService } from 'app/shared/services/url-param.service';
@@ -43,7 +44,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
     </div>
   `,
 })
-export class GameMenuComponent implements AfterViewInit {
+export class GameMenuComponent implements OnInit {
   @Output() public pauseEmitter = new EventEmitter<boolean>();
   @Output() public restartEmitter = new EventEmitter<void>();
 
@@ -52,7 +53,7 @@ export class GameMenuComponent implements AfterViewInit {
   public isPaused = false;
   public isGameMenuVisible = false;
 
-  public ngAfterViewInit(): void {
+  public ngOnInit(): void {
     setTimeout(() => {
       this.isPaused = this._urlParamService.getQueryParam('paused') === 'true';
       this._urlParamService.setQueryParam(
