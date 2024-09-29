@@ -4,6 +4,7 @@ import { KeyValuePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
 import { DataDownloadComponent } from './components/data-download/data-download.component';
+import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
   selector: 'app-data-menu',
@@ -75,10 +76,7 @@ export class DataMenuComponent implements OnInit {
   public isDataMenuVisible = false;
   public dataSavingIntervalLimit = 100;
 
-  public constructor(
-    private _route$: ActivatedRoute,
-    private _router: Router
-  ) {}
+  public constructor(private _urlParamService: UrlParamService) {}
 
   public ngOnInit(): void {
     setTimeout(() => {
@@ -86,7 +84,7 @@ export class DataMenuComponent implements OnInit {
         JSON.stringify(this.dataPossibleToPersist)
       );
       this.updateDataToPersistFromURL();
-      this.updateURLByDataToPersist('outputSpec', false);
+      this._urlParamService.setQueryParam('outputSpec', 'false');
     }, 50);
   }
 
@@ -105,21 +103,19 @@ export class DataMenuComponent implements OnInit {
       delete this.dataToPersist[key];
     }
 
-    this.updateURLByDataToPersist(key, isPresent);
+    this._urlParamService.setQueryParam(key, isPresent ? 'true' : 'false');
   };
 
   //
 
   private updateDataToPersistFromURL(): void {
-    this._route$.queryParams.subscribe(params => {
-      for (const key in this.dataPossibleToPersist) {
-        this.updateDataToPersist(
-          key,
-          this.dataPossibleToPersist[key],
-          params[key] !== 'false'
-        );
-      }
-    });
+    for (const key in this.dataPossibleToPersist) {
+      this.updateDataToPersist(
+        key,
+        this.dataPossibleToPersist[key],
+        this._urlParamService.getQueryParam(key) !== 'false'
+      );
+    }
   }
 
   private updateCollectedData(): void {
@@ -136,12 +132,5 @@ export class DataMenuComponent implements OnInit {
       this.collectedDataArray.push(this.dataToPersist);
       this._lastSavedTime = Date.now();
     }
-  }
-
-  private updateURLByDataToPersist(key: string, isPresent: boolean): void {
-    this._dataToPersistQueryParams[key] = isPresent;
-    this._router.navigate([], {
-      queryParams: this._dataToPersistQueryParams,
-    });
   }
 }
