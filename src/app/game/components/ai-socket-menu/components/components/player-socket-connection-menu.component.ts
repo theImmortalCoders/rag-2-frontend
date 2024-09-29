@@ -92,7 +92,6 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
     });
 
     this._visibilityService.getVisibilityState().subscribe(isVisible => {
-      console.log(isVisible);
       if (!isVisible) {
         this.aiSocketService.pauseDataExchange();
       } else if (!this.isPaused) {

@@ -58,7 +58,10 @@ export class AiSocketService {
   public pauseDataExchange = (): void => {
     this.isDataSendingActive = false;
     clearInterval(this._sendingIntervalID as number);
-    console.log('Data exchange stopped', this._sendingIntervalID as number);
+    console.log(
+      'Data exchange stopped on interval: ',
+      this._sendingIntervalID as number
+    );
   };
 
   public resumeDataExchange = (

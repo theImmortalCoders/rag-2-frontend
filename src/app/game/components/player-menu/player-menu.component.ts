@@ -106,14 +106,14 @@ export class PlayerMenuComponent implements AfterViewInit {
   //
 
   private syncPropsWithUrl(player: Player): void {
-    const source = this._urlParamService.getQueryParam(
-      'player-' + player.id + '-source'
-    );
-    const active = this._urlParamService.getQueryParam(
-      'player-' + player.id + '-active'
-    );
-
     setTimeout(() => {
+      const source = this._urlParamService.getQueryParam(
+        'player-' + player.id + '-source'
+      );
+      const active = this._urlParamService.getQueryParam(
+        'player-' + player.id + '-active'
+      );
+
       if (source !== null) {
         player.playerType = source as PlayerSourceType;
       } else {
