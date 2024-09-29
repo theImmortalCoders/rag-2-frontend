@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
   selector: 'app-game-menu',
@@ -36,12 +44,25 @@ import { Component, EventEmitter, Output } from '@angular/core';
     </div>
   `,
 })
-export class GameMenuComponent {
+export class GameMenuComponent implements OnInit {
   @Output() public pauseEmitter = new EventEmitter<boolean>();
   @Output() public restartEmitter = new EventEmitter<void>();
 
+  private _urlParamService = inject(UrlParamService);
+
   public isPaused = false;
   public isGameMenuVisible = false;
+
+  public ngOnInit(): void {
+    setTimeout(() => {
+      this.isPaused = this._urlParamService.getQueryParam('paused') === 'true';
+      this._urlParamService.setQueryParam(
+        'paused',
+        this.isPaused ? 'true' : 'false'
+      );
+      this.pauseEmitter.emit(this.isPaused);
+    });
+  }
 
   public toggleGameMenu(): void {
     this.isGameMenuVisible = !this.isGameMenuVisible;
@@ -49,6 +70,11 @@ export class GameMenuComponent {
 
   public onPauseClick(): void {
     this.isPaused = !this.isPaused;
+
+    this._urlParamService.setQueryParam(
+      'paused',
+      this.isPaused ? 'true' : 'false'
+    );
     this.pauseEmitter.emit(this.isPaused);
   }
 

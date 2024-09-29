@@ -4,6 +4,7 @@ import { KeyValuePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
 import { DataDownloadComponent } from './components/data-download/data-download.component';
+import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
   selector: 'app-data-menu',
@@ -43,9 +44,7 @@ import { DataDownloadComponent } from './components/data-download/data-download.
         max="1000"
         step="10"
         [defaultValue]="dataSavingIntervalLimit"
-        (change)="
-          dataSavingIntervalLimit = dataSavingIntervalLimitInput.valueAsNumber
-        " />
+        (change)="onIntervalLimitChange($event)" />
       <app-data-download
         [vIsDataCollectingActive]="vIsDataCollectingActive"
         [gameName]="gameName"
@@ -56,7 +55,6 @@ import { DataDownloadComponent } from './components/data-download/data-download.
 })
 export class DataMenuComponent implements OnInit {
   @Input({ required: true }) public gameName = '';
-  public dataPossibleToPersist: TExchangeData = {};
   @Input({ required: true }) public set setDataPossibleToPersist(
     value: TExchangeData
   ) {
@@ -66,19 +64,16 @@ export class DataMenuComponent implements OnInit {
     }
   }
 
-  private _dataToPersistQueryParams: TExchangeData = {};
   private _lastSavedTime = 0;
 
+  public dataPossibleToPersist: TExchangeData = {};
   public dataToPersist: TExchangeData = {};
   public collectedDataArray: TExchangeData[] = [];
   public vIsDataCollectingActive = { value: false };
   public isDataMenuVisible = false;
   public dataSavingIntervalLimit = 100;
 
-  public constructor(
-    private _route$: ActivatedRoute,
-    private _router: Router
-  ) {}
+  public constructor(private _urlParamService: UrlParamService) {}
 
   public ngOnInit(): void {
     setTimeout(() => {
@@ -86,7 +81,7 @@ export class DataMenuComponent implements OnInit {
         JSON.stringify(this.dataPossibleToPersist)
       );
       this.updateDataToPersistFromURL();
-      this.updateURLByDataToPersist('outputSpec', false);
+      this._urlParamService.setQueryParam('outputSpec', 'false');
     }, 50);
   }
 
@@ -105,21 +100,42 @@ export class DataMenuComponent implements OnInit {
       delete this.dataToPersist[key];
     }
 
-    this.updateURLByDataToPersist(key, isPresent);
+    this._urlParamService.setQueryParam(key, isPresent ? 'true' : 'false');
+  };
+
+  public onIntervalLimitChange = (event: Event): void => {
+    this.dataSavingIntervalLimit = (
+      event.target as HTMLInputElement
+    ).valueAsNumber;
+    this._urlParamService.setQueryParam(
+      'dataSavingIntervalLimit',
+      this.dataSavingIntervalLimit.toString()
+    );
   };
 
   //
 
   private updateDataToPersistFromURL(): void {
-    this._route$.queryParams.subscribe(params => {
-      for (const key in this.dataPossibleToPersist) {
-        this.updateDataToPersist(
-          key,
-          this.dataPossibleToPersist[key],
-          params[key] !== 'false'
-        );
-      }
-    });
+    for (const key in this.dataPossibleToPersist) {
+      this.updateDataToPersist(
+        key,
+        this.dataPossibleToPersist[key],
+        this._urlParamService.getQueryParam(key) !== 'false'
+      );
+    }
+
+    const intervalLimit = this._urlParamService.getQueryParam(
+      'dataSavingIntervalLimit'
+    ) as unknown as number;
+
+    if (intervalLimit !== null) {
+      this.dataSavingIntervalLimit = intervalLimit;
+    } else {
+      this._urlParamService.setQueryParam(
+        'dataSavingIntervalLimit',
+        this.dataSavingIntervalLimit.toString()
+      );
+    }
   }
 
   private updateCollectedData(): void {
@@ -136,12 +152,5 @@ export class DataMenuComponent implements OnInit {
       this.collectedDataArray.push(this.dataToPersist);
       this._lastSavedTime = Date.now();
     }
-  }
-
-  private updateURLByDataToPersist(key: string, isPresent: boolean): void {
-    this._dataToPersistQueryParams[key] = isPresent;
-    this._router.navigate([], {
-      queryParams: this._dataToPersistQueryParams,
-    });
   }
 }
