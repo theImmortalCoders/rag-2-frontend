@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeyValuePipe } from '@angular/common';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 import { ConsoleFieldsetComponent } from './console-fieldset.component';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 
 describe('ConsoleFieldsetComponent', () => {
   let component: ConsoleFieldsetComponent;

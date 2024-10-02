@@ -12,7 +12,7 @@ export const authorsData: IAuthor[] = [
     name: 'Marcin Bator',
     githubName: 'marcinbator',
     linkedinName: 'marcin-bator-ofc',
-    role: 'Backend Developer',
+    role: 'Fullstack engineer',
     techStack: [
       'Java/Spring Boot',
       'C#/.NET',
@@ -21,8 +21,7 @@ export const authorsData: IAuthor[] = [
       'Angular',
       'SQL/PostgreSQL',
     ],
-    hobbies:
-      'developing backend systems, learning new technologies, riding a bike',
+    hobbies: 'mountains, bike, skiing, programming',
   },
   {
     name: 'Paweł Buczek',

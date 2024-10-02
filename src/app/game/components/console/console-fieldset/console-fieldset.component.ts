@@ -1,7 +1,7 @@
 import { KeyValuePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 
 @Component({
   selector: 'app-console-fieldset',
@@ -9,7 +9,7 @@ import { TExchangeData } from 'app/game/models/exchange-data.type';
   imports: [KeyValuePipe, ExchangeDataPipe],
   template: `
     @for (data of logData | keyvalue; track data.key) {
-      <div class="ml-4 max-w-60 lg:max-w-72 overflow-y-auto">
+      <div class="ml-4 overflow-y-auto">
         <span class="font-bold text-base xl:text-lg font-mono"
           >{{ data.key }}:</span
         >

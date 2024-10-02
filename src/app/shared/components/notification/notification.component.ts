@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   template: `
     <div
-      class="fixed text-sm xs:text-base w-3/5 xs:w-1/2 sm:w-2/5 md:w-1/3 lg:w-1/4 xl:w-1/6 bottom-0 left-0 z-50 font-mono">
+      class="fixed text-sm xs:text-base w-3/5 xs:w-1/2 sm:w-2/5 md:w-1/3 lg:w-1/4 xl:w-1/5 bottom-0 left-0 z-50 font-mono">
       @for (notification of notifications; track notification.id) {
         <div
           [id]="'notification-' + notification.id"

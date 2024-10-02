@@ -1,6 +1,6 @@
-import { TGameState } from 'app/game/models/game-state.type';
-import { Game } from 'app/game/models/game.class';
-import { Player } from 'app/game/models/player.class';
+import { TGameState } from '@gameModels/game-state.type';
+import { Game } from '@gameModels/game.class';
+import { Player } from '@gameModels/player.class';
 
 class PongState implements TGameState {
   public leftPaddleY = 0;
@@ -32,7 +32,7 @@ export class Pong extends Game {
         ballSpeedMultiplier: number, <1, inf>;
         scoreLeft: number, <0, inf>;
         scoreRight: number, <0, inf>;
-  
+
       default values:
         ballX: 500;
         ballY: 300;
@@ -41,14 +41,14 @@ export class Pong extends Game {
     `;
   public override players = [
     new Player(
-      1,
+      0,
       true,
       'Player 1',
       { move: 0 },
       'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up'
     ),
     new Player(
-      2,
+      1,
       true,
       'Player 2',
       { move: 0 },

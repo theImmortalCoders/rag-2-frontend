@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoints.service';
+import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { Subscription } from 'rxjs';
 
 @Component({

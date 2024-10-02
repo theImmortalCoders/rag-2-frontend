@@ -1,16 +1,17 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
-import { UserEndpointsService } from 'app/shared/services/endpoints/user-endpoints.service';
+import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { IUserLoginRequest } from 'app/shared/models/user.models';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { NotificationService } from 'app/shared/services/notification.service';
+import { AuthenticationService } from 'app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-login-form',
@@ -31,7 +32,13 @@ import { NotificationService } from 'app/shared/services/notification.service';
           type="email"
           formControlName="email"
           placeholder="Type your email"
-          class="custom-input" />
+          class="custom-input"
+          list="recentEmails" />
+        <datalist id="recentEmails">
+          @for (email of recentEmails; track email) {
+            <option [value]="email"></option>
+          }
+        </datalist>
       </div>
       <div class="flex flex-col space-y-1">
         <label for="password" [class.text-red-500]="shouldShowError('password')"
@@ -78,24 +85,44 @@ import { NotificationService } from 'app/shared/services/notification.service';
     </form>
   `,
 })
-export class LoginFormComponent implements OnDestroy {
+export class LoginFormComponent implements OnInit, OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
+  private _authService = inject(AuthenticationService);
   private _router: Router = new Router();
 
   private _loginSubscription: Subscription | null = null;
   private _resendEmailSubscription: Subscription | null = null;
 
+  public recentEmails: string[] = [];
   public errorMessage: string | null = null;
-
   public resendMessage = '';
 
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
+
+  public ngOnInit(): void {
+    this.loadRecentEmails();
+  }
+
+  private loadRecentEmails(): void {
+    const cachedEmails = localStorage.getItem('recentEmails');
+    if (cachedEmails) {
+      this.recentEmails = JSON.parse(cachedEmails);
+    }
+  }
+
+  private saveEmailToHistory(email: string): void {
+    if (!this.recentEmails.includes(email)) {
+      this.recentEmails.unshift(email);
+      this.recentEmails = this.recentEmails.slice(0, 5);
+      localStorage.setItem('recentEmails', JSON.stringify(this.recentEmails));
+    }
+  }
 
   public submitButton(): void {
     this.errorMessage = null;
@@ -108,12 +135,18 @@ export class LoginFormComponent implements OnDestroy {
       this._loginSubscription = this._userEndpointsService
         .login(userLoginRequest)
         .subscribe({
-          next: (response: string) => {
-            localStorage.setItem('jwtToken', response);
-            this._router.navigate(['/']);
+          next: () => {
+            this._authService.setAuthStatus(true);
             this.errorMessage = null;
+            this.saveEmailToHistory(formValues.email);
+            this._notificationService.addNotification(
+              "You've been logged in successfully!",
+              3000
+            );
+            this._router.navigate(['/']);
           },
           error: (error: string) => {
+            this._authService.setAuthStatus(false);
             this.errorMessage = error;
           },
         });

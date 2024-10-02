@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { TExchangeData } from '../../../../models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 
 @Component({
   selector: 'app-data-select-checkbox',

@@ -22,11 +22,10 @@ export interface IUserResponse {
   studyCycleYearB: number;
 }
 
-export interface IUserDetailsResponse {
-  id: number;
-  email: string;
-  role: TRole;
-  name: string;
-  studyCycleYearA: number;
-  studyCycleYearB: number;
+export interface IUserStatsResponse {
+  games: number;
+  plays: number;
+  totalStorageMb: number;
+  firstPlayed: string;
+  lastPlayed: string;
 }

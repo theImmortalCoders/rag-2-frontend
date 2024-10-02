@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AiSocketMenuComponent } from './ai-socket-menu.component';
-import { PlayerSourceType } from 'app/game/models/player-source-type.enum';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Player } from 'app/game/models/player.class';
+import { TExchangeData } from '@gameModels/exchange-data.type';
+import { Player } from '@gameModels/player.class';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 @Component({
   selector: 'app-player-socket-menu',

@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
+import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
   selector: 'app-socket-connected-menu',
@@ -25,9 +26,7 @@ import { Component, Input } from '@angular/core';
         max="1000"
         step="10"
         [defaultValue]="vSendingInterval.value"
-        (change)="
-          vSendingInterval.value = sendingIntervalInput.valueAsNumber
-        " />
+        (change)="updateValue(sendingIntervalInput.valueAsNumber)" />
       <button
         [attr.disabled]="isPaused ? 'disabled' : null"
         (click)="startDataExchange(vSendingInterval.value)"
@@ -39,7 +38,7 @@ import { Component, Input } from '@angular/core';
     }
   `,
 })
-export class SocketConnectedMenuComponent {
+export class SocketConnectedMenuComponent implements OnInit {
   @Input({ required: true }) public isDataSendingActive = false;
   @Input({ required: true }) public vSendingInterval = { value: 100 };
   @Input({ required: true }) public socket: WebSocket | null = null;
@@ -52,4 +51,38 @@ export class SocketConnectedMenuComponent {
     console.log('stopDataExchange');
   };
   @Input({ required: true }) public isPaused = false;
+  @Input({ required: true }) public playerId!: number;
+
+  private _urlParamService = inject(UrlParamService);
+
+  public ngOnInit(): void {
+    this.syncPropsWithUrl();
+  }
+
+  public updateValue(value: number): void {
+    this.vSendingInterval.value = value;
+
+    this._urlParamService.setQueryParam(
+      'player-' + this.playerId + '-sending-interval',
+      this.vSendingInterval.value.toString()
+    );
+  }
+
+  //
+
+  private syncPropsWithUrl(): void {
+    setTimeout(() => {
+      const sendingInterval = this._urlParamService.getQueryParam(
+        'player-' + this.playerId + '-sending-interval'
+      );
+      if (sendingInterval !== null) {
+        this.vSendingInterval.value = sendingInterval as unknown as number;
+      } else {
+        this._urlParamService.setQueryParam(
+          'player-' + this.playerId + '-sending-interval',
+          this.vSendingInterval.value.toString()
+        );
+      }
+    });
+  }
 }

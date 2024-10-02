@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataDownloadComponent } from './data-download.component';
-import { GameDataSendingService } from '../../services/game-data-sending.service';
 import { DataTransformService } from 'app/shared/services/data-transform.service';
-import { TExchangeData } from 'app/game/models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 
 describe('DataDownloadComponent', () => {
   let component: DataDownloadComponent;
@@ -15,7 +15,7 @@ describe('DataDownloadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataDownloadComponent],
       providers: [
-        GameDataSendingService,
+        GameRecordEndpointsService,
         DataTransformService,
         HttpClient,
         HttpHandler,
@@ -66,13 +66,13 @@ describe('DataDownloadComponent', () => {
     ];
     component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();
-    const button = fixture.debugElement.queryAll(By.css('button'))[3]
+    const button = fixture.debugElement.queryAll(By.css('button'))[2]
       .nativeElement;
     button.click();
     expect(component.deleteCollectedData).toHaveBeenCalled();
   });
 
-  it('should render download CSV button when collectedDataArray is not empty and vIsDataCollectingActive is false', () => {
+  it('should render download JSON button when collectedDataArray is not empty and vIsDataCollectingActive is false', () => {
     component.collectedDataArray = [
       {
         /* mock data */
@@ -85,7 +85,7 @@ describe('DataDownloadComponent', () => {
     expect(button.textContent).toContain('Download JSON');
   });
 
-  it('should not render download CSV button when collectedDataArray is empty', () => {
+  it('should not render download JSON button when collectedDataArray is empty', () => {
     component.collectedDataArray = [];
     component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
   selector: 'app-game-menu',
@@ -7,8 +15,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
   template: `
     <button
       (click)="toggleGameMenu()"
-      class="side-menu-right-button top-56 w-12 h-36 {{
-        isGameMenuVisible ? 'right-64' : 'right-0'
+      class="side-menu-right-button top-0 w-12 h-36 {{
+        isGameMenuVisible ? 'right-72' : 'right-0'
       }}">
       <span
         class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.45em]"
@@ -16,8 +24,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
       >
     </button>
     <div
-      class="w-64 h-36 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-56 {{
-        isGameMenuVisible ? 'right-0' : '-right-64'
+      class="w-72 h-36 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
+        isGameMenuVisible ? 'right-0' : '-right-72'
       }}">
       <button
         (click)="onPauseClick()"
@@ -36,12 +44,25 @@ import { Component, EventEmitter, Output } from '@angular/core';
     </div>
   `,
 })
-export class GameMenuComponent {
+export class GameMenuComponent implements OnInit {
   @Output() public pauseEmitter = new EventEmitter<boolean>();
   @Output() public restartEmitter = new EventEmitter<void>();
 
+  private _urlParamService = inject(UrlParamService);
+
   public isPaused = false;
   public isGameMenuVisible = false;
+
+  public ngOnInit(): void {
+    setTimeout(() => {
+      this.isPaused = this._urlParamService.getQueryParam('paused') === 'true';
+      this._urlParamService.setQueryParam(
+        'paused',
+        this.isPaused ? 'true' : 'false'
+      );
+      this.pauseEmitter.emit(this.isPaused);
+    });
+  }
 
   public toggleGameMenu(): void {
     this.isGameMenuVisible = !this.isGameMenuVisible;
@@ -49,6 +70,11 @@ export class GameMenuComponent {
 
   public onPauseClick(): void {
     this.isPaused = !this.isPaused;
+
+    this._urlParamService.setQueryParam(
+      'paused',
+      this.isPaused ? 'true' : 'false'
+    );
     this.pauseEmitter.emit(this.isPaused);
   }
 

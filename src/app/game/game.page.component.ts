@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Game } from './models/game.class';
+import { Game } from '@gameModels/game.class';
 import { ConsoleComponent } from './components/console/console.component';
-import { TExchangeData } from './models/exchange-data.type';
+import { TExchangeData } from '@gameModels/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
 import { PongGameWindowComponent } from './games/pong/pong.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { Subject, Subscription } from 'rxjs';
-import { Player } from './models/player.class';
+import { Player } from '@gameModels/player.class';
 import { PlayerMenuComponent } from './components/player-menu/player-menu.component';
-import { PlayerSourceType } from './models/player-source-type.enum';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
@@ -29,27 +29,29 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
       @if (game) {
-        <div *appAuthRequired class="absolute top-20 left-0 flex flex-col">
-          <app-player-menu
-            [players]="players"
-            (playerSourceChangeEmitter)="updatePlayers($event)" />
-          @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
-            <app-ai-socket-menu
-              [dataToSend]="gameStateData"
+        <div>
+          <div class="absolute top-20 left-0 flex flex-col">
+            <app-player-menu
+              [players]="players"
+              (playerSourceChangeEmitter)="updatePlayers($event)" />
+            @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
+              <app-ai-socket-menu
+                [dataToSend]="gameStateData"
+                [gameName]="game.name"
+                [players]="playersSelected"
+                (receivedDataEmitter)="receiveSocketInputData($event)"
+                [gamePause]="gamePauseSubject.asObservable()"
+                [gameRestart]="gameRestartSubject.asObservable()" />
+            }
+          </div>
+          <div class="absolute top-20 right-0 flex flex-col">
+            <app-game-menu
+              (pauseEmitter)="gamePauseSubject.next($event)"
+              (restartEmitter)="gameRestartSubject.next()" />
+            <app-data-menu
               [gameName]="game.name"
-              [players]="playersSelected"
-              (receivedDataEmitter)="receiveSocketInputData($event)"
-              [gamePause]="gamePauseSubject.asObservable()"
-              [gameRestart]="gameRestartSubject.asObservable()" />
-          }
-        </div>
-        <div *appAuthRequired class="absolute top-20 right-0 flex flex-col">
-          <app-data-menu
-            [gameName]="game.name"
-            [setDataPossibleToPersist]="gameStateData" />
-          <app-game-menu
-            (pauseEmitter)="gamePauseSubject.next($event)"
-            (restartEmitter)="gameRestartSubject.next()" />
+              [setDataPossibleToPersist]="gameStateData" />
+          </div>
         </div>
         <div class="flex w-full items-center justify-center py-12">
           @switch (game.name) {
