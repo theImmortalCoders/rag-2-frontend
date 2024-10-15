@@ -13,6 +13,8 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
 
 @Component({
   selector: 'app-game',
@@ -25,50 +27,55 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
     ConsoleComponent,
     AuthRequiredDirective,
     GameMenuComponent,
+    CantDisplayGameComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
-      @if (game) {
-        <div>
-          <div class="absolute top-20 left-0 flex flex-col">
-            <app-player-menu
-              [players]="players"
-              (playerSourceChangeEmitter)="updatePlayers($event)" />
-            @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
-              <app-ai-socket-menu
-                [dataToSend]="gameStateData"
+      @if (isMinWidthXl) {
+        @if (game) {
+          <div>
+            <div class="absolute top-20 left-0 flex flex-col">
+              <app-player-menu
+                [players]="players"
+                (playerSourceChangeEmitter)="updatePlayers($event)" />
+              @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
+                <app-ai-socket-menu
+                  [dataToSend]="gameStateData"
+                  [gameName]="game.name"
+                  [players]="playersSelected"
+                  (receivedDataEmitter)="receiveSocketInputData($event)"
+                  [gamePause]="gamePauseSubject.asObservable()"
+                  [gameRestart]="gameRestartSubject.asObservable()" />
+              }
+            </div>
+            <div class="absolute top-20 right-0 flex flex-col">
+              <app-game-menu
+                (pauseEmitter)="gamePauseSubject.next($event)"
+                (restartEmitter)="gameRestartSubject.next()" />
+              <app-data-menu
+                *appAuthRequired
                 [gameName]="game.name"
-                [players]="playersSelected"
-                (receivedDataEmitter)="receiveSocketInputData($event)"
-                [gamePause]="gamePauseSubject.asObservable()"
-                [gameRestart]="gameRestartSubject.asObservable()" />
+                [setDataPossibleToPersist]="gameStateData" />
+            </div>
+          </div>
+          <div class="flex w-full items-center justify-center py-12">
+            @switch (game.name) {
+              @case ('pong') {
+                <app-pong
+                  class="flex flex-col items-center w-3/4"
+                  [setSocketInputDataReceive]="socketInputData"
+                  (gameStateDataEmitter)="receiveGameOutputData($event)"
+                  [abstractGame]="game"
+                  [gameRestart]="gameRestartSubject.asObservable()"
+                  [gamePause]="gamePauseSubject.asObservable()" />
+              }
             }
           </div>
-          <div class="absolute top-20 right-0 flex flex-col">
-            <app-game-menu
-              (pauseEmitter)="gamePauseSubject.next($event)"
-              (restartEmitter)="gameRestartSubject.next()" />
-            <app-data-menu
-              *appAuthRequired
-              [gameName]="game.name"
-              [setDataPossibleToPersist]="gameStateData" />
-          </div>
-        </div>
-        <div class="flex w-full items-center justify-center py-12">
-          @switch (game.name) {
-            @case ('pong') {
-              <app-pong
-                class="flex flex-col items-center w-3/4"
-                [setSocketInputDataReceive]="socketInputData"
-                (gameStateDataEmitter)="receiveGameOutputData($event)"
-                [abstractGame]="game"
-                [gameRestart]="gameRestartSubject.asObservable()"
-                [gamePause]="gamePauseSubject.asObservable()" />
-            }
-          }
-        </div>
+        }
+        <app-console [logData]="logData" />
+      } @else {
+        <app-cant-display-game />
       }
-      <app-console [logData]="logData" />
     </div>
   `,
 })
@@ -76,6 +83,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
   private _routerSubscription: Subscription | null = null;
+  private _breakpointSubscription: Subscription | null = null;
   private _previousUrl = '';
 
   public gameName = '';
@@ -87,6 +95,15 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public gameStateData: TExchangeData = {};
   public gameRestartSubject = new Subject<void>();
   public gamePauseSubject = new Subject<boolean>();
+  public isMinWidthXl = false;
+
+  public constructor(private _breakpointObserver: BreakpointObserver) {
+    this._breakpointSubscription = this._breakpointObserver
+      .observe(['(min-width: 1280px)'])
+      .subscribe((state: BreakpointState) => {
+        this.isMinWidthXl = state.matches;
+      });
+  }
 
   public ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
@@ -111,6 +128,9 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this._routerSubscription) {
       this._routerSubscription.unsubscribe();
+    }
+    if (this._breakpointSubscription) {
+      this._breakpointSubscription.unsubscribe();
     }
   }
 
