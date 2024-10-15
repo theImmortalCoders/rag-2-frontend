@@ -49,6 +49,7 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
               (pauseEmitter)="gamePauseSubject.next($event)"
               (restartEmitter)="gameRestartSubject.next()" />
             <app-data-menu
+              *appAuthRequired
               [gameName]="game.name"
               [setDataPossibleToPersist]="gameStateData" />
           </div>
@@ -67,8 +68,8 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
           }
         </div>
       }
+      <app-console [logData]="logData" />
     </div>
-    <app-console [logData]="logData" />
   `,
 })
 export class GamePageComponent implements OnInit, OnDestroy {
