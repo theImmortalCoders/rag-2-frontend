@@ -8,31 +8,9 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
   standalone: true,
   imports: [KeyValuePipe, ExchangeDataPipe],
   template: `
-    <!-- <div class="ml-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-      @for (data of logData | keyvalue; track data.key) {
-        <div
-          class="p-2 border rounded-lg bg-gray-50
-          }}">
-          <span class="font-bold text-base xl:text-lg font-mono">
-            {{ data.key }}:
-          </span>
-
-          @if (isTLogData(data.value)) {
-            <app-console-fieldset
-              [logData]="data.value | exchange_data"></app-console-fieldset>
-          } @else {
-            <span class="ml-2 text-sm xl:text-base text-mainCreme">
-              {{ data.value }}
-            </span>
-          }
-        </div>
-      }
-    </div> -->
     @for (data of logData | keyvalue; track data.key) {
-      <div
-        class="p-2 border rounded-lg bg-gray-50
-          }}">
-        <span class="font-bold text-base xl:text-lg font-mono">
+      <div class="my-0 ml-8 mr-2 pl-2 py-1 border-l-[1px] border-mainOrange">
+        <span class="font-bold text-base xl:text-lg font-mono relative -top-2">
           {{ data.key }}:
         </span>
 
@@ -40,7 +18,7 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
           <app-console-fieldset
             [logData]="data.value | exchange_data"></app-console-fieldset>
         } @else {
-          <span class="ml-2 text-sm xl:text-base text-mainCreme">
+          <span class="text-sm xl:text-base text-mainCreme relative -top-2">
             {{ data.value }}
           </span>
         }
