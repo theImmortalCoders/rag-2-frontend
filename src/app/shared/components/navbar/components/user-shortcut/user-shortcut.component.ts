@@ -1,5 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TRole } from 'app/shared/models/role.enum';
 import { AuthenticationService } from 'app/shared/services/authentication.service';
 import { Subscription } from 'rxjs';
 
@@ -13,10 +14,13 @@ import { Subscription } from 'rxjs';
     </button>
     @if (isUserInfoVisible) {
       <div
-        class="flex flex-col text-lg w-40 absolute -z-10 top-[82px] right-0 bg-mainGray shadow-userInfoShadow px-2 py-1 rounded-bl-lg">
-        <span class="text-center">ADMIN</span>
-        <hr class="border-mainOrange" />
+        class="flex flex-col space-y-1 text-base w-56 absolute -z-10 top-[82px] right-0 bg-mainGray shadow-userInfoShadow p-3 rounded-bl-lg">
+        <span class="text-center text-lightOragne font-bold"
+          >Your role: {{ currentUserRole }}</span
+        >
+        <hr class="border-[1px] border-lightOragne" />
         <span class="text-center">DASHBOARD</span>
+        <hr class="border-mainOrange" />
         <span class="text-center">LOGOUT</span>
       </div>
     }
@@ -27,8 +31,10 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
   private _router = inject(Router);
 
   private _authSubscription: Subscription | null = null;
+  private _roleSubscription: Subscription | null = null;
 
   public isLoggedIn = false;
+  public currentUserRole: TRole | null = null;
   public isUserInfoVisible = false;
 
   public ngOnInit(): void {
@@ -37,6 +43,10 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
         this.isLoggedIn = isAuthenticated;
       }
     );
+
+    this._roleSubscription = this._authService.currentRole$.subscribe(role => {
+      this.currentUserRole = role;
+    });
   }
 
   public handleButtonClick(): void {
@@ -50,6 +60,9 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this._authSubscription) {
       this._authSubscription.unsubscribe();
+    }
+    if (this._roleSubscription) {
+      this._roleSubscription.unsubscribe();
     }
   }
 }
