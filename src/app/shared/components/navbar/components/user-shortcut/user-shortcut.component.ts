@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
@@ -9,7 +10,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-user-shortcut',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   template: `
     <button (click)="handleButtonClick()" class="mr-5 xs:mr-10">
       <i
@@ -21,7 +22,7 @@ import { Subscription } from 'rxjs';
         isUserInfoVisible ? 'right-0 opacity-100' : '-right-20 opacity-0'
       }} top-[75px] 2xs:top-[83px] bg-mainGray shadow-userInfoShadow p-3 rounded-bl-lg">
       <span class="text-center text-lightOragne font-bold"
-        >Your role: {{ currentUserRole }}</span
+        >Your role: {{ currentUserRole | uppercase }}</span
       >
       <hr class="border-[1px] border-lightOragne" />
       <a
