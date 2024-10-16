@@ -7,6 +7,9 @@ import { Error404PageComponent } from './shared/components/error-pages/error404.
 import { Error500PageComponent } from './shared/components/error-pages/error500.page.component';
 import { RegisterConfirmComponent } from './user-workflow/register/components/register-confirm.component';
 import { ResetPasswordComponent } from './user-workflow/login/components/reset-password.component';
+import { DashboardPageComponent } from './dashboard/dashboard.page.component';
+import { authGuard } from '@utils/helpers/auth.guard';
+import { guestGuard } from '@utils/helpers/guest.guard';
 
 export const routes: Routes = [
   {
@@ -20,12 +23,19 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'dashboard',
+    component: DashboardPageComponent,
+    title: 'Dashboard Page',
+    canActivate: [authGuard],
+  },
+  {
     path: 'game/:gameName',
     component: GamePageComponent,
     title: 'Game Page',
   },
   {
     path: 'login',
+    canActivate: [guestGuard],
     children: [
       {
         path: '',
@@ -41,6 +51,7 @@ export const routes: Routes = [
   },
   {
     path: 'register',
+    canActivate: [guestGuard],
     children: [
       {
         path: '',
