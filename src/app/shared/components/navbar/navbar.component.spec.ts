@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavbarComponent } from './navbar.component';
-import { GameListComponent } from './game-list.component';
+import { GameListComponent } from './components/game-list/game-list.component';
 import * as feather from 'feather-icons';
 
 describe('NavbarComponent', () => {
