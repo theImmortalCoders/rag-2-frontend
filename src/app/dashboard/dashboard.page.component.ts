@@ -41,7 +41,7 @@ import { ProgressCircleBarComponent } from './components/progress-circle-bar.com
       </div>
       <app-progress-circle-bar
         class="flex items-center justify-center w-1/4 pr-32"
-        [usedSpace]="8"
+        [usedSpace]="5.65"
         [totalSpace]="10" />
     </div>
     <!--  -->
