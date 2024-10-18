@@ -1,9 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
-import { IUserResponse } from 'app/shared/models/user.models';
+import {
+  IUserResponse,
+  IUserStatsResponse,
+} from 'app/shared/models/user.models';
 import { Subscription } from 'rxjs';
 import { ProgressCircleBarComponent } from './components/progress-circle-bar.component';
+import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -39,9 +43,10 @@ import { ProgressCircleBarComponent } from './components/progress-circle-bar.com
           </h2>
         </div>
       </div>
+      <!-- [usedSpace]="userStatsInfo!.totalStorageMb" -->
       <app-progress-circle-bar
         class="flex items-center justify-center w-1/4 pr-32"
-        [usedSpace]="5.65"
+        [usedSpace]="5.56"
         [totalSpace]="10" />
     </div>
     <!--  -->
@@ -57,15 +62,19 @@ import { ProgressCircleBarComponent } from './components/progress-circle-bar.com
 })
 export class DashboardPageComponent implements OnInit, OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
+  private _statsEndpointsService = inject(StatsEndpointsService);
 
   private _getMeSubscription: Subscription | null = null;
+  private _getUserStats: Subscription | null = null;
 
   public aboutMeUserInfo: IUserResponse | null = null;
+  public userStatsInfo: IUserStatsResponse | null = null;
 
   public ngOnInit(): void {
     this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
         this.aboutMeUserInfo = response;
+        this.getUserStats(this.aboutMeUserInfo.id);
       },
       error: () => {
         this.aboutMeUserInfo = null;
@@ -73,9 +82,25 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     });
   }
 
+  public getUserStats(userId: number): void {
+    this._getUserStats = this._statsEndpointsService
+      .getUserStats(userId)
+      .subscribe({
+        next: (response: IUserStatsResponse) => {
+          this.userStatsInfo = response;
+        },
+        error: () => {
+          this.userStatsInfo = null;
+        },
+      });
+  }
+
   public ngOnDestroy(): void {
     if (this._getMeSubscription) {
       this._getMeSubscription.unsubscribe();
+    }
+    if (this._getUserStats) {
+      this._getUserStats.unsubscribe();
     }
   }
 }
