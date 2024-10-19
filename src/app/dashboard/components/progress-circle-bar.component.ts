@@ -28,7 +28,12 @@ import { Component, Input, OnChanges } from '@angular/core';
       </svg>
       <div
         class="flex flex-col items-center justify-center absolute text-2xl font-bold text-mainCreme">
-        <span>{{ usedSpace.toPrecision(2) }}/{{ totalSpace }} MB</span>
+        <span
+          >{{ usedSpace?.toPrecision(2) }}/{{
+            totalSpace.toPrecision(3)
+          }}
+          MB</span
+        >
         <span class="text-center text-wrap">used of your</span>
         <span class="text-center text-wrap">disk space</span>
       </div>
@@ -36,7 +41,7 @@ import { Component, Input, OnChanges } from '@angular/core';
   `,
 })
 export class ProgressCircleBarComponent implements OnChanges {
-  @Input({ required: true }) public usedSpace!: number;
+  @Input({ required: true }) public usedSpace!: number | undefined;
   @Input({ required: true }) public totalSpace!: number;
 
   public radius = 28;
@@ -44,18 +49,22 @@ export class ProgressCircleBarComponent implements OnChanges {
   public fillAmount = 0;
 
   public ngOnChanges(): void {
-    this.usedSpace = Math.min(this.usedSpace, this.totalSpace);
-    this.fillAmount = (this.circumference * this.usedSpace) / this.totalSpace;
+    if (this.usedSpace) {
+      this.usedSpace = Math.min(this.usedSpace, this.totalSpace);
+      this.fillAmount = (this.circumference * this.usedSpace) / this.totalSpace;
+    }
   }
 
   public getStrokeColor(): string {
-    const percentage = this.usedSpace / this.totalSpace;
-    console.log(`Percentage: ${percentage}`);
+    if (this.usedSpace) {
+      const percentage = this.usedSpace / this.totalSpace;
 
-    const r = Math.round(255 * percentage);
-    const g = Math.round(255 * (1 - percentage));
-    const b = 0;
+      const r = Math.round(255 * percentage);
+      const g = Math.round(255 * (1 - percentage));
+      const b = 0;
 
-    return `rgb(${r}, ${g}, ${b})`;
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+    return `rgb(0, 255, 0)`;
   }
 }

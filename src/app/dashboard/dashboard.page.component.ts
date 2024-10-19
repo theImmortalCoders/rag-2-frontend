@@ -43,11 +43,10 @@ import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
           </h2>
         </div>
       </div>
-      <!-- [usedSpace]="userStatsInfo!.totalStorageMb" -->
       <app-progress-circle-bar
         class="flex items-center justify-center w-1/4 pr-32"
-        [usedSpace]="5.56"
-        [totalSpace]="10" />
+        [usedSpace]="userStatsInfo?.totalStorageMb"
+        [totalSpace]="10.0" />
     </div>
     <!--  -->
     <div class="flex flex-col px-10">
