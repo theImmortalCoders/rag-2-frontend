@@ -102,6 +102,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   public ngAfterViewInit(): void {
     feather.replace();
   }
+
   public toggleGameList(): void {
     this.isGameListActive = !this.isGameListActive;
   }
