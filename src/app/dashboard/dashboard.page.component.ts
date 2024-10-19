@@ -15,8 +15,8 @@ import {
 import { Subscription } from 'rxjs';
 import { ProgressCircleBarComponent } from './components/progress-circle-bar.component';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
-import { UserInfoComponent } from './components/user-info.component';
-import { ModalComponent } from './components/modal.component';
+import { UserInfoComponent } from './components/sections/user-info.component';
+import { UserAccountSettingsComponent } from './components/sections/user-account-settings.component';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -25,42 +25,16 @@ import { ModalComponent } from './components/modal.component';
     CommonModule,
     ProgressCircleBarComponent,
     UserInfoComponent,
-    ModalComponent,
+    UserAccountSettingsComponent,
   ],
   template: `<div
-    class="flex flex-col space-y-10 font-mono w-full bg-mainGray pt-6 xl:pt-14">
+    class="flex flex-col space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
     <app-user-info
       [aboutMeUserInfo]="aboutMeUserInfo"
       [userStatsInfo]="userStatsInfo"
       class="flex flex-row justify-stretch w-full" />
     <!--  -->
-    <div class="flex flex-col px-10">
-      <h1 class="text-4xl font-bold text-mainOrange">User account settings</h1>
-      <hr class="w-2/5 border-2 border-mainOrange mb-4" />
-      <div class="flex flex-row justify-around space-x-8">
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Change your password</span>
-          <i
-            data-feather="edit"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Delete your account</span>
-          <i
-            data-feather="trash-2"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-        <!-- <app-modal>
-          <h2 class="text-xl font-bold">Hello, I'm a modal!</h2>
-          <p>You can put <strong>any HTML content</strong> here!</p>
-          <button class="bg-blue-500 text-white p-2 rounded">Close</button>
-        </app-modal> -->
-      </div>
-    </div>
+    <app-user-account-settings class="flex flex-col px-10" />
     <!--  -->
     <div class="flex flex-col px-10">
       <h1 class="text-4xl font-bold text-mainOrange">Game handling options</h1>
@@ -88,6 +62,47 @@ import { ModalComponent } from './components/modal.component';
           <span>Remove existing game</span>
           <i
             data-feather="trash-2"
+            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
+        </button>
+      </div>
+    </div>
+    <!--  -->
+    <div class="flex flex-col px-10">
+      <h1 class="text-4xl font-bold text-mainOrange">
+        Administration settings
+      </h1>
+      <hr class="w-2/5 border-2 border-mainOrange mb-4" />
+      <div class="flex flex-row justify-around space-x-8">
+        <button
+          type="button"
+          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+          <span>Ban some user</span>
+          <i
+            data-feather="slash"
+            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
+        </button>
+        <button
+          type="button"
+          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+          <span>Change role of some user</span>
+          <i
+            data-feather="edit"
+            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
+        </button>
+        <button
+          type="button"
+          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+          <span>Get details of some user</span>
+          <i
+            data-feather="eye"
+            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
+        </button>
+        <button
+          type="button"
+          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+          <span>Get students lists</span>
+          <i
+            data-feather="list"
             class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
         </button>
       </div>
