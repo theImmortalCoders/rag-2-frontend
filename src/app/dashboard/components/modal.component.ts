@@ -8,7 +8,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
       class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
       (click)="onBackdropClick()">
       <button
-        class="flex flex-col bg-lightGray border-2 border-mainOrange rounded-lg p-6 w-2/3 h-2/3 shadow-lg relative"
+        class="flex flex-col bg-lightGray border-2 border-mainOrange rounded-lg p-6 w-2/3 h-fit shadow-lg relative"
         role="dialog"
         aria-modal="true"
         (click)="$event.stopPropagation()">

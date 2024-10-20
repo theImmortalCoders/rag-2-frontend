@@ -167,15 +167,17 @@ export class GameHandlingOptionsComponent implements OnDestroy {
     this.modalButtonText = 'Add new game';
     this.modalButtonFunction = this.addNewGameFunction;
     this.errorMessage = null;
+    this.gameHandlingForm.reset();
   }
 
   public editGameModal(): void {
     this.modalVisibility = 'editGame';
     this.modalTitle = 'Editing existing game';
-    this.modalButtonText = 'Edit game';
+    this.modalButtonText = 'Edit game name';
     this.modalButtonFunction = this.editGameFunction;
     this.errorMessage = null;
     this.getGameList();
+    this.gameHandlingForm.reset();
   }
 
   public removeGameModal(): void {
@@ -245,7 +247,24 @@ export class GameHandlingOptionsComponent implements OnDestroy {
   }
 
   public removeGameFunction(): void {
-    //
+    this.errorMessage = null;
+    if (this.selectedGameId !== 0) {
+      this._removeGameSubscription = this._gameEndpointsService
+        .deleteGame(this.selectedGameId)
+        .subscribe({
+          next: () => {
+            this._notificationService.addNotification(
+              'Existing game name has been deleted!',
+              3000
+            );
+            this.errorMessage = null;
+            this.modalVisibility = null;
+          },
+          error: (error: string) => {
+            this.errorMessage = error;
+          },
+        });
+    }
   }
 
   public ngOnDestroy(): void {
