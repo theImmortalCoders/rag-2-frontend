@@ -16,7 +16,7 @@ import { ProgressCircleBarComponent } from '../progress-circle-bar.component';
         <h1 class="text-4xl font-bold text-mainOrange">
           Hello, {{ aboutMeUserInfo?.name }}!
         </h1>
-        <hr class="w-2/5 border-2 border-mainOrange mb-4" />
+        <hr class="w-5/6 border-2 border-mainOrange mb-4" />
         <div class="flex flex-col pl-6">
           <h2 class="text-xl text-mainOrange">
             Logged in as:

@@ -17,6 +17,7 @@ import { ProgressCircleBarComponent } from './components/progress-circle-bar.com
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { UserInfoComponent } from './components/sections/user-info.component';
 import { UserAccountSettingsComponent } from './components/sections/user-account-settings.component';
+import { GameHandlingOptionsComponent } from './components/sections/game-handling-options.component';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -26,6 +27,7 @@ import { UserAccountSettingsComponent } from './components/sections/user-account
     ProgressCircleBarComponent,
     UserInfoComponent,
     UserAccountSettingsComponent,
+    GameHandlingOptionsComponent,
   ],
   template: `<div
     class="flex flex-col space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
@@ -33,45 +35,13 @@ import { UserAccountSettingsComponent } from './components/sections/user-account
       [aboutMeUserInfo]="aboutMeUserInfo"
       [userStatsInfo]="userStatsInfo"
       class="flex flex-row justify-stretch w-full" />
-    <!--  -->
     <app-user-account-settings class="flex flex-col px-10" />
-    <!--  -->
-    <div class="flex flex-col px-10">
-      <h1 class="text-4xl font-bold text-mainOrange">Game handling options</h1>
-      <hr class="w-2/5 border-2 border-mainOrange mb-4" />
-      <div class="flex flex-row justify-around space-x-8">
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Add new game to system</span>
-          <i
-            data-feather="plus-square"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Edit existing game</span>
-          <i
-            data-feather="edit"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Remove existing game</span>
-          <i
-            data-feather="trash-2"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-      </div>
-    </div>
-    <!--  -->
+    <app-game-handling-options class="flex flex-col px-10" />
     <div class="flex flex-col px-10">
       <h1 class="text-4xl font-bold text-mainOrange">
         Administration settings
       </h1>
-      <hr class="w-2/5 border-2 border-mainOrange mb-4" />
+      <hr class="w-5/6 border-2 border-mainOrange mb-4" />
       <div class="flex flex-row justify-around space-x-8">
         <button
           type="button"
