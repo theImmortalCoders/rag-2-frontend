@@ -18,6 +18,7 @@ import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { UserInfoComponent } from './components/sections/user-info.component';
 import { UserAccountSettingsComponent } from './components/sections/user-account-settings.component';
 import { GameHandlingOptionsComponent } from './components/sections/game-handling-options.component';
+import { AdminSettingsComponent } from './components/sections/admin-settings.component';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -28,6 +29,7 @@ import { GameHandlingOptionsComponent } from './components/sections/game-handlin
     UserInfoComponent,
     UserAccountSettingsComponent,
     GameHandlingOptionsComponent,
+    AdminSettingsComponent,
   ],
   template: `<div
     class="flex flex-col space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
@@ -37,46 +39,7 @@ import { GameHandlingOptionsComponent } from './components/sections/game-handlin
       class="flex flex-row justify-stretch w-full" />
     <app-user-account-settings class="flex flex-col px-10" />
     <app-game-handling-options class="flex flex-col px-10" />
-    <div class="flex flex-col px-10">
-      <h1 class="text-4xl font-bold text-mainOrange">
-        Administration settings
-      </h1>
-      <hr class="w-5/6 border-2 border-mainOrange mb-4" />
-      <div class="flex flex-row justify-around space-x-8">
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Ban some user</span>
-          <i
-            data-feather="slash"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Change role of some user</span>
-          <i
-            data-feather="edit"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Get details of some user</span>
-          <i
-            data-feather="eye"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-        <button
-          type="button"
-          class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-          <span>Get students lists</span>
-          <i
-            data-feather="list"
-            class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
-        </button>
-      </div>
-    </div>
+    <app-admin-settings class="flex flex-col px-10" />
   </div>`,
 })
 export class DashboardPageComponent
