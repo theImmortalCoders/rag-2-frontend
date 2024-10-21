@@ -12,7 +12,7 @@ import { ModalComponent } from '../modal.component';
       <button
         type="button"
         class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-        <span>Ban some user</span>
+        <span>Ban/unban some user</span>
         <i
           data-feather="slash"
           class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
@@ -73,7 +73,7 @@ export class AdminSettingsComponent {
   public errorMessage: string | null = null;
 
   public modalVisibility:
-    | 'banUser'
+    | 'banUnbanUser'
     | 'changeUserRole'
     | 'getUserDetails'
     | 'getStudentsList'
