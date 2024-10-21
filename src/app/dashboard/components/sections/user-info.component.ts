@@ -33,8 +33,9 @@ import { ProgressCircleBarComponent } from '../progress-circle-bar.component';
           <h2 class="text-xl text-mainOrange">
             Your study cycle years:
             <span class="text-mainCreme">
-              {{ aboutMeUserInfo?.studyCycleYearA }} /
-              {{ aboutMeUserInfo?.studyCycleYearB }}
+              {{ aboutMeUserInfo?.studyCycleYearA }}/{{
+                aboutMeUserInfo?.studyCycleYearB
+              }}
             </span>
           </h2>
           <h2 class="text-xl text-mainOrange">
@@ -52,13 +53,13 @@ import { ProgressCircleBarComponent } from '../progress-circle-bar.component';
           <h2 class="text-xl text-mainOrange">
             Your first game was on:
             <span class="text-mainCreme">
-              {{ userStatsInfo?.firstPlayed }}
+              {{ userStatsInfo?.firstPlayed | date: 'dd/MM/yyyy, HH:mm' }}
             </span>
           </h2>
           <h2 class="text-xl text-mainOrange">
             Your last game was on:
             <span class="text-mainCreme">
-              {{ userStatsInfo?.lastPlayed }}
+              {{ userStatsInfo?.lastPlayed | date: 'dd/MM/yyyy, HH:mm' }}
             </span>
           </h2>
         </div>
