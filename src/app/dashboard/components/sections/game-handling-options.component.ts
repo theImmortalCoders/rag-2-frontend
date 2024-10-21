@@ -17,7 +17,7 @@ import {
   imports: [ModalComponent, ReactiveFormsModule],
   template: `
     <h1 class="text-4xl font-bold text-mainOrange">Game handling options</h1>
-    <hr class="w-5/6 border-2 border-mainOrange mb-4" />
+    <hr class="w-full border-2 border-mainOrange mb-4" />
     <div class="flex flex-row justify-around space-x-8">
       <button
         type="button"

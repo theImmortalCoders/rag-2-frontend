@@ -37,9 +37,11 @@ import { AdminSettingsComponent } from './components/sections/admin-settings.com
       [aboutMeUserInfo]="aboutMeUserInfo"
       [userStatsInfo]="userStatsInfo"
       class="flex flex-row justify-stretch w-full" />
-    <app-user-account-settings class="flex flex-col px-10" />
-    <app-game-handling-options class="flex flex-col px-10" />
-    <app-admin-settings class="flex flex-col px-10" />
+    <div class="flex flex-row flex-wrap justify-between gap-y-12">
+      <app-user-account-settings class="flex flex-col px-10" />
+      <app-game-handling-options class="flex flex-col px-10" />
+      <app-admin-settings class="flex flex-col px-10" />
+    </div>
   </div>`,
 })
 export class DashboardPageComponent
