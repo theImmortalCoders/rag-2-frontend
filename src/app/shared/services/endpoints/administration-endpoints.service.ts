@@ -80,14 +80,10 @@ export class AdministrationEndpointsService {
       );
   }
 
-  public getStudents(
-    studyCycleYearA: number,
-    studyCycleYearB: number
-  ): Observable<IUserResponse[]> {
+  public getUsers(): Observable<IUserResponse[]> {
     return this._httpClient
       .get<IUserResponse[]>(
-        environment.backendApiUrl +
-          `/api/Administration/students?studyCycleYearA=${studyCycleYearA}&studyCycleYearB=${studyCycleYearB}`,
+        environment.backendApiUrl + `/api/Administration/users`,
         {
           responseType: 'json',
           headers: getAuthHeaders(),
@@ -96,7 +92,7 @@ export class AdministrationEndpointsService {
       .pipe(
         tap({
           next: () => {
-            console.log('Students data retrieved successfully');
+            console.log('Users data retrieved successfully');
           },
         }),
         catchError((error: HttpErrorResponse) => {
