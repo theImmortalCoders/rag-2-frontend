@@ -49,7 +49,7 @@ import {
     </div>
     @if (modalVisibility !== null) {
       <app-modal (closeModal)="hideModal()">
-        <div class="flex flex-col items-start font-mono">
+        <div class="flex flex-col items-start w-full font-mono">
           <h2 class="text-3xl text-mainCreme font-bold mb-10">
             {{ modalTitle }}
           </h2>
