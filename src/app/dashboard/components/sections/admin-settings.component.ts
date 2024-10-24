@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Component, inject } from '@angular/core';
 import { ModalComponent } from '../modal.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
@@ -62,6 +63,38 @@ import { IUserResponse } from 'app/shared/models/user.models';
               }
             </select>
           </div>
+          @if (modalVisibility === 'banUnbanUser' && selectedUserId !== 0) {
+            <div class="flex flex-row w-full justify-around pt-4">
+              <label
+                for="banUser"
+                class="custom-input-red w-1/4"
+                [class.opacity-70]="!isBanned"
+                [class.underline]="isBanned">
+                <span class="pr-3">BANNED</span>
+                <input
+                  type="radio"
+                  id="banUser"
+                  name="banStatus"
+                  value="true"
+                  [checked]="isBanned"
+                  (change)="changeBanStatus($event)" />
+              </label>
+              <label
+                for="unbanUser"
+                class="custom-input-green w-1/4"
+                [class.opacity-70]="isBanned"
+                [class.underline]="!isBanned">
+                <span class="pr-3">UNBANNED</span>
+                <input
+                  type="radio"
+                  id="unbanUser"
+                  name="banStatus"
+                  value="true"
+                  [checked]="!isBanned"
+                  (change)="changeBanStatus($event)" />
+              </label>
+            </div>
+          }
           @if (modalButtonText !== null) {
             <button
               class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-6 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
@@ -92,6 +125,8 @@ export class AdminSettingsComponent {
 
   public selectedUserId = 0;
 
+  public isBanned = false;
+
   public usersList: IUserResponse[] | null = null;
 
   public errorMessage: string | null = null;
@@ -111,6 +146,12 @@ export class AdminSettingsComponent {
     this.selectedUserId = parseInt(selectedId, 10);
   }
 
+  public changeBanStatus(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const isBanned = target?.id === 'banUser';
+    this.isBanned = isBanned;
+  }
+
   public getUsersList(): void {
     this._getUsersSubscription = this._adminEndpointsService
       .getUsers()
@@ -124,7 +165,7 @@ export class AdminSettingsComponent {
   public banUnbanUserModal(): void {
     this.modalVisibility = 'banUnbanUser';
     this.modalTitle = 'Changing ban status of user';
-    this.modalButtonText = 'Change ban status';
+    this.modalButtonText = 'Set ban status';
     this.modalButtonFunction = this.banUnbanUserFunction;
     this.errorMessage = null;
     this.getUsersList();

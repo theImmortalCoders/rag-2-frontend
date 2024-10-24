@@ -67,6 +67,14 @@ module.exports = {
           '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-700 focus:outline-none focus:border-mainOrange':
             {},
         },
+        '.custom-input-green': {
+          '@apply border-[1px] border-green-700 rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-green-700 transition-all ease-in-out duration-700 focus:outline-none focus:border-mainOrange':
+            {},
+        },
+        '.custom-input-red': {
+          '@apply border-[1px] border-red-700 rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-red-700 transition-all ease-in-out duration-700 focus:outline-none focus:border-mainOrange':
+            {},
+        },
         '.side-menu-right-button': {
           '@apply flex flex-col shadow-sideMenuShadow z-20 absolute transition-all ease-in-out duration-700 p-2 items-center justify-center bg-lightGray font-mono font-bold border-r-2 border-mainOrange hover:border-green-500':
             {},
