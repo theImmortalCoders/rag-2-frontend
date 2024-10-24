@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ModalComponent } from '../modal.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
@@ -117,7 +117,7 @@ import { IUserResponse } from 'app/shared/models/user.models';
     }
   `,
 })
-export class AdminSettingsComponent {
+export class AdminSettingsComponent implements OnDestroy {
   private _adminEndpointsService = inject(AdministrationEndpointsService);
   private _notificationService = inject(NotificationService);
 
@@ -144,6 +144,13 @@ export class AdminSettingsComponent {
     const target = event.target as HTMLSelectElement;
     const selectedId = target?.value;
     this.selectedUserId = parseInt(selectedId, 10);
+    if (this.usersList) {
+      this.usersList.map(user => {
+        if (user.id === this.selectedUserId) {
+          this.isBanned = user.banned;
+        }
+      });
+    }
   }
 
   public changeBanStatus(event: Event): void {
@@ -189,7 +196,7 @@ export class AdminSettingsComponent {
   }
 
   public banUnbanUserFunction(): void {
-    //
+    console.log(this.selectedUserId, this.isBanned);
   }
 
   public changeUserRoleFunction(): void {
@@ -198,5 +205,12 @@ export class AdminSettingsComponent {
 
   public hideModal(): void {
     this.modalVisibility = null;
+    this.selectedUserId = 0;
+  }
+
+  public ngOnDestroy(): void {
+    if (this._getUsersSubscription) {
+      this._getUsersSubscription.unsubscribe();
+    }
   }
 }
