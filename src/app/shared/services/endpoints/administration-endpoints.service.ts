@@ -40,7 +40,7 @@ export class AdministrationEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl +
-          `/api/Administration/${userId}/role=${TRole[role]}`,
+          `/api/Administration/${userId}/role?role=${TRole[role]}`,
         {},
         {
           headers: getAuthHeaders(),
