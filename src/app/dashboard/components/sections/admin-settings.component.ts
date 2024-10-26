@@ -122,6 +122,7 @@ export class AdminSettingsComponent implements OnDestroy {
   private _notificationService = inject(NotificationService);
 
   private _getUsersSubscription: Subscription | null = null;
+  private _changeBanStatusSubscription: Subscription | null = null;
 
   public selectedUserId = 0;
 
@@ -196,7 +197,24 @@ export class AdminSettingsComponent implements OnDestroy {
   }
 
   public banUnbanUserFunction(): void {
-    console.log(this.selectedUserId, this.isBanned);
+    this.errorMessage = null;
+    if (this.selectedUserId !== 0) {
+      this._changeBanStatusSubscription = this._adminEndpointsService
+        .banStatus(this.selectedUserId, this.isBanned)
+        .subscribe({
+          next: () => {
+            this._notificationService.addNotification(
+              `User has been ${this.isBanned ? 'banned' : 'unbanned'}!`,
+              3000
+            );
+            this.errorMessage = null;
+            this.modalVisibility = null;
+          },
+          error: (error: string) => {
+            this.errorMessage = error;
+          },
+        });
+    }
   }
 
   public changeUserRoleFunction(): void {
