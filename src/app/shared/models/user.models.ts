@@ -20,6 +20,7 @@ export interface IUserResponse {
   name: string;
   studyCycleYearA: number;
   studyCycleYearB: number;
+  lastPlayed: string;
   banned: boolean;
 }
 
