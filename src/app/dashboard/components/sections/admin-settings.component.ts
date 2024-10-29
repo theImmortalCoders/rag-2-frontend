@@ -4,13 +4,18 @@ import { ModalComponent } from '../modal.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
-import { IUserResponse } from 'app/shared/models/user.models';
+import {
+  IUserResponse,
+  IUserStatsResponse,
+} from 'app/shared/models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
+import { CommonModule } from '@angular/common';
+import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 
 @Component({
   selector: 'app-admin-settings',
   standalone: true,
-  imports: [ModalComponent],
+  imports: [ModalComponent, CommonModule],
   template: `
     <h1 class="text-4xl font-bold text-mainOrange">Administration settings</h1>
     <hr class="w-full border-2 border-mainOrange mb-4" />
@@ -95,8 +100,7 @@ import { TRole } from 'app/shared/models/role.enum';
                   (change)="changeBanStatus($event)" />
               </label>
             </div>
-          }
-          @if (
+          } @else if (
             modalVisibility === 'changeUserRole' && selectedUserData !== null
           ) {
             <div class="flex flex-row pt-4">
@@ -113,6 +117,31 @@ import { TRole } from 'app/shared/models/role.enum';
                 <option value="Admin">Admin</option>
                 <option value="Special">Special</option>
               </select>
+            </div>
+          } @else if (
+            modalVisibility === 'getUserDetails' &&
+            selectedUserData !== null &&
+            selectedUserStats !== null
+          ) {
+            <div class="flex flex-col pt-4 items-start">
+              <span>{{ selectedUserData.name }}</span>
+              <span>{{ selectedUserData.email }}</span>
+              <span>{{ selectedUserData.role }}</span>
+              <span>
+                {{ selectedUserData.studyCycleYearA }}/{{
+                  selectedUserData.studyCycleYearB
+                }}
+              </span>
+              <span>{{
+                selectedUserStats.firstPlayed | date: 'dd/MM/yyyy, HH:mm'
+              }}</span>
+              <span>{{
+                selectedUserData.lastPlayed | date: 'dd/MM/yyyy, HH:mm'
+              }}</span>
+              <span>{{ selectedUserData.banned }}</span>
+              <span>{{ selectedUserStats.games }}</span>
+              <span>{{ selectedUserStats.plays }}</span>
+              <span>{{ selectedUserStats.totalStorageMb }}</span>
             </div>
           }
           @if (modalButtonText !== null) {
@@ -139,14 +168,17 @@ import { TRole } from 'app/shared/models/role.enum';
 })
 export class AdminSettingsComponent implements OnDestroy {
   private _adminEndpointsService = inject(AdministrationEndpointsService);
+  private _statsEndpointsService = inject(StatsEndpointsService);
   private _notificationService = inject(NotificationService);
 
   private _getUsersSubscription: Subscription | null = null;
+  private _getUserStatsSubscription: Subscription | null = null;
   private _changeBanStatusSubscription: Subscription | null = null;
   private _changeRoleSubscription: Subscription | null = null;
 
   public usersList: IUserResponse[] | null = null;
   public selectedUserData: IUserResponse | null = null;
+  public selectedUserStats: IUserStatsResponse | null = null;
   public isBanned = false;
   public newUserRole: TRole = TRole.Student;
   public errorMessage: string | null = null;
@@ -170,6 +202,24 @@ export class AdminSettingsComponent implements OnDestroy {
           this.selectedUserData = user;
         }
       });
+    }
+    if (
+      this.modalVisibility === 'getUserDetails' &&
+      this.selectedUserData &&
+      selectedId !== 0
+    ) {
+      this._getUserStatsSubscription = this._statsEndpointsService
+        .getUserStats(this.selectedUserData.id)
+        .subscribe({
+          next: (response: IUserStatsResponse) => {
+            this.selectedUserStats = response;
+          },
+          error: () => {
+            this.selectedUserStats = null;
+          },
+        });
+    } else {
+      this.selectedUserStats = null;
     }
     if (this.selectedUserData === null) {
       this.isBanned = false;
@@ -284,6 +334,9 @@ export class AdminSettingsComponent implements OnDestroy {
     }
     if (this._changeRoleSubscription) {
       this._changeRoleSubscription.unsubscribe();
+    }
+    if (this._getUserStatsSubscription) {
+      this._getUserStatsSubscription.unsubscribe();
     }
   }
 }
