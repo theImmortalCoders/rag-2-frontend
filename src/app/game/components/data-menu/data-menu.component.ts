@@ -147,7 +147,7 @@ export class DataMenuComponent implements OnInit {
       JSON.stringify(newData) !== JSON.stringify(this.dataToPersist) &&
       Date.now() - this._lastSavedTime > this.dataSavingIntervalLimit
     ) {
-      newData['timestamp'] = new Date().toISOString();
+      newData['timestamp'] = new Date().toLocaleString('pl-PL');
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);
       this._lastSavedTime = Date.now();
