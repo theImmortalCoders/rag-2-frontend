@@ -80,8 +80,11 @@ export class DataMenuComponent implements OnInit {
       this.dataToPersist = JSON.parse(
         JSON.stringify(this.dataPossibleToPersist)
       );
-      this.updateDataToPersistFromURL();
+
+      this._urlParamService.setQueryParam('state', 'true');
       this._urlParamService.setQueryParam('outputSpec', 'false');
+
+      this.updateDataToPersistFromURL();
     }, 50);
   }
 
