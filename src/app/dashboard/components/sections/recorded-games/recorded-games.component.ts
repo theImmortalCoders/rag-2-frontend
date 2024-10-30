@@ -13,6 +13,7 @@ import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { NotificationService } from 'app/shared/services/notification.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-recorded-games',
@@ -107,6 +108,7 @@ export class RecordedGamesComponent
   }
 
   public getRecordedGames(): void {
+    this.recordedGamesData = [];
     for (const game of this.avalaibleGamesList) {
       this._getRecordedGamesSubscription = this._gameRecordEndpointsService
         .getAllRecordedGames(game.id)
@@ -128,8 +130,8 @@ export class RecordedGamesComponent
       .subscribe({
         next: () => {
           this._notificationService.addNotification(
-            `The game record download has started`,
-            3000
+            `The game record file is downloading`,
+            4000
           );
           this.errorMessage = null;
         },
@@ -140,7 +142,21 @@ export class RecordedGamesComponent
   }
 
   public deleteGameRecord(recordedGameId: number): void {
-    //
+    this._gameRecordEndpointsService
+      .deleteGameRecording(recordedGameId)
+      .subscribe({
+        next: () => {
+          this._notificationService.addNotification(
+            `The game record has been removed`,
+            3000
+          );
+          this.errorMessage = null;
+          this.getRecordedGames();
+        },
+        error: (error: string) => {
+          this.errorMessage = error;
+        },
+      });
   }
 
   public ngOnDestroy(): void {

@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
@@ -8,6 +12,7 @@ import {
   IRecordedGameResponse,
 } from 'app/shared/models/recorded-game.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root',
@@ -86,19 +91,40 @@ export class GameRecordEndpointsService {
 
   public downloadSpecificRecordedGame(
     recordedGameId: number
-  ): Observable<void> {
+  ): Observable<HttpResponse<Blob>> {
     return this._httpClient
-      .get<void>(
+      .get<Blob>(
         environment.backendApiUrl + `/api/GameRecord/${recordedGameId}`,
         {
           headers: getAuthHeaders(),
-          responseType: 'json',
+          responseType: 'blob' as 'json',
+          observe: 'response',
         }
       )
       .pipe(
         tap({
-          next: () => {
-            console.log('Recorded game downloaded successfully');
+          next: (response: HttpResponse<Blob>) => {
+            if (response.body) {
+              const contentDisposition = response.headers.get(
+                'content-disposition'
+              );
+              const fileName = `game_record_${recordedGameId}.json`;
+
+              console.log(response, contentDisposition);
+              if (contentDisposition) {
+                // const fileNameMatch = contentDisposition.match(
+                //   /filename[^;=\n]*=(['"]?)([^'"\n]*)\1/
+                // );
+                // // eslint-disable-next-line max-depth
+                // if (fileNameMatch && fileNameMatch[2]) {
+                //   fileName = fileNameMatch[2];
+                // }
+              }
+              saveAs(response.body, fileName);
+              console.log('Recorded game downloaded successfully');
+            } else {
+              console.error('No file data in response');
+            }
           },
         }),
         catchError((error: HttpErrorResponse) => {
