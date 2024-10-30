@@ -13,13 +13,13 @@ import {
   IUserStatsResponse,
 } from 'app/shared/models/user.models';
 import { Subscription } from 'rxjs';
-import { ProgressCircleBarComponent } from './components/progress-circle-bar.component';
+import { ProgressCircleBarComponent } from './components/sections/user-info/progress-circle-bar.component';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
-import { UserInfoComponent } from './components/sections/user-info.component';
-import { UserAccountSettingsComponent } from './components/sections/user-account-settings.component';
-import { GameHandlingOptionsComponent } from './components/sections/game-handling-options.component';
-import { AdminSettingsComponent } from './components/sections/admin-settings.component';
-import { RecordedGamesComponent } from './components/sections/recorded-games.component';
+import { UserInfoComponent } from './components/sections/user-info/user-info.component';
+import { UserAccountSettingsComponent } from './components/sections/user-account-settings/user-account-settings.component';
+import { GameHandlingOptionsComponent } from './components/sections/game-handling-options/game-handling-options.component';
+import { AdminSettingsComponent } from './components/sections/admin-settings/admin-settings.component';
+import { RecordedGamesComponent } from './components/sections/recorded-games/recorded-games.component';
 
 @Component({
   selector: 'app-dashboard-page',

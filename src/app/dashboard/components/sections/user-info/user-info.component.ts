@@ -4,7 +4,7 @@ import {
   IUserResponse,
   IUserStatsResponse,
 } from 'app/shared/models/user.models';
-import { ProgressCircleBarComponent } from '../progress-circle-bar.component';
+import { ProgressCircleBarComponent } from './progress-circle-bar.component';
 
 @Component({
   selector: 'app-user-info',

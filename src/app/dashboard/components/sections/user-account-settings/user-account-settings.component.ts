@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { Component, inject, OnDestroy } from '@angular/core';
-import { ModalComponent } from '../modal.component';
+import { ModalComponent } from '../../shared/modal.component';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -213,7 +213,6 @@ export class UserAccountSettingsComponent implements OnDestroy {
     if (this._changePasswordSubscribtion) {
       this._changePasswordSubscribtion.unsubscribe();
     }
-
     if (this._deleteAccountSubscribtion) {
       this._deleteAccountSubscribtion.unsubscribe();
     }

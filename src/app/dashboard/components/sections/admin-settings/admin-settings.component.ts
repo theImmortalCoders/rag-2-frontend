@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { Component, inject, OnDestroy } from '@angular/core';
-import { ModalComponent } from '../modal.component';
+import { ModalComponent } from '../../shared/modal.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
