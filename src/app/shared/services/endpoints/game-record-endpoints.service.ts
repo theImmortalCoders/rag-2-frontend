@@ -105,12 +105,13 @@ export class GameRecordEndpointsService {
         tap({
           next: (response: HttpResponse<Blob>) => {
             if (response.body) {
+              console.log(response);
               const contentDisposition = response.headers.get(
                 'content-disposition'
               );
               const fileName = `game_record_${recordedGameId}.json`;
 
-              console.log(response, contentDisposition);
+              // console.log(response, contentDisposition);
               if (contentDisposition) {
                 // const fileNameMatch = contentDisposition.match(
                 //   /filename[^;=\n]*=(['"]?)([^'"\n]*)\1/
