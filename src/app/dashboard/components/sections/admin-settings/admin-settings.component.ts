@@ -11,11 +11,12 @@ import {
 import { TRole } from 'app/shared/models/role.enum';
 import { CommonModule } from '@angular/common';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
+import { SelectedUserInfoComponent } from './selected-user-info.component';
 
 @Component({
   selector: 'app-admin-settings',
   standalone: true,
-  imports: [ModalComponent, CommonModule],
+  imports: [ModalComponent, CommonModule, SelectedUserInfoComponent],
   template: `
     <h1 class="text-4xl font-bold text-mainOrange">Administration settings</h1>
     <hr class="w-full border-2 border-mainOrange mb-4" />
@@ -123,73 +124,10 @@ import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
             selectedUserData !== null &&
             selectedUserStats !== null
           ) {
-            <div class="flex flex-col pt-4 items-start">
-              <h2 class="text-xl text-mainCreme font-bold">User's info:</h2>
-              <h3 class="text-lg text-mainOrange">
-                Name:
-                <span class="text-mainCreme">
-                  {{ selectedUserData.name }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Email:
-                <span class="text-mainCreme">
-                  {{ selectedUserData.email }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Role:
-                <span class="text-mainCreme">
-                  {{ selectedUserData.role }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Study cycle years:
-                <span class="text-mainCreme">
-                  {{ selectedUserData.studyCycleYearA }}/{{
-                    selectedUserData.studyCycleYearB
-                  }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Ban status:
-                <span class="text-mainCreme">
-                  {{ selectedUserData.banned ? 'BANNED' : 'NOT BANNED' }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Types of games played:
-                <span class="text-mainCreme">
-                  {{ selectedUserStats.games }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Total plays in all games:
-                <span class="text-mainCreme">
-                  {{ selectedUserStats.plays }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Total disk space used:
-                <span class="text-mainCreme">
-                  {{ selectedUserStats.totalStorageMb.toPrecision(2) }}MB
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                First game was on:
-                <span class="text-mainCreme">
-                  {{
-                    selectedUserStats.firstPlayed | date: 'dd/MM/yyyy, HH:mm'
-                  }}
-                </span>
-              </h3>
-              <h3 class="text-lg text-mainOrange">
-                Last game was on:
-                <span class="text-mainCreme">
-                  {{ selectedUserStats.lastPlayed | date: 'dd/MM/yyyy, HH:mm' }}
-                </span>
-              </h3>
-            </div>
+            <app-selected-user-info
+              [selectedUserData]="selectedUserData"
+              [selectedUserStats]="selectedUserStats"
+              class="flex flex-col pt-4 items-start" />
           }
           @if (modalButtonText !== null) {
             <button
