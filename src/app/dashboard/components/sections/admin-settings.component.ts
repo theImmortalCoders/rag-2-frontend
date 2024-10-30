@@ -59,7 +59,7 @@ import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
               class="custom-input"
               value=""
               (change)="setSelectedUser($event)">
-              <option value="0">Choose one of the users</option>
+              <option value="0">Choose one user</option>
               @for (user of usersList; track user.id) {
                 <option [value]="user.id">
                   {{ user.name }}, {{ user.email }}
@@ -124,24 +124,71 @@ import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
             selectedUserStats !== null
           ) {
             <div class="flex flex-col pt-4 items-start">
-              <span>{{ selectedUserData.name }}</span>
-              <span>{{ selectedUserData.email }}</span>
-              <span>{{ selectedUserData.role }}</span>
-              <span>
-                {{ selectedUserData.studyCycleYearA }}/{{
-                  selectedUserData.studyCycleYearB
-                }}
-              </span>
-              <span>{{
-                selectedUserStats.firstPlayed | date: 'dd/MM/yyyy, HH:mm'
-              }}</span>
-              <span>{{
-                selectedUserData.lastPlayed | date: 'dd/MM/yyyy, HH:mm'
-              }}</span>
-              <span>{{ selectedUserData.banned }}</span>
-              <span>{{ selectedUserStats.games }}</span>
-              <span>{{ selectedUserStats.plays }}</span>
-              <span>{{ selectedUserStats.totalStorageMb }}</span>
+              <h2 class="text-xl text-mainCreme font-bold">User's info:</h2>
+              <h3 class="text-lg text-mainOrange">
+                Name:
+                <span class="text-mainCreme">
+                  {{ selectedUserData.name }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Email:
+                <span class="text-mainCreme">
+                  {{ selectedUserData.email }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Role:
+                <span class="text-mainCreme">
+                  {{ selectedUserData.role }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Study cycle years:
+                <span class="text-mainCreme">
+                  {{ selectedUserData.studyCycleYearA }}/{{
+                    selectedUserData.studyCycleYearB
+                  }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Ban status:
+                <span class="text-mainCreme">
+                  {{ selectedUserData.banned ? 'BANNED' : 'NOT BANNED' }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Types of games played:
+                <span class="text-mainCreme">
+                  {{ selectedUserStats.games }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Total plays in all games:
+                <span class="text-mainCreme">
+                  {{ selectedUserStats.plays }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Total disk space used:
+                <span class="text-mainCreme">
+                  {{ selectedUserStats.totalStorageMb.toPrecision(2) }}MB
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                First game was on:
+                <span class="text-mainCreme">
+                  {{
+                    selectedUserStats.firstPlayed | date: 'dd/MM/yyyy, HH:mm'
+                  }}
+                </span>
+              </h3>
+              <h3 class="text-lg text-mainOrange">
+                Last game was on:
+                <span class="text-mainCreme">
+                  {{ selectedUserStats.lastPlayed | date: 'dd/MM/yyyy, HH:mm' }}
+                </span>
+              </h3>
             </div>
           }
           @if (modalButtonText !== null) {
