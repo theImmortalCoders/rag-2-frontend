@@ -13,15 +13,16 @@ import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { NotificationService } from 'app/shared/services/notification.service';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-recorded-games',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <h1 class="text-4xl font-bold text-mainOrange">User recorded games</h1>
-    <hr class="w-full border-2 border-mainOrange mb-4" />
+    <h1 class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange">
+      User recorded games
+    </h1>
+    <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
       class="flex flex-col justify-around space-y-0 border-mainOrange border-2">
       <div
