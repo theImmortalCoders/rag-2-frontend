@@ -56,10 +56,7 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
             {{ modalTitle }}
           </h2>
           <div class="flex flex-col space-y-4 w-full">
-            <select
-              class="custom-input"
-              value=""
-              (change)="setSelectedUser($event)">
+            <select class="custom-input" (change)="setSelectedUser($event)">
               <option value="0">Choose one user</option>
               @for (user of usersList; track user.id) {
                 <option [value]="user.id">
