@@ -42,7 +42,9 @@ import { NotificationService } from 'app/shared/services/notification.service';
             $even ? 'bg-lightGray' : 'bg-darkGray'
           }}">
           <span class="flex justify-center w-[5%]">{{ $index + 1 }}.</span>
-          <span class="flex justify-center w-2/12">nazwa gry</span>
+          <span class="flex justify-center w-2/12 uppercase">{{
+            recordedGame.gameName
+          }}</span>
           <span class="flex justify-center w-3/12">{{
             recordedGame.started | date: 'dd/MM/yyyy, HH:mm'
           }}</span>
