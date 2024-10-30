@@ -34,7 +34,7 @@ import { RecordedGamesComponent } from './components/sections/recorded-games/rec
     RecordedGamesComponent,
   ],
   template: `<div
-    class="flex flex-col space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
+    class="flex flex-col space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
     <app-user-info
       [aboutMeUserInfo]="aboutMeUserInfo"
       [userStatsInfo]="userStatsInfo"

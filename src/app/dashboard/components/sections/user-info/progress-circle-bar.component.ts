@@ -5,7 +5,7 @@ import { Component, Input, OnChanges } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-    <div class="relative w-64 h-64 flex items-center justify-center">
+    <div class="relative size-48 sm:size-64 flex items-center justify-center">
       <svg class="w-full h-full" viewBox="0 0 64 64">
         <path
           class="text-lightGray"
@@ -27,7 +27,7 @@ import { Component, Input, OnChanges } from '@angular/core';
          a 28 28 0 1 0 0 -56" />
       </svg>
       <div
-        class="flex flex-col items-center justify-center absolute text-2xl font-bold text-mainCreme">
+        class="flex flex-col items-center justify-center absolute text-lg sm:text-2xl lg:text-xl xl:text-2xl font-bold text-mainCreme">
         <span
           >{{ usedSpace?.toPrecision(2) }}/{{
             totalSpace.toPrecision(3)
