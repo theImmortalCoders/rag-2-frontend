@@ -105,21 +105,19 @@ export class GameRecordEndpointsService {
         tap({
           next: (response: HttpResponse<Blob>) => {
             if (response.body) {
-              console.log(response);
               const contentDisposition = response.headers.get(
                 'content-disposition'
               );
-              const fileName = `game_record_${recordedGameId}.json`;
+              let fileName = `game_record_${recordedGameId}.json`;
 
-              // console.log(response, contentDisposition);
               if (contentDisposition) {
-                // const fileNameMatch = contentDisposition.match(
-                //   /filename[^;=\n]*=(['"]?)([^'"\n]*)\1/
-                // );
-                // // eslint-disable-next-line max-depth
-                // if (fileNameMatch && fileNameMatch[2]) {
-                //   fileName = fileNameMatch[2];
-                // }
+                const fileNameMatch = contentDisposition.match(
+                  /filename[^;=\n]*=(['"]?)([^'"\n]*)\1/
+                );
+                // eslint-disable-next-line max-depth
+                if (fileNameMatch && fileNameMatch[2]) {
+                  fileName = fileNameMatch[2];
+                }
               }
               saveAs(response.body, fileName);
               console.log('Recorded game downloaded successfully');
