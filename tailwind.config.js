@@ -92,7 +92,7 @@ module.exports = {
             {},
         },
         '.dashboard-icon': {
-          '@apply text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 sm:size-5':
+          '@apply text-mainOrange group-hover:text-mainGray transition-all ease-in-out min-w-fit size-4 sm:size-5':
             {},
         },
       });

@@ -16,7 +16,8 @@ import { NotificationService } from 'app/shared/services/notification.service';
   standalone: true,
   imports: [ModalComponent, ReactiveFormsModule],
   template: `
-    <h1 class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange">
+    <h1
+      class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
       User account settings
     </h1>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
