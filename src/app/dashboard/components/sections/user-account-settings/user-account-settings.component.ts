@@ -41,13 +41,14 @@ import { NotificationService } from 'app/shared/services/notification.service';
     @if (modalVisibility !== null) {
       <app-modal (closeModal)="hideModal()">
         <div class="flex flex-col items-start w-full font-mono">
-          <h2 class="text-3xl text-mainCreme font-bold mb-10">
+          <h2
+            class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
             {{ modalTitle }}
           </h2>
           @if (modalVisibility === 'changePassword') {
             <form
               [formGroup]="changePasswordForm"
-              class="flex flex-col space-y-4 w-full">
+              class="flex flex-col space-y-4 w-full text-sm sm:text-base">
               <div class="flex flex-col space-y-1">
                 <label
                   for="oldPassword"
@@ -78,22 +79,22 @@ import { NotificationService } from 'app/shared/services/notification.service';
               </div>
             </form>
           } @else if (modalVisibility === 'deleteAccount') {
-            <p class="mb-4">
+            <p class="mb-4 text-sm sm:text-base">
               You will lose all your data, progress, and saved games and will
               not be able to undo it.
             </p>
-            <p class="text-red-500">
+            <p class="text-red-500 text-sm sm:text-base">
               Are you sure about this action? It can't be undone later!
             </p>
           }
           <button
-            class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-6 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
+            class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
             (click)="modalButtonFunction()">
             {{ modalButtonText }}
           </button>
           <button
             (click)="hideModal()"
-            class="absolute top-2 right-4 text-5xl text-mainOrange hover:text-mainGray">
+            class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
             x
           </button>
           @if (

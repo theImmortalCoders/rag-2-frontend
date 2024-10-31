@@ -50,10 +50,11 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
     @if (modalVisibility !== null) {
       <app-modal (closeModal)="hideModal()">
         <div class="flex flex-col items-start w-full font-mono">
-          <h2 class="text-3xl text-mainCreme font-bold mb-10">
+          <h2
+            class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
             {{ modalTitle }}
           </h2>
-          <div class="flex flex-col space-y-4 w-full">
+          <div class="flex flex-col space-y-4 w-full text-sm sm:text-base">
             <select class="custom-input" (change)="setSelectedUser($event)">
               <option value="0">Choose one user</option>
               @for (user of usersList; track user.id) {
@@ -66,10 +67,11 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
           @if (
             modalVisibility === 'banUnbanUser' && selectedUserData !== null
           ) {
-            <div class="flex flex-row w-full justify-around pt-4">
+            <div
+              class="flex flex-row w-full justify-around pt-4 text-sm sm:text-base">
               <label
                 for="banUser"
-                class="custom-input-red w-1/4"
+                class="custom-input-red min-w-fit w-1/4 text-center flex flex-row"
                 [class.opacity-70]="!isBanned"
                 [class.underline]="isBanned">
                 <span class="pr-3">BANNED</span>
@@ -83,7 +85,7 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
               </label>
               <label
                 for="unbanUser"
-                class="custom-input-green w-1/4"
+                class="custom-input-green min-w-fit w-1/4 text-center flex flex-row"
                 [class.opacity-70]="isBanned"
                 [class.underline]="!isBanned">
                 <span class="pr-3">UNBANNED</span>
@@ -99,13 +101,13 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
           } @else if (
             modalVisibility === 'changeUserRole' && selectedUserData !== null
           ) {
-            <div class="flex flex-row pt-4">
+            <div class="flex flex-row pt-4 text-sm sm:text-base">
               <span>Current user role:&nbsp;</span>
               <span class="text-mainOrange font-extrabold uppercase">{{
                 selectedUserData.role
               }}</span>
             </div>
-            <div class="flex flex-row pt-4">
+            <div class="flex flex-row pt-4 text-sm sm:text-base">
               <span>Choose new role:&nbsp;</span>
               <select class="custom-input" (click)="setNewUserRole($event)">
                 <option value="Student">Student</option>
@@ -122,21 +124,21 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
             <app-selected-user-info
               [selectedUserData]="selectedUserData"
               [selectedUserStats]="selectedUserStats"
-              class="flex flex-col pt-4 items-start" />
+              class="flex flex-col pt-2 xs:pt-4 items-start text-sm 2xs:text-base sm:text-lg" />
           }
           @if (modalButtonText !== null) {
             <button
-              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-6 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
+              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
               (click)="modalButtonFunction()">
               {{ modalButtonText }}
             </button>
           }
           <button
             (click)="hideModal()"
-            class="absolute top-2 right-4 text-5xl text-mainOrange hover:text-mainGray">
+            class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
             x
           </button>
-          <div class="text-red-500 mt-6">
+          <div class="text-red-500 mt-6 text-sm sm:text-base">
             @if (errorMessage !== null) {
               <p>{{ errorMessage }}</p>
             }
@@ -172,16 +174,19 @@ export class AdminSettingsComponent implements OnDestroy {
   public modalButtonText: string | null = '';
   public modalButtonFunction!: () => void;
 
+  // eslint-disable-next-line complexity
   public setSelectedUser(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const selectedId = parseInt(target?.value, 10);
-    if (this.usersList) {
+    if (this.usersList && selectedId !== 0) {
       this.usersList.map(user => {
         if (user.id === selectedId) {
           this.isBanned = user.banned;
           this.selectedUserData = user;
         }
       });
+    } else {
+      this.selectedUserData = null;
     }
     if (
       this.modalVisibility === 'getUserDetails' &&
