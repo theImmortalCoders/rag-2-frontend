@@ -40,10 +40,10 @@ import { RecordedGamesComponent } from './components/sections/recorded-games/rec
       [userStatsInfo]="userStatsInfo"
       class="flex flex-row justify-stretch w-full" />
     <app-recorded-games class="flex flex-col px-10" />
-    <div class="flex flex-row flex-wrap justify-between gap-y-12">
-      <app-user-account-settings class="flex flex-col px-10" />
-      <app-game-handling-options class="flex flex-col px-10" />
-      <app-admin-settings class="flex flex-col px-10" />
+    <div class="flex flex-row flex-wrap justify-between gap-y-8 sm:gap-y-12">
+      <app-user-account-settings class="flex flex-col px-10 w-full sm:w-fit" />
+      <app-game-handling-options class="flex flex-col px-10 w-full sm:w-fit" />
+      <app-admin-settings class="flex flex-col px-10  w-full sm:w-fit" />
     </div>
   </div>`,
 })

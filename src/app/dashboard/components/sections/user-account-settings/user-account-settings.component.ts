@@ -16,26 +16,25 @@ import { NotificationService } from 'app/shared/services/notification.service';
   standalone: true,
   imports: [ModalComponent, ReactiveFormsModule],
   template: `
-    <h1 class="text-4xl font-bold text-mainOrange">User account settings</h1>
-    <hr class="w-full border-2 border-mainOrange mb-4" />
-    <div class="flex flex-row justify-around space-x-8">
+    <h1 class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange">
+      User account settings
+    </h1>
+    <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
+    <div
+      class="flex flex-col xs:flex-row justify-around gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-4 sm:space-x-8 w-full">
       <button
         type="button"
         (click)="changePasswordModal()"
-        class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+        class="dashboard-button group">
         <span>Change your password</span>
-        <i
-          data-feather="edit"
-          class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
+        <i data-feather="edit" class="dashboard-icon"></i>
       </button>
       <button
         type="button"
         (click)="deleteAccountModal()"
-        class="flex flex-row items-center justify-center group space-x-2 rounded-lg mt-2 px-3 py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+        class="dashboard-button group">
         <span>Delete your account</span>
-        <i
-          data-feather="trash-2"
-          class="text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 xs:size-5"></i>
+        <i data-feather="trash-2" class="dashboard-icon"></i>
       </button>
     </div>
     @if (modalVisibility !== null) {

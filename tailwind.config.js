@@ -87,6 +87,14 @@ module.exports = {
           '@apply flex flex-col shadow-sideMenuShadow z-20 absolute transition-all ease-in-out duration-700':
             {},
         },
+        '.dashboard-button': {
+          '@apply flex flex-row items-center justify-center space-x-4 xs:space-x-2 rounded-lg mt-1 sm:mt-2 px-2 sm:px-3 py-1 sm:py-2 bg-mainGray text-sm sm:text-base text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray':
+            {},
+        },
+        '.dashboard-icon': {
+          '@apply text-mainOrange group-hover:text-mainGray transition-all ease-in-out size-4 sm:size-5':
+            {},
+        },
       });
     },
   ],
