@@ -18,9 +18,11 @@ import { Subscription } from 'rxjs';
         class="hover:text-green-500 ease-in-out transition-all duration-500 size-8 2xs:size-9"></i>
     </button>
     <div
-      class="flex flex-col space-y-1 text-sm 2xs:text-base w-48 md:w-52 lg:w-44 xl:w-56 absolute -z-10 transition-all ease-in-out duration-300 {{
-        isUserInfoVisible ? 'right-0 opacity-100' : '-right-20 opacity-0'
-      }} top-[75px] 2xs:top-[83px] bg-mainGray shadow-userInfoShadow p-3 rounded-bl-lg">
+      class="flex flex-col space-y-1 text-sm 2xs:text-base absolute h-24 2xs:h-28 overflow-y-hidden -z-10 transition-all ease-in-out duration-300 {{
+        isUserInfoVisible
+          ? 'right-0 opacity-100 w-48 md:w-52 lg:w-44 xl:w-56 p-3'
+          : '-right-20 opacity-0 w-0 overflow-x-hidden p-0'
+      }} top-[75px] 2xs:top-[83px] bg-mainGray shadow-userInfoShadow rounded-bl-lg">
       <span class="text-center text-lightOragne font-bold"
         >Your role: {{ currentUserRole | uppercase }}</span
       >

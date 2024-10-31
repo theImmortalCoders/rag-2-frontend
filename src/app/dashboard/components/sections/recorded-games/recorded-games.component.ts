@@ -23,52 +23,53 @@ import { NotificationService } from 'app/shared/services/notification.service';
       User recorded games
     </h1>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
-    <div
-      class="flex flex-col justify-around space-y-0 border-mainOrange border-2">
-      <div
-        class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange font-bold px-4 py-2">
-        <span class="flex justify-center w-[5%]">No.</span>
-        <span class="flex justify-center w-2/12">Game name</span>
-        <span class="flex justify-center w-3/12">Game start date</span>
-        <span class="flex justify-center w-3/12">Game end date</span>
-        <div class="flex flex-row space-x-2 w-2/12">
-          <span class="flex justify-center w-1/2">Download</span>
-          <span class="flex justify-center w-1/2">Delete</span>
-        </div>
-      </div>
-      @for (recordedGame of recordedGamesData; track recordedGame.id) {
+    <div class="w-full overflow-x-auto border-mainOrange border-2">
+      <div class="flex flex-col min-w-[40rem] w-full justify-around space-y-0">
         <div
-          class="flex flex-row space-x-4 justify-between px-4 py-2 text-mainCreme opacity-80 hover:opacity-100 {{
-            $even ? 'bg-lightGray' : 'bg-darkGray'
-          }}">
-          <span class="flex justify-center w-[5%]">{{ $index + 1 }}.</span>
-          <span class="flex justify-center w-2/12 uppercase">{{
-            recordedGame.gameName
-          }}</span>
-          <span class="flex justify-center w-3/12">{{
-            recordedGame.started | date: 'dd/MM/yyyy, HH:mm'
-          }}</span>
-          <span class="flex justify-center w-3/12">{{
-            recordedGame.ended | date: 'dd/MM/yyyy, HH:mm'
-          }}</span>
+          class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange font-bold px-4 py-2">
+          <span class="flex justify-center w-[5%]">No.</span>
+          <span class="flex justify-center w-2/12">Game name</span>
+          <span class="flex justify-center w-3/12">Game start date</span>
+          <span class="flex justify-center w-3/12">Game end date</span>
           <div class="flex flex-row space-x-2 w-2/12">
-            <button
-              class="flex justify-center w-1/2"
-              (click)="downloadGameRecord(recordedGame.id)">
-              <i
-                data-feather="download"
-                class="text-mainCreme hover:text-green-500 size-4 xs:size-5"></i>
-            </button>
-            <button
-              class="flex justify-center w-1/2"
-              (click)="deleteGameRecord(recordedGame.id)">
-              <i
-                data-feather="x-square"
-                class="text-mainCreme hover:text-red-500 size-4 xs:size-5"></i>
-            </button>
+            <span class="flex justify-center w-1/2">Download</span>
+            <span class="flex justify-center w-1/2">Delete</span>
           </div>
         </div>
-      }
+        @for (recordedGame of recordedGamesData; track recordedGame.id) {
+          <div
+            class="flex flex-row space-x-4 justify-between px-4 py-2 text-mainCreme opacity-80 hover:opacity-100 {{
+              $even ? 'bg-lightGray' : 'bg-darkGray'
+            }}">
+            <span class="flex justify-center w-[5%]">{{ $index + 1 }}.</span>
+            <span class="flex justify-center w-2/12 uppercase">{{
+              recordedGame.gameName
+            }}</span>
+            <span class="flex justify-center w-3/12">{{
+              recordedGame.started | date: 'dd/MM/yyyy, HH:mm'
+            }}</span>
+            <span class="flex justify-center w-3/12">{{
+              recordedGame.ended | date: 'dd/MM/yyyy, HH:mm'
+            }}</span>
+            <div class="flex flex-row space-x-2 w-2/12">
+              <button
+                class="flex justify-center w-1/2"
+                (click)="downloadGameRecord(recordedGame.id)">
+                <i
+                  data-feather="download"
+                  class="text-mainCreme hover:text-green-500 size-4 xs:size-5"></i>
+              </button>
+              <button
+                class="flex justify-center w-1/2"
+                (click)="deleteGameRecord(recordedGame.id)">
+                <i
+                  data-feather="x-square"
+                  class="text-mainCreme hover:text-red-500 size-4 xs:size-5"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
     </div>
     <div class="text-red-500 mt-6">
       @if (errorMessage !== null) {
