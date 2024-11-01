@@ -7,15 +7,23 @@ import {
   HostListener,
 } from '@angular/core';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
-import { GameListComponent } from './game-list.component';
+import { GameListComponent } from './components/game-list/game-list.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import * as feather from 'feather-icons';
 import { Subscription } from 'rxjs';
+import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
+import { UserShortcutComponent } from './components/user-shortcut/user-shortcut.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, NgOptimizedImage, GameListComponent],
+  imports: [
+    RouterModule,
+    NgOptimizedImage,
+    GameListComponent,
+    AuthRequiredDirective,
+    UserShortcutComponent,
+  ],
   template: `
     <nav
       class="bg-mainGray min-w-max pl-3 xs:pl-6 py-4 shadow-navbarShadow relative z-50">
@@ -61,9 +69,7 @@ import { Subscription } from 'rxjs';
                 : '-top-72 opacity-0'
             }}" />
         </div>
-        <a [routerLink]="['/login']" class="mr-5 xs:mr-10"
-          ><i data-feather="users" class="size-8 2xs:size-9"></i
-        ></a>
+        <app-user-shortcut class="flex items-center" />
       </div>
     </nav>
   `,
@@ -96,6 +102,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   public ngAfterViewInit(): void {
     feather.replace();
   }
+
   public toggleGameList(): void {
     this.isGameListActive = !this.isGameListActive;
   }

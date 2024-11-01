@@ -13,7 +13,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 export class StatsEndpointsService {
   private _httpClient = inject(HttpClient);
 
-  public getAllRecordedGames(userId: number): Observable<IUserStatsResponse> {
+  public getUserStats(userId: number): Observable<IUserStatsResponse> {
     return this._httpClient
       .get<IUserStatsResponse>(
         environment.backendApiUrl + `/api/Stats/user?userId=${userId}`,

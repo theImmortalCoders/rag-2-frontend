@@ -69,6 +69,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   private _urlParamService = inject(UrlParamService);
   private _pauseSubscription = new Subscription();
   private _restartSubscription = new Subscription();
+  private _pageVisibilitySubscription = new Subscription();
 
   public dataToSend: TExchangeData = {};
   public socketUrl = '';
@@ -96,17 +97,19 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       }
     });
 
-    this._pageVisibilityService.getVisibilityState().subscribe(isVisible => {
-      if (!isVisible) {
-        this.aiSocketService.pauseDataExchange();
-      } else if (!this.isPaused) {
-        this.aiSocketService.resumeDataExchange(
-          this.vSendingInterval.value,
-          this.player.inputData,
-          this.player.id
-        );
-      }
-    });
+    this._pageVisibilitySubscription = this._pageVisibilityService
+      .getVisibilityState()
+      .subscribe(isVisible => {
+        if (!isVisible) {
+          this.aiSocketService.pauseDataExchange();
+        } else if (!this.isPaused) {
+          this.aiSocketService.resumeDataExchange(
+            this.vSendingInterval.value,
+            this.player.inputData,
+            this.player.id
+          );
+        }
+      });
 
     this.syncPropsWithUrl();
   }
@@ -114,6 +117,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this._pauseSubscription.unsubscribe();
     this._restartSubscription.unsubscribe();
+    this._pageVisibilitySubscription.unsubscribe();
   }
 
   public onConnectButtonClick(): void {

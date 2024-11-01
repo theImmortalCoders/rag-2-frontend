@@ -12,7 +12,7 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
       }
       <input
         #dataInput
-        [attr.disabled]="isDataCollectingActive ? 'disabled' : null"
+        [attr.disabled]="checkboxAvailable() ? null : 'disabled'"
         type="checkbox"
         [defaultChecked]="true"
         [checked]="isKeyInDataToPersist(variable.key)"
@@ -39,4 +39,8 @@ export class DataSelectCheckboxComponent {
   ): void => {
     console.log('key:', key, 'value:', value, 'checked:', checked);
   };
+
+  public checkboxAvailable(): boolean {
+    return !this.isDataCollectingActive && this.variable.key !== 'state';
+  }
 }

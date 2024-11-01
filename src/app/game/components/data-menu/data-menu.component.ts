@@ -80,8 +80,11 @@ export class DataMenuComponent implements OnInit {
       this.dataToPersist = JSON.parse(
         JSON.stringify(this.dataPossibleToPersist)
       );
-      this.updateDataToPersistFromURL();
+
+      this._urlParamService.setQueryParam('state', 'true');
       this._urlParamService.setQueryParam('outputSpec', 'false');
+
+      this.updateDataToPersistFromURL();
     }, 50);
   }
 
@@ -147,7 +150,7 @@ export class DataMenuComponent implements OnInit {
       JSON.stringify(newData) !== JSON.stringify(this.dataToPersist) &&
       Date.now() - this._lastSavedTime > this.dataSavingIntervalLimit
     ) {
-      newData['timestamp'] = new Date().toISOString();
+      newData['timestamp'] = new Date().toLocaleString('pl-PL');
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);
       this._lastSavedTime = Date.now();

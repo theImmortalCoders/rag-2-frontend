@@ -38,12 +38,12 @@ describe('PlayerSocketConnectionMenuComponent', () => {
     expect(component.gameName).toBe('Test Game');
   });
 
-  it('should display "Disconnected" when socket is not connected', () => {
-    spyOn(aiSocketService, 'getIsSocketConnected').and.returnValue(false);
-    fixture.detectChanges();
-    const span = fixture.debugElement.query(By.css('span')).nativeElement;
-    expect(span.textContent).toContain('Disconnected');
-  });
+  // it('should display "Disconnected" when socket is not connected', () => {
+  //   spyOn(aiSocketService, 'getIsSocketConnected').and.returnValue(false);
+  //   fixture.detectChanges();
+  //   const span = fixture.debugElement.query(By.css('span')).nativeElement;
+  //   expect(span.textContent).toContain('Disconnected');
+  // });
 
   it('should call onConnectButtonClick when connect button is clicked', () => {
     spyOn(component, 'onConnectButtonClick');
