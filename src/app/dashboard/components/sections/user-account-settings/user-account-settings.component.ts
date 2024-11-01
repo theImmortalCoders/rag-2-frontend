@@ -124,8 +124,8 @@ export class UserAccountSettingsComponent implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _changePasswordSubscribtion: Subscription | null = null;
-  private _deleteAccountSubscribtion: Subscription | null = null;
+  private _changePasswordSubscribtion: Subscription = new Subscription();
+  private _deleteAccountSubscribtion: Subscription = new Subscription();
 
   public changePasswordForm = this._formBuilder.group({
     oldPassword: ['', [Validators.required, Validators.minLength(8)]],
@@ -211,11 +211,7 @@ export class UserAccountSettingsComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._changePasswordSubscribtion) {
-      this._changePasswordSubscribtion.unsubscribe();
-    }
-    if (this._deleteAccountSubscribtion) {
-      this._deleteAccountSubscribtion.unsubscribe();
-    }
+    this._changePasswordSubscribtion.unsubscribe();
+    this._deleteAccountSubscribtion.unsubscribe();
   }
 }

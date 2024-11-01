@@ -85,7 +85,6 @@ export class DashboardPageComponent
   }
 
   public getUserStats(userId: number): void {
-    console.log('eee', userId);
     this._getUserStatsSubscription = this._statsEndpointsService
       .getUserStats(userId)
       .subscribe({
