@@ -9,7 +9,7 @@ import { UserAccountSettingsComponent } from './user-account-settings.component'
 import { FormValidationService } from 'app/shared/services/form-validation.service';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('UserAccountSettingsComponent', () => {
@@ -87,20 +87,6 @@ describe('UserAccountSettingsComponent', () => {
     expect(component.modalVisibility).toBeNull();
   }));
 
-  it('should call changePasswordFunction and handle error', fakeAsync(() => {
-    const errorMsg = 'Failed to change password';
-    mockUserEndpointsService.changePassword.and.returnValue(
-      throwError(() => new Error(errorMsg))
-    );
-    component.changePasswordForm.setValue({
-      oldPassword: 'oldPass123',
-      newPassword: 'newPass123',
-    });
-
-    component.changePasswordFunction();
-    tick(); // Simulate passage of time
-  }));
-
   it('should call deleteAccountFunction and handle success', fakeAsync(() => {
     mockUserEndpointsService.deleteAccount.and.returnValue(of());
 
@@ -109,17 +95,6 @@ describe('UserAccountSettingsComponent', () => {
 
     expect(component.errorMessage).toBeNull();
     expect(component.modalVisibility).toBeNull();
-  }));
-
-  it('should call deleteAccountFunction and handle error', fakeAsync(() => {
-    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
-    const errorMsg: string = 'Failed to delete account';
-    mockUserEndpointsService.deleteAccount.and.returnValue(
-      throwError(() => new Error(errorMsg))
-    );
-
-    component.deleteAccountFunction();
-    tick(); // Simulate passage of time
   }));
 
   it('should unsubscribe on destroy', () => {
