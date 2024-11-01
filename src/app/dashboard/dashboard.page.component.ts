@@ -60,8 +60,8 @@ export class DashboardPageComponent
   private _userEndpointsService = inject(UserEndpointsService);
   private _statsEndpointsService = inject(StatsEndpointsService);
 
-  private _getMeSubscription: Subscription | null = null;
-  private _getUserStats: Subscription | null = null;
+  private _getMeSubscription: Subscription = new Subscription();
+  private _getUserStatsSubscription: Subscription = new Subscription();
 
   public aboutMeUserInfo: IUserResponse | null = null;
   public userStatsInfo: IUserStatsResponse | null = null;
@@ -85,7 +85,8 @@ export class DashboardPageComponent
   }
 
   public getUserStats(userId: number): void {
-    this._getUserStats = this._statsEndpointsService
+    console.log('eee', userId);
+    this._getUserStatsSubscription = this._statsEndpointsService
       .getUserStats(userId)
       .subscribe({
         next: (response: IUserStatsResponse) => {
@@ -98,11 +99,7 @@ export class DashboardPageComponent
   }
 
   public ngOnDestroy(): void {
-    if (this._getMeSubscription) {
-      this._getMeSubscription.unsubscribe();
-    }
-    if (this._getUserStats) {
-      this._getUserStats.unsubscribe();
-    }
+    this._getMeSubscription.unsubscribe();
+    this._getUserStatsSubscription.unsubscribe();
   }
 }
