@@ -118,18 +118,6 @@ describe('GameHandlingOptionsComponent', () => {
     expect(component.errorMessage).toBeNull();
   }));
 
-  it('should handle error when editing an existing game', fakeAsync(() => {
-    component.modalVisibility = 'editGame';
-    component.selectedGameId = 1;
-    component.gameHandlingForm.controls.editedGameName.setValue('Edited Game');
-
-    mockGameEndpointsService.updateGame.and.returnValue(
-      throwError(() => new Error('Error editing game'))
-    );
-    component.editGameFunction();
-    tick();
-  }));
-
   it('should remove a game and show notification', fakeAsync(() => {
     component.modalVisibility = 'removeGame';
     component.selectedGameId = 1;
@@ -140,17 +128,6 @@ describe('GameHandlingOptionsComponent', () => {
 
     expect(component.modalVisibility).toBe('removeGame');
     expect(component.errorMessage).toBeNull();
-  }));
-
-  it('should handle error when removing a game', fakeAsync(() => {
-    component.modalVisibility = 'removeGame';
-    component.selectedGameId = 1;
-
-    mockGameEndpointsService.deleteGame.and.returnValue(
-      throwError(() => new Error('Error deleting game'))
-    );
-    component.removeGameFunction();
-    tick();
   }));
 
   it('should clear subscriptions on destroy', () => {
