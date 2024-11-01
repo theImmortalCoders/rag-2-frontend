@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PlayerSocketMenuComponent } from '../../components/player-socket-menu.component';
+import { PlayerSocketMenuComponent } from './player-socket-menu.component';
 import { Player } from '@gameModels/player.class';
 import { DebugModeMenuComponent } from '../debug-mode-menu/debug-mode-menu.component';
 import { DebugModePanelComponent } from '../debug-mode-panel/debug-mode-panel.component';
