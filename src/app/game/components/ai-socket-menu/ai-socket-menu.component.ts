@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
-import { SocketDomainInputComponent } from './components/components/components/socket-domain-input/socket-domain-input.component';
-import { SocketConnectedMenuComponent } from './components/components/components/socket-connected-menu/socket-connected-menu.component';
-import { DebugModeMenuComponent } from './components/components/components/debug-mode-menu/debug-mode-menu.component';
-import { DebugModePanelComponent } from './components/components/components/debug-mode-panel/debug-mode-panel.component';
+import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
+import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
+import { DebugModeMenuComponent } from './components/debug-mode-menu/debug-mode-menu.component';
+import { DebugModePanelComponent } from './components/debug-mode-panel/debug-mode-panel.component';
 import { Player } from '@gameModels/player.class';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { PlayerSocketMenuComponent } from './components/player-socket-menu.component';

@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   inject,
@@ -12,8 +11,8 @@ import { AiSocketService } from '../../services/ai-socket.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { Player } from '@gameModels/player.class';
-import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
-import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
+import { SocketDomainInputComponent } from '../socket-domain-input/socket-domain-input.component';
+import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-connected-menu.component';
 import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
