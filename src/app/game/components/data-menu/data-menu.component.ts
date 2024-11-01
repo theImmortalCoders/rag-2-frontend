@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
-import { DataDownloadComponent } from './components/data-download/data-download.component';
+import { DataSelectCheckboxComponent } from './sections/data-select-checkbox/data-select-checkbox.component';
+import { DataDownloadComponent } from './sections/data-download/data-download.component';
 import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
