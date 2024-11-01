@@ -20,6 +20,8 @@ import { UserAccountSettingsComponent } from './components/sections/user-account
 import { GameHandlingOptionsComponent } from './components/sections/game-handling-options/game-handling-options.component';
 import { AdminSettingsComponent } from './components/sections/admin-settings/admin-settings.component';
 import { RecordedGamesComponent } from './components/sections/recorded-games/recorded-games.component';
+import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
+import { TRole } from 'app/shared/models/role.enum';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -32,6 +34,7 @@ import { RecordedGamesComponent } from './components/sections/recorded-games/rec
     GameHandlingOptionsComponent,
     AdminSettingsComponent,
     RecordedGamesComponent,
+    AllowedRolesDirective,
   ],
   template: `<div
     class="flex flex-col space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
@@ -42,8 +45,12 @@ import { RecordedGamesComponent } from './components/sections/recorded-games/rec
     <app-recorded-games class="flex flex-col px-10" />
     <div class="flex flex-row flex-wrap justify-between gap-y-8 sm:gap-y-12">
       <app-user-account-settings class="flex flex-col px-10 w-full sm:w-fit" />
-      <app-game-handling-options class="flex flex-col px-10 w-full sm:w-fit" />
-      <app-admin-settings class="flex flex-col px-10  w-full sm:w-fit" />
+      <app-game-handling-options
+        *appAllowedRoles="allowedRoles"
+        class="flex flex-col px-10 w-full sm:w-fit" />
+      <app-admin-settings
+        *appAllowedRoles="allowedRoles"
+        class="flex flex-col px-10  w-full sm:w-fit" />
     </div>
   </div>`,
 })
@@ -58,6 +65,8 @@ export class DashboardPageComponent
 
   public aboutMeUserInfo: IUserResponse | null = null;
   public userStatsInfo: IUserStatsResponse | null = null;
+
+  public allowedRoles: TRole[] = [TRole.Admin];
 
   public ngOnInit(): void {
     this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
