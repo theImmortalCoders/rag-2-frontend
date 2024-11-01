@@ -16,7 +16,6 @@ import { Observable, Subscription } from 'rxjs';
 import { CanvasComponent } from '../components/canvas/canvas.component';
 import { Game } from '@gameModels/game.class';
 import { IPlayerInputData } from '@gameModels/player-input-data.type';
-import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 
 @Component({
   selector: 'app-base-game-window',

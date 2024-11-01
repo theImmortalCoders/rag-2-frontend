@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataSelectCheckboxComponent } from './components/data-select-checkbox/data-select-checkbox.component';
-import { DataDownloadComponent } from './components/data-download/data-download.component';
+import { DataSelectCheckboxComponent } from './sections/data-select-checkbox/data-select-checkbox.component';
+import { DataDownloadComponent } from './sections/data-download/data-download.component';
 import { UrlParamService } from 'app/shared/services/url-param.service';
 
 @Component({
@@ -80,8 +80,11 @@ export class DataMenuComponent implements OnInit {
       this.dataToPersist = JSON.parse(
         JSON.stringify(this.dataPossibleToPersist)
       );
-      this.updateDataToPersistFromURL();
+
+      this._urlParamService.setQueryParam('state', 'true');
       this._urlParamService.setQueryParam('outputSpec', 'false');
+
+      this.updateDataToPersistFromURL();
     }, 50);
   }
 
@@ -147,7 +150,7 @@ export class DataMenuComponent implements OnInit {
       JSON.stringify(newData) !== JSON.stringify(this.dataToPersist) &&
       Date.now() - this._lastSavedTime > this.dataSavingIntervalLimit
     ) {
-      newData['timestamp'] = new Date().toISOString();
+      newData['timestamp'] = new Date().toLocaleString('pl-PL');
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);
       this._lastSavedTime = Date.now();

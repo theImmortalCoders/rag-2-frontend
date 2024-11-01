@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   inject,
@@ -12,8 +11,8 @@ import { AiSocketService } from '../../services/ai-socket.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { Player } from '@gameModels/player.class';
-import { SocketDomainInputComponent } from './components/socket-domain-input/socket-domain-input.component';
-import { SocketConnectedMenuComponent } from './components/socket-connected-menu/socket-connected-menu.component';
+import { SocketDomainInputComponent } from '../socket-domain-input/socket-domain-input.component';
+import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-connected-menu.component';
 import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
@@ -69,6 +68,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   private _urlParamService = inject(UrlParamService);
   private _pauseSubscription = new Subscription();
   private _restartSubscription = new Subscription();
+  private _pageVisibilitySubscription = new Subscription();
 
   public dataToSend: TExchangeData = {};
   public socketUrl = '';
@@ -96,17 +96,19 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       }
     });
 
-    this._pageVisibilityService.getVisibilityState().subscribe(isVisible => {
-      if (!isVisible) {
-        this.aiSocketService.pauseDataExchange();
-      } else if (!this.isPaused) {
-        this.aiSocketService.resumeDataExchange(
-          this.vSendingInterval.value,
-          this.player.inputData,
-          this.player.id
-        );
-      }
-    });
+    this._pageVisibilitySubscription = this._pageVisibilityService
+      .getVisibilityState()
+      .subscribe(isVisible => {
+        if (!isVisible) {
+          this.aiSocketService.pauseDataExchange();
+        } else if (!this.isPaused) {
+          this.aiSocketService.resumeDataExchange(
+            this.vSendingInterval.value,
+            this.player.inputData,
+            this.player.id
+          );
+        }
+      });
 
     this.syncPropsWithUrl();
   }
@@ -114,6 +116,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this._pauseSubscription.unsubscribe();
     this._restartSubscription.unsubscribe();
+    this._pageVisibilitySubscription.unsubscribe();
   }
 
   public onConnectButtonClick(): void {
