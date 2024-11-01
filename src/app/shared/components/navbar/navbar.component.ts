@@ -7,12 +7,12 @@ import {
   HostListener,
 } from '@angular/core';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
-import { GameListComponent } from './components/game-list/game-list.component';
+import { GameListComponent } from './sections/game-list/game-list.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import * as feather from 'feather-icons';
 import { Subscription } from 'rxjs';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
-import { UserShortcutComponent } from './components/user-shortcut/user-shortcut.component';
+import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.component';
 
 @Component({
   selector: 'app-navbar',

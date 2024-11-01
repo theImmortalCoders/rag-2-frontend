@@ -6,7 +6,7 @@ import {
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavbarComponent } from './navbar.component';
-import { GameListComponent } from './components/game-list/game-list.component';
+import { GameListComponent } from './sections/game-list/game-list.component';
 import * as feather from 'feather-icons';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NavigationStart, Router } from '@angular/router';
