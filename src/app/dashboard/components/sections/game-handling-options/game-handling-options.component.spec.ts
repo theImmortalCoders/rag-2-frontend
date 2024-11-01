@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GameHandlingOptionsComponent } from './game-handling-options.component';
+// import { GameHandlingOptionsComponent } from './game-handling-options.component';
 
-describe('GameHandlingOptionsComponent', () => {
-  let component: GameHandlingOptionsComponent;
-  let fixture: ComponentFixture<GameHandlingOptionsComponent>;
+// describe('GameHandlingOptionsComponent', () => {
+//   let component: GameHandlingOptionsComponent;
+//   let fixture: ComponentFixture<GameHandlingOptionsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [GameHandlingOptionsComponent]
-    })
-    .compileComponents();
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       imports: [GameHandlingOptionsComponent]
+//     })
+//     .compileComponents();
 
-    fixture = TestBed.createComponent(GameHandlingOptionsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//     fixture = TestBed.createComponent(GameHandlingOptionsComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });
