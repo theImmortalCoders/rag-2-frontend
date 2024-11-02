@@ -16,6 +16,7 @@ import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-co
 import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
+import { SocketListService } from '../../services/socket-list.service';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
@@ -48,6 +49,11 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
           class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
           Connect
         </button>
+        @if (canNotConnect) {
+          <span class="text-mainRed w-full text-start mt-2"
+            >Cannot connect</span
+          >
+        }
       }
     </div>
   `,
@@ -66,6 +72,8 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
 
   private _pageVisibilityService = inject(PageVisibilityService);
   private _urlParamService = inject(UrlParamService);
+  private _socketListService = inject(SocketListService);
+
   private _pauseSubscription = new Subscription();
   private _restartSubscription = new Subscription();
   private _pageVisibilitySubscription = new Subscription();
@@ -77,6 +85,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public playerSourceType = PlayerSourceType;
   public vSendingInterval = { value: 100 };
   public isPaused = false;
+  public canNotConnect = false;
 
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
@@ -117,19 +126,28 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
     this._pauseSubscription.unsubscribe();
     this._restartSubscription.unsubscribe();
     this._pageVisibilitySubscription.unsubscribe();
+    this._socketListService.clearList();
+    this.canNotConnect = false;
   }
 
   public onConnectButtonClick(): void {
+    if (this._socketListService.getSocketList().includes(this.socketUrl)) {
+      this.canNotConnect = true;
+      return;
+    }
     this.aiSocketService.connect(
       this.socketUrl,
       () => {
         this.saveRecentPhrase(this.socketUrl);
+        this._socketListService.addToList(this.socketUrl);
+        this.canNotConnect = false;
       },
       (event: MessageEvent<string>) => {
         this.emitSocketInput(JSON.parse(event.data));
       },
       () => {
-        console.log('onConnectButtonClick');
+        this._socketListService.removeFromList(this.socketUrl);
+        this.canNotConnect = false;
       }
     );
 
@@ -146,13 +164,10 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       this.player.id
     );
   };
-
   //
-
   private emitSocketInput(data: TExchangeData): void {
     this.receivedDataEmitter.emit({ player: this.player, data: data });
   }
-
   private saveRecentPhrase(phrase: string): void {
     if (this.recentPhrases.includes(phrase)) return;
     this.recentPhrases.unshift(phrase);
@@ -166,7 +181,6 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       JSON.stringify(this.recentPhrases)
     );
   }
-
   private syncPropsWithUrl(): void {
     setTimeout(() => {
       const socketUrl = this._urlParamService.getQueryParam(
