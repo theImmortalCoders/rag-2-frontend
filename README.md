@@ -9,4 +9,4 @@ Application with web minigames prepared to collect game data and connect AI mode
 - Game data collecting and saving
 - Real-time websocket connection with custom AI models
 - Real-time game data preview in built-in console
-- Users management with storage limits
+- Users management with storage limits 
