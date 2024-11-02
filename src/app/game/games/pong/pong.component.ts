@@ -4,7 +4,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { Pong } from './models/pong.class';
+import { Pong, PongState } from './models/pong.class';
 
 @Component({
   selector: 'app-pong',
@@ -29,7 +29,7 @@ export class PongGameWindowComponent
   public override ngOnInit(): void {
     super.ngOnInit();
 
-    this.game = this.abstractGame as Pong;
+    this.game = this.game as Pong;
   }
 
   public override ngAfterViewInit(): void {
@@ -49,7 +49,7 @@ export class PongGameWindowComponent
   }
 
   public override restart(): void {
-    this.game = new Pong();
+    this.game.state = new PongState();
     this.resetPaddlesAndBall();
   }
 
