@@ -38,7 +38,7 @@ export class RegisterConfirmComponent implements OnInit, OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
 
   private _token: string | null = null;
-  private _confirmSubscription: Subscription | null = null;
+  private _confirmSubscription: Subscription = new Subscription();
   private _router: Router = new Router();
 
   public actionMessage: string | null = null;
@@ -69,8 +69,6 @@ export class RegisterConfirmComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._confirmSubscription) {
-      this._confirmSubscription.unsubscribe();
-    }
+    this._confirmSubscription.unsubscribe();
   }
 }

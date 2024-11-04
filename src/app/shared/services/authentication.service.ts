@@ -10,7 +10,7 @@ import { IUserResponse } from '../models/user.models';
 export class AuthenticationService implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
 
-  private _getMeSubscription: Subscription | null = null;
+  private _getMeSubscription: Subscription = new Subscription();
 
   private _authStatusSubject = new BehaviorSubject<boolean>(false);
   public authStatus$: Observable<boolean> =
@@ -59,8 +59,6 @@ export class AuthenticationService implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._getMeSubscription) {
-      this._getMeSubscription.unsubscribe();
-    }
+    this._getMeSubscription.unsubscribe();
   }
 }

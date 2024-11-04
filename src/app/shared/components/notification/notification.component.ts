@@ -30,7 +30,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   private _notificationService = inject(NotificationService);
   private _renderer = inject(Renderer2);
 
-  private _notificationSubscription: Subscription | null = null;
+  private _notificationSubscription: Subscription = new Subscription();
 
   public notifications: INotification[] = [];
 
@@ -72,8 +72,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._notificationSubscription) {
-      this._notificationSubscription.unsubscribe();
-    }
+    this._notificationSubscription.unsubscribe();
   }
 }
