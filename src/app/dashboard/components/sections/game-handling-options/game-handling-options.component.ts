@@ -121,10 +121,10 @@ export class GameHandlingOptionsComponent implements OnDestroy {
   private _notificationService = inject(NotificationService);
   private _formBuilder = inject(NonNullableFormBuilder);
 
-  private _getGamesSubscription: Subscription | null = null;
-  private _addGameSubscription: Subscription | null = null;
-  private _editGameSubscription: Subscription | null = null;
-  private _removeGameSubscription: Subscription | null = null;
+  private _getGamesSubscription: Subscription = new Subscription();
+  private _addGameSubscription: Subscription = new Subscription();
+  private _editGameSubscription: Subscription = new Subscription();
+  private _removeGameSubscription: Subscription = new Subscription();
 
   public selectedGameId = 0;
 
@@ -266,17 +266,9 @@ export class GameHandlingOptionsComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._getGamesSubscription) {
-      this._getGamesSubscription.unsubscribe();
-    }
-    if (this._addGameSubscription) {
-      this._addGameSubscription.unsubscribe();
-    }
-    if (this._editGameSubscription) {
-      this._editGameSubscription.unsubscribe();
-    }
-    if (this._removeGameSubscription) {
-      this._removeGameSubscription.unsubscribe();
-    }
+    this._getGamesSubscription.unsubscribe();
+    this._addGameSubscription.unsubscribe();
+    this._editGameSubscription.unsubscribe();
+    this._removeGameSubscription.unsubscribe();
   }
 }

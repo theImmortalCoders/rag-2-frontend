@@ -93,8 +93,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   private _authService = inject(AuthenticationService);
   private _router: Router = new Router();
 
-  private _loginSubscription: Subscription | null = null;
-  private _resendEmailSubscription: Subscription | null = null;
+  private _loginSubscription: Subscription = new Subscription();
+  private _resendEmailSubscription: Subscription = new Subscription();
 
   public recentEmails: string[] = [];
   public errorMessage: string | null = null;
@@ -181,11 +181,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._loginSubscription) {
-      this._loginSubscription.unsubscribe();
-    }
-    if (this._resendEmailSubscription) {
-      this._resendEmailSubscription.unsubscribe();
-    }
+    this._loginSubscription.unsubscribe();
+    this._resendEmailSubscription.unsubscribe();
   }
 }

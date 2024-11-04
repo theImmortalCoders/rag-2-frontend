@@ -19,7 +19,7 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
   private _authService = inject(AuthenticationService);
   private _notificationService = inject(NotificationService);
 
-  private _authSubscription: Subscription | null = null;
+  private _authSubscription: Subscription = new Subscription();
 
   public constructor(
     private _templateRef: TemplateRef<unknown>,
@@ -48,8 +48,6 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._authSubscription) {
-      this._authSubscription.unsubscribe();
-    }
+    this._authSubscription.unsubscribe();
   }
 }

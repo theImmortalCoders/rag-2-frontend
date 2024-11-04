@@ -82,8 +82,8 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
 export class GamePageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
-  private _routerSubscription: Subscription | null = null;
-  private _breakpointSubscription: Subscription | null = null;
+  private _routerSubscription: Subscription = new Subscription();
+  private _breakpointSubscription: Subscription = new Subscription();
   private _previousUrl = '';
 
   public gameName = '';
@@ -124,12 +124,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._routerSubscription) {
-      this._routerSubscription.unsubscribe();
-    }
-    if (this._breakpointSubscription) {
-      this._breakpointSubscription.unsubscribe();
-    }
+    this._routerSubscription.unsubscribe();
+    this._breakpointSubscription.unsubscribe();
   }
 
   public updatePlayers(players: Player[]): void {

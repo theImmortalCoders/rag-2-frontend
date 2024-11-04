@@ -31,6 +31,6 @@ jobs:
       - name: Install Cypress
         run: npm install cypress --save-dev
       - name: Run Karma unit tests
-        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+        run: npm test -- --no-watch --no-progress
       - name: Run Cypress E2E tests
         run: npx ng e2e --no-watch --headless

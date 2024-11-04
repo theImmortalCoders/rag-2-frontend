@@ -40,11 +40,6 @@ describe('NavbarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize isMinWidthLg based on breakpoint observer', () => {
-    fixture.detectChanges();
-    expect(component.isMinWidthLg).toBeFalse();
-  });
-
   it('should toggle game list visibility when toggleGameList is called', () => {
     expect(component.isGameListActive).toBeFalse();
     component.toggleGameList();

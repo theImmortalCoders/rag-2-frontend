@@ -153,10 +153,10 @@ export class AdminSettingsComponent implements OnDestroy {
   private _statsEndpointsService = inject(StatsEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _getUsersSubscription: Subscription | null = null;
-  private _getUserStatsSubscription: Subscription | null = null;
-  private _changeBanStatusSubscription: Subscription | null = null;
-  private _changeRoleSubscription: Subscription | null = null;
+  private _getUsersSubscription: Subscription = new Subscription();
+  private _getUserStatsSubscription: Subscription = new Subscription();
+  private _changeBanStatusSubscription: Subscription = new Subscription();
+  private _changeRoleSubscription: Subscription = new Subscription();
 
   public usersList: IUserResponse[] | null = null;
   public selectedUserData: IUserResponse | null = null;
@@ -311,17 +311,9 @@ export class AdminSettingsComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._getUsersSubscription) {
-      this._getUsersSubscription.unsubscribe();
-    }
-    if (this._changeBanStatusSubscription) {
-      this._changeBanStatusSubscription.unsubscribe();
-    }
-    if (this._changeRoleSubscription) {
-      this._changeRoleSubscription.unsubscribe();
-    }
-    if (this._getUserStatsSubscription) {
-      this._getUserStatsSubscription.unsubscribe();
-    }
+    this._getUsersSubscription.unsubscribe();
+    this._changeBanStatusSubscription.unsubscribe();
+    this._changeRoleSubscription.unsubscribe();
+    this._getUserStatsSubscription.unsubscribe();
   }
 }

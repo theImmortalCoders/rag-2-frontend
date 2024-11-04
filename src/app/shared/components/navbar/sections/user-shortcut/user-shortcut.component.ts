@@ -50,9 +50,9 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _authSubscription: Subscription | null = null;
-  private _roleSubscription: Subscription | null = null;
-  private _logoutSubscription: Subscription | null = null;
+  private _authSubscription: Subscription = new Subscription();
+  private _roleSubscription: Subscription = new Subscription();
+  private _logoutSubscription: Subscription = new Subscription();
 
   public isLoggedIn = false;
   public currentUserRole: TRole | null = null;
@@ -97,14 +97,8 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._authSubscription) {
-      this._authSubscription.unsubscribe();
-    }
-    if (this._roleSubscription) {
-      this._roleSubscription.unsubscribe();
-    }
-    if (this._logoutSubscription) {
-      this._logoutSubscription.unsubscribe();
-    }
+    this._authSubscription.unsubscribe();
+    this._roleSubscription.unsubscribe();
+    this._logoutSubscription.unsubscribe();
   }
 }
