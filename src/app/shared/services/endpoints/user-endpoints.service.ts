@@ -47,6 +47,10 @@ export class UserEndpointsService {
         tap({
           next: () => {
             console.log('Token verified successfully');
+            return true;
+          },
+          error: () => {
+            return false;
           },
         }),
         catchError((error: HttpErrorResponse) => {
@@ -182,7 +186,7 @@ export class UserEndpointsService {
       .pipe(
         tap({
           next: () => {
-            console.log('Token refreshed successfully');
+            // console.log('Token refreshed successfully');
           },
         }),
         catchError((error: HttpErrorResponse) => {

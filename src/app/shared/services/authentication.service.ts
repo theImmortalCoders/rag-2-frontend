@@ -22,8 +22,7 @@ export class AuthenticationService implements OnDestroy {
 
   private constructor() {
     const token = localStorage.getItem('jwtToken');
-    if (token && this.isTokenExpired(token)) {
-      console.log('logout');
+    if (!this._userEndpointsService.verifyJWTToken()) {
       this._userEndpointsService.logout();
       this._authStatusSubject.next(false);
       this._currentRoleSubject.next(null);
@@ -31,13 +30,6 @@ export class AuthenticationService implements OnDestroy {
       this._authStatusSubject.next(true);
       this.loadCurrentUser();
     }
-  }
-
-  private isTokenExpired(token: string): boolean {
-    const payloadBase64 = token.split('.')[1];
-    const payload = JSON.parse(atob(payloadBase64));
-    const expiryTime = payload.exp * 1000;
-    return Date.now() > expiryTime;
   }
 
   public loadCurrentUser(): void {
