@@ -50,9 +50,9 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _authSubscription: Subscription = new Subscription();
-  private _roleSubscription: Subscription = new Subscription();
-  private _logoutSubscription: Subscription = new Subscription();
+  private _authSubscription = new Subscription();
+  private _roleSubscription = new Subscription();
+  private _logoutSubscription = new Subscription();
 
   public isLoggedIn = false;
   public currentUserRole: TRole | null = null;

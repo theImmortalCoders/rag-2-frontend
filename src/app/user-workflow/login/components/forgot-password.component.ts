@@ -55,7 +55,7 @@ export class ForgotPasswordComponent implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _forgotPasswordSubscription: Subscription = new Subscription();
+  private _forgotPasswordSubscription = new Subscription();
 
   public shouldShowInput = false;
   public resendMessage = '';

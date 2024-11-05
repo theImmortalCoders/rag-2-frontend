@@ -152,10 +152,10 @@ export class AdminSettingsComponent implements OnDestroy {
   private _statsEndpointsService = inject(StatsEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _getUsersSubscription: Subscription = new Subscription();
-  private _getUserStatsSubscription: Subscription = new Subscription();
-  private _changeBanStatusSubscription: Subscription = new Subscription();
-  private _changeRoleSubscription: Subscription = new Subscription();
+  private _getUsersSubscription = new Subscription();
+  private _getUserStatsSubscription = new Subscription();
+  private _changeBanStatusSubscription = new Subscription();
+  private _changeRoleSubscription = new Subscription();
 
   public usersList: IUserResponse[] | null = null;
   public selectedUserData: IUserResponse | null = null;

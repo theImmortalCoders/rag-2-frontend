@@ -93,8 +93,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   private _authService = inject(AuthenticationService);
   private _router: Router = new Router();
 
-  private _loginSubscription: Subscription = new Subscription();
-  private _resendEmailSubscription: Subscription = new Subscription();
+  private _loginSubscription = new Subscription();
+  private _resendEmailSubscription = new Subscription();
 
   public recentEmails: string[] = [];
   public errorMessage: string | null = null;
