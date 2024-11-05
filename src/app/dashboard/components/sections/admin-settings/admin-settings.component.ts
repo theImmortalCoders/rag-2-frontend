@@ -113,7 +113,6 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
                 <option value="Student">Student</option>
                 <option value="Teacher">Teacher</option>
                 <option value="Admin">Admin</option>
-                <option value="Special">Special</option>
               </select>
             </div>
           } @else if (
