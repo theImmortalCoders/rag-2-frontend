@@ -21,15 +21,20 @@ export class AuthenticationService implements OnDestroy {
     this._currentRoleSubject.asObservable();
 
   private constructor() {
-    const token = localStorage.getItem('jwtToken');
-    if (!this._userEndpointsService.verifyJWTToken()) {
-      this._userEndpointsService.logout();
-      this._authStatusSubject.next(false);
-      this._currentRoleSubject.next(null);
-    } else if (token) {
-      this._authStatusSubject.next(true);
-      this.loadCurrentUser();
-    }
+    this._userEndpointsService
+      .verifyJWTToken()
+      .subscribe((isValid: boolean) => {
+        if (isValid) {
+          console.log('true');
+          this._authStatusSubject.next(true);
+          this.loadCurrentUser();
+        } else {
+          console.log('false');
+          this._userEndpointsService.logout();
+          this._authStatusSubject.next(false);
+          this._currentRoleSubject.next(null);
+        }
+      });
   }
 
   public loadCurrentUser(): void {

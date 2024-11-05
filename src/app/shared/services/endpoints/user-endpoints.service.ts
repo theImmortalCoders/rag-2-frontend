@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from '@env/environment';
 import {
   IUserLoginRequest,
@@ -38,23 +38,22 @@ export class UserEndpointsService {
       );
   }
 
-  public verifyJWTToken(): Observable<void> {
+  public verifyJWTToken(): Observable<boolean> {
     return this._httpClient
       .get<void>(environment.backendApiUrl + '/api/User/auth/verify', {
         responseType: 'json',
       })
       .pipe(
-        tap({
-          next: () => {
-            console.log('Token verified successfully');
-            return true;
-          },
-          error: () => {
-            return false;
-          },
+        map(() => {
+          console.log('Token verified successfully');
+          return true;
         }),
         catchError((error: HttpErrorResponse) => {
-          return throwError(() => errorHandler(error));
+          if (error.status === 401) {
+            console.log('Token verification failed with 401');
+            return of(false);
+          }
+          return throwError(() => error);
         })
       );
   }
