@@ -24,8 +24,8 @@ export class JwtInterceptor implements HttpInterceptor {
       return next.handle(request).pipe(
         catchError(errordata => {
           this._notificationService.addNotification(
-            'Refresh failed, log in again. ',
-            5000
+            'Refresh failed, log in again.',
+            3000
           );
 
           this._userEndpointsService.logout();
