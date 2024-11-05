@@ -123,6 +123,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.aiSocketService.stopDataExchange();
     this._pauseSubscription.unsubscribe();
     this._restartSubscription.unsubscribe();
     this._pageVisibilitySubscription.unsubscribe();
@@ -156,7 +157,6 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       this.socketUrl
     );
   }
-
   public onStartDataExchangeClick = (): void => {
     this.aiSocketService.startDataExchange(
       this.vSendingInterval.value,

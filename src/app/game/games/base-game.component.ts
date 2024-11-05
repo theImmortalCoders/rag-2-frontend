@@ -58,6 +58,7 @@ export abstract class BaseGameWindowComponent
   private _deltaTimeAccumulator = 0;
   private _frameCount = 0;
 
+  protected _updateTimeout: ReturnType<typeof setTimeout> | undefined;
   protected isPaused = false;
   protected game!: Game;
   protected _canvas!: HTMLCanvasElement;
@@ -65,7 +66,7 @@ export abstract class BaseGameWindowComponent
   //always call super on override (at top)
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
-      this.restart();
+      setTimeout(() => this.restart());
       console.info('Game restarted');
     });
     this._pauseSubscription = this.gamePause.subscribe(value => {
@@ -79,13 +80,17 @@ export abstract class BaseGameWindowComponent
     this._canvas = this.gameCanvas.canvasElement.nativeElement;
 
     this.update();
-    this.restart();
+    setTimeout(() => this.restart());
   }
 
   //always call super on override (at top)
   public ngOnDestroy(): void {
     this._restartSubscription.unsubscribe();
     this._pauseSubscription.unsubscribe();
+
+    if (this._updateTimeout) {
+      clearTimeout(this._updateTimeout);
+    }
   }
 
   //always call super on override (at top)
@@ -100,7 +105,10 @@ export abstract class BaseGameWindowComponent
   protected update(): void {
     this.calculateFPS();
 
-    setTimeout(() => this.update(), 1000 / this._fpsLimit);
+    this._updateTimeout = setTimeout(
+      () => this.update(),
+      1000 / this._fpsLimit
+    );
   }
 
   //
