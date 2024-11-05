@@ -8,6 +8,7 @@
 body {
   overflow-x: hidden;
   cursor: url('/cursors/stronghold.png'), auto;
+  background-color: #353535;
 }
 
 a,

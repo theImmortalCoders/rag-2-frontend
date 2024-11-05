@@ -60,8 +60,8 @@ export class DashboardPageComponent
   private _userEndpointsService = inject(UserEndpointsService);
   private _statsEndpointsService = inject(StatsEndpointsService);
 
-  private _getMeSubscription: Subscription = new Subscription();
-  private _getUserStatsSubscription: Subscription = new Subscription();
+  private _getMeSubscription = new Subscription();
+  private _getUserStatsSubscription = new Subscription();
 
   public aboutMeUserInfo: IUserResponse | null = null;
   public userStatsInfo: IUserStatsResponse | null = null;

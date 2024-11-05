@@ -77,8 +77,8 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   public isGameListActive = false;
   public isMinWidthLg = false;
-  private _routerSubscription: Subscription = new Subscription();
-  private _breakpointSubscription: Subscription = new Subscription();
+  private _routerSubscription = new Subscription();
+  private _breakpointSubscription = new Subscription();
 
   public constructor(
     private _breakpointObserver: BreakpointObserver,

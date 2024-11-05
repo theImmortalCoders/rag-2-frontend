@@ -124,8 +124,8 @@ export class UserAccountSettingsComponent implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _changePasswordSubscribtion: Subscription = new Subscription();
-  private _deleteAccountSubscribtion: Subscription = new Subscription();
+  private _changePasswordSubscribtion = new Subscription();
+  private _deleteAccountSubscribtion = new Subscription();
 
   public changePasswordForm = this._formBuilder.group({
     oldPassword: ['', [Validators.required, Validators.minLength(8)]],

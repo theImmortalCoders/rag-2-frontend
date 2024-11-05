@@ -30,7 +30,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   private _notificationService = inject(NotificationService);
   private _renderer = inject(Renderer2);
 
-  private _notificationSubscription: Subscription = new Subscription();
+  private _notificationSubscription = new Subscription();
 
   public notifications: INotification[] = [];
 

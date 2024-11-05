@@ -66,7 +66,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
 
   private _token: string | null = null;
-  private _resetPasswordSubscription: Subscription = new Subscription();
+  private _resetPasswordSubscription = new Subscription();
   private _router: Router = new Router();
 
   public resetPasswordForm = this._formBuilder.group({

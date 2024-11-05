@@ -23,7 +23,7 @@ export class AllowedRolesDirective implements OnInit, OnDestroy {
 
   private _authService = inject(AuthenticationService);
 
-  private _roleSubscription: Subscription = new Subscription();
+  private _roleSubscription = new Subscription();
 
   public constructor(
     private _templateRef: TemplateRef<unknown>,

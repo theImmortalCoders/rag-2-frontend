@@ -82,8 +82,8 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
 export class GamePageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
-  private _routerSubscription: Subscription = new Subscription();
-  private _breakpointSubscription: Subscription = new Subscription();
+  private _routerSubscription = new Subscription();
+  private _breakpointSubscription = new Subscription();
   private _previousUrl = '';
 
   public gameName = '';

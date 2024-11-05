@@ -82,8 +82,8 @@ export class RecordedGamesComponent
   private _gameEndpointsService = inject(GameEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _getRecordedGamesSubscription: Subscription = new Subscription();
-  private _getGamesSubscription: Subscription = new Subscription();
+  private _getRecordedGamesSubscription = new Subscription();
+  private _getGamesSubscription = new Subscription();
 
   public avalaibleGamesList: IGameResponse[] = [];
   public recordedGamesData: IRecordedGameResponse[] = [];

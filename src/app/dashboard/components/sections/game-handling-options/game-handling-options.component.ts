@@ -121,10 +121,10 @@ export class GameHandlingOptionsComponent implements OnDestroy {
   private _notificationService = inject(NotificationService);
   private _formBuilder = inject(NonNullableFormBuilder);
 
-  private _getGamesSubscription: Subscription = new Subscription();
-  private _addGameSubscription: Subscription = new Subscription();
-  private _editGameSubscription: Subscription = new Subscription();
-  private _removeGameSubscription: Subscription = new Subscription();
+  private _getGamesSubscription = new Subscription();
+  private _addGameSubscription = new Subscription();
+  private _editGameSubscription = new Subscription();
+  private _removeGameSubscription = new Subscription();
 
   public selectedGameId = 0;
 

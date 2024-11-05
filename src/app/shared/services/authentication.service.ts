@@ -10,7 +10,7 @@ import { IUserResponse } from '../models/user.models';
 export class AuthenticationService implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
 
-  private _getMeSubscription: Subscription = new Subscription();
+  private _getMeSubscription = new Subscription();
 
   private _authStatusSubject = new BehaviorSubject<boolean>(false);
   public authStatus$: Observable<boolean> =
@@ -25,11 +25,9 @@ export class AuthenticationService implements OnDestroy {
       .verifyJWTToken()
       .subscribe((isValid: boolean) => {
         if (isValid) {
-          console.log('true');
           this._authStatusSubject.next(true);
           this.loadCurrentUser();
         } else {
-          console.log('false');
           this._userEndpointsService.logout();
           this._authStatusSubject.next(false);
           this._currentRoleSubject.next(null);

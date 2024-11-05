@@ -136,7 +136,7 @@ export class RegisterFormComponent implements OnDestroy {
   private _notificationService = inject(NotificationService);
 
   private _router: Router = new Router();
-  private _registerSubscription: Subscription = new Subscription();
+  private _registerSubscription = new Subscription();
 
   public isPasswordsMatching: boolean | undefined;
   public errorMessage: string | null = null;

@@ -19,7 +19,7 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
   private _authService = inject(AuthenticationService);
   private _notificationService = inject(NotificationService);
 
-  private _authSubscription: Subscription = new Subscription();
+  private _authSubscription = new Subscription();
 
   public constructor(
     private _templateRef: TemplateRef<unknown>,

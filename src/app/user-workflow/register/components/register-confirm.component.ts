@@ -38,7 +38,7 @@ export class RegisterConfirmComponent implements OnInit, OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
 
   private _token: string | null = null;
-  private _confirmSubscription: Subscription = new Subscription();
+  private _confirmSubscription = new Subscription();
   private _router: Router = new Router();
 
   public actionMessage: string | null = null;

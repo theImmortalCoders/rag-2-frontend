@@ -35,4 +35,5 @@ export interface IUserStatsResponse {
 export interface ILimitsResponse {
   studentLimitMb: number;
   teacherLimitMb: number;
+  adminLimitMb: number;
 }
