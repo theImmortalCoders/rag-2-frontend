@@ -8,7 +8,7 @@ export const guestGuard: CanActivateFn = () => {
   const userEndpointsService = inject(UserEndpointsService);
   const router = inject(Router);
 
-  return userEndpointsService.getMe().pipe(
+  return userEndpointsService.verifyJWTToken().pipe(
     map(response => {
       if (response) {
         return router.parseUrl('/');

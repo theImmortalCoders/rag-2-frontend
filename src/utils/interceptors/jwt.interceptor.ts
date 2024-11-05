@@ -23,10 +23,12 @@ export class JwtInterceptor implements HttpInterceptor {
     if (request.url.includes('refresh-token')) {
       return next.handle(request).pipe(
         catchError(errordata => {
-          this._notificationService.addNotification(
-            'Refresh failed, log in again.',
-            3000
-          );
+          if (localStorage.getItem('jwtToken')) {
+            this._notificationService.addNotification(
+              'Refresh failed, log in again.',
+              3000
+            );
+          }
 
           this._userEndpointsService.logout();
           return throwError(() => errordata);
@@ -36,7 +38,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError(errordata => {
-        if (errordata.status === 401) {
+        if (errordata.status === 401 && localStorage.getItem('jwtToken')) {
           return this.handleRefreshToken(request, next);
         }
         return throwError(() => errordata);

@@ -45,12 +45,10 @@ export class UserEndpointsService {
       })
       .pipe(
         map(() => {
-          console.log('Token verified successfully');
           return true;
         }),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 401) {
-            console.log('Token verification failed with 401');
             return of(false);
           }
           return throwError(() => error);
