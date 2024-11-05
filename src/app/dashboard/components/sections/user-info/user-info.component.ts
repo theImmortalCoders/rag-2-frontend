@@ -23,8 +23,8 @@ import { ProgressCircleBarComponent } from './progress-circle-bar.component';
           class="flex flex-col pl-2 xs:pl-6 text-sm xs:text-base sm:text-xl text-mainOrange">
           <h2>
             Logged in as:
-            <span class="text-mainCreme">
-              {{ aboutMeUserInfo?.role | uppercase }}
+            <span class="text-mainCreme uppercase">
+              {{ aboutMeUserInfo?.role }}
             </span>
           </h2>
           <h2>

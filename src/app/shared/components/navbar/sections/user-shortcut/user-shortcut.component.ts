@@ -23,8 +23,8 @@ import { Subscription } from 'rxjs';
           ? 'right-0 opacity-100 w-48 md:w-52 lg:w-44 xl:w-56 p-3'
           : '-right-20 opacity-0 w-0 overflow-x-hidden p-0'
       }} top-[75px] 2xs:top-[83px] bg-mainGray shadow-userInfoShadow rounded-bl-lg">
-      <span class="text-center text-lightOragne font-bold"
-        >Your role: {{ currentUserRole | uppercase }}</span
+      <span class="text-center text-lightOragne font-bold uppercase"
+        >Your role: {{ currentUserRole }}</span
       >
       <hr class="border-[1px] border-lightOragne" />
       <a
