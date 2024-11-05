@@ -38,6 +38,23 @@ export class UserEndpointsService {
       );
   }
 
+  public verifyJWTToken(): Observable<void> {
+    return this._httpClient
+      .get<void>(environment.backendApiUrl + '/api/User/auth/verify', {
+        responseType: 'json',
+      })
+      .pipe(
+        tap({
+          next: () => {
+            console.log('Token verified successfully');
+          },
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => errorHandler(error));
+        })
+      );
+  }
+
   public login(userLoginRequest: IUserLoginRequest): Observable<string> {
     return this._httpClient
       .post<string>(
@@ -145,6 +162,27 @@ export class UserEndpointsService {
         tap({
           next: () => {
             console.log('Password reseted successfully');
+          },
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => errorHandler(error));
+        })
+      );
+  }
+
+  public refreshToken(): Observable<string> {
+    return this._httpClient
+      .post<string>(
+        environment.backendApiUrl + `/api/User/auth/refresh-token`,
+        {},
+        {
+          responseType: 'text' as 'json',
+        }
+      )
+      .pipe(
+        tap({
+          next: () => {
+            console.log('Token refreshed successfully');
           },
         }),
         catchError((error: HttpErrorResponse) => {

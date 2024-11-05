@@ -4,7 +4,7 @@ import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import { TRole } from 'app/shared/models/role.enum';
-import { IUserResponse } from 'app/shared/models/user.models';
+import { ILimitsResponse, IUserResponse } from 'app/shared/models/user.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -93,6 +93,27 @@ export class AdministrationEndpointsService {
         tap({
           next: () => {
             console.log('Users data retrieved successfully');
+          },
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => errorHandler(error));
+        })
+      );
+  }
+
+  public getStorageLimits(): Observable<ILimitsResponse> {
+    return this._httpClient
+      .get<ILimitsResponse>(
+        environment.backendApiUrl + `/api/Administration/limits`,
+        {
+          responseType: 'json',
+          headers: getAuthHeaders(),
+        }
+      )
+      .pipe(
+        tap({
+          next: () => {
+            console.log('Current storage limits retrieved successfully');
           },
         }),
         catchError((error: HttpErrorResponse) => {

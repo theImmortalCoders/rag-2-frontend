@@ -31,3 +31,8 @@ export interface IUserStatsResponse {
   firstPlayed: string;
   lastPlayed: string;
 }
+
+export interface ILimitsResponse {
+  studentLimitMb: number;
+  teacherLimitMb: number;
+}
