@@ -31,27 +31,26 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     // setTimeout(() => {
-      const errorCounter = localStorage.getItem('errorCounter');
-      this._errorCounter = errorCounter ? parseInt(errorCounter) : 0;
+    const errorCounter = localStorage.getItem('errorCounter');
+    this._errorCounter = errorCounter ? parseInt(errorCounter) : 0;
 
-      this._authSubscription = this._authService.authStatus$.subscribe(
-        isAuthenticated => {
-          console.log(this._errorCounter);
-          if (isAuthenticated) {
-            this._vc.createEmbeddedView(this._templateRef);
-          } else {
-            this._vc.clear();
-            if (this._errorCounter === 0 && !localStorage.getItem('jwtToken')) {
-              this._notificationService.addNotification(
-                'Some functionalities are available only for logged in users'
-              );
-              this._errorCounter++;
-              localStorage.setItem('errorCounter', this._errorCounter.toString());
-            }
+    this._authSubscription = this._authService.authStatus$.subscribe(
+      isAuthenticated => {
+        if (isAuthenticated) {
+          this._vc.createEmbeddedView(this._templateRef);
+        } else {
+          this._vc.clear();
+          if (this._errorCounter === 0 && !localStorage.getItem('jwtToken')) {
+            this._notificationService.addNotification(
+              'Some functionalities are available only for logged in users'
+            );
+            this._errorCounter++;
+            localStorage.setItem('errorCounter', this._errorCounter.toString());
           }
-          this._cdr.detectChanges();
         }
-      );
+        this._cdr.detectChanges();
+      }
+    );
 
     // });
   }
