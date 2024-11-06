@@ -28,6 +28,7 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
     AuthRequiredDirective,
     GameMenuComponent,
     CantDisplayGameComponent,
+    AuthRequiredDirective,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
@@ -36,10 +37,12 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
           <div>
             <div class="absolute top-20 left-0 flex flex-col">
               <app-player-menu
+                *appAuthRequired
                 [players]="game.players"
                 (playerSourceChangeEmitter)="updatePlayers($event)" />
               @if (filterPlayersByActiveAndSocket(game.players).length > 0) {
                 <app-ai-socket-menu
+                  *appAuthRequired
                   [dataToSend]="gameStateData"
                   [gameName]="game.name"
                   [players]="filterPlayersByActiveAndSocket(game.players)"

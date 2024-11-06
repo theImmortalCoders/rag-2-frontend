@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
+import { AuthenticationService } from 'app/shared/services/authentication.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AiSocketService {
+  private _userEndpointsService = inject(UserEndpointsService);
   private _socket!: WebSocket;
   private isSocketConnected = false;
   private _sendingIntervalID: unknown | null = null;
   private isDataSendingActive = false;
   private _dataToSend: TExchangeData = {};
-
   public isDataExchangeDesired = false;
+  
+
   public connect(
     socketUrl: string,
     onOpen: () => void,
@@ -19,19 +23,29 @@ export class AiSocketService {
     onClose: () => void
   ): void {
     try {
-      this._socket = new WebSocket(socketUrl);
-      this._socket.addEventListener('open', () => {
-        this.isSocketConnected = true;
-        onOpen();
-      });
-      this._socket.addEventListener('message', event => {
-        onMessage(event);
-      });
-      this._socket.addEventListener('close', () => {
-        this.stopDataExchange();
-        this.isSocketConnected = false;
-        onClose();
-      });
+      this._userEndpointsService.verifyJWTToken().subscribe({
+        next: (isValid: boolean) => {
+          if (isValid) {
+            const urlWithJwt = `${socketUrl}?jwt=${localStorage.getItem('jwtToken')}`;
+            this._socket = new WebSocket(urlWithJwt);
+            this._socket.addEventListener('open', () => {
+              this.isSocketConnected = true;
+              onOpen();
+            });
+            this._socket.addEventListener('message', event => {
+              onMessage(event);
+            });
+            this._socket.addEventListener('close', () => {
+              this.stopDataExchange();
+              this.isSocketConnected = false;
+              onClose();
+            });
+          }
+        },
+        error: () => {
+          this._userEndpointsService.logout();
+        }
+    });
     } catch (error) {
       this.stopDataExchange();
       this.isSocketConnected = false;
