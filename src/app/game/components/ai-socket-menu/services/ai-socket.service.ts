@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { AuthenticationService } from 'app/shared/services/authentication.service';
@@ -7,17 +7,14 @@ import { AuthenticationService } from 'app/shared/services/authentication.servic
   providedIn: 'root',
 })
 export class AiSocketService {
+  private _userEndpointsService = inject(UserEndpointsService);
   private _socket!: WebSocket;
   private isSocketConnected = false;
   private _sendingIntervalID: unknown | null = null;
   private isDataSendingActive = false;
   private _dataToSend: TExchangeData = {};
   public isDataExchangeDesired = false;
-
-  public constructor(
-    @Inject(UserEndpointsService)
-    private _userEndpointsService: UserEndpointsService
-  ) {}
+  
 
   public connect(
     socketUrl: string,
@@ -26,8 +23,8 @@ export class AiSocketService {
     onClose: () => void
   ): void {
     try {
-      this._userEndpointsService.verifyJWTToken().subscribe(
-        isValid => {
+      this._userEndpointsService.verifyJWTToken().subscribe({
+        next: (isValid: boolean) => {
           if (isValid) {
             const urlWithJwt = `${socketUrl}?jwt=${localStorage.getItem('jwtToken')}`;
             this._socket = new WebSocket(urlWithJwt);
@@ -45,10 +42,10 @@ export class AiSocketService {
             });
           }
         },
-        () => {
+        error: () => {
           this._userEndpointsService.logout();
         }
-      );
+    });
     } catch (error) {
       this.stopDataExchange();
       this.isSocketConnected = false;
