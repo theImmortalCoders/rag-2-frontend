@@ -207,6 +207,7 @@ export class UserEndpointsService {
           next: () => {
             console.log('Logout successfully');
             localStorage.removeItem('jwtToken');
+            localStorage.removeItem('errorCounter');
           },
         }),
         catchError((error: HttpErrorResponse) => {
