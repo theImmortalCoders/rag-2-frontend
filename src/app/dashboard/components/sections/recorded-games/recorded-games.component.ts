@@ -47,10 +47,10 @@ import { NotificationService } from 'app/shared/services/notification.service';
               recordedGame.gameName
             }}</span>
             <span class="flex justify-center w-3/12">{{
-              recordedGame.started | date: 'dd/MM/yyyy, HH:mm'
+              recordedGame.started | date: 'dd/MM/yyyy, HH:mm:ss'
             }}</span>
             <span class="flex justify-center w-3/12">{{
-              recordedGame.ended | date: 'dd/MM/yyyy, HH:mm'
+              recordedGame.ended | date: 'dd/MM/yyyy, HH:mm:ss'
             }}</span>
             <button
               class="flex group justify-center w-1/12"
