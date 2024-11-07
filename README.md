@@ -4,7 +4,7 @@
 
 This project is available under the AGPL License. See [LICENSE](./LICENSE) for more information.
     
-The application is used by the Human-Computer Interaction Scientific Club "GEST" at the Rzeszów University of Technology.
+The application was created as part of the work of the Human-Computer Interaction Scientific Club "GEST" at the Rzeszów University of Technology.
 
 ## Description
 
