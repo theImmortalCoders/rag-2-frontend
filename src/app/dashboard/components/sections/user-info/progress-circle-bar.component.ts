@@ -82,10 +82,6 @@ export class ProgressCircleBarComponent
   }
 
   public ngOnChanges(): void {
-    if (this.usedSpace) {
-      this.usedSpace = Math.min(this.usedSpace, this.totalSpace);
-      this.fillAmount = (this.circumference * this.usedSpace) / this.totalSpace;
-    }
     if (this.storageLimits) {
       switch (this.currentUserRole) {
         case TRole.Admin:
@@ -99,6 +95,12 @@ export class ProgressCircleBarComponent
           break;
         default:
           this.totalSpace = 10.0;
+      }
+
+      if (this.usedSpace) {
+        this.usedSpace = Math.min(this.usedSpace, this.totalSpace);
+        this.fillAmount =
+          (this.circumference * this.usedSpace) / this.totalSpace;
       }
     }
   }
