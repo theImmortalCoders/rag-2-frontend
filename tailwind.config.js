@@ -18,6 +18,10 @@ module.exports = {
         lightOragne: '#FFA559',
         mainCreme: '#FFE6C7',
       },
+      backgroundImage: {
+        homeImageAI: "url('/images/home.jpg')",
+        homeImageUser: "url('/images/user.png')",
+      },
       height: {
         navbar: '80px',
       },
@@ -42,9 +46,9 @@ module.exports = {
         sideMenuShadow: '-5px 7px 25px -7px rgba(93, 93, 93, 1)',
       },
       animation: {
-        typewriter21: 'typewriter 3s steps(21) forwards',
+        typewriter21: 'typewriter 2s steps(21) forwards',
         caret21:
-          'typewriter 3s steps(21) forwards, blink 2s steps(21) infinite 3s',
+          'typewriter 2s steps(21) forwards, blink 2s steps(21) infinite 2s',
       },
       keyframes: {
         typewriter: {

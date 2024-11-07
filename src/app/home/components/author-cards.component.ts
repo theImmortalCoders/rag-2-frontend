@@ -10,7 +10,7 @@ import { NgOptimizedImage } from '@angular/common';
     <div
       class="h-64 2xs:h-72 xs:h-80 xl:h-96 w-64 2xs:w-72 xs:w-80 xl:w-96 absolute transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
-          ? 'opacity-100 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
+          ? 'opacity-95 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
           : 'opacity-0 -right-[50rem]'
       }}">
       <img
