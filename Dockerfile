@@ -1,29 +1,14 @@
-FROM --platform=$BUILDPLATFORM node:20.11.1-bullseye-slim as builder
+FROM node:20.11-alpine AS build
 
-RUN mkdir /project
-WORKDIR /project
+WORKDIR /dist/src/app
 
-RUN npm install -g @angular/cli@18
-
-COPY "package.json" "package-lock.json" ./
-RUN npm ci
+RUN npm cache clean --force
 
 COPY . .
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+RUN npm install
+RUN npm run build --prod
 
-FROM builder as dev-envs
+FROM nginx:latest AS ngi
+COPY --from=build /dist/src/app/dist/rag-2-frontend/browser /usr/share/nginx/html
 
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends git
-EOF
-
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
-
-COPY "/" .
-
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+EXPOSE 80
