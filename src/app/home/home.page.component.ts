@@ -14,18 +14,21 @@ import { AuthorCardsComponent } from './components/author-cards.component';
   selector: 'app-home-page',
   standalone: true,
   imports: [NgOptimizedImage, AuthorCardsComponent],
-  template: ` <div class="flex flex-col w-full bg-mainGray pt-6 xl:pt-14">
-    <div>
+  template: ` <div class="flex flex-col w-full bg-mainGray">
+    <div
+      class="bg-homeImageAI bg-center pb-10 pt-6 xl:pt-14 relative min-h-all border-b-2 border-mainOrange">
       <div
-        class="flex flex-col md:flex-row w-full h-max items-center justify-center md:justify-between lg:justify-evenly text-mainOrange font-mono pb-6">
+        class="absolute top-0 left-0 w-full h-full bg-mainGray opacity-80"></div>
+      <div
+        class="flex flex-col md:flex-row w-full h-max items-center justify-center md:justify-between lg:justify-evenly text-mainCreme font-mono pb-6">
         <div
-          class="flex flex-col space-y-2 2xs:space-y-4 sm:space-y-6 md:space-y-8 mt-4 md:mt-16 pl-0 xs:pl-64 sm:pl-24 md:pl-14 lg:pl-6 pr-0 lg:pr-6 pb-40">
+          class="flex flex-col mt-4 md:mt-16 pl-0 xs:pl-64 sm:pl-24 md:pl-14 lg:pl-6 pr-0 lg:pr-6 pb-40 relative z-50">
           <h1
-            class="text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainGray after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
+            class="text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainCreme after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
             What's going on here?
           </h1>
           <span
-            class="text-sm sm:text-base md:text-lg lg:text-xl text-mainCreme underline"
+            class="text-sm sm:text-base md:text-lg lg:text-xl text-mainCreme"
             >Authors:</span
           >
           <div
@@ -36,10 +39,9 @@ import { AuthorCardsComponent } from './components/author-cards.component';
                 target="_blank"
                 class="{{
                   $index === currentChoosenAuthor.index
-                    ? 'scale-125 opacity-100'
-                    : 'opacity-75'
-                }} ease-in-out transition-all duration-200 size-[90px] xs:size-24 lg:size-28 xl:size-32 bg-center bg-cover rounded-full pt-28 xl:pt-32 flex justify-center text-center text-sm sm:text-base"
-                style="background-image: url('images/user.png');">
+                    ? 'scale-125 opacity-100 font-bold'
+                    : 'opacity-85'
+                }} bg-homeImageUser text-mainOrange text-wrap lg:text-nowrap ease-in-out transition-all duration-200 size-[90px] xs:size-24 lg:size-28 xl:size-32 bg-center bg-cover rounded-full pt-28 xl:pt-32 flex justify-center text-center text-sm sm:text-base">
                 {{ author.name }}
               </button>
             }
@@ -50,7 +52,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
           [currentChoosenAuthor]="currentChoosenAuthor" />
       </div>
       <div
-        class="flex w-full items-end justify-end text-mainCreme font-mono mt-36 2xs:mt-44 sm:mt-40 md:mt-2 xl:mt-10">
+        class="flex w-full items-end justify-end text-mainCreme font-mono mt-36 2xs:mt-44 sm:mt-40 md:mt-2 relative z-50">
         <span
           class="w-[97%] lg:w-11/12 xl:w-3/4 pr-2 border-l-2 border-b-2 pl-2 pb-2 border-mainOrange text-justify text-sm md:text-base lg:text-lg xl:text-xl">
           Explore the world of interactive learning and entertainment with our
@@ -63,10 +65,10 @@ import { AuthorCardsComponent } from './components/author-cards.component';
       </div>
     </div>
     <div
-      class="flex flex-row justify-between mt-10 pl-2 xs:pl-8 md:pl-16 bg-lightGray pt-10 pb-6 md:py-10">
+      class="flex flex-col xs:flex-row items-center justify-center xs:justify-between pl-2 xs:pl-8 md:pl-16 bg-lightGray pt-10 pb-6 md:py-10">
       <div class="flex items-center justify-center pr-6 md:pr-2 lg:pr-0">
         <div
-          class="h-20 2xs:h-24 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-44 2xs:w-52 xs:w-64 sm:w-80 md:w-[30rem] lg:w-[34rem] xl:w-[36rem] relative">
+          class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[30rem] lg:w-[34rem] xl:w-[36rem] relative">
           <img
             ngSrc="images/ai.jpg"
             alt="Logo"
@@ -75,7 +77,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
         </div>
       </div>
       <div
-        class="flex flex-col w-[55%] 2xs:w-2/5 items-start justify-center text-xs 2xs:text-sm xs:text-lg sm:text-2xl md:text-3xl lg:text-4xl space-y-1 md:space-y-5 text-mainOrange border-l-2 border-mainOrange font-mono p-2 md:p-4">
+        class="flex flex-col w-fit xs:w-2/5 items-start justify-center text-lg sm:text-2xl md:text-3xl lg:text-4xl space-y-1 md:space-y-5 text-mainOrange border-l-2 border-mainOrange font-mono p-2 md:p-4 mt-8 xs:mt-0">
         <span>1 different games</span>
         <span>2 gameplays</span>
         <span>3 MB of data</span>
@@ -85,7 +87,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
     <div class="flex w-full items-center justify-start bg-lightGray pb-10">
       <span
         id="animatedElement"
-        class="transform transition-all duration-1000 flex w-full 2xs:w-[97%] xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-[63%] xl:w-[58%] 2xl:w-1/2 h-14 xs:h-20 text-justify items-center justify-center bg-mainOrange text-2xs 2xs:text-xs xs:text-sm sm:text-base lg:text-lg px-2 xs:px-4 sm:px-10 font-mono mt-0 2xs:mt-4 xs:mt-8 sm:mt-16">
+        class="transform transition-all duration-1000 flex w-full 2xs:w-[97%] xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-[63%] xl:w-[58%] 2xl:w-1/2 h-20 text-justify items-center justify-center bg-mainOrange text-sm md:text-base lg:text-lg xl:text-xl px-2 xs:px-4 sm:px-10 font-mono mt-0 2xs:mt-4 xs:mt-8 sm:mt-16">
         Don't wait any longer - join our community and start your adventure with
         interactive learning and entertainment today!
       </span>
