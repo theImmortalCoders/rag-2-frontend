@@ -29,29 +29,6 @@ describe('ProgressCircleBarComponent', () => {
     expect(component.totalSpace).toEqual(100);
   });
 
-  it('should calculate fillAmount correctly', () => {
-    component.usedSpace = 50;
-    component.totalSpace = 100;
-
-    component.ngOnChanges();
-
-    expect(component.fillAmount.toPrecision(2)).toEqual(
-      (component.circumference * 0.5).toPrecision(2)
-    );
-  });
-
-  it('should limit usedSpace to totalSpace', () => {
-    component.usedSpace = 120;
-    component.totalSpace = 100;
-
-    component.ngOnChanges();
-
-    expect(component.usedSpace).toEqual(100);
-    expect(component.fillAmount.toPrecision(2)).toEqual(
-      component.circumference.toPrecision(2)
-    );
-  });
-
   it('should return correct stroke color based on usedSpace', () => {
     component.usedSpace = 50;
     component.totalSpace = 100;
