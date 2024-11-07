@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
+  EventEmitter,
   inject,
   OnDestroy,
   OnInit,
+  Output,
 } from '@angular/core';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
@@ -21,7 +23,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
   template: `
     <h1
       class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
-      User recorded games
+      My recorded games
     </h1>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div class="w-full overflow-x-auto border-mainOrange border-2">
@@ -78,6 +80,8 @@ import { NotificationService } from 'app/shared/services/notification.service';
 export class RecordedGamesComponent
   implements OnInit, OnDestroy, AfterViewChecked
 {
+  @Output() public refreshDataEmitter = new EventEmitter<boolean>(false);
+
   private _gameRecordEndpointsService = inject(GameRecordEndpointsService);
   private _gameEndpointsService = inject(GameEndpointsService);
   private _notificationService = inject(NotificationService);
@@ -152,6 +156,7 @@ export class RecordedGamesComponent
             3000
           );
           this.errorMessage = null;
+          this.refreshDataEmitter.emit(true);
           this.getRecordedGames();
         },
         error: (error: string) => {

@@ -40,7 +40,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
 })
 export class SocketConnectedMenuComponent implements OnInit {
   @Input({ required: true }) public isDataSendingActive = false;
-  @Input({ required: true }) public vSendingInterval = { value: 100 };
+  @Input({ required: true }) public vSendingInterval = { value: 50 };
   @Input({ required: true }) public socket: WebSocket | null = null;
   @Input({ required: true }) public startDataExchange = (
     sendingInterval: number
