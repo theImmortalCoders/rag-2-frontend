@@ -10,7 +10,7 @@ import { IUserResponse } from '../models/user.models';
 export class AuthenticationService implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
 
-  private _getMeSubscription: Subscription | null = null;
+  private _getMeSubscription = new Subscription();
 
   private _authStatusSubject = new BehaviorSubject<boolean>(false);
   public authStatus$: Observable<boolean> =
@@ -21,23 +21,18 @@ export class AuthenticationService implements OnDestroy {
     this._currentRoleSubject.asObservable();
 
   private constructor() {
-    const token = localStorage.getItem('jwtToken');
-    if (token && this.isTokenExpired(token)) {
-      console.log('logout');
-      this._userEndpointsService.logout();
-      this._authStatusSubject.next(false);
-      this._currentRoleSubject.next(null);
-    } else if (token) {
-      this._authStatusSubject.next(true);
-      this.loadCurrentUser();
-    }
-  }
-
-  private isTokenExpired(token: string): boolean {
-    const payloadBase64 = token.split('.')[1];
-    const payload = JSON.parse(atob(payloadBase64));
-    const expiryTime = payload.exp * 1000;
-    return Date.now() > expiryTime;
+    this._userEndpointsService
+      .verifyJWTToken()
+      .subscribe((isValid: boolean) => {
+        if (isValid) {
+          this._authStatusSubject.next(true);
+          this.loadCurrentUser();
+        } else {
+          this._userEndpointsService.logout();
+          this._authStatusSubject.next(false);
+          this._currentRoleSubject.next(null);
+        }
+      });
   }
 
   public loadCurrentUser(): void {
@@ -59,8 +54,6 @@ export class AuthenticationService implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._getMeSubscription) {
-      this._getMeSubscription.unsubscribe();
-    }
+    this._getMeSubscription.unsubscribe();
   }
 }

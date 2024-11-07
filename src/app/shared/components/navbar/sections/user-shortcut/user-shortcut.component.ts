@@ -23,8 +23,8 @@ import { Subscription } from 'rxjs';
           ? 'right-0 opacity-100 w-48 md:w-52 lg:w-44 xl:w-56 p-3'
           : '-right-20 opacity-0 w-0 overflow-x-hidden p-0'
       }} top-[75px] 2xs:top-[83px] bg-mainGray shadow-userInfoShadow rounded-bl-lg">
-      <span class="text-center text-lightOragne font-bold"
-        >Your role: {{ currentUserRole | uppercase }}</span
+      <span class="text-center text-lightOragne font-bold uppercase"
+        >Your role: {{ currentUserRole }}</span
       >
       <hr class="border-[1px] border-lightOragne" />
       <a
@@ -50,9 +50,9 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _authSubscription: Subscription | null = null;
-  private _roleSubscription: Subscription | null = null;
-  private _logoutSubscription: Subscription | null = null;
+  private _authSubscription = new Subscription();
+  private _roleSubscription = new Subscription();
+  private _logoutSubscription = new Subscription();
 
   public isLoggedIn = false;
   public currentUserRole: TRole | null = null;
@@ -97,14 +97,8 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._authSubscription) {
-      this._authSubscription.unsubscribe();
-    }
-    if (this._roleSubscription) {
-      this._roleSubscription.unsubscribe();
-    }
-    if (this._logoutSubscription) {
-      this._logoutSubscription.unsubscribe();
-    }
+    this._authSubscription.unsubscribe();
+    this._roleSubscription.unsubscribe();
+    this._logoutSubscription.unsubscribe();
   }
 }

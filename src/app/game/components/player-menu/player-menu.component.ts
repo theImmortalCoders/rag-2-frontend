@@ -73,6 +73,7 @@ export class PlayerMenuComponent implements OnInit {
     this.players.forEach(player => {
       this.syncPropsWithUrl(player);
     });
+    this.playerSourceChangeEmitter.emit(this.players);
   }
 
   public playerSourceType = Object.keys(PlayerSourceType).filter(key =>

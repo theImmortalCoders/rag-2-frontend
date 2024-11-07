@@ -6,6 +6,7 @@ import {
   IUserStatsResponse,
 } from 'app/shared/models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('UserInfoComponent', () => {
   let component: UserInfoComponent;
@@ -13,7 +14,11 @@ describe('UserInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserInfoComponent, ProgressCircleBarComponent],
+      imports: [
+        UserInfoComponent,
+        ProgressCircleBarComponent,
+        HttpClientTestingModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserInfoComponent);

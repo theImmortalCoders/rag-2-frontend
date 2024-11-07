@@ -1,56 +1,104 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { of, throwError } from 'rxjs';
 import { GameListComponent } from './game-list.component';
-import { Router } from '@angular/router';
-import { By } from '@angular/platform-browser';
+import { GameEndpointsService } from '@endpoints/game-endpoints.service';
+import { IGameResponse } from 'app/shared/models/game.models';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GameListComponent', () => {
   let component: GameListComponent;
   let fixture: ComponentFixture<GameListComponent>;
+  let gameEndpointsServiceSpy: jasmine.SpyObj<GameEndpointsService>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [GameListComponent, RouterTestingModule],
+  const mockGames: IGameResponse[] = [
+    { id: 1, name: 'Game One' },
+    { id: 2, name: 'Game Two' },
+  ];
+
+  beforeEach(waitForAsync(() => {
+    const spy = jasmine.createSpyObj('GameEndpointsService', ['getGames']);
+
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        GameListComponent,
+        HttpClientTestingModule,
+      ],
+      providers: [{ provide: GameEndpointsService, useValue: spy }],
     }).compileComponents();
-  });
+
+    gameEndpointsServiceSpy = TestBed.inject(
+      GameEndpointsService
+    ) as jasmine.SpyObj<GameEndpointsService>;
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GameListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    component.ngOnDestroy();
   });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render a list of games', () => {
-    const listItems = fixture.debugElement.queryAll(By.css('ul li'));
-    expect(listItems.length).toBe(component.games.length + 1); // +1 for the "Read more" item
+  it('should initialize and load games successfully', () => {
+    gameEndpointsServiceSpy.getGames.and.returnValue(of(mockGames));
+
+    fixture.detectChanges();
+
+    expect(component.games).toEqual(mockGames);
+    expect(gameEndpointsServiceSpy.getGames).toHaveBeenCalled();
   });
 
-  it('should have correct router links for each game', () => {
-    const listItems = fixture.debugElement.queryAll(By.css('ul li a'));
-    component.games.forEach((game, index) => {
-      const link = listItems[index].nativeElement as HTMLAnchorElement;
-      const expectedUrl = `/game/${game.url}`;
-      expect(link.getAttribute('href')).toBe(expectedUrl);
-    });
-  });
-
-  it('should display the "Read more about our games..." text', () => {
-    const readMoreItem = fixture.debugElement.query(By.css('ul li:last-child'));
-    expect(readMoreItem.nativeElement.textContent.trim()).toBe(
-      'Read more about our games...'
+  it('should handle error when loading games', () => {
+    gameEndpointsServiceSpy.getGames.and.returnValue(
+      throwError(() => new Error('Failed to load games'))
     );
+
+    fixture.detectChanges();
+
+    expect(component.games).toBeNull();
+    expect(gameEndpointsServiceSpy.getGames).toHaveBeenCalled();
   });
 
-  it('should apply correct CSS classes to game items', () => {
-    const gameItems = fixture.debugElement.queryAll(By.css('ul li a'));
-    gameItems.forEach(item => {
-      expect(item.nativeElement.classList).toContain('flex');
-      expect(item.nativeElement.classList).toContain('flex-row');
-      expect(item.nativeElement.classList).toContain('justify-between');
-    });
+  it('should unsubscribe from getGames on component destruction', () => {
+    gameEndpointsServiceSpy.getGames.and.returnValue(of(mockGames));
+    fixture.detectChanges();
+
+    const unsubscribeSpy = spyOn(
+      component['_getGamesSubscription'],
+      'unsubscribe'
+    ).and.callThrough();
+
+    component.ngOnDestroy();
+
+    expect(unsubscribeSpy).toHaveBeenCalled();
+  });
+
+  it('should render game list when games data is available', () => {
+    gameEndpointsServiceSpy.getGames.and.returnValue(of(mockGames));
+
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const gameItems = compiled.querySelectorAll('li > a');
+
+    expect(gameItems.length).toBe(mockGames.length);
+    expect(gameItems[0].textContent).toContain('Game One');
+    expect(gameItems[1].textContent).toContain('Game Two');
+  });
+
+  it('should display fallback text when no games are available', () => {
+    gameEndpointsServiceSpy.getGames.and.returnValue(of([]));
+
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const fallbackText = compiled.querySelector('li.text-sm')?.textContent;
+
+    expect(fallbackText).toContain('Read more about our games...');
   });
 });

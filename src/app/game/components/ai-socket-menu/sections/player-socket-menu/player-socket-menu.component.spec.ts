@@ -8,6 +8,7 @@ import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-co
 import { AiSocketService } from '../../services/ai-socket.service';
 import { By } from '@angular/platform-browser';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PlayerSocketMenuComponent', () => {
   let component: PlayerSocketMenuComponent;
@@ -22,6 +23,7 @@ describe('PlayerSocketMenuComponent', () => {
         DebugModePanelComponent,
         SocketDomainInputComponent,
         SocketConnectedMenuComponent,
+        HttpClientTestingModule
       ],
       providers: [AiSocketService],
     }).compileComponents();

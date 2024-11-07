@@ -23,8 +23,8 @@ import { ProgressCircleBarComponent } from './progress-circle-bar.component';
           class="flex flex-col pl-2 xs:pl-6 text-sm xs:text-base sm:text-xl text-mainOrange">
           <h2>
             Logged in as:
-            <span class="text-mainCreme">
-              {{ aboutMeUserInfo?.role | uppercase }}
+            <span class="text-mainCreme uppercase">
+              {{ aboutMeUserInfo?.role }}
             </span>
           </h2>
           <h2>
@@ -70,7 +70,7 @@ import { ProgressCircleBarComponent } from './progress-circle-bar.component';
       <app-progress-circle-bar
         class="flex items-center justify-center w-full lg:w-1/3 xl:w-1/4 pr-0 lg:pr-32 pt-8 lg:pt-4"
         [usedSpace]="userStatsInfo?.totalStorageMb"
-        [totalSpace]="10.0" />
+        [currentUserRole]="aboutMeUserInfo?.role" />
     </div>
   `,
 })

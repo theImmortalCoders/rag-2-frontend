@@ -28,6 +28,7 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
     AuthRequiredDirective,
     GameMenuComponent,
     CantDisplayGameComponent,
+    AuthRequiredDirective,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
@@ -36,13 +37,15 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
           <div>
             <div class="absolute top-20 left-0 flex flex-col">
               <app-player-menu
-                [players]="players"
+                *appAuthRequired
+                [players]="game.players"
                 (playerSourceChangeEmitter)="updatePlayers($event)" />
-              @if (filterPlayersByActiveAndSocket(playersSelected).length > 0) {
+              @if (filterPlayersByActiveAndSocket(game.players).length > 0) {
                 <app-ai-socket-menu
+                  *appAuthRequired
                   [dataToSend]="gameStateData"
                   [gameName]="game.name"
-                  [players]="playersSelected"
+                  [players]="filterPlayersByActiveAndSocket(game.players)"
                   (receivedDataEmitter)="receiveSocketInputData($event)"
                   [gamePause]="gamePauseSubject.asObservable()"
                   [gameRestart]="gameRestartSubject.asObservable()" />
@@ -65,7 +68,7 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
                   class="flex flex-col items-center w-3/4"
                   [setSocketInputDataReceive]="socketInputData"
                   (gameStateDataEmitter)="receiveGameOutputData($event)"
-                  [abstractGame]="game"
+                  [setAbstractGame]="game"
                   [gameRestart]="gameRestartSubject.asObservable()"
                   [gamePause]="gamePauseSubject.asObservable()" />
               }
@@ -82,15 +85,13 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
 export class GamePageComponent implements OnInit, OnDestroy {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
-  private _routerSubscription: Subscription | null = null;
-  private _breakpointSubscription: Subscription | null = null;
+  private _routerSubscription = new Subscription();
+  private _breakpointSubscription = new Subscription();
   private _previousUrl = '';
 
   public gameName = '';
-  public game: Game | null = null;
+  public game!: Game;
   public logData: Record<string, TExchangeData> = {};
-  public players: Player[] = [];
-  public playersSelected: Player[] = [];
   public socketInputData: TExchangeData = {};
   public gameStateData: TExchangeData = {};
   public gameRestartSubject = new Subject<void>();
@@ -126,17 +127,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._routerSubscription) {
-      this._routerSubscription.unsubscribe();
-    }
-    if (this._breakpointSubscription) {
-      this._breakpointSubscription.unsubscribe();
-    }
+    this._routerSubscription.unsubscribe();
+    this._breakpointSubscription.unsubscribe();
   }
 
   public updatePlayers(players: Player[]): void {
-    this.players = players;
-    this.playersSelected = this.filterPlayersByActiveAndSocket(players);
+    this.game.players = players;
   }
 
   public filterPlayersByActiveAndSocket(players: Player[]): Player[] {
@@ -153,8 +149,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
       this._router.navigate(['']);
     } else {
       this.game = game;
-      this.players = game.players;
-      this.playersSelected = game.players;
     }
   }
 

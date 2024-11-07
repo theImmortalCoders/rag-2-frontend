@@ -29,7 +29,9 @@ export abstract class BaseGameWindowComponent
 {
   @Input({ required: true }) public gameRestart = new Observable<void>();
   @Input({ required: true }) public gamePause = new Observable<boolean>();
-  @Input({ required: true }) public abstractGame!: Game;
+  @Input({ required: true }) public set setAbstractGame(value: Game) {
+    this.game = value;
+  }
   @Input({ required: true }) public set setSocketInputDataReceive(
     value: TExchangeData
   ) {
@@ -56,14 +58,15 @@ export abstract class BaseGameWindowComponent
   private _deltaTimeAccumulator = 0;
   private _frameCount = 0;
 
+  protected _updateTimeout: ReturnType<typeof setTimeout> | undefined;
   protected isPaused = false;
-  protected game: Game = this.abstractGame;
+  protected game!: Game;
   protected _canvas!: HTMLCanvasElement;
 
   //always call super on override (at top)
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
-      this.restart();
+      setTimeout(() => this.restart());
       console.info('Game restarted');
     });
     this._pauseSubscription = this.gamePause.subscribe(value => {
@@ -77,13 +80,17 @@ export abstract class BaseGameWindowComponent
     this._canvas = this.gameCanvas.canvasElement.nativeElement;
 
     this.update();
-    this.restart();
+    setTimeout(() => this.restart());
   }
 
   //always call super on override (at top)
   public ngOnDestroy(): void {
     this._restartSubscription.unsubscribe();
     this._pauseSubscription.unsubscribe();
+
+    if (this._updateTimeout) {
+      clearTimeout(this._updateTimeout);
+    }
   }
 
   //always call super on override (at top)
@@ -98,7 +105,10 @@ export abstract class BaseGameWindowComponent
   protected update(): void {
     this.calculateFPS();
 
-    setTimeout(() => this.update(), 1000 / this._fpsLimit);
+    this._updateTimeout = setTimeout(
+      () => this.update(),
+      1000 / this._fpsLimit
+    );
   }
 
   //

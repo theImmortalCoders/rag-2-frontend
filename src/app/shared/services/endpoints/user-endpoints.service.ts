@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from '@env/environment';
 import {
   IUserLoginRequest,
@@ -34,6 +34,24 @@ export class UserEndpointsService {
         }),
         catchError((error: HttpErrorResponse) => {
           return throwError(() => errorHandler(error));
+        })
+      );
+  }
+
+  public verifyJWTToken(): Observable<boolean> {
+    return this._httpClient
+      .get<void>(environment.backendApiUrl + '/api/User/auth/verify', {
+        responseType: 'json',
+      })
+      .pipe(
+        map(() => {
+          return true;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401) {
+            return of(false);
+          }
+          return throwError(() => error);
         })
       );
   }
@@ -153,6 +171,27 @@ export class UserEndpointsService {
       );
   }
 
+  public refreshToken(): Observable<string> {
+    return this._httpClient
+      .post<string>(
+        environment.backendApiUrl + `/api/User/auth/refresh-token`,
+        {},
+        {
+          responseType: 'text' as 'json',
+        }
+      )
+      .pipe(
+        tap({
+          next: () => {
+            // console.log('Token refreshed successfully');
+          },
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => errorHandler(error));
+        })
+      );
+  }
+
   public logout(): Observable<void> {
     return this._httpClient
       .post<void>(
@@ -168,6 +207,7 @@ export class UserEndpointsService {
           next: () => {
             console.log('Logout successfully');
             localStorage.removeItem('jwtToken');
+            localStorage.removeItem('errorCounter');
           },
         }),
         catchError((error: HttpErrorResponse) => {

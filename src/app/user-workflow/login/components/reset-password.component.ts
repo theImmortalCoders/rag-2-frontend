@@ -66,7 +66,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
 
   private _token: string | null = null;
-  private _resetPasswordSubscription: Subscription | null = null;
+  private _resetPasswordSubscription = new Subscription();
   private _router: Router = new Router();
 
   public resetPasswordForm = this._formBuilder.group({
@@ -104,8 +104,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._resetPasswordSubscription) {
-      this._resetPasswordSubscription.unsubscribe();
-    }
+    this._resetPasswordSubscription.unsubscribe();
   }
 }

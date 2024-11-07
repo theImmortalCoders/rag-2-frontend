@@ -1,4 +1,15 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
+import { TRole } from 'app/shared/models/role.enum';
+import { ILimitsResponse } from 'app/shared/models/user.models';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-progress-circle-bar',
@@ -40,18 +51,57 @@ import { Component, Input, OnChanges } from '@angular/core';
     </div>
   `,
 })
-export class ProgressCircleBarComponent implements OnChanges {
+export class ProgressCircleBarComponent
+  implements OnChanges, OnInit, OnDestroy
+{
   @Input({ required: true }) public usedSpace!: number | undefined;
-  @Input({ required: true }) public totalSpace!: number;
+  @Input({ required: true }) public currentUserRole!: TRole | undefined;
+
+  private _adminEndpointsService = inject(AdministrationEndpointsService);
+
+  private _storageLimitSubscription = new Subscription();
+
+  public storageLimits: ILimitsResponse | null = null;
+  public totalSpace = 10.0;
 
   public radius = 28;
   public circumference = 2 * Math.PI * this.radius;
   public fillAmount = 0;
 
+  public ngOnInit(): void {
+    this._storageLimitSubscription = this._adminEndpointsService
+      .getStorageLimits()
+      .subscribe({
+        next: (response: ILimitsResponse) => {
+          this.storageLimits = response;
+        },
+        error: () => {
+          this.storageLimits = null;
+        },
+      });
+  }
+
   public ngOnChanges(): void {
-    if (this.usedSpace) {
-      this.usedSpace = Math.min(this.usedSpace, this.totalSpace);
-      this.fillAmount = (this.circumference * this.usedSpace) / this.totalSpace;
+    if (this.storageLimits) {
+      switch (this.currentUserRole) {
+        case TRole.Admin:
+          this.totalSpace = this.storageLimits.adminLimitMb;
+          break;
+        case TRole.Teacher:
+          this.totalSpace = this.storageLimits.teacherLimitMb;
+          break;
+        case TRole.Student:
+          this.totalSpace = this.storageLimits.studentLimitMb;
+          break;
+        default:
+          this.totalSpace = 10.0;
+      }
+
+      if (this.usedSpace) {
+        this.usedSpace = Math.min(this.usedSpace, this.totalSpace);
+        this.fillAmount =
+          (this.circumference * this.usedSpace) / this.totalSpace;
+      }
     }
   }
 
@@ -66,5 +116,9 @@ export class ProgressCircleBarComponent implements OnChanges {
       return `rgb(${r}, ${g}, ${b})`;
     }
     return `rgb(0, 255, 0)`;
+  }
+
+  public ngOnDestroy(): void {
+    this._storageLimitSubscription.unsubscribe();
   }
 }

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProgressCircleBarComponent } from './progress-circle-bar.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ProgressCircleBarComponent', () => {
   let component: ProgressCircleBarComponent;
@@ -7,7 +8,7 @@ describe('ProgressCircleBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProgressCircleBarComponent],
+      imports: [ProgressCircleBarComponent, HttpClientTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProgressCircleBarComponent);
@@ -15,56 +16,33 @@ describe('ProgressCircleBarComponent', () => {
   });
 
   it('should create the component', () => {
-    expect(component).toBeTruthy(); // Sprawdza, czy komponent został poprawnie utworzony.
+    expect(component).toBeTruthy();
   });
 
   it('should set usedSpace and totalSpace correctly', () => {
-    component.usedSpace = 20; // Ustawienie używanej przestrzeni
-    component.totalSpace = 100; // Ustawienie całkowitej przestrzeni
+    component.usedSpace = 20;
+    component.totalSpace = 100;
 
-    fixture.detectChanges(); // Wykonaj detekcję zmian
+    fixture.detectChanges();
 
-    expect(component.usedSpace).toEqual(20); // Sprawdzenie używanej przestrzeni
-    expect(component.totalSpace).toEqual(100); // Sprawdzenie całkowitej przestrzeni
-  });
-
-  it('should calculate fillAmount correctly', () => {
-    component.usedSpace = 50; // Używana przestrzeń
-    component.totalSpace = 100; // Całkowita przestrzeń
-
-    component.ngOnChanges(); // Wywołanie metody cyklu życia
-
-    expect(component.fillAmount.toPrecision(2)).toEqual(
-      (component.circumference * 0.5).toPrecision(2)
-    ); // Sprawdzenie poprawności fillAmount
-  });
-
-  it('should limit usedSpace to totalSpace', () => {
-    component.usedSpace = 120; // Używana przestrzeń przekraczająca całkowitą
-    component.totalSpace = 100; // Całkowita przestrzeń
-
-    component.ngOnChanges(); // Wywołanie metody cyklu życia
-
-    expect(component.usedSpace).toEqual(100); // Używana przestrzeń powinna być ograniczona do wartości całkowitej
-    expect(component.fillAmount.toPrecision(2)).toEqual(
-      component.circumference.toPrecision(2)
-    ); // Fill amount powinien być równy obwodowi
+    expect(component.usedSpace).toEqual(20);
+    expect(component.totalSpace).toEqual(100);
   });
 
   it('should return correct stroke color based on usedSpace', () => {
-    component.usedSpace = 50; // Używana przestrzeń
-    component.totalSpace = 100; // Całkowita przestrzeń
+    component.usedSpace = 50;
+    component.totalSpace = 100;
 
-    const strokeColor = component.getStrokeColor(); // Pobranie koloru obramowania
+    const strokeColor = component.getStrokeColor();
 
-    expect(strokeColor).toEqual('rgb(128, 128, 0)'); // Oczekiwany kolor na podstawie obliczeń
+    expect(strokeColor).toEqual('rgb(128, 128, 0)');
   });
 
   it('should return default stroke color when usedSpace is undefined', () => {
-    component.usedSpace = undefined; // Używana przestrzeń jako undefined
+    component.usedSpace = undefined;
 
-    const strokeColor = component.getStrokeColor(); // Pobranie koloru obramowania
+    const strokeColor = component.getStrokeColor();
 
-    expect(strokeColor).toEqual('rgb(0, 255, 0)'); // Oczekiwany domyślny kolor
+    expect(strokeColor).toEqual('rgb(0, 255, 0)');
   });
 });

@@ -12,11 +12,17 @@ import { TRole } from 'app/shared/models/role.enum';
 import { CommonModule } from '@angular/common';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { SelectedUserInfoComponent } from './selected-user-info.component';
+import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
 
 @Component({
   selector: 'app-admin-settings',
   standalone: true,
-  imports: [ModalComponent, CommonModule, SelectedUserInfoComponent],
+  imports: [
+    ModalComponent,
+    CommonModule,
+    SelectedUserInfoComponent,
+    AllowedRolesDirective,
+  ],
   template: `
     <h1
       class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
@@ -24,9 +30,10 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
     </h1>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
-      class="flex flex-col xs:flex-row justify-around gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-4 sm:space-x-8 w-full">
+      class="flex flex-col xs:flex-row justify-between gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-4 sm:space-x-8 w-full">
       <button
         type="button"
+        *appAllowedRoles="allowedRolesAdmin"
         (click)="banUnbanUserModal()"
         class="dashboard-button group">
         <span>Ban/unban some user</span>
@@ -34,6 +41,7 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
       </button>
       <button
         type="button"
+        *appAllowedRoles="allowedRolesAdmin"
         (click)="changeUserRoleModal()"
         class="dashboard-button group">
         <span>Change role of some user</span>
@@ -113,7 +121,6 @@ import { SelectedUserInfoComponent } from './selected-user-info.component';
                 <option value="Student">Student</option>
                 <option value="Teacher">Teacher</option>
                 <option value="Admin">Admin</option>
-                <option value="Special">Special</option>
               </select>
             </div>
           } @else if (
@@ -153,10 +160,10 @@ export class AdminSettingsComponent implements OnDestroy {
   private _statsEndpointsService = inject(StatsEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _getUsersSubscription: Subscription | null = null;
-  private _getUserStatsSubscription: Subscription | null = null;
-  private _changeBanStatusSubscription: Subscription | null = null;
-  private _changeRoleSubscription: Subscription | null = null;
+  private _getUsersSubscription = new Subscription();
+  private _getUserStatsSubscription = new Subscription();
+  private _changeBanStatusSubscription = new Subscription();
+  private _changeRoleSubscription = new Subscription();
 
   public usersList: IUserResponse[] | null = null;
   public selectedUserData: IUserResponse | null = null;
@@ -164,6 +171,7 @@ export class AdminSettingsComponent implements OnDestroy {
   public isBanned = false;
   public newUserRole: TRole = TRole.Student;
   public errorMessage: string | null = null;
+  public allowedRolesAdmin: TRole[] = [TRole.Admin];
 
   public modalVisibility:
     | 'banUnbanUser'
@@ -311,17 +319,9 @@ export class AdminSettingsComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._getUsersSubscription) {
-      this._getUsersSubscription.unsubscribe();
-    }
-    if (this._changeBanStatusSubscription) {
-      this._changeBanStatusSubscription.unsubscribe();
-    }
-    if (this._changeRoleSubscription) {
-      this._changeRoleSubscription.unsubscribe();
-    }
-    if (this._getUserStatsSubscription) {
-      this._getUserStatsSubscription.unsubscribe();
-    }
+    this._getUsersSubscription.unsubscribe();
+    this._changeBanStatusSubscription.unsubscribe();
+    this._changeRoleSubscription.unsubscribe();
+    this._getUserStatsSubscription.unsubscribe();
   }
 }

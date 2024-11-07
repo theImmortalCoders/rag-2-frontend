@@ -2,7 +2,7 @@ import { TGameState } from '@gameModels/game-state.type';
 import { Game } from '@gameModels/game.class';
 import { Player } from '@gameModels/player.class';
 
-class PongState implements TGameState {
+export class PongState implements TGameState {
   public leftPaddleY = 0;
   public rightPaddleY = 0;
   public leftPaddleSpeed = 0;

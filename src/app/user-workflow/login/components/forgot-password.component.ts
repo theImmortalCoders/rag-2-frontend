@@ -55,7 +55,7 @@ export class ForgotPasswordComponent implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _forgotPasswordSubscription: Subscription | null = null;
+  private _forgotPasswordSubscription = new Subscription();
 
   public shouldShowInput = false;
   public resendMessage = '';
@@ -85,8 +85,6 @@ export class ForgotPasswordComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._forgotPasswordSubscription) {
-      this._forgotPasswordSubscription.unsubscribe();
-    }
+    this._forgotPasswordSubscription.unsubscribe();
   }
 }

@@ -1,5 +1,11 @@
 # RAG-2 frontend
 
+## License
+
+This project is available under the AGPL License. See [LICENSE](./LICENSE) for more information.
+    
+The application was created as part of the work of the Human-Computer Interaction Scientific Club "GEST" at the Rzeszów University of Technology.
+
 ## Description
 
 Application with web minigames prepared to collect game data and connect AI models to game agents via websocket.

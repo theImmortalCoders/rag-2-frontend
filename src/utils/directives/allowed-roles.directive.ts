@@ -23,7 +23,7 @@ export class AllowedRolesDirective implements OnInit, OnDestroy {
 
   private _authService = inject(AuthenticationService);
 
-  private _roleSubscription: Subscription | null = null;
+  private _roleSubscription = new Subscription();
 
   public constructor(
     private _templateRef: TemplateRef<unknown>,
@@ -41,8 +41,6 @@ export class AllowedRolesDirective implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    if (this._roleSubscription) {
-      this._roleSubscription.unsubscribe();
-    }
+    this._roleSubscription.unsubscribe();
   }
 }

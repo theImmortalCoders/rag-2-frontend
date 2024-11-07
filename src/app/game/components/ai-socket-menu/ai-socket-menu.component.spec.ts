@@ -5,6 +5,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Player } from '@gameModels/player.class';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @Component({
   selector: 'app-player-socket-menu',
@@ -23,7 +24,7 @@ describe('AiSocketMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AiSocketMenuComponent],
+      imports: [AiSocketMenuComponent, HttpClientTestingModule],
       declarations: [MockPlayerSocketMenuComponent],
     }).compileComponents();
   });

@@ -10,7 +10,7 @@ import { NgOptimizedImage } from '@angular/common';
     <div
       class="h-64 2xs:h-72 xs:h-80 xl:h-96 w-64 2xs:w-72 xs:w-80 xl:w-96 absolute transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
-          ? 'opacity-100 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
+          ? 'opacity-95 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
           : 'opacity-0 -right-[50rem]'
       }}">
       <img
@@ -22,9 +22,9 @@ import { NgOptimizedImage } from '@angular/common';
     </div>
     @for (author of authors; track author.name) {
       <div
-        class="author-card flex flex-col space-y-1 2xs:space-y-2 w-[85%] xs:w-3/4 md:w-[130%] lg:w-[120%] 2xl:w-full h-fit bg-mainCreme text-mainGray rounded-xl py-3 2xs:py-4 px-4 2xs:px-5 lg:p-6 absolute transition-all ease-in-out duration-300 {{
+        class="author-card flex flex-col space-y-1 2xs:space-y-2 w-[85%] xs:w-3/4 md:w-[130%] lg:w-[120%] h-fit bg-mainCreme text-mainGray rounded-xl py-3 2xs:py-4 px-4 2xs:px-5 lg:p-6 absolute transition-all ease-in-out duration-300 {{
           currentChoosenAuthor.index === $index
-            ? 'opacity-100 right-[7.5%] xs:right-[12.5%] md:right-[7%] lg:-right-[5%] 2xl:right-[10%]'
+            ? 'opacity-100 right-[7.5%] xs:right-[12.5%] md:right-[7%] lg:-right-[5%]'
             : 'opacity-0 -right-[50rem]'
         }}">
         <h1 class="text-xl 2xs:text-2xl lg:text-3xl xl:text-4xl font-bold">
@@ -44,7 +44,7 @@ import { NgOptimizedImage } from '@angular/common';
             <span
               class="flex flex-row items-center space-x-2 text-2xs 2xs:text-xs lg:text-sm xl:text-base"
               ><i data-feather="circle" class="size-2 text-mainGray"></i>
-              <p>{{ stackItem }}</p></span
+              <p class="w-full">{{ stackItem }}</p></span
             >
           }
         </div>

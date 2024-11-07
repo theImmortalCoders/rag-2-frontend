@@ -1,7 +1,7 @@
 import {
+  ChangeDetectorRef,
   Directive,
   inject,
-  Input,
   OnDestroy,
   OnInit,
   TemplateRef,
@@ -19,37 +19,43 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
   private _authService = inject(AuthenticationService);
   private _notificationService = inject(NotificationService);
 
-  private _authSubscription: Subscription | null = null;
+  private _authSubscription = new Subscription();
 
   public constructor(
     private _templateRef: TemplateRef<unknown>,
-    private _vc: ViewContainerRef
+    private _vc: ViewContainerRef,
+    private _cdr: ChangeDetectorRef
   ) {}
 
-  private _errorCounter = 0;
+  private _errorCounter!: number;
 
   public ngOnInit(): void {
+    // setTimeout(() => {
+    const errorCounter = localStorage.getItem('errorCounter');
+    this._errorCounter = errorCounter ? parseInt(errorCounter) : 0;
+
     this._authSubscription = this._authService.authStatus$.subscribe(
       isAuthenticated => {
         if (isAuthenticated) {
           this._vc.createEmbeddedView(this._templateRef);
-          this._errorCounter = 0;
         } else {
           this._vc.clear();
-          if (this._errorCounter === 0) {
+          if (this._errorCounter === 0 && !localStorage.getItem('jwtToken')) {
             this._notificationService.addNotification(
               'Some functionalities are available only for logged in users'
             );
+            this._errorCounter++;
+            localStorage.setItem('errorCounter', this._errorCounter.toString());
           }
-          this._errorCounter++;
         }
+        this._cdr.detectChanges();
       }
     );
+
+    // });
   }
 
   public ngOnDestroy(): void {
-    if (this._authSubscription) {
-      this._authSubscription.unsubscribe();
-    }
+    this._authSubscription.unsubscribe();
   }
 }

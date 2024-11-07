@@ -8,7 +8,7 @@ import { GameHandlingOptionsComponent } from './game-handling-options.component'
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { IGameResponse } from 'app/shared/models/game.models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -92,17 +92,6 @@ describe('GameHandlingOptionsComponent', () => {
 
     expect(component.modalVisibility).toBe('addNewGame');
     expect(component.errorMessage).toBeNull();
-  }));
-
-  it('should handle error when adding a new game', fakeAsync(() => {
-    component.modalVisibility = 'addNewGame';
-    component.gameHandlingForm.controls.newGameName.setValue('New Game');
-
-    mockGameEndpointsService.addGame.and.returnValue(
-      throwError(() => new Error('Error adding game'))
-    );
-    component.addNewGameFunction();
-    tick();
   }));
 
   it('should edit an existing game and show notification', fakeAsync(() => {

@@ -18,7 +18,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
   template: `
     <h1
       class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
-      User account settings
+      My account settings
     </h1>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
@@ -124,8 +124,8 @@ export class UserAccountSettingsComponent implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
 
-  private _changePasswordSubscribtion: Subscription = new Subscription();
-  private _deleteAccountSubscribtion: Subscription = new Subscription();
+  private _changePasswordSubscribtion = new Subscription();
+  private _deleteAccountSubscribtion = new Subscription();
 
   public changePasswordForm = this._formBuilder.group({
     oldPassword: ['', [Validators.required, Validators.minLength(8)]],

@@ -17,12 +17,18 @@ describe('DashboardPageComponent', () => {
   let statsEndpointsService: jasmine.SpyObj<StatsEndpointsService>;
 
   beforeEach(async () => {
+    // Dodajemy `verifyJWTToken` z wartością domyślną jako Observable<boolean>
     userEndpointsService = jasmine.createSpyObj('UserEndpointsService', [
       'getMe',
+      'verifyJWTToken',
+      'logout',
     ]);
     statsEndpointsService = jasmine.createSpyObj('StatsEndpointsService', [
       'getUserStats',
     ]);
+
+    // Ustawiamy verifyJWTToken, aby zwracał Observable true jako wartość domyślną
+    userEndpointsService.verifyJWTToken.and.returnValue(of(true));
 
     await TestBed.configureTestingModule({
       imports: [DashboardPageComponent, HttpClientTestingModule],

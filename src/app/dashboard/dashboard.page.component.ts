@@ -42,14 +42,16 @@ import { TRole } from 'app/shared/models/role.enum';
       [aboutMeUserInfo]="aboutMeUserInfo"
       [userStatsInfo]="userStatsInfo"
       class="flex flex-row justify-stretch w-full" />
-    <app-recorded-games class="flex flex-col px-10" />
-    <div class="flex flex-row flex-wrap justify-between gap-y-8 sm:gap-y-12">
+    <app-recorded-games
+      class="flex flex-col px-10"
+      (refreshDataEmitter)="isRefreshNeeded($event)" />
+    <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
       <app-user-account-settings class="flex flex-col px-10 w-full sm:w-fit" />
       <app-game-handling-options
-        *appAllowedRoles="allowedRoles"
+        *appAllowedRoles="allowedRolesAdmin"
         class="flex flex-col px-10 w-full sm:w-fit" />
       <app-admin-settings
-        *appAllowedRoles="allowedRoles"
+        *appAllowedRoles="allowedRolesAdminTeacher"
         class="flex flex-col px-10  w-full sm:w-fit" />
     </div>
   </div>`,
@@ -60,13 +62,14 @@ export class DashboardPageComponent
   private _userEndpointsService = inject(UserEndpointsService);
   private _statsEndpointsService = inject(StatsEndpointsService);
 
-  private _getMeSubscription: Subscription = new Subscription();
-  private _getUserStatsSubscription: Subscription = new Subscription();
+  private _getMeSubscription = new Subscription();
+  private _getUserStatsSubscription = new Subscription();
 
   public aboutMeUserInfo: IUserResponse | null = null;
   public userStatsInfo: IUserStatsResponse | null = null;
 
-  public allowedRoles: TRole[] = [TRole.Admin];
+  public allowedRolesAdmin: TRole[] = [TRole.Admin];
+  public allowedRolesAdminTeacher: TRole[] = [TRole.Admin, TRole.Teacher];
 
   public ngOnInit(): void {
     this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
@@ -95,6 +98,12 @@ export class DashboardPageComponent
           this.userStatsInfo = null;
         },
       });
+  }
+
+  public isRefreshNeeded(isRefreshNeeded: boolean): void {
+    if (isRefreshNeeded && this.aboutMeUserInfo) {
+      this.getUserStats(this.aboutMeUserInfo.id);
+    }
   }
 
   public ngOnDestroy(): void {
