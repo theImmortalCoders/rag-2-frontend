@@ -14,17 +14,17 @@ import { AuthorCardsComponent } from './components/author-cards.component';
   selector: 'app-home-page',
   standalone: true,
   imports: [NgOptimizedImage, AuthorCardsComponent],
-  template: ` <div class="flex flex-col w-full bg-mainGray pt-6 xl:pt-14">
-    <div>
+  template: ` <div class="flex flex-col w-full bg-mainGray">
+    <div class="bg-red-500 pb-10 pt-6 xl:pt-14">
       <div
         class="flex flex-col md:flex-row w-full h-max items-center justify-center md:justify-between lg:justify-evenly text-mainOrange font-mono pb-6">
         <div
-          class="flex flex-col space-y-2 2xs:space-y-4 sm:space-y-6 md:space-y-8 mt-4 md:mt-16 pl-0 xs:pl-64 sm:pl-24 md:pl-14 lg:pl-6 pr-0 lg:pr-6 pb-40">
+          class="flex flex-col mt-4 md:mt-16 pl-0 xs:pl-64 sm:pl-24 md:pl-14 lg:pl-6 pr-0 lg:pr-6 pb-20">
           <h1
             class="text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainGray after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
             What's going on here?
           </h1>
-          <span
+          <!-- <span
             class="text-sm sm:text-base md:text-lg lg:text-xl text-mainCreme underline"
             >Authors:</span
           >
@@ -43,11 +43,11 @@ import { AuthorCardsComponent } from './components/author-cards.component';
                 {{ author.name }}
               </button>
             }
-          </div>
+          </div> -->
         </div>
-        <app-author-cards
+        <!-- <app-author-cards
           class="flex w-full pt-24 md:pt-0 md:w-1/3 items-center justify-center relative"
-          [currentChoosenAuthor]="currentChoosenAuthor" />
+          [currentChoosenAuthor]="currentChoosenAuthor" /> -->
       </div>
       <div
         class="flex w-full items-end justify-end text-mainCreme font-mono mt-36 2xs:mt-44 sm:mt-40 md:mt-2 xl:mt-10">
@@ -63,7 +63,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
       </div>
     </div>
     <div
-      class="flex flex-row justify-between mt-10 pl-2 xs:pl-8 md:pl-16 bg-lightGray pt-10 pb-6 md:py-10">
+      class="flex flex-row justify-between pl-2 xs:pl-8 md:pl-16 bg-lightGray pt-10 pb-6 md:py-10">
       <div class="flex items-center justify-center pr-6 md:pr-2 lg:pr-0">
         <div
           class="h-20 2xs:h-24 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-44 2xs:w-52 xs:w-64 sm:w-80 md:w-[30rem] lg:w-[34rem] xl:w-[36rem] relative">
