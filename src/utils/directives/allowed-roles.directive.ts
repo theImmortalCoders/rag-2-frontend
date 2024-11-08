@@ -8,7 +8,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { TRole } from '../../app/shared/models/role.enum';
-import { AuthenticationService } from '../../app/shared/services/authentication.service';
+import { AppStatusService } from '../../app/shared/services/app-status.service';
 import { Subscription } from 'rxjs';
 @Directive({
   selector: '[appAllowedRoles]',
@@ -21,7 +21,7 @@ export class AllowedRolesDirective implements OnInit, OnDestroy {
   //public allowedRoles: TRole[] = [TRole.Admin];
   @Input({ required: true }) public appAllowedRoles: TRole[] = [];
 
-  private _authService = inject(AuthenticationService);
+  private _appStatusService = inject(AppStatusService);
 
   private _roleSubscription = new Subscription();
 
@@ -31,13 +31,15 @@ export class AllowedRolesDirective implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this._roleSubscription = this._authService.currentRole$.subscribe(role => {
-      if (role && this.appAllowedRoles.includes(role)) {
-        this._vc.createEmbeddedView(this._templateRef);
-      } else {
-        this._vc.clear();
+    this._roleSubscription = this._appStatusService.currentRole$.subscribe(
+      role => {
+        if (role && this.appAllowedRoles.includes(role)) {
+          this._vc.createEmbeddedView(this._templateRef);
+        } else {
+          this._vc.clear();
+        }
       }
-    });
+    );
   }
 
   public ngOnDestroy(): void {

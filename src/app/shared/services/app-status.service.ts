@@ -7,7 +7,7 @@ import { IUserResponse } from '../models/user.models';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthenticationService implements OnDestroy {
+export class AppStatusService implements OnDestroy {
   private _userEndpointsService = inject(UserEndpointsService);
 
   private _getMeSubscription = new Subscription();

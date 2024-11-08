@@ -7,7 +7,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { AuthenticationService } from '../../app/shared/services/authentication.service';
+import { AppStatusService } from '../../app/shared/services/app-status.service';
 import { Subscription } from 'rxjs';
 import { NotificationService } from 'app/shared/services/notification.service';
 
@@ -16,7 +16,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
   standalone: true,
 })
 export class AuthRequiredDirective implements OnInit, OnDestroy {
-  private _authService = inject(AuthenticationService);
+  private _appStatusService = inject(AppStatusService);
   private _notificationService = inject(NotificationService);
 
   private _authSubscription = new Subscription();
@@ -30,11 +30,10 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
   private _errorCounter!: number;
 
   public ngOnInit(): void {
-    // setTimeout(() => {
     const errorCounter = localStorage.getItem('errorCounter');
     this._errorCounter = errorCounter ? parseInt(errorCounter) : 0;
 
-    this._authSubscription = this._authService.authStatus$.subscribe(
+    this._authSubscription = this._appStatusService.authStatus$.subscribe(
       isAuthenticated => {
         if (isAuthenticated) {
           this._vc.createEmbeddedView(this._templateRef);
@@ -51,8 +50,6 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
         this._cdr.detectChanges();
       }
     );
-
-    // });
   }
 
   public ngOnDestroy(): void {

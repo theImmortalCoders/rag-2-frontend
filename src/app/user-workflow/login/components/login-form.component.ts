@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { NotificationService } from 'app/shared/services/notification.service';
-import { AuthenticationService } from 'app/shared/services/authentication.service';
+import { AppStatusService } from 'app/shared/services/app-status.service';
 
 @Component({
   selector: 'app-login-form',
@@ -90,7 +90,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
-  private _authService = inject(AuthenticationService);
+  private _appStatusService = inject(AppStatusService);
   private _router: Router = new Router();
 
   private _loginSubscription = new Subscription();
@@ -136,7 +136,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         .login(userLoginRequest)
         .subscribe({
           next: () => {
-            this._authService.setAuthStatus(true);
+            this._appStatusService.setAuthStatus(true);
             this.errorMessage = null;
             this.saveEmailToHistory(formValues.email);
             this._notificationService.addNotification(
@@ -146,7 +146,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
             this._router.navigate(['/']);
           },
           error: (error: string) => {
-            this._authService.setAuthStatus(false);
+            this._appStatusService.setAuthStatus(false);
             this.errorMessage = error;
           },
         });

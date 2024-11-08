@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
-import { AuthenticationService } from 'app/shared/services/authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +13,6 @@ export class AiSocketService {
   private isDataSendingActive = false;
   private _dataToSend: TExchangeData = {};
   public isDataExchangeDesired = false;
-  
 
   public connect(
     socketUrl: string,
@@ -44,8 +42,8 @@ export class AiSocketService {
         },
         error: () => {
           this._userEndpointsService.logout();
-        }
-    });
+        },
+      });
     } catch (error) {
       this.stopDataExchange();
       this.isSocketConnected = false;
