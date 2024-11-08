@@ -17,14 +17,25 @@ import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
 import { SocketListService } from '../../services/socket-list.service';
+import { ModelSelectionComponent } from '../model-selection/model-selection.component';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
   standalone: true,
-  imports: [SocketDomainInputComponent, SocketConnectedMenuComponent],
+  imports: [
+    SocketDomainInputComponent,
+    SocketConnectedMenuComponent,
+    ModelSelectionComponent,
+  ],
   providers: [AiSocketService],
   template: `
     <div class="flex flex-col w-full">
+      <app-model-selection
+        class="mb-2"
+        [isDisabled]="isConnected ? true : false"
+        [gameName]="gameName"
+        (socketDomainEmitter)="socketUrl = $event" />
+      <span>Or type custom model address:</span>
       <app-socket-domain-input
         class="mb-2"
         [isDisabled]="isConnected ? true : false"
