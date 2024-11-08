@@ -34,7 +34,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
           <span class="flex justify-center w-2/12">Game name</span>
           <span class="flex justify-center w-3/12">Game start date</span>
           <span class="flex justify-center w-3/12">Game end date</span>
-          <span class="flex justify-center w-1/12">File size</span>
+          <span class="flex justify-center w-1/12">Size</span>
           <span class="flex justify-center w-1/12">Download</span>
           <span class="flex justify-center w-1/12">Delete</span>
         </div>
