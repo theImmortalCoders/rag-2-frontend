@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AiSocketService {
-  private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
   private _socket!: WebSocket;
   private isSocketConnected = false;
   private _sendingIntervalID: unknown | null = null;
@@ -21,7 +21,7 @@ export class AiSocketService {
     onClose: () => void
   ): void {
     try {
-      this._userEndpointsService.verifyJWTToken().subscribe({
+      this._authEndpointsService.verifyJWTToken().subscribe({
         next: (isValid: boolean) => {
           if (isValid) {
             const urlWithJwt = `${socketUrl}?jwt=${localStorage.getItem('jwtToken')}`;
@@ -41,7 +41,7 @@ export class AiSocketService {
           }
         },
         error: () => {
-          this._userEndpointsService.logout();
+          this._authEndpointsService.logout();
         },
       });
     } catch (error) {

@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { AppStatusService } from 'app/shared/services/app-status.service';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 
 @Component({
   selector: 'app-login-form',
@@ -89,6 +90,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
   private _notificationService = inject(NotificationService);
   private _appStatusService = inject(AppStatusService);
   private _router: Router = new Router();
@@ -132,7 +134,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
         email: formValues.email,
         password: formValues.password,
       };
-      this._loginSubscription = this._userEndpointsService
+      this._loginSubscription = this._authEndpointsService
         .login(userLoginRequest)
         .subscribe({
           next: () => {

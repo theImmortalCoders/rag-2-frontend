@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import { TRole } from 'app/shared/models/role.enum';
 import { AppStatusService } from 'app/shared/services/app-status.service';
 import { NotificationService } from 'app/shared/services/notification.service';
@@ -47,7 +47,7 @@ import { Subscription } from 'rxjs';
 export class UserShortcutComponent implements OnInit, OnDestroy {
   private _appStatusService = inject(AppStatusService);
   private _router = inject(Router);
-  private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
   private _notificationService = inject(NotificationService);
 
   private _authSubscription = new Subscription();
@@ -82,7 +82,7 @@ export class UserShortcutComponent implements OnInit, OnDestroy {
 
   public logoutButtonClick(): void {
     if (this.isLoggedIn && this.currentUserRole !== null) {
-      this._logoutSubscription = this._userEndpointsService.logout().subscribe({
+      this._logoutSubscription = this._authEndpointsService.logout().subscribe({
         next: () => {
           this._router.navigate(['/']);
           this._notificationService.addNotification(

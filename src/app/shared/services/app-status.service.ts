@@ -1,14 +1,14 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import { TRole } from '../models/role.enum';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { IUserResponse } from '../models/user.models';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppStatusService implements OnDestroy {
-  private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
 
   private _getMeSubscription = new Subscription();
 
@@ -21,14 +21,14 @@ export class AppStatusService implements OnDestroy {
     this._currentRoleSubject.asObservable();
 
   private constructor() {
-    this._userEndpointsService
+    this._authEndpointsService
       .verifyJWTToken()
       .subscribe((isValid: boolean) => {
         if (isValid) {
           this._authStatusSubject.next(true);
           this.loadCurrentUser();
         } else {
-          this._userEndpointsService.logout();
+          this._authEndpointsService.logout();
           this._authStatusSubject.next(false);
           this._currentRoleSubject.next(null);
         }
@@ -36,7 +36,7 @@ export class AppStatusService implements OnDestroy {
   }
 
   public loadCurrentUser(): void {
-    this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
+    this._getMeSubscription = this._authEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
         this._currentRoleSubject.next(response.role);
       },

@@ -1,14 +1,14 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 export const authGuard: CanActivateFn = () => {
-  const userEndpointsService = inject(UserEndpointsService);
+  const authEndpointsService = inject(AuthEndpointsService);
   const router = inject(Router);
 
-  return userEndpointsService.verifyJWTToken().pipe(
+  return authEndpointsService.verifyJWTToken().pipe(
     map(response => {
       if (response) {
         return true;
