@@ -27,6 +27,7 @@ import { SocketListService } from '../../services/socket-list.service';
     <div class="flex flex-col w-full">
       <app-socket-domain-input
         class="mb-2"
+        [isDisabled]="isConnected ? true : false"
         [initialValue]="socketUrl"
         [gameName]="gameName"
         (socketDomainEmitter)="socketUrl = $event"
@@ -78,6 +79,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   private _restartSubscription = new Subscription();
   private _pageVisibilitySubscription = new Subscription();
 
+  public isConnected = false;
   public dataToSend: TExchangeData = {};
   public socketUrl = '';
   public aiSocketService = inject(AiSocketService);
@@ -104,7 +106,6 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         );
       }
     });
-
     this._pageVisibilitySubscription = this._pageVisibilityService
       .getVisibilityState()
       .subscribe(isVisible => {
@@ -121,7 +122,6 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
 
     this.syncPropsWithUrl();
   }
-
   public ngOnDestroy(): void {
     this.aiSocketService.stopDataExchange();
     this._pauseSubscription.unsubscribe();
@@ -130,7 +130,6 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
     this._socketListService.clearList();
     this.canNotConnect = false;
   }
-
   public onConnectButtonClick(): void {
     if (this._socketListService.getSocketList().includes(this.socketUrl)) {
       this.canNotConnect = true;
@@ -142,6 +141,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this.saveRecentPhrase(this.socketUrl);
         this._socketListService.addToList(this.socketUrl);
         this.canNotConnect = false;
+        this.isConnected = true;
       },
       (event: MessageEvent<string>) => {
         this.emitSocketInput(JSON.parse(event.data));
@@ -149,9 +149,9 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       () => {
         this._socketListService.removeFromList(this.socketUrl);
         this.canNotConnect = false;
+        this.isConnected = false;
       }
     );
-
     this._urlParamService.setQueryParam(
       'player-' + this.player.id + '-socketUrl',
       this.socketUrl

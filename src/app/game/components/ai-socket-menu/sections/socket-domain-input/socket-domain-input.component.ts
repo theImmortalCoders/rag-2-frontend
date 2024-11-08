@@ -11,6 +11,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
       placeholder="localhost:8001"
       type="text"
       [value]="initialValue"
+      [attr.disabled]="isDisabled ? true : null"
       (change)="socketDomainEmitter.emit(socketDomain.value)"
       list="recentPhrases" />
     <datalist id="recentPhrases">
@@ -24,6 +25,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class SocketDomainInputComponent implements OnInit {
   @Input({ required: true }) public gameName = '';
   @Input() public initialValue = '';
+  @Input() public isDisabled = false;
   @Output() public socketDomainEmitter = new EventEmitter<string>();
   @Output() public recentPhrasesEmitter = new EventEmitter<string[]>();
 

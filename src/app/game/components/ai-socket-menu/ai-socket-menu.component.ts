@@ -1,9 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
-import { SocketDomainInputComponent } from './sections/socket-domain-input/socket-domain-input.component';
-import { SocketConnectedMenuComponent } from './sections/socket-connected-menu/socket-connected-menu.component';
-import { DebugModeMenuComponent } from './sections/debug-mode-menu/debug-mode-menu.component';
-import { DebugModePanelComponent } from './sections/debug-mode-panel/debug-mode-panel.component';
 import { Player } from '@gameModels/player.class';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { PlayerSocketMenuComponent } from './sections/player-socket-menu/player-socket-menu.component';
@@ -12,13 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'app-ai-socket-menu',
   standalone: true,
-  imports: [
-    SocketDomainInputComponent,
-    SocketConnectedMenuComponent,
-    DebugModeMenuComponent,
-    DebugModePanelComponent,
-    PlayerSocketMenuComponent,
-  ],
+  imports: [PlayerSocketMenuComponent],
   template: `
     <button
       (click)="toggleAISocketMenu()"
