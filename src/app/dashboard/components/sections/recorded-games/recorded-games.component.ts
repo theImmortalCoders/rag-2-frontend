@@ -53,7 +53,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
             <span class="flex justify-center w-3/12">{{
               recordedGame.ended | date: 'dd/MM/yyyy, HH:mm:ss'
             }}</span>
-            <span class="flex justify-center w-1/12"
+            <span class="flex justify-center w-1/12 text-nowrap"
               >{{ recordedGame.sizeMb.toPrecision(2) }} MB</span
             >
             <button
