@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import * as feather from 'feather-icons';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import {
   IUserResponse,
   IUserStatsResponse,
@@ -59,7 +59,7 @@ import { TRole } from 'app/shared/models/role.enum';
 export class DashboardPageComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
-  private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
   private _statsEndpointsService = inject(StatsEndpointsService);
 
   private _getMeSubscription = new Subscription();
@@ -72,7 +72,7 @@ export class DashboardPageComponent
   public allowedRolesAdminTeacher: TRole[] = [TRole.Admin, TRole.Teacher];
 
   public ngOnInit(): void {
-    this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
+    this._getMeSubscription = this._authEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
         this.aboutMeUserInfo = response;
         this.getUserStats(this.aboutMeUserInfo.id);

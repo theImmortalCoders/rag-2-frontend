@@ -13,4 +13,5 @@ export interface IGameStatsResponse {
   totalStorageMb: number;
   firstPlayed: string;
   lastPlayed: string;
+  statsUpdatedDate: string;
 }

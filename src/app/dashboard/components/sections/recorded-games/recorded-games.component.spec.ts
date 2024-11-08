@@ -63,6 +63,7 @@ describe('RecordedGamesComponent', () => {
         endState: {},
         outputSpec: '',
         players: [],
+        sizeMb: 2,
       },
     ];
     mockGameEndpointsService.getGames.and.returnValue(of(mockGames));

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardPageComponent } from './dashboard.page.component';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { of, throwError } from 'rxjs';
 import {
@@ -9,32 +8,31 @@ import {
 } from 'app/shared/models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 
 describe('DashboardPageComponent', () => {
   let component: DashboardPageComponent;
   let fixture: ComponentFixture<DashboardPageComponent>;
-  let userEndpointsService: jasmine.SpyObj<UserEndpointsService>;
   let statsEndpointsService: jasmine.SpyObj<StatsEndpointsService>;
+  let authEndpointsService: jasmine.SpyObj<AuthEndpointsService>;
 
   beforeEach(async () => {
-    // Dodajemy `verifyJWTToken` z wartością domyślną jako Observable<boolean>
-    userEndpointsService = jasmine.createSpyObj('UserEndpointsService', [
-      'getMe',
-      'verifyJWTToken',
-      'logout',
-    ]);
     statsEndpointsService = jasmine.createSpyObj('StatsEndpointsService', [
       'getUserStats',
     ]);
+    authEndpointsService = jasmine.createSpyObj('StatsEndpointsService', [
+      'verifyJWTToken',
+      'getMe',
+      'logout',
+    ]);
 
-    // Ustawiamy verifyJWTToken, aby zwracał Observable true jako wartość domyślną
-    userEndpointsService.verifyJWTToken.and.returnValue(of(true));
+    authEndpointsService.verifyJWTToken.and.returnValue(of(true));
 
     await TestBed.configureTestingModule({
       imports: [DashboardPageComponent, HttpClientTestingModule],
       providers: [
-        { provide: UserEndpointsService, useValue: userEndpointsService },
         { provide: StatsEndpointsService, useValue: statsEndpointsService },
+        { provide: AuthEndpointsService, useValue: authEndpointsService },
       ],
     }).compileComponents();
 
@@ -60,7 +58,7 @@ describe('DashboardPageComponent', () => {
       };
 
       // Mock the getMe method to return a valid user response
-      userEndpointsService.getMe.and.returnValue(of(userResponse));
+      authEndpointsService.getMe.and.returnValue(of(userResponse));
 
       const userStatsResponse: IUserStatsResponse = {
         games: 15,
@@ -86,7 +84,7 @@ describe('DashboardPageComponent', () => {
 
     it('should handle error from getMe', () => {
       // Mock getMe to throw an error
-      userEndpointsService.getMe.and.returnValue(throwError('error'));
+      authEndpointsService.getMe.and.returnValue(throwError('error'));
 
       component.ngOnInit();
 
@@ -105,7 +103,7 @@ describe('DashboardPageComponent', () => {
         banned: false,
       };
 
-      userEndpointsService.getMe.and.returnValue(of(userResponse));
+      authEndpointsService.getMe.and.returnValue(of(userResponse));
       statsEndpointsService.getUserStats.and.returnValue(throwError('error'));
 
       component.ngOnInit(); // This triggers the call to getUserStats
