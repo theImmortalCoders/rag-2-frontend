@@ -36,7 +36,7 @@ export class AuthEndpointsService {
   public login(userLoginRequest: IUserLoginRequest): Observable<string> {
     return this._httpClient
       .post<string>(
-        environment.backendApiUrl + '/api/Authlogin',
+        environment.backendApiUrl + '/api/Auth/login',
         userLoginRequest,
         {
           responseType: 'text' as 'json',

@@ -34,6 +34,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
           <span class="flex justify-center w-2/12">Game name</span>
           <span class="flex justify-center w-3/12">Game start date</span>
           <span class="flex justify-center w-3/12">Game end date</span>
+          <span class="flex justify-center w-1/12">File size</span>
           <span class="flex justify-center w-1/12">Download</span>
           <span class="flex justify-center w-1/12">Delete</span>
         </div>
@@ -52,6 +53,9 @@ import { NotificationService } from 'app/shared/services/notification.service';
             <span class="flex justify-center w-3/12">{{
               recordedGame.ended | date: 'dd/MM/yyyy, HH:mm:ss'
             }}</span>
+            <span class="flex justify-center w-1/12"
+              >{{ recordedGame.sizeMb.toPrecision(2) }} MB</span
+            >
             <button
               class="flex group justify-center w-1/12"
               (click)="downloadGameRecord(recordedGame.id)">

@@ -8,6 +8,7 @@ export interface IRecordedGameResponse {
   ended: string;
   outputSpec: string;
   endState: TExchangeData;
+  sizeMb: number;
 }
 
 export interface IRecordedGameRequest {
