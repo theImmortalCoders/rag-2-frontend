@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -13,7 +12,6 @@ import {
   IUserStatsResponse,
 } from 'app/shared/models/user.models';
 import { Subscription } from 'rxjs';
-import { ProgressCircleBarComponent } from './components/sections/user-info/progress-circle-bar.component';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { UserInfoComponent } from './components/sections/user-info/user-info.component';
 import { UserAccountSettingsComponent } from './components/sections/user-account-settings/user-account-settings.component';
@@ -27,8 +25,6 @@ import { TRole } from 'app/shared/models/role.enum';
   selector: 'app-dashboard-page',
   standalone: true,
   imports: [
-    CommonModule,
-    ProgressCircleBarComponent,
     UserInfoComponent,
     UserAccountSettingsComponent,
     GameHandlingOptionsComponent,
