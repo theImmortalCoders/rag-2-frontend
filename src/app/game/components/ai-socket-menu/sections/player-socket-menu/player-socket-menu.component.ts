@@ -3,8 +3,6 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Player } from '@gameModels/player.class';
 import { DebugModeMenuComponent } from '../debug-mode-menu/debug-mode-menu.component';
 import { DebugModePanelComponent } from '../debug-mode-panel/debug-mode-panel.component';
-import { SocketDomainInputComponent } from '../socket-domain-input/socket-domain-input.component';
-import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-connected-menu.component';
 import { PlayerSocketConnectionMenuComponent } from '../player-socket-connection-menu/player-socket-connection-menu.component';
 import { Observable } from 'rxjs';
 
@@ -14,13 +12,13 @@ import { Observable } from 'rxjs';
   imports: [
     DebugModeMenuComponent,
     DebugModePanelComponent,
-    SocketDomainInputComponent,
-    SocketConnectedMenuComponent,
     PlayerSocketConnectionMenuComponent,
   ],
 
   template: `
-    {{ player.name }}
+    <h3 class="text-mainOrange text-lg font-bold uppercase">
+      {{ player.name }}
+    </h3>
     <app-debug-mode-menu (debugModeEmitter)="isDebugModeActive = $event" />
     @if (isDebugModeActive) {
       <app-debug-mode-panel

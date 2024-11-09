@@ -6,7 +6,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   imports: [],
   template: `
     <input
-      class="custom-input w-52 my-2"
+      class="custom-input w-52 mt-1 mb-2 {{
+        isDisabled ? 'opacity-40' : 'opacity-100'
+      }}"
       #socketDomain
       placeholder="localhost:8001"
       type="text"

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   Component,
   EventEmitter,
@@ -35,7 +36,7 @@ import { ModelSelectionComponent } from '../model-selection/model-selection.comp
         [isDisabled]="isConnected ? true : false"
         [gameName]="gameName"
         (socketDomainEmitter)="socketUrl = $event" />
-      <span>Or type custom model address:</span>
+      <span class="text-mainCreme font-bold">Custom model address:</span>
       <app-socket-domain-input
         class="mb-2"
         [isDisabled]="isConnected ? true : false"
@@ -43,9 +44,17 @@ import { ModelSelectionComponent } from '../model-selection/model-selection.comp
         [gameName]="gameName"
         (socketDomainEmitter)="socketUrl = $event"
         (recentPhrasesEmitter)="recentPhrases = $event" />
-      <span class="text-mainCreme w-full text-start mb-2">{{
-        aiSocketService.getIsSocketConnected() ? 'Connected' : 'Disconnected'
-      }}</span>
+      <span class="text-mainOrange font-bold">STATUS:</span>
+      <span
+        class="w-full text-start mb-2 {{
+          aiSocketService.getIsSocketConnected()
+            ? 'text-green-500'
+            : 'text-red-500'
+        }}"
+        >{{
+          aiSocketService.getIsSocketConnected() ? 'Connected' : 'Disconnected'
+        }}</span
+      >
       @if (aiSocketService.getIsSocketConnected()) {
         <app-socket-connected-menu
           [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"

@@ -12,7 +12,7 @@ import { Observable, Subscription } from 'rxjs';
   template: `
     <button
       (click)="toggleAISocketMenu()"
-      class="side-menu-left-button top-60 w-12 h-56 {{
+      class="side-menu-left-button top-60 w-12 h-64 {{
         isAISocketMenuVisible ? 'left-64' : 'left-0'
       }}">
       <span
@@ -21,7 +21,7 @@ import { Observable, Subscription } from 'rxjs';
       >
     </button>
     <div
-      class="w-64 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-60 {{
+      class="w-64 h-64 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-60 {{
         isAISocketMenuVisible ? 'left-0' : '-left-64'
       }}">
       <div class="flex flex-col space-y-8">
@@ -30,6 +30,7 @@ import { Observable, Subscription } from 'rxjs';
             player.isActive && player.playerType === playerSourceType.SOCKET
           ) {
             <app-player-socket-menu
+              class="flex flex-col"
               [player]="player"
               [gameName]="gameName"
               [dataToSend]="dataToSend"

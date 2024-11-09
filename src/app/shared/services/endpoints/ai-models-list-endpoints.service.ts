@@ -12,7 +12,7 @@ export class AiModelsListEndpointsService {
 
   public getAiModelsList(gameName: string): Observable<IAiModel[]> {
     return this._httpClient
-      .get<IAiModel[]>(environment.aiApiUrl + '/ws/' + gameName + '/routess/')
+      .get<IAiModel[]>(environment.aiApiUrl + '/ws/' + gameName + '/routes/')
       .pipe(
         tap({
           next: () => {
