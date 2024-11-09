@@ -3,6 +3,7 @@ import {
   EventEmitter,
   inject,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
@@ -25,10 +26,10 @@ import { Subscription } from 'rxjs';
         }}">
         @for (model of availableModels; track $index) {
           <button
-            class="p-[2px] w-full rounded-md font-bold text-mainGray bg-mainCreme {{
-              isDisabled ? '' : 'hover:text-mainCreme hover:bg-mainGray'
-            }} ease-in-out transition-all duration-200"
-            (click)="socketDomainEmitter.emit(aiModelServiceUrl + model.path)">
+            class="p-[2px] w-full rounded-md font-bold text-mainGray bg-mainCreme ease-in-out transition-all duration-200 {{
+              selectedModelIndex === $index ? 'border-4 border-green-500' : ''
+            }} {{ isDisabled ? '' : 'hover:text-mainCreme hover:bg-mainGray' }}"
+            (click)="selectPreparedModel(model, $index)">
             {{ model.name }}
           </button>
         }
@@ -36,9 +37,10 @@ import { Subscription } from 'rxjs';
     </fieldset>
   `,
 })
-export class ModelSelectionComponent implements OnInit, OnDestroy {
+export class ModelSelectionComponent implements OnInit, OnDestroy, OnChanges {
   @Input({ required: true }) public isDisabled!: boolean;
   @Input({ required: true }) public gameName!: string;
+  @Input({ required: true }) public currentSocketDomain!: string;
 
   @Output() public socketDomainEmitter = new EventEmitter<string>();
 
@@ -48,6 +50,8 @@ export class ModelSelectionComponent implements OnInit, OnDestroy {
 
   public availableModels: IAiModel[] = [];
   public aiModelServiceUrl = environment.aiApiUrl;
+  public selectedModelIndex = -1;
+  public selectedModel: IAiModel | null = null;
 
   public ngOnInit(): void {
     this._getModelListSubscribtion = this._aiModelsListEndpointsService
@@ -55,6 +59,32 @@ export class ModelSelectionComponent implements OnInit, OnDestroy {
       .subscribe(models => {
         this.availableModels = models;
       });
+  }
+
+  public ngOnChanges(): void {
+    if (this.currentSocketDomain && this.selectedModel?.path) {
+      if (
+        this.currentSocketDomain !==
+        this.aiModelServiceUrl + this.selectedModel.path
+      ) {
+        this.selectedModelIndex = -1;
+        this.selectedModel = null;
+      }
+    }
+  }
+
+  public selectPreparedModel(model: IAiModel, modelIndex: number): void {
+    if (!this.isDisabled) {
+      if (this.selectedModelIndex !== modelIndex) {
+        this.selectedModelIndex = modelIndex;
+        this.selectedModel = model;
+        this.socketDomainEmitter.emit(this.aiModelServiceUrl + model.path);
+      } else {
+        this.selectedModelIndex = -1;
+        this.selectedModel = null;
+        this.socketDomainEmitter.emit('');
+      }
+    }
   }
 
   public ngOnDestroy(): void {

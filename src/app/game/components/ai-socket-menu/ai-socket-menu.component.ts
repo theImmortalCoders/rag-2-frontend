@@ -13,7 +13,7 @@ import { Observable, Subscription } from 'rxjs';
     <button
       (click)="toggleAISocketMenu()"
       class="side-menu-left-button top-60 w-12 h-64 {{
-        isAISocketMenuVisible ? 'left-64' : 'left-0'
+        isAISocketMenuVisible ? 'left-72' : 'left-0'
       }}">
       <span
         class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.325em]"
@@ -21,8 +21,8 @@ import { Observable, Subscription } from 'rxjs';
       >
     </button>
     <div
-      class="w-64 h-64 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-60 {{
-        isAISocketMenuVisible ? 'left-0' : '-left-64'
+      class="w-72 h-64 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-60 {{
+        isAISocketMenuVisible ? 'left-0' : '-left-72'
       }}">
       <div class="flex flex-col space-y-8">
         @for (player of players; track player.id) {

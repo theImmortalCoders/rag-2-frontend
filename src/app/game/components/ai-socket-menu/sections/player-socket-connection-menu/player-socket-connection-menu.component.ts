@@ -35,6 +35,7 @@ import { ModelSelectionComponent } from '../model-selection/model-selection.comp
         class="mb-2"
         [isDisabled]="isConnected ? true : false"
         [gameName]="gameName"
+        [currentSocketDomain]="socketUrl"
         (socketDomainEmitter)="socketUrl = $event" />
       <span class="text-mainCreme font-bold">Custom model address:</span>
       <app-socket-domain-input

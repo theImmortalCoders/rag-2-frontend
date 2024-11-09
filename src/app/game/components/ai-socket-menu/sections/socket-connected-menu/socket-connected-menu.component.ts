@@ -8,20 +8,21 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
   template: `
     <button
       (click)="socket?.close()"
-      class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
+      class="my-2 border-b-[1px] border-mainOrange w-full text-center font-black">
       Disconnect
     </button>
     @if (isDataSendingActive) {
       <button
         (click)="stopDataExchange()"
-        class="mt-4 text-center text-red-500 font-bold border-red-500 border-[1px]">
+        class="w-full mt-4 text-center text-red-500 hover:text-lightGray ease-in-out duration-200 transition-all font-bold bg-lightGray hover:bg-red-500 border-red-500 border-[1px] p-1">
         Stop data exchange
       </button>
     } @else {
+      <span class="text-mainCreme font-bold">Type sending interval:</span>
       <input
         type="number"
         #sendingIntervalInput
-        class="custom-input w-52 mb-2"
+        class="custom-input w-52 my-2"
         min="10"
         max="1000"
         step="10"
@@ -30,9 +31,11 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       <button
         [attr.disabled]="isPaused ? 'disabled' : null"
         (click)="startDataExchange(vSendingInterval.value)"
-        class="mt-4 text-center {{
-          !isPaused ? 'text-green-500 font-bold border-green-500' : ''
-        }}  border-[1px]">
+        class="w-full mt-2 text-center {{
+          !isPaused
+            ? 'text-green-500 hover:text-lightGray font-bold border-green-500 bg-lightGray hover:bg-green-500 ease-in-out duration-200 transition-all'
+            : ''
+        }}  border-[1px] p-1">
         Start data exchange
       </button>
     }

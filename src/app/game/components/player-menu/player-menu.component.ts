@@ -18,7 +18,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
     <button
       (click)="togglePlayerMenu()"
       class="side-menu-left-button top-0 w-12 h-56 {{
-        isPlayerMenuVisible ? 'left-64' : 'left-0'
+        isPlayerMenuVisible ? 'left-72' : 'left-0'
       }}">
       <span
         class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.45em]"
@@ -26,8 +26,8 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       >
     </button>
     <div
-      class="w-64 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
-        isPlayerMenuVisible ? 'left-0' : '-left-64'
+      class="w-72 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
+        isPlayerMenuVisible ? 'left-0' : '-left-72'
       }}">
       @for (player of players; track player.id) {
         <div class="flex flex-col space-y-1 pb-2">
@@ -35,7 +35,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
           <span>Select player source:</span>
           <select
             #playerSourceSelect
-            class="custom-input w-40"
+            class="custom-input w-full"
             [attr.disabled]="!player.isActive ? 'disabled' : null"
             (change)="updateSources(player, playerSourceSelect.value)">
             @for (source of playerSourceType; track source) {

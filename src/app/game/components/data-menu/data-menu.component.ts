@@ -13,7 +13,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
   template: `
     <button
       (click)="toggleDataMenu()"
-      class="side-menu-right-button top-40 w-12 h-64 {{
+      class="side-menu-right-button top-40 w-12 h-72 {{
         isDataMenuVisible ? 'right-72' : 'right-0'
       }}">
       <span
@@ -22,7 +22,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       >
     </button>
     <div
-      class="w-72 h-64 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-40 {{
+      class="w-72 h-72 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-40 {{
         isDataMenuVisible ? 'right-0' : '-right-72'
       }}">
       <span class="font-black">Select data to persist:</span>
