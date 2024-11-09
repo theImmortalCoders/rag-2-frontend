@@ -8,16 +8,17 @@ The application was created as part of the work of the Human-Computer Interactio
 
 ## Description
 
-Application with web minigames prepared to collect game data and connect AI models to game agents via websocket.
+Application with web minigames prepared to collect game data and connect AI models to game agents via websocket. 
 
 ## Features
 
 - Game data collecting and saving
 - Real-time websocket connection with custom AI models
 - Real-time game data preview in built-in console
-- Users management with storage limits 
+- Users management with storage limits
+- Data and account management in the dashboard
 
-## Tech stack with versions
+## Tech stack
 
 - TypeScript 5.4
 - Angular 18.0
