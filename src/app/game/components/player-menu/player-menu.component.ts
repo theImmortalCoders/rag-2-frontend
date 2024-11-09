@@ -31,8 +31,10 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       }}">
       @for (player of players; track player.id) {
         <div class="flex flex-col space-y-1 pb-2">
-          <span class="font-black">{{ player.name }}</span>
-          <span>Select player source:</span>
+          <span class="text-mainOrange text-lg font-bold uppercase">{{
+            player.name
+          }}</span>
+          <span class="text-mainCreme font-bold">Select player source:</span>
           <select
             #playerSourceSelect
             class="custom-input w-full"

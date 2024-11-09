@@ -14,7 +14,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
     @if (isDataSendingActive) {
       <button
         (click)="stopDataExchange()"
-        class="w-full mt-4 text-center text-red-500 hover:text-lightGray ease-in-out duration-200 transition-all font-bold bg-lightGray hover:bg-red-500 border-red-500 border-[1px] p-1">
+        class="w-full mt-4 text-center text-red-500 hover:text-mainCreme ease-in-out duration-200 transition-all font-bold bg-lightGray hover:bg-red-500 border-red-500 border-[1px] p-1">
         Stop data exchange
       </button>
     } @else {
@@ -33,7 +33,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
         (click)="startDataExchange(vSendingInterval.value)"
         class="w-full mt-2 text-center {{
           !isPaused
-            ? 'text-green-500 hover:text-lightGray font-bold border-green-500 bg-lightGray hover:bg-green-500 ease-in-out duration-200 transition-all'
+            ? 'text-green-500 hover:text-mainCreme font-bold border-green-500 bg-lightGray hover:bg-green-500 ease-in-out duration-200 transition-all'
             : ''
         }}  border-[1px] p-1">
         Start data exchange

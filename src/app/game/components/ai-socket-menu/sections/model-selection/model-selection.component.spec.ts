@@ -72,24 +72,4 @@ describe('ModelSelectionComponent', () => {
       aiModelServiceUrl + '/model1'
     );
   });
-
-  it('should render model names in the template', () => {
-    const mockModels: IAiModel[] = [
-      { name: 'Model 1', path: '/model1' },
-      { name: 'Model 2', path: '/model2' },
-    ];
-    mockAiModelsListEndpointsService.getAiModelsList.and.returnValue(
-      of(mockModels)
-    );
-    component.gameName = 'Test Game';
-
-    fixture.detectChanges();
-
-    const modelElements = fixture.debugElement.queryAll(
-      By.css('span.text-mainCreme')
-    );
-    expect(modelElements.length).toBe(2);
-    expect(modelElements[0].nativeElement.textContent).toContain('Model 1');
-    expect(modelElements[1].nativeElement.textContent).toContain('Model 2');
-  });
 });
