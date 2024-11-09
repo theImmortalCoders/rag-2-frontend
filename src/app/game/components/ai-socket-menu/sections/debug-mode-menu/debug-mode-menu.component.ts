@@ -8,7 +8,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
     <input
       type="checkbox"
       #debugCheckbox
-      class="mb-2 mr-2"
+      class="mb-2 mr-2 mt-1"
       (change)="onDebugModeChange(debugCheckbox.checked)" />
     <span class="font-bold w-3/4">Debug Mode</span>
   `,

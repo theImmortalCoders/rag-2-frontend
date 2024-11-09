@@ -6,13 +6,16 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   imports: [],
   template: `
     <input
-      class="custom-input w-52 my-2"
+      class="custom-input w-full mt-1 mb-2 {{
+        isDisabled ? 'opacity-40' : 'opacity-100'
+      }}"
       #socketDomain
       placeholder="localhost:8001"
       type="text"
       [value]="initialValue"
       [attr.disabled]="isDisabled ? true : null"
       (change)="socketDomainEmitter.emit(socketDomain.value)"
+      (keyup)="socketDomainEmitter.emit(socketDomain.value)"
       list="recentPhrases" />
     <datalist id="recentPhrases">
       @for (phrase of recentPhrases; track phrase) {

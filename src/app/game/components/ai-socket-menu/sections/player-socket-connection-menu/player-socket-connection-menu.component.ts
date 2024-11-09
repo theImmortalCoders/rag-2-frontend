@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   Component,
   EventEmitter,
@@ -17,14 +18,26 @@ import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
 import { SocketListService } from '../../services/socket-list.service';
+import { ModelSelectionComponent } from '../model-selection/model-selection.component';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
   standalone: true,
-  imports: [SocketDomainInputComponent, SocketConnectedMenuComponent],
+  imports: [
+    SocketDomainInputComponent,
+    SocketConnectedMenuComponent,
+    ModelSelectionComponent,
+  ],
   providers: [AiSocketService],
   template: `
     <div class="flex flex-col w-full">
+      <app-model-selection
+        class="mb-2"
+        [isDisabled]="isConnected ? true : false"
+        [gameName]="gameName"
+        [currentSocketDomain]="socketUrl"
+        (socketDomainEmitter)="socketUrl = $event" />
+      <span class="text-mainCreme font-bold">Custom model address:</span>
       <app-socket-domain-input
         class="mb-2"
         [isDisabled]="isConnected ? true : false"
@@ -32,9 +45,17 @@ import { SocketListService } from '../../services/socket-list.service';
         [gameName]="gameName"
         (socketDomainEmitter)="socketUrl = $event"
         (recentPhrasesEmitter)="recentPhrases = $event" />
-      <span class="text-mainCreme w-full text-start mb-2">{{
-        aiSocketService.getIsSocketConnected() ? 'Connected' : 'Disconnected'
-      }}</span>
+      <span class="text-mainOrange font-bold">STATUS:</span>
+      <span
+        class="w-full text-start mb-2 {{
+          aiSocketService.getIsSocketConnected()
+            ? 'text-green-500'
+            : 'text-red-500'
+        }}"
+        >{{
+          aiSocketService.getIsSocketConnected() ? 'Connected' : 'Disconnected'
+        }}</span
+      >
       @if (aiSocketService.getIsSocketConnected()) {
         <app-socket-connected-menu
           [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"

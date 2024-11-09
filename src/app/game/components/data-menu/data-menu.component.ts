@@ -13,7 +13,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
   template: `
     <button
       (click)="toggleDataMenu()"
-      class="side-menu-right-button top-40 w-12 h-64 {{
+      class="side-menu-right-button top-44 w-12 h-72 {{
         isDataMenuVisible ? 'right-72' : 'right-0'
       }}">
       <span
@@ -22,10 +22,10 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       >
     </button>
     <div
-      class="w-72 h-64 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-40 {{
+      class="w-72 h-72 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-44 {{
         isDataMenuVisible ? 'right-0' : '-right-72'
       }}">
-      <span class="font-black">Select data to persist:</span>
+      <span class="font-bold text-mainCreme">Select data to persist:</span>
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
         <app-data-select-checkbox
           [variable]="variable"
@@ -33,13 +33,14 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
           [dataToPersist]="dataToPersist"
           [updateDataToPersist]="updateDataToPersist" />
       }
-      <span class="font-black mt-2 pt-2 border-t-[1px] border-mainOrange"
+      <span
+        class="font-bold text-mainCreme mt-3 pt-3 pb-1 border-t-[1px] border-mainOrange"
         >Data saving interval limit:</span
       >
       <input
         type="number"
         #dataSavingIntervalLimitInput
-        class="custom-input w-52 mb-2"
+        class="custom-input w-full mb-2"
         min="10"
         max="1000"
         step="10"
