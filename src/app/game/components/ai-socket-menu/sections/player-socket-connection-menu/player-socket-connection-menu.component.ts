@@ -91,6 +91,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public gameRestart = new Observable<void>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
+  @Output() public connectedEmitter = new EventEmitter<boolean>();
 
   private _pageVisibilityService = inject(PageVisibilityService);
   private _urlParamService = inject(UrlParamService);
@@ -163,6 +164,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this._socketListService.addToList(this.socketUrl);
         this.canNotConnect = false;
         this.isConnected = true;
+        this.connectedEmitter.emit(true);
       },
       (event: MessageEvent<string>) => {
         this.emitSocketInput(JSON.parse(event.data));
@@ -171,6 +173,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this._socketListService.removeFromList(this.socketUrl);
         this.canNotConnect = false;
         this.isConnected = false;
+        this.connectedEmitter.emit(false);
       }
     );
     this._urlParamService.setQueryParam(

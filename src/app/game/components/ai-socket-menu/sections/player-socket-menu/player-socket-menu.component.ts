@@ -19,7 +19,9 @@ import { Observable } from 'rxjs';
     <h3 class="text-mainOrange text-lg font-bold uppercase">
       {{ player.name }}
     </h3>
-    <app-debug-mode-menu (debugModeEmitter)="isDebugModeActive = $event" />
+    <app-debug-mode-menu
+      [canApplyDebugMode]="!isConnected"
+      (debugModeEmitter)="isDebugModeActive = $event" />
     @if (isDebugModeActive) {
       <app-debug-mode-panel
         [player]="player"
@@ -30,6 +32,7 @@ import { Observable } from 'rxjs';
         [player]="player"
         [setDataToSend]="dataToSend"
         (receivedDataEmitter)="receivedDataEmitter.emit($event)"
+        (connectedEmitter)="isConnected = $event"
         [gameName]="gameName"
         [gamePause]="gamePause"
         [gameRestart]="gameRestart" />
@@ -46,4 +49,5 @@ export class PlayerSocketMenuComponent {
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
   public isDebugModeActive = false;
+  public isConnected = false;
 }
