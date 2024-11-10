@@ -77,8 +77,7 @@ import { ShortGameStatsComponent } from './components/short-game-stats.component
             fill />
         </div>
       </div>
-      <app-short-game-stats
-        class="flex flex-col w-fit xs:w-2/5 items-start justify-center text-lg sm:text-2xl md:text-3xl lg:text-4xl space-y-1 md:space-y-5 text-mainOrange border-l-2 border-mainOrange font-mono p-2 md:p-4 mt-8 xs:mt-0" />
+      <app-short-game-stats class="flex flex-row" />
     </div>
     <div class="flex w-full items-center justify-start bg-lightGray pb-10">
       <span
