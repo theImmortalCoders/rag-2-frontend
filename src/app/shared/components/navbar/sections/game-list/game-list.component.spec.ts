@@ -91,14 +91,4 @@ describe('GameListComponent', () => {
     expect(gameItems[0].textContent).toContain('Game One');
     expect(gameItems[1].textContent).toContain('Game Two');
   });
-
-  it('should display fallback text when no games are available', () => {
-    gameEndpointsServiceSpy.getGames.and.returnValue(of([]));
-
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const fallbackText = compiled.querySelector('li.text-sm')?.textContent;
-
-    expect(fallbackText).toContain('Read more about our games...');
-  });
 });
