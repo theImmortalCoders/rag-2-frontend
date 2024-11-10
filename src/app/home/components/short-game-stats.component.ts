@@ -133,7 +133,7 @@ export class ShortGameStatsComponent implements OnInit, OnDestroy {
     finalValue: number | string
   ): void {
     const maxRandomMultiplier = 4;
-    const intervalTime = 30;
+    const intervalTime = 25;
     const animationDuration = 1000;
     let elapsedTime = 0;
 
