@@ -9,11 +9,12 @@ import {
 import feather from 'feather-icons';
 import { authorsData, IAuthor } from './models/author';
 import { AuthorCardsComponent } from './components/author-cards.component';
+import { ShortGameStatsComponent } from './components/short-game-stats.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [NgOptimizedImage, AuthorCardsComponent],
+  imports: [NgOptimizedImage, AuthorCardsComponent, ShortGameStatsComponent],
   template: ` <div class="flex flex-col w-full bg-mainGray">
     <div
       class="bg-homeImageAI bg-center pb-10 pt-6 xl:pt-14 relative min-h-all border-b-2 border-mainOrange">
@@ -65,10 +66,10 @@ import { AuthorCardsComponent } from './components/author-cards.component';
       </div>
     </div>
     <div
-      class="flex flex-col xs:flex-row items-center justify-center xs:justify-between pl-2 xs:pl-8 md:pl-16 bg-lightGray pt-10 pb-6 md:py-10">
-      <div class="flex items-center justify-center pr-6 md:pr-2 lg:pr-0">
+      class="flex flex-col xs:flex-row items-center justify-center xs:justify-around space-x-0 px-2 xs:px-8 md:px-16 bg-lightGray pt-10 pb-6 md:py-10">
+      <div class="flex items-center justify-center pr-3 md:pr-2 lg:pr-0">
         <div
-          class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[30rem] lg:w-[34rem] xl:w-[36rem] relative">
+          class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[26rem] lg:w-[30rem] xl:w-[36rem] relative">
           <img
             ngSrc="images/ai.jpg"
             alt="Logo"
@@ -76,13 +77,7 @@ import { AuthorCardsComponent } from './components/author-cards.component';
             fill />
         </div>
       </div>
-      <div
-        class="flex flex-col w-fit xs:w-2/5 items-start justify-center text-lg sm:text-2xl md:text-3xl lg:text-4xl space-y-1 md:space-y-5 text-mainOrange border-l-2 border-mainOrange font-mono p-2 md:p-4 mt-8 xs:mt-0">
-        <span>1 different games</span>
-        <span>2 gameplays</span>
-        <span>3 MB of data</span>
-        <span>+4 players</span>
-      </div>
+      <app-short-game-stats class="flex flex-col pt-8 xs:pt-0" />
     </div>
     <div class="flex w-full items-center justify-start bg-lightGray pb-10">
       <span
