@@ -126,7 +126,7 @@ describe('ShortGameStatsComponent', () => {
       const finalValue = 100;
       component['animateStats']('displayTotalGames', finalValue);
 
-      tick(1200);
+      tick(1000);
 
       expect(component.displayTotalGames).toBe(finalValue);
     }));
