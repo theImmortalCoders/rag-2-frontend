@@ -4,6 +4,7 @@ import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import {
   IGameResponse,
   IGameStatsResponse,
+  IOverallStatsResponse,
 } from 'app/shared/models/game.models';
 import { Subscription } from 'rxjs';
 
@@ -15,7 +16,7 @@ import { Subscription } from 'rxjs';
     <span>{{ totalGames }} games</span>
     <span>{{ totalPlayers }} players</span>
     <span>{{ totalStorage.toPrecision(2) }} MB of data</span>
-    <span>CHECK MORE...</span>
+    <span>CHECK DETAILS...</span>
   `,
 })
 export class ShortGameStatsComponent implements OnInit, OnDestroy {
@@ -23,10 +24,7 @@ export class ShortGameStatsComponent implements OnInit, OnDestroy {
   private _statsEndpointsService = inject(StatsEndpointsService);
 
   private _getGamesSubscription = new Subscription();
-  private _getGameStatsSubscription = new Subscription();
-
-  public gameList: IGameResponse[] | null = null;
-  public gameStatsList: IGameStatsResponse[] = [];
+  private _getOverallStatsSubscription = new Subscription();
 
   public totalGames = 0;
   public totalPlayers = 0;
@@ -37,45 +35,21 @@ export class ShortGameStatsComponent implements OnInit, OnDestroy {
       .getGames()
       .subscribe({
         next: (response: IGameResponse[]) => {
-          this.gameList = response;
-          this.getGameStats();
+          this.totalGames = response.length;
         },
-        error: () => {
-          this.gameList = null;
+      });
+    this._getOverallStatsSubscription = this._statsEndpointsService
+      .getOverallStats()
+      .subscribe({
+        next: (response: IOverallStatsResponse) => {
+          this.totalPlayers = response.playersAmount;
+          this.totalStorage = response.totalMemoryMb;
         },
       });
   }
 
-  public getGameStats(): void {
-    if (this.gameList) {
-      let completedRequests = 0;
-      for (const game of this.gameList) {
-        this._getGameStatsSubscription = this._statsEndpointsService
-          .getGameStats(game.id)
-          .subscribe({
-            next: (response: IGameStatsResponse) => {
-              this.gameStatsList.push(response);
-              completedRequests++;
-
-              if (completedRequests === this.gameList?.length) {
-                this.countFinalStats();
-              }
-            },
-          });
-      }
-    }
-  }
-
-  public countFinalStats(): void {
-    this.gameStatsList.forEach(game => {
-      this.totalGames++;
-      this.totalPlayers += game.totalPlayers;
-      this.totalStorage += game.totalStorageMb;
-    });
-  }
-
   public ngOnDestroy(): void {
     this._getGamesSubscription.unsubscribe();
-    this._getGameStatsSubscription.unsubscribe();
+    this._getOverallStatsSubscription.unsubscribe();
   }
 }

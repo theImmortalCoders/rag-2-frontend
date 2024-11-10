@@ -15,3 +15,9 @@ export interface IGameStatsResponse {
   lastPlayed: string;
   statsUpdatedDate: string;
 }
+
+export interface IOverallStatsResponse {
+  playersAmount: number;
+  totalMemoryMb: number;
+  statsUpdatedDate: string;
+}
