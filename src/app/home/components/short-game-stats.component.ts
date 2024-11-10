@@ -1,10 +1,12 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { GameEndpointsService } from '@endpoints/game-endpoints.service';
-import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import {
-  IGameResponse,
-  IOverallStatsResponse,
-} from 'app/shared/models/game.models';
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
+import { IOverallStatsResponse } from 'app/shared/models/game.models';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,69 +14,118 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [],
   template: `
-    <div class="text-2xl text-mainOrange font-mono">Wanna see some stats?</div>
-    <div
-      class="flex flex-col w-fit xs:w-2/5 items-start justify-center text-lg sm:text-2xl md:text-3xl lg:text-4xl space-y-1 md:space-y-5 text-mainOrange border-l-2 border-mainOrange font-mono p-2 md:p-4 mt-8 xs:mt-0">
-      <span>{{ displayTotalGames }} games</span>
-      <span>{{ displayTotalPlayers }} players</span>
-      <span>{{ displayTotalStorage }} MB of data</span>
-      <span>CHECK DETAILS...</span>
+    <h2
+      class="text-2xl pb-4 text-center text-mainCreme font-bold uppercase tracking-widest">
+      Overall page stats
+    </h2>
+    <div class="grid grid-cols-2 grid-rows-2 size-72 text-mainOrange">
+      <div
+        class="flex flex-col items-center justify-center border-b border-r border-mainCreme">
+        <span class="text-3xl font-black">{{ displayTotalGames }}</span>
+        <span class="text-xl">games</span>
+      </div>
+      <div
+        class="flex flex-col items-center justify-center border-b border-l border-mainCreme">
+        <span class="text-3xl font-black">{{ displayTotalPlayers }}</span>
+        <span class="text-xl">players</span>
+      </div>
+      <div
+        class="flex flex-col items-center justify-center border-t border-r border-mainCreme">
+        <span class="text-3xl font-black">{{ displayTotalPlays }}</span>
+        <span class="text-xl">total plays</span>
+      </div>
+      <div
+        class="flex flex-col items-center justify-center border-t border-l border-mainCreme">
+        <span class="text-3xl font-black">{{ displayTotalStorage }}</span>
+        <span class="text-xl">MB of data</span>
+      </div>
     </div>
+    <a class="group">
+      <div class="flex flex-row justify-center items-center w-full">
+        <h2
+          class="text-lg pt-4 text-center text-mainOrange group-hover:text-green-500 font-bold uppercase tracking-widest ease-in-out transition-all duration-500">
+          Check some details...
+        </h2>
+      </div>
+      <hr
+        class="border-mainOrange group-hover:border-green-500 w-0 group-hover:w-full ease-in-out transition-all duration-500" />
+    </a>
   `,
 })
 export class ShortGameStatsComponent implements OnInit, OnDestroy {
-  private _gameEndpointsService = inject(GameEndpointsService);
   private _statsEndpointsService = inject(StatsEndpointsService);
+  private _elementRef = inject(ElementRef);
 
-  private _getGamesSubscription = new Subscription();
   private _getOverallStatsSubscription = new Subscription();
+  private _observer: IntersectionObserver | null = null;
 
-  public totalGames = 0;
-  public totalPlayers = 0;
-  public totalStorage = 0;
+  public overallStats: IOverallStatsResponse | null = null;
 
   public displayTotalGames: number | string = 0;
   public displayTotalPlayers: number | string = 0;
+  public displayTotalPlays: number | string = 0;
   public displayTotalStorage: number | string = 0;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _intervalIds: Record<string, any> = {};
 
   public ngOnInit(): void {
-    this._getGamesSubscription = this._gameEndpointsService
-      .getGames()
-      .subscribe({
-        next: (response: IGameResponse[]) => {
-          this.totalGames = response.length;
-          this.animateStat('displayTotalGames', this.totalGames);
-        },
-      });
+    this._observer = new IntersectionObserver(
+      entries => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          this._getOverallStatsSubscription = this._statsEndpointsService
+            .getOverallStats()
+            .subscribe({
+              next: (response: IOverallStatsResponse) => {
+                this.overallStats = response;
+                this.callAnimation();
+              },
+              error: () => {
+                this.overallStats = null;
+              },
+            });
+          if (this._observer) {
+            this._observer.disconnect();
+          }
+        }
+      },
+      {
+        threshold: 0.3,
+      }
+    );
 
-    this._getOverallStatsSubscription = this._statsEndpointsService
-      .getOverallStats()
-      .subscribe({
-        next: (response: IOverallStatsResponse) => {
-          this.totalPlayers = response.playersAmount;
-          this.totalStorage = response.totalMemoryMb;
-          this.animateStat('displayTotalPlayers', this.totalPlayers);
-          this.animateStat(
-            'displayTotalStorage',
-            this.totalStorage.toPrecision(2)
-          );
-        },
-      });
+    if (this._elementRef.nativeElement) {
+      this._observer.observe(this._elementRef.nativeElement);
+    }
   }
 
-  private animateStat(
+  private callAnimation(): void {
+    if (this.overallStats) {
+      this.animateStats('displayTotalGames', this.overallStats.gamesAmount);
+      this.animateStats('displayTotalPlayers', this.overallStats.playersAmount);
+      this.animateStats(
+        'displayTotalPlays',
+        this.overallStats.gameRecordsAmount
+      );
+      this.animateStats(
+        'displayTotalStorage',
+        this.overallStats.totalMemoryMb.toPrecision(2)
+      );
+    }
+  }
+
+  private animateStats(
     property:
       | 'displayTotalGames'
       | 'displayTotalPlayers'
+      | 'displayTotalPlays'
       | 'displayTotalStorage',
     finalValue: number | string
   ): void {
-    const maxRandomMultiplier = 10;
-    const intervalTime = 25;
-    const animationDuration = 500;
+    const maxRandomMultiplier = 4;
+    const intervalTime = 30;
+    const animationDuration = 1200;
     let elapsedTime = 0;
 
     this._intervalIds[property] = setInterval(() => {
@@ -91,12 +142,14 @@ export class ShortGameStatsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this._getGamesSubscription.unsubscribe();
     this._getOverallStatsSubscription.unsubscribe();
 
-    // Usuń interwały, jeśli istnieją
     Object.values(this._intervalIds).forEach(interval =>
       clearInterval(interval)
     );
+
+    if (this._observer) {
+      this._observer.disconnect();
+    }
   }
 }
