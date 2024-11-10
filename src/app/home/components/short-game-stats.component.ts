@@ -15,35 +15,44 @@ import { Subscription } from 'rxjs';
   imports: [],
   template: `
     <h2
-      class="text-2xl pb-4 text-center text-mainCreme font-bold uppercase tracking-widest">
+      class="text-lg md:text-xl lg:text-2xl pb-4 text-center text-mainCreme font-bold uppercase tracking-widest">
       Overall page stats
     </h2>
-    <div class="grid grid-cols-2 grid-rows-2 size-72 text-mainOrange">
+    <div
+      class="grid grid-cols-2 grid-rows-2 size-52 sm:size-56 md:size-64 lg:size-72 text-mainOrange">
       <div
         class="flex flex-col items-center justify-center border-b border-r border-mainCreme">
-        <span class="text-3xl font-black">{{ displayTotalGames }}</span>
-        <span class="text-xl">games</span>
+        <span class="text-xl md:text-2xl lg:text-3xl font-black">{{
+          displayTotalGames
+        }}</span>
+        <span class="text-base md:text-lg lg:text-xl">games</span>
       </div>
       <div
         class="flex flex-col items-center justify-center border-b border-l border-mainCreme">
-        <span class="text-3xl font-black">{{ displayTotalPlayers }}</span>
-        <span class="text-xl">players</span>
+        <span class="text-xl md:text-2xl lg:text-3xl font-black">{{
+          displayTotalPlayers
+        }}</span>
+        <span class="text-base md:text-lg lg:text-xl">players</span>
       </div>
       <div
         class="flex flex-col items-center justify-center border-t border-r border-mainCreme">
-        <span class="text-3xl font-black">{{ displayTotalPlays }}</span>
-        <span class="text-xl">total plays</span>
+        <span class="text-xl md:text-2xl lg:text-3xl font-black">{{
+          displayTotalPlays
+        }}</span>
+        <span class="text-base md:text-lg lg:text-xl">total plays</span>
       </div>
       <div
         class="flex flex-col items-center justify-center border-t border-l border-mainCreme">
-        <span class="text-3xl font-black">{{ displayTotalStorage }}</span>
-        <span class="text-xl">MB of data</span>
+        <span class="text-xl md:text-2xl lg:text-3xl font-black">{{
+          displayTotalStorage
+        }}</span>
+        <span class="text-base md:text-lg lg:text-xl">MB of data</span>
       </div>
     </div>
     <a class="group">
       <div class="flex flex-row justify-center items-center w-full">
         <h2
-          class="text-lg pt-4 text-center text-mainOrange group-hover:text-green-500 font-bold uppercase tracking-widest ease-in-out transition-all duration-500">
+          class="text-sm md:text-base lg:text-lg pt-2 md:pt-4 text-center text-mainOrange group-hover:text-green-500 font-bold uppercase tracking-widest ease-in-out transition-all duration-500">
           Check some details...
         </h2>
       </div>

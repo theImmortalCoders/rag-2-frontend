@@ -66,10 +66,10 @@ import { ShortGameStatsComponent } from './components/short-game-stats.component
       </div>
     </div>
     <div
-      class="flex flex-col xs:flex-row items-center justify-center xs:justify-around px-2 xs:px-8 md:px-16 bg-lightGray pt-10 pb-6 md:py-10">
-      <div class="flex items-center justify-center pr-6 md:pr-2 lg:pr-0">
+      class="flex flex-col xs:flex-row items-center justify-center xs:justify-around space-x-0 px-2 xs:px-8 md:px-16 bg-lightGray pt-10 pb-6 md:py-10">
+      <div class="flex items-center justify-center pr-3 md:pr-2 lg:pr-0">
         <div
-          class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[30rem] lg:w-[34rem] xl:w-[36rem] relative">
+          class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[26rem] lg:w-[30rem] xl:w-[36rem] relative">
           <img
             ngSrc="images/ai.jpg"
             alt="Logo"
@@ -77,7 +77,7 @@ import { ShortGameStatsComponent } from './components/short-game-stats.component
             fill />
         </div>
       </div>
-      <app-short-game-stats class="flex flex-col" />
+      <app-short-game-stats class="flex flex-col pt-8 xs:pt-0" />
     </div>
     <div class="flex w-full items-center justify-start bg-lightGray pb-10">
       <span
