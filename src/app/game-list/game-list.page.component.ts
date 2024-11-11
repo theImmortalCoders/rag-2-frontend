@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
-import { IGameResponse } from 'app/shared/models/game.models';
+import {
+  IGameResponse,
+  IGameStatsResponse,
+} from 'app/shared/models/game.models';
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
@@ -17,6 +20,16 @@ interface IExtendendGameList {
   name: string;
   description: string;
   isStatsChoosen?: boolean;
+}
+
+interface IExtendendGameStats {
+  name?: string;
+  plays: number;
+  totalPlayers: number;
+  totalStorageMb: number;
+  firstPlayed: string;
+  lastPlayed: string;
+  statsUpdatedDate: string;
 }
 
 @Component({
@@ -80,6 +93,7 @@ export class GameListPageComponent
   private _gameList: IGameResponse[] | null = null;
 
   public extendendGameList: IExtendendGameList[] = [];
+  public gameStatsList: IExtendendGameStats[] = [];
 
   public ngOnInit(): void {
     this._getGamesSubscription = this._gameEndpointsService
@@ -88,6 +102,7 @@ export class GameListPageComponent
         next: (response: IGameResponse[]) => {
           this._gameList = response;
           this.extendendGameList = this._gameList;
+          this.getGameStats();
           this.createNewList();
         },
         error: () => {
@@ -100,12 +115,27 @@ export class GameListPageComponent
     feather.replace(); //dodane, żeby feather-icons na nowo dodało się do DOM w pętli
   }
 
+  public getGameStats(): void {
+    if (this._gameList) {
+      for (let i = 0; i < this._gameList.length; i++) {
+        this._getGameStatsSubscription = this._statsEndpointsService
+          .getGameStats(this._gameList[i].id)
+          .subscribe({
+            next: (response: IGameStatsResponse) => {
+              this.gameStatsList[i] = response;
+              if (this._gameList) {
+                this.gameStatsList[i].name = this._gameList[i].name;
+              }
+            },
+          });
+      }
+    }
+  }
+
   public createNewList(): void {
     if (this._gameList) {
       for (let i = 0; i < this._gameList?.length; i++) {
-        this.extendendGameList[i].id = this._gameList[i].id;
-        this.extendendGameList[i].name = this._gameList[i].name;
-        this.extendendGameList[i].description = this._gameList[i].description;
+        this.extendendGameList[i] = this._gameList[i];
         this.extendendGameList[i].isStatsChoosen = false;
       }
     }
@@ -129,5 +159,6 @@ export class GameListPageComponent
 
   public ngOnDestroy(): void {
     this._getGamesSubscription.unsubscribe();
+    this._getGameStatsSubscription.unsubscribe();
   }
 }
