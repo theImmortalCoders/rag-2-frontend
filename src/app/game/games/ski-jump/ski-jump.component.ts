@@ -12,7 +12,11 @@ import { CommonModule } from '@angular/common';
   selector: 'app-ski-jump',
   standalone: true,
   imports: [CanvasComponent, CommonModule],
-  template: `<div>Distance: {{ game.state.distance | number: '1.0-1' }} m</div>
+  template: `<div>
+      Distance: <b>{{ game.state.distance | number: '1.0-1' }}</b> m, wind:
+      <b>{{ game.state.wind | number: '1.0-1' }} m/s </b> to the
+      <b>{{ game.state.windDirection }}</b>
+    </div>
     <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
 })
 export class SkiJumpGameWindowComponent
@@ -26,6 +30,8 @@ export class SkiJumpGameWindowComponent
   private _jumped = false;
   private _landed = false;
 
+  private _windInterval: ReturnType<typeof setTimeout> | undefined;
+
   public override game!: SkiJump;
 
   public override ngOnInit(): void {
@@ -35,8 +41,15 @@ export class SkiJumpGameWindowComponent
 
   public override ngAfterViewInit(): void {
     super.ngAfterViewInit();
-
     this.resetGame();
+    this.updateWind();
+  }
+
+  public override ngOnDestroy(): void {
+    super.ngOnDestroy();
+    if (this._windInterval) {
+      clearInterval(this._windInterval);
+    }
   }
 
   public override restart(): void {
@@ -107,6 +120,7 @@ export class SkiJumpGameWindowComponent
     this.game.state.jumperVelocityY = 0;
     this._jumped = false;
     this._landed = false;
+    this.game.state.wind = Math.random() * 2;
   }
 
   private startJump(): void {
@@ -153,6 +167,23 @@ export class SkiJumpGameWindowComponent
     }
   }
 
+  private updateWind(): void {
+    this._windInterval = setInterval(() => {
+      const windChange = (Math.random() - 0.5) * 0.1;
+      this.game.state.wind += windChange;
+
+      if (this.game.state.wind < 0) {
+        this.game.state.wind = 0;
+      } else if (this.game.state.wind > 2) {
+        this.game.state.wind = 2;
+      }
+
+      if (this.game.state.wind < 0.1) {
+        this.game.state.windDirection = Math.random() > 0.5 ? 'left' : 'right';
+      }
+    }, 1000);
+  }
+
   private ride(): void {
     this.game.state.jumperY = this.towerParabola(this.game.state.jumperX);
     this.game.state.jumperX += this._jumperRideVelocity;
@@ -170,6 +201,14 @@ export class SkiJumpGameWindowComponent
   }
 
   private fly(): void {
+    if (this.game.state.windDirection === 'left') {
+      this.game.state.jumperVelocityX -= this.game.state.wind / 180;
+      this.game.state.jumperVelocityY -= this.game.state.wind / 180;
+    } else {
+      this.game.state.jumperVelocityX += this.game.state.wind / 180;
+      this.game.state.jumperVelocityY += this.game.state.wind / 180;
+    }
+
     this.game.state.jumperVelocityX = this._jumperRideVelocity;
     this.game.state.jumperVelocityY += 0.08;
     this.game.state.jumperX += this.game.state.jumperVelocityX;

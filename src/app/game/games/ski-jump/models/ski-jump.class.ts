@@ -9,6 +9,8 @@ export class SkiJumpState implements TGameState {
   public isJumping = false;
   public jumperVelocityX = 0;
   public jumperVelocityY = 0;
+  public wind = 0;
+  public windDirection = 'left';
 }
 
 export class SkiJump extends Game {
