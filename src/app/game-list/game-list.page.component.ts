@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   AfterViewChecked,
   Component,
@@ -46,13 +47,17 @@ interface IExtendendGameStats {
       <div
         class="flex flex-row flex-wrap items-center justify-evenly w-full xl:w-11/12">
         @for (game of extendendGameList; track game.id) {
-          <!-- [routerLink]="['/game/', game.name]" -->
           <div
             class="w-[90%] sm:w-[45%] md:w-1/3 lg:w-1/4 h-52 bg-mainGray mx-2 lg:mx-4 xl:mx-8 my-6 p-4 border-mainOrange border-2 rounded-lg text-mainCreme transition-all duration-200 ease-in-out hover:scale-110 relative group">
             <div
               class="absolute z-10 flex flex-row group-hover:flex-col justify-between w-full left-0 bottom-0 py-4 px-3 bg-lightGray opacity-95 rounded-b-lg">
               <div class="flex flex-row justify-between py-0 group-hover:py-2">
                 <p class="text-2xl uppercase">{{ game.name }}</p>
+                <button
+                  [routerLink]="['/game/', game.name]"
+                  class="w-fit text-sm hidden group-hover:block rounded-md font-bold text-green-500 bg-lightGray border-[1px] border-green-500 hover:text-mainGray hover:bg-green-500 ease-in-out transition-all duration-200 px-2 py-0 my-0">
+                  PLAY IT
+                </button>
                 <button
                   (click)="switchView(game.id)"
                   class="w-fit text-sm hidden group-hover:block rounded-md font-bold text-mainGray bg-mainCreme hover:text-mainCreme hover:bg-mainGray ease-in-out transition-all duration-200 px-2 py-0 my-0">
@@ -96,7 +101,7 @@ interface IExtendendGameStats {
                     }}
                   </p>
                 } @else {
-                  <p class="overflow-x-scroll text-justify">
+                  <p class="overflow-x-auto text-justify">
                     {{ game.description }}
                   </p>
                 }
