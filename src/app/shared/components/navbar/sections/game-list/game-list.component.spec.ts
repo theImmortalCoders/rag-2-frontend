@@ -12,8 +12,8 @@ describe('GameListComponent', () => {
   let gameEndpointsServiceSpy: jasmine.SpyObj<GameEndpointsService>;
 
   const mockGames: IGameResponse[] = [
-    { id: 1, name: 'Game One' },
-    { id: 2, name: 'Game Two' },
+    { id: 1, name: 'Game One', description: 'one' },
+    { id: 2, name: 'Game Two', description: 'two' },
   ];
 
   beforeEach(waitForAsync(() => {

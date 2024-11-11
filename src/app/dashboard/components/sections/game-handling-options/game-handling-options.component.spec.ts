@@ -69,8 +69,8 @@ describe('GameHandlingOptionsComponent', () => {
 
   it('should open the edit game modal and fetch games', fakeAsync(() => {
     const mockGames: IGameResponse[] = [
-      { id: 1, name: 'Game 1' },
-      { id: 2, name: 'Game 2' },
+      { id: 1, name: 'Game 1', description: 'ee' },
+      { id: 2, name: 'Game 2', description: 'bb' },
     ];
     mockGameEndpointsService.getGames.and.returnValue(of(mockGames));
 
