@@ -72,7 +72,8 @@ import {
                   type="text"
                   formControlName="newGameDescription"
                   placeholder="Type new game description"
-                  class="custom-input"></textarea>
+                  class="custom-input resize-none"
+                  [rows]="5"></textarea>
               </div>
             } @else if (
               (modalVisibility === 'editGame' ||
@@ -108,7 +109,8 @@ import {
                   type="text"
                   formControlName="editedGameDescription"
                   placeholder="Type edited game description"
-                  class="custom-input"></textarea>
+                  class="custom-input resize-none"
+                  [rows]="5"></textarea>
               </div>
             }
           </form>
