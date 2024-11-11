@@ -36,17 +36,7 @@ export class SkiJumpGameWindowComponent
   public override ngAfterViewInit(): void {
     super.ngAfterViewInit();
 
-    window.addEventListener('keydown', event => this.onKeyDown(event));
-    window.addEventListener('keyup', event => this.onKeyUp(event));
-
     this.resetGame();
-  }
-
-  public override ngOnDestroy(): void {
-    super.ngOnDestroy();
-
-    window.removeEventListener('keydown', event => this.onKeyDown(event));
-    window.removeEventListener('keyup', event => this.onKeyUp(event));
   }
 
   public override restart(): void {
@@ -188,7 +178,7 @@ export class SkiJumpGameWindowComponent
     this.game.state.distance = (this.game.state.jumperX - this._towerEndX) / 5;
   }
 
-  private onKeyDown(event: KeyboardEvent): void {
+  protected onKeyDown(event: KeyboardEvent): void {
     const player = this.game.players[0];
 
     if (player.playerType === PlayerSourceType.KEYBOARD) {
@@ -209,7 +199,7 @@ export class SkiJumpGameWindowComponent
     }
   }
 
-  private onKeyUp(event: KeyboardEvent): void {
+  protected onKeyUp(event: KeyboardEvent): void {
     const player = this.game.players[0];
 
     if (player.playerType === PlayerSourceType.KEYBOARD) {
