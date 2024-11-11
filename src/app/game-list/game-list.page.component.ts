@@ -77,7 +77,12 @@ interface IExtendendGameStats {
                   <p>Total plays: {{ getGameStatsByName(game.name).plays }}</p>
                   <p>
                     Total disk space used:
-                    {{ getGameStatsByName(game.name).totalStorageMb }} MB
+                    {{
+                      getGameStatsByName(game.name).totalStorageMb.toPrecision(
+                        2
+                      )
+                    }}
+                    MB
                   </p>
                   <p>
                     First play was on:
@@ -108,7 +113,7 @@ interface IExtendendGameStats {
               </div>
             </div>
             <img
-              src="images/{{ game.name }}.jpg"
+              src="images/games/{{ game.name }}.png"
               alt="{{ game.name }}"
               class="w-full h-full object-cover rounded-xl" />
           </div>
