@@ -11,7 +11,6 @@ import { GameListComponent } from './sections/game-list/game-list.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import * as feather from 'feather-icons';
 import { Subscription } from 'rxjs';
-import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.component';
 
 @Component({
@@ -21,7 +20,6 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
     RouterModule,
     NgOptimizedImage,
     GameListComponent,
-    AuthRequiredDirective,
     UserShortcutComponent,
   ],
   template: `
