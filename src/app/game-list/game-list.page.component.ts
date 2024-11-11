@@ -22,7 +22,6 @@ interface IExtendendGameList {
   description: string;
   isStatsChoosen?: boolean;
 }
-
 interface IExtendendGameStats {
   name?: string;
   plays: number;
@@ -32,7 +31,6 @@ interface IExtendendGameStats {
   lastPlayed: string;
   statsUpdatedDate: string;
 }
-
 @Component({
   selector: 'app-game-list-page',
   standalone: true,
@@ -98,7 +96,9 @@ interface IExtendendGameStats {
                     }}
                   </p>
                 } @else {
-                  <p>{{ game.description }}</p>
+                  <p class="overflow-x-scroll text-justify">
+                    {{ game.description }}
+                  </p>
                 }
               </div>
             </div>
