@@ -27,8 +27,6 @@ export class SkiJumpGameWindowComponent
   private _jumperHeight = 10;
   private _jumperRideVelocity = 0;
   private _towerEndX = 250;
-  private _jumped = false;
-  private _landed = false;
 
   private _windInterval: ReturnType<typeof setTimeout> | undefined;
 
@@ -113,28 +111,27 @@ export class SkiJumpGameWindowComponent
   private resetGame(): void {
     this.game.state.jumperX = 0;
     this.game.state.jumperY = 0;
-    this.game.state.isJumping = false;
+    this.game.state.isMoving = false;
     this.game.state.distance = 0;
     this._jumperRideVelocity = 0;
-    this.game.state.jumperVelocityX = 0;
-    this.game.state.jumperVelocityY = 0;
-    this._jumped = false;
-    this._landed = false;
+    this.game.state.jumperFlightVelocityX = 0;
+    this.game.state.jumperFlightVelocityY = 0;
+    this.game.state.isFlying = false;
+    this.game.state.isLanded = false;
     this.game.state.wind = Math.random() * 2;
   }
 
   private startJump(): void {
-    console.log('start jump');
-    this.game.state.isJumping = true;
+    this.game.state.isMoving = true;
   }
 
   private endJump(): void {
-    this.game.state.isJumping = false;
+    this.game.state.isMoving = false;
     this.resetGame();
   }
 
   private updatePhysics(): void {
-    if (!this.game.state.isJumping) {
+    if (!this.game.state.isMoving) {
       if (this.game.players[0].inputData['space'] === 1) {
         this.startJump();
       } else {
@@ -145,24 +142,30 @@ export class SkiJumpGameWindowComponent
     if (this.game.state.jumperX < this._towerEndX) {
       this.ride();
     } else {
-      if (this.game.state.jumperY < this._canvas.height) {
+      if (this.game.state.jumperY + this._jumperHeight < this._canvas.height) {
         if (
           this.game.state.jumperY < this.hillParabola(this.game.state.jumperX)
         ) {
           this.fly();
         } else {
-          if (this._landed) {
-            this.game.state.jumperX += this.game.state.jumperVelocityX;
+          if (this.game.state.isLanded) {
+            this.game.state.jumperX += this.game.state.jumperFlightVelocityX;
             this.game.state.jumperY = this.hillParabola(
               this.game.state.jumperX
             );
           } else {
-            this._landed = true;
-            console.log(this.game.state.distance);
+            this.game.state.isFlying = false;
+            this.game.state.isLanded = true;
           }
         }
       } else {
-        this.endJump();
+        this.game.state.jumperFlightVelocityX = 0;
+        this.game.state.jumperFlightVelocityY = 0;
+        this.game.state.isMoving = false;
+        if (this.game.players[0].inputData['space'] === 1) {
+          this.endJump();
+          this.game.players[0].inputData['space'] = 0;
+        }
       }
     }
   }
@@ -193,26 +196,26 @@ export class SkiJumpGameWindowComponent
     if (
       distance < 40 &&
       this.game.players[0].inputData['space'] === 1 &&
-      !this._jumped
+      !this.game.state.isFlying
     ) {
-      this.game.state.jumperVelocityY -= (Math.log(distance) / 5) * 2;
-      this._jumped = true;
+      this.game.state.jumperFlightVelocityY -= (Math.log(distance) / 5) * 2;
+      this.game.state.isFlying = true;
     }
   }
 
   private fly(): void {
     if (this.game.state.windDirection === 'left') {
-      this.game.state.jumperVelocityX -= this.game.state.wind / 180;
-      this.game.state.jumperVelocityY -= this.game.state.wind / 180;
+      this.game.state.jumperFlightVelocityX -= this.game.state.wind / 200;
+      this.game.state.jumperFlightVelocityY -= this.game.state.wind / 200;
     } else {
-      this.game.state.jumperVelocityX += this.game.state.wind / 180;
-      this.game.state.jumperVelocityY += this.game.state.wind / 180;
+      this.game.state.jumperFlightVelocityX += this.game.state.wind / 200;
+      this.game.state.jumperFlightVelocityY += this.game.state.wind / 200;
     }
 
-    this.game.state.jumperVelocityX = this._jumperRideVelocity;
-    this.game.state.jumperVelocityY += 0.08;
-    this.game.state.jumperX += this.game.state.jumperVelocityX;
-    this.game.state.jumperY += this.game.state.jumperVelocityY;
+    this.game.state.jumperFlightVelocityX = this._jumperRideVelocity;
+    this.game.state.jumperFlightVelocityY += 0.08;
+    this.game.state.jumperX += this.game.state.jumperFlightVelocityX;
+    this.game.state.jumperY += this.game.state.jumperFlightVelocityY;
 
     this.game.state.distance = (this.game.state.jumperX - this._towerEndX) / 5;
   }
