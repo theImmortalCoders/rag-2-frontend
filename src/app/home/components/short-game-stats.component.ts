@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { IOverallStatsResponse } from 'app/shared/models/game.models';
 import { Subscription } from 'rxjs';
@@ -12,7 +13,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-short-game-stats',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   template: `
     <h2
       class="text-lg md:text-xl lg:text-2xl pb-4 text-center text-mainCreme font-bold uppercase tracking-widest">
@@ -51,10 +52,11 @@ import { Subscription } from 'rxjs';
     </div>
     <a class="group">
       <div class="flex flex-row justify-center items-center w-full">
-        <h2
+        <a
+          [routerLink]="['game-list']"
           class="text-sm md:text-base lg:text-lg pt-2 md:pt-4 text-center text-mainOrange group-hover:text-green-500 font-bold uppercase tracking-widest ease-in-out transition-all duration-500">
           Check some details...
-        </h2>
+        </a>
       </div>
       <hr
         class="border-mainOrange group-hover:border-green-500 w-0 group-hover:w-full ease-in-out transition-all duration-500" />

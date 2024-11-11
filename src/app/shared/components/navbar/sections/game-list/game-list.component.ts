@@ -30,6 +30,7 @@ import { Subscription } from 'rxjs';
       <div class="group">
         <div class="flex flex-row justify-between items-center">
           <a
+            [routerLink]="['game-list']"
             class="text-sm xs:text-base text-start 3xl:text-center text-mainOrange group-hover:text-green-500 ease-in-out transition-all duration-500">
             Read more...
           </a>
