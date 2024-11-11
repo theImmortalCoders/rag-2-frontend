@@ -14,6 +14,7 @@ import {
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
+import { CommonModule } from '@angular/common';
 
 interface IExtendendGameList {
   id: number;
@@ -35,7 +36,7 @@ interface IExtendendGameStats {
 @Component({
   selector: 'app-game-list-page',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   template: `
     <div class="flex flex-col items-center mt-10 py-9 md:py-14 font-mono">
       <h1
@@ -63,9 +64,39 @@ interface IExtendendGameStats {
               <i
                 data-feather="corner-right-up"
                 class="pr-2 group-hover:hidden size-8"></i>
-              <div class="text-2xs hidden text-lightOragne group-hover:block">
+              <div
+                class="flex-col text-2xs hidden text-lightOragne group-hover:flex">
                 @if (isStatsViewChoosen(game.id)) {
-                  <p>statystyki</p>
+                  <p>
+                    Total players:
+                    {{ getGameStatsByName(game.name).totalPlayers }}
+                  </p>
+                  <p>Total plays: {{ getGameStatsByName(game.name).plays }}</p>
+                  <p>
+                    Total disk space used:
+                    {{ getGameStatsByName(game.name).totalStorageMb }} MB
+                  </p>
+                  <p>
+                    First play was on:
+                    {{
+                      getGameStatsByName(game.name).firstPlayed
+                        | date: 'dd/MM/yyyy, HH:mm'
+                    }}
+                  </p>
+                  <p>
+                    Last play was on:
+                    {{
+                      getGameStatsByName(game.name).lastPlayed
+                        | date: 'dd/MM/yyyy, HH:mm'
+                    }}
+                  </p>
+                  <p class="text-mainOrange">
+                    Stats updated on:
+                    {{
+                      getGameStatsByName(game.name).statsUpdatedDate
+                        | date: 'dd/MM/yyyy, HH:mm'
+                    }}
+                  </p>
                 } @else {
                   <p>{{ game.description }}</p>
                 }
@@ -86,10 +117,8 @@ export class GameListPageComponent
 {
   private _gameEndpointsService = inject(GameEndpointsService);
   private _statsEndpointsService = inject(StatsEndpointsService);
-
   private _getGamesSubscription = new Subscription();
   private _getGameStatsSubscription = new Subscription();
-
   private _gameList: IGameResponse[] | null = null;
 
   public extendendGameList: IExtendendGameList[] = [];
@@ -155,6 +184,13 @@ export class GameListPageComponent
       game => game.id === gameId
     );
     return selectedGame?.isStatsChoosen ? selectedGame.isStatsChoosen : false;
+  }
+
+  public getGameStatsByName(gameName: string): IExtendendGameStats {
+    const selectedGame = this.gameStatsList.find(
+      game => game.name === gameName
+    );
+    return selectedGame || ({} as IExtendendGameStats);
   }
 
   public ngOnDestroy(): void {
