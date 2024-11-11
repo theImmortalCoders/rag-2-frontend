@@ -12,6 +12,7 @@ import { Subscription, throwError } from 'rxjs';
 import { IOverallStatsResponse } from 'app/shared/models/game.models';
 import { ElementRef } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ShortGameStatsComponent', () => {
   let component: ShortGameStatsComponent;
@@ -36,7 +37,11 @@ describe('ShortGameStatsComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ShortGameStatsComponent, HttpClientTestingModule],
+      imports: [
+        ShortGameStatsComponent,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
       providers: [
         { provide: StatsEndpointsService, useValue: statsEndpointsServiceMock },
         { provide: ElementRef, useValue: elementRefMock },

@@ -37,7 +37,7 @@ interface IExtendendGameStats {
   standalone: true,
   imports: [RouterModule, CommonModule],
   template: `
-    <div class="flex flex-col items-center mt-10 py-9 md:py-14 font-mono">
+    <div class="flex flex-col items-center mt-6 py-9 md:py-14 font-mono">
       <h1
         class="text-center uppercase text-lg 2xs:text-xl xs:text-2xl sm:text-3xl md:text-4xl xl:text-5xl mb-4 md:mb-8 text-mainCreme">
         Check details about our games:
