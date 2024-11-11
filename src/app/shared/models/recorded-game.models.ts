@@ -13,5 +13,6 @@ export interface IRecordedGameResponse {
 
 export interface IRecordedGameRequest {
   gameName: string;
+  outputSpec: string;
   values: TExchangeData[];
 }

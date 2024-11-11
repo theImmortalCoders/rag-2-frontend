@@ -45,7 +45,7 @@ export abstract class BaseGameWindowComponent
     });
   }
 
-  @Output() public gameStateDataEmitter = new EventEmitter<TExchangeData>();
+  @Output() public gameStateDataEmitter = new EventEmitter<Game>();
   @ViewChild('gameCanvas') public gameCanvas!: CanvasComponent;
 
   private _restartSubscription = new Subscription();
@@ -78,7 +78,8 @@ export abstract class BaseGameWindowComponent
   //always call super on override (at top)
   public ngAfterViewInit(): void {
     this._canvas = this.gameCanvas.canvasElement.nativeElement;
-
+    window.addEventListener('keydown', event => this.onKeyDown(event));
+    window.addEventListener('keyup', event => this.onKeyUp(event));
     this.update();
     setTimeout(() => this.restart());
   }
@@ -87,6 +88,9 @@ export abstract class BaseGameWindowComponent
   public ngOnDestroy(): void {
     this._restartSubscription.unsubscribe();
     this._pauseSubscription.unsubscribe();
+
+    window.removeEventListener('keydown', event => this.onKeyDown(event));
+    window.removeEventListener('keyup', event => this.onKeyUp(event));
 
     if (this._updateTimeout) {
       clearTimeout(this._updateTimeout);
@@ -111,6 +115,11 @@ export abstract class BaseGameWindowComponent
     );
   }
 
+  // implement to update game state
+  protected abstract onKeyDown(event: KeyboardEvent): void;
+  // implement to update game state
+  protected abstract onKeyUp(event: KeyboardEvent): void;
+
   //
 
   private calculateFPS(): void {
@@ -131,9 +140,7 @@ export abstract class BaseGameWindowComponent
   }
 
   private emitGameStateData(): void {
-    this.gameStateDataEmitter.emit({
-      state: this.game || {},
-    });
+    this.gameStateDataEmitter.emit(this.game);
   }
 
   private mapReceivedToPlayerAndData(value: TExchangeData): IPlayerInputData {

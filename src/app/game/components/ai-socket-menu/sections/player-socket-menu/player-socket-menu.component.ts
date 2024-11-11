@@ -5,6 +5,7 @@ import { DebugModeMenuComponent } from '../debug-mode-menu/debug-mode-menu.compo
 import { DebugModePanelComponent } from '../debug-mode-panel/debug-mode-panel.component';
 import { PlayerSocketConnectionMenuComponent } from '../player-socket-connection-menu/player-socket-connection-menu.component';
 import { Observable } from 'rxjs';
+import { Game } from '@gameModels/game.class';
 
 @Component({
   selector: 'app-player-socket-menu',
@@ -42,7 +43,7 @@ import { Observable } from 'rxjs';
 export class PlayerSocketMenuComponent {
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gameName = '';
-  @Input({ required: true }) public dataToSend: TExchangeData = {};
+  @Input({ required: true }) public dataToSend!: Game;
   @Input({ required: true }) public gamePause = new Observable<boolean>();
   @Input({ required: true }) public gameRestart = new Observable<void>();
 

@@ -15,6 +15,7 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
+import { SkiJumpGameWindowComponent } from './games/ski-jump/ski-jump.component';
 
 @Component({
   selector: 'app-game',
@@ -29,6 +30,7 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
     GameMenuComponent,
     CantDisplayGameComponent,
     AuthRequiredDirective,
+    SkiJumpGameWindowComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
@@ -43,7 +45,7 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
               @if (filterPlayersByActiveAndSocket(game.players).length > 0) {
                 <app-ai-socket-menu
                   *appAuthRequired
-                  [dataToSend]="gameStateData"
+                  [dataToSend]="gameData"
                   [gameName]="game.name"
                   [players]="filterPlayersByActiveAndSocket(game.players)"
                   (receivedDataEmitter)="receiveSocketInputData($event)"
@@ -57,7 +59,8 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
                 (restartEmitter)="gameRestartSubject.next()" />
               <app-data-menu
                 *appAuthRequired
-                [gameName]="game.name"
+                [game]="game"
+                [gamePause]="gamePauseSubject.asObservable()"
                 [setDataPossibleToPersist]="gameStateData" />
             </div>
           </div>
@@ -65,6 +68,15 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
             @switch (game.name) {
               @case ('pong') {
                 <app-pong
+                  class="flex flex-col items-center w-3/4"
+                  [setSocketInputDataReceive]="socketInputData"
+                  (gameStateDataEmitter)="receiveGameOutputData($event)"
+                  [setAbstractGame]="game"
+                  [gameRestart]="gameRestartSubject.asObservable()"
+                  [gamePause]="gamePauseSubject.asObservable()" />
+              }
+              @case ('skijump') {
+                <app-ski-jump
                   class="flex flex-col items-center w-3/4"
                   [setSocketInputDataReceive]="socketInputData"
                   (gameStateDataEmitter)="receiveGameOutputData($event)"
@@ -93,6 +105,7 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public game!: Game;
   public logData: Record<string, TExchangeData> = {};
   public socketInputData: TExchangeData = {};
+  public gameData!: Game;
   public gameStateData: TExchangeData = {};
   public gameRestartSubject = new Subject<void>();
   public gamePauseSubject = new Subject<boolean>();
@@ -115,11 +128,12 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.handleRouterParams();
   }
 
-  public receiveGameOutputData(data: TExchangeData): void {
+  public receiveGameOutputData(data: Game): void {
+    this.gameData = JSON.parse(JSON.stringify(data));
     this.gameStateData = JSON.parse(
-      JSON.stringify((data as TExchangeData)['state'])
+      JSON.stringify(this.gameData.state as TExchangeData)
     );
-    this.logData['game window'] = data;
+    this.logData['game window'] = this.gameStateData;
   }
 
   public receiveSocketInputData(data: TExchangeData): void {

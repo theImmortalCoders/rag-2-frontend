@@ -35,17 +35,7 @@ export class PongGameWindowComponent
   public override ngAfterViewInit(): void {
     super.ngAfterViewInit();
 
-    window.addEventListener('keydown', event => this.onKeyDown(event));
-    window.addEventListener('keyup', event => this.onKeyUp(event));
-
     this.resetPaddlesAndBall();
-  }
-
-  public override ngOnDestroy(): void {
-    super.ngOnDestroy();
-
-    window.removeEventListener('keydown', event => this.onKeyDown(event));
-    window.removeEventListener('keyup', event => this.onKeyUp(event));
   }
 
   public override restart(): void {
@@ -237,7 +227,7 @@ export class PongGameWindowComponent
     );
   }
 
-  private onKeyDown(event: KeyboardEvent): void {
+  protected onKeyDown(event: KeyboardEvent): void {
     const player1 = this.game.players[0];
     const player2 = this.game.players[1];
 
@@ -268,7 +258,7 @@ export class PongGameWindowComponent
     }
   }
 
-  private onKeyUp(event: KeyboardEvent): void {
+  protected onKeyUp(event: KeyboardEvent): void {
     const player1 = this.game.players[0];
     const player2 = this.game.players[1];
 
