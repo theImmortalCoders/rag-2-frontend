@@ -6,11 +6,16 @@ export class SkiJumpState implements TGameState {
   public distance = 0;
   public jumperX = 0;
   public jumperY = 0;
+  public jumperInclineRad = Math.PI / 2;
   public isMoving = false;
   public isFlying = false;
   public isLanded = false;
+  public isCrashed = false;
   public jumperFlightVelocityX = 0;
   public jumperFlightVelocityY = 0;
+  public stylePoints = 0;
+  public windPoints = 0;
+  public totalPoints = 0;
   public wind = 0;
   public windDirection = 'left';
 }
