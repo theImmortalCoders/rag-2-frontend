@@ -15,6 +15,7 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
+import { SkiJumpGameWindowComponent } from './games/ski-jump/ski-jump.component';
 
 @Component({
   selector: 'app-game',
@@ -29,6 +30,7 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
     GameMenuComponent,
     CantDisplayGameComponent,
     AuthRequiredDirective,
+    SkiJumpGameWindowComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
@@ -65,6 +67,15 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
             @switch (game.name) {
               @case ('pong') {
                 <app-pong
+                  class="flex flex-col items-center w-3/4"
+                  [setSocketInputDataReceive]="socketInputData"
+                  (gameStateDataEmitter)="receiveGameOutputData($event)"
+                  [setAbstractGame]="game"
+                  [gameRestart]="gameRestartSubject.asObservable()"
+                  [gamePause]="gamePauseSubject.asObservable()" />
+              }
+              @case ('skijump') {
+                <app-ski-jump
                   class="flex flex-col items-center w-3/4"
                   [setSocketInputDataReceive]="socketInputData"
                   (gameStateDataEmitter)="receiveGameOutputData($event)"
