@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from './user-workflow/login/components/reset-p
 import { DashboardPageComponent } from './dashboard/dashboard.page.component';
 import { authGuard } from '@utils/helpers/auth.guard';
 import { guestGuard } from '@utils/helpers/guest.guard';
+import { GameListPageComponent } from './game-list/game-list.page.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,11 @@ export const routes: Routes = [
     path: 'game/:gameName',
     component: GamePageComponent,
     title: 'Game Page',
+  },
+  {
+    path: 'game-list',
+    component: GameListPageComponent,
+    title: 'Game List Page',
   },
   {
     path: 'login',
