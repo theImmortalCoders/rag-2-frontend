@@ -41,6 +41,6 @@ export class DataSelectCheckboxComponent {
   };
 
   public checkboxAvailable(): boolean {
-    return !this.isDataCollectingActive && this.variable.key !== 'state';
+    return !this.isDataCollectingActive;
   }
 }

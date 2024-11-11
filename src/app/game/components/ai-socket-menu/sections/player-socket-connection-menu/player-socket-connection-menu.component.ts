@@ -19,6 +19,7 @@ import { PageVisibilityService } from 'app/shared/services/page-visibility.servi
 import { UrlParamService } from 'app/shared/services/url-param.service';
 import { SocketListService } from '../../services/socket-list.service';
 import { ModelSelectionComponent } from '../model-selection/model-selection.component';
+import { Game } from '@gameModels/game.class';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
@@ -82,9 +83,14 @@ import { ModelSelectionComponent } from '../model-selection/model-selection.comp
 })
 export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public gameName = '';
-  @Input({ required: true }) public set setDataToSend(data: TExchangeData) {
-    this.dataToSend = data;
-    this.aiSocketService.setDataToSend(data);
+  @Input({ required: true }) public set setDataToSend(data: Game) {
+    this.dataToSend = {
+      name: data.name,
+      outputSpec: data.outputSpec,
+      players: data.players,
+      state: data.state,
+    } as TExchangeData;
+    this.aiSocketService.setDataToSend(this.dataToSend);
   }
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gamePause = new Observable<boolean>();

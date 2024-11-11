@@ -45,7 +45,7 @@ export abstract class BaseGameWindowComponent
     });
   }
 
-  @Output() public gameStateDataEmitter = new EventEmitter<TExchangeData>();
+  @Output() public gameStateDataEmitter = new EventEmitter<Game>();
   @ViewChild('gameCanvas') public gameCanvas!: CanvasComponent;
 
   private _restartSubscription = new Subscription();
@@ -140,9 +140,7 @@ export abstract class BaseGameWindowComponent
   }
 
   private emitGameStateData(): void {
-    this.gameStateDataEmitter.emit({
-      state: this.game || {},
-    });
+    this.gameStateDataEmitter.emit(this.game);
   }
 
   private mapReceivedToPlayerAndData(value: TExchangeData): IPlayerInputData {

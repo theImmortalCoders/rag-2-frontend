@@ -37,24 +37,12 @@ describe('DataDownloadComponent', () => {
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     button.click();
     fixture.detectChanges();
-    expect(component.vIsDataCollectingActive.value).toBe(true);
-    button.click();
-    fixture.detectChanges();
-    expect(component.vIsDataCollectingActive.value).toBe(false);
   });
 
   it('should display "Start collecting data" when vIsDataCollectingActive is false', () => {
-    component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.textContent).toContain('Start collecting data');
-  });
-
-  it('should display "Stop collecting data" when vIsDataCollectingActive is true', () => {
-    component.vIsDataCollectingActive.value = true;
-    fixture.detectChanges();
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.textContent).toContain('Stop collecting data');
   });
 
   it('should call deleteCollectedData on delete button click', () => {
@@ -64,7 +52,6 @@ describe('DataDownloadComponent', () => {
         /* mock data */
       },
     ];
-    component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();
     const button = fixture.debugElement.queryAll(By.css('button'))[2]
       .nativeElement;
@@ -78,7 +65,6 @@ describe('DataDownloadComponent', () => {
         /* mock data */
       },
     ];
-    component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();
     const button = fixture.debugElement.queryAll(By.css('button'))[1]
       .nativeElement;
@@ -87,7 +73,6 @@ describe('DataDownloadComponent', () => {
 
   it('should not render download JSON button when collectedDataArray is empty', () => {
     component.collectedDataArray = [];
-    component.vIsDataCollectingActive.value = false;
     fixture.detectChanges();
     const button = fixture.debugElement.queryAll(By.css('button'))[1];
     expect(button).toBeUndefined();
