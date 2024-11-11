@@ -1,10 +1,12 @@
 export interface IGameRequest {
   name: string;
+  description: string;
 }
 
 export interface IGameResponse {
   id: number;
   name: string;
+  description: string;
 }
 
 export interface IGameStatsResponse {
