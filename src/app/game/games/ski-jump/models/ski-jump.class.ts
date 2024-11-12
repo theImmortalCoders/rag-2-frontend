@@ -23,15 +23,45 @@ export class SkiJumpState implements TGameState {
 export class SkiJump extends Game {
   public override name = 'skijump';
   public override state = new SkiJumpState();
-  public override outputSpec = ``;
+  public override outputSpec = `
+    output:
+      distance: float, <0, 100>;
+      jumperX: float, <0, 600>
+      jumperY: float, <0, 600>
+      jumperInclineRad: float, <0, PI>
+      isMoving: boolean
+      isFlying: boolean
+      isLanded: boolean
+      isCrashed: boolean
+      jumperFlightVelocityX: float, <0, inf>
+      jumperFlightVelocityY: float, <-inf, inf>
+      stylePoints: int, <0, 20>
+      windPoints: float, <-inf, inf>
+      totalPoints: float, <0, inf>
+      wind: float, <0, 2>
+      windDirection: string, 'left' or 'right'
+    default values:
+      distance: 0;
+      jumperX: 0
+      jumperY: 0
+      jumperFlightVelocityX: 0
+      jumperFlightVelocityY: 0
+  `;
   public override players = [
-    new Player(0, true, 'Player 1', { space: 0, up: 0, down: 0 }, '', {
-      start: '[SPACE]',
-      jump: '[SPACE]',
-      land: '[SPACE]',
-      restart: '[SPACE]',
-      rotate_up: '[ARROW_DOWN]',
-      rotate_down: '[ARROW_UP]',
-    }),
+    new Player(
+      0,
+      true,
+      'Player 1',
+      { space: 0, up: 0, down: 0 },
+      '<space>, <up>, <down>: value of {0, 1}, 0: not pressed, 1: pressed',
+      {
+        start: '[SPACE]',
+        jump: '[SPACE]',
+        land: '[SPACE]',
+        restart: '[SPACE]',
+        rotate_up: '[ARROW_DOWN]',
+        rotate_down: '[ARROW_UP]',
+      }
+    ),
   ];
 }

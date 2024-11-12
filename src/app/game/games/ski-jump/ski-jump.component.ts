@@ -30,11 +30,12 @@ export class SkiJumpGameWindowComponent
   private _towerEndX = 250;
   private hasPressedLand = false;
   private _wrongFlightCounter = 0;
+  private _localRecord = 0;
   private _windInterval: ReturnType<typeof setTimeout> | undefined;
 
-  private _jumpForce = 1;
-  private _windImpact = 1;
-  private _flightDeviationTolerance = Math.PI / 32;
+  private _jumpForce = 1.1;
+  private _windImpact = 0.2;
+  private _flightDeviationTolerance = Math.PI / 28;
 
   public override game!: SkiJump;
 
@@ -124,7 +125,7 @@ export class SkiJumpGameWindowComponent
   private renderSkis(context: CanvasRenderingContext2D): void {
     const lineLength = 25;
 
-    context.lineWidth = 2;
+    context.lineWidth = 3;
     context.strokeStyle = 'red';
     context.beginPath();
     context.moveTo(this.game.state.jumperX, this.game.state.jumperY);
@@ -180,7 +181,16 @@ export class SkiJumpGameWindowComponent
     }
     context.stroke();
     context.lineWidth = 1;
-    context.save();
+
+    if (this._localRecord > 0) {
+      context.strokeStyle = 'green';
+      context.lineWidth = 1;
+      context.beginPath();
+      const distance = this._towerEndX + this._localRecord * 5;
+      context.moveTo(distance, 0);
+      context.lineTo(distance, this.calcHillParabola(distance));
+      context.stroke();
+    }
   }
 
   //math
@@ -409,6 +419,10 @@ export class SkiJumpGameWindowComponent
       this.game.state.distance +
       this.game.state.stylePoints +
       this.game.state.windPoints;
+
+    if (this.game.state.distance > this._localRecord) {
+      this._localRecord = this.game.state.distance;
+    }
 
     if (this.game.players[0].inputData['space'] === 1) {
       this.resetGame();
