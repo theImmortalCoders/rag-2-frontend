@@ -20,9 +20,8 @@ import { IPlayerInputData } from '@gameModels/player-input-data.type';
 @Component({
   selector: 'app-base-game-window',
   standalone: true,
-  template: `<app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b>`,
+  template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CanvasComponent],
 })
 export abstract class BaseGameWindowComponent
   implements OnInit, OnDestroy, DoCheck, AfterViewInit
