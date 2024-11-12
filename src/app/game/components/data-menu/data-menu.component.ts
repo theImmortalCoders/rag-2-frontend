@@ -14,11 +14,17 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
 import { Game } from '@gameModels/game.class';
 import { Observable, Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
+import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-helper/side-menu-helper.component';
 
 @Component({
   selector: 'app-data-menu',
   standalone: true,
-  imports: [KeyValuePipe, DataSelectCheckboxComponent, DataDownloadComponent],
+  imports: [
+    KeyValuePipe,
+    DataSelectCheckboxComponent,
+    DataDownloadComponent,
+    SideMenuHelperComponent,
+  ],
   template: `
     <button
       (click)="toggleDataMenu()"
@@ -60,6 +66,15 @@ import * as feather from 'feather-icons';
           </span>
         </div>
       </div>
+      <app-side-menu-helper
+        [menuType]="'Data menu'"
+        [descriptionPart1]="
+          'In this menu, you can select the data to collect from your game by setting an interval for how often it saves, then clicking the button to start. Data will be collected until you stop it, after which you can download or delete the records locally.'
+        "
+        [descriptionPart2]="
+          'Every saved game is available on the user’s dashboard.'
+        "
+        [descriptionPart3]="null" />
       <span class="font-bold text-mainCreme mt-6">Select data to persist:</span>
       @for (variable of dataPossibleToPersist | keyvalue; track variable.key) {
         <app-data-select-checkbox
