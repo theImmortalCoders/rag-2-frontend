@@ -18,23 +18,27 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [],
   template: `
-    <fieldset class="border-[1px] border-mainOrange p-2">
-      <legend class="text-mainCreme font-bold px-1">Prepared models</legend>
-      <div
-        class="flex flex-col space-y-2 {{
-          isDisabled ? 'opacity-40' : 'opacity-100'
-        }}">
-        @for (model of availableModels; track $index) {
-          <button
-            class="p-[2px] w-full rounded-md font-bold text-mainGray bg-mainCreme ease-in-out transition-all duration-200 {{
-              selectedModelIndex === $index ? 'border-4 border-green-500' : ''
-            }} {{ isDisabled ? '' : 'hover:text-mainCreme hover:bg-mainGray' }}"
-            (click)="selectPreparedModel(model, $index)">
-            {{ model.name }}
-          </button>
-        }
-      </div>
-    </fieldset>
+    @if (availableModels.length !== 0) {
+      <fieldset class="border-[1px] border-mainOrange p-2">
+        <legend class="text-mainCreme font-bold px-1">Prepared models</legend>
+        <div
+          class="flex flex-col space-y-2 {{
+            isDisabled ? 'opacity-40' : 'opacity-100'
+          }}">
+          @for (model of availableModels; track $index) {
+            <button
+              class="p-[2px] w-full rounded-md font-bold text-mainGray bg-mainCreme ease-in-out transition-all duration-200 {{
+                selectedModelIndex === $index ? 'border-4 border-green-500' : ''
+              }} {{
+                isDisabled ? '' : 'hover:text-mainCreme hover:bg-mainGray'
+              }}"
+              (click)="selectPreparedModel(model, $index)">
+              {{ model.name }}
+            </button>
+          }
+        </div>
+      </fieldset>
+    }
   `,
 })
 export class ModelSelectionComponent implements OnInit, OnDestroy, OnChanges {
