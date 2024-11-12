@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  backendApiUrl: 'https://api.rutaigames.kia.prz.edu.pl',
-  aiApiUrl: 'http://ai.rutaigames.kia.prz.edu.pl',
+  backendApiUrl: 'https://api.rutai.kia.prz.edu.pl',
+  aiApiUrl: 'https://ai.rutai.kia.prz.edu.pl',
 };
