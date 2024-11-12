@@ -46,6 +46,8 @@ module.exports = {
         sideMenuShadow: '-5px 7px 25px -7px rgba(93, 93, 93, 1)',
         controlPanelShadow:
           '0 4px 12px rgba(255, 230, 199, 1), 0 -2px 4px rgba(255, 230, 199, 0)',
+        menuInfoPanelShadow:
+          '0 2px 6px rgba(255, 230, 199, 1), 0 -1px 2px rgba(255, 230, 199, 0)',
       },
       animation: {
         typewriter21: 'typewriter 2s steps(21) forwards',
