@@ -25,6 +25,13 @@ export class SkiJump extends Game {
   public override state = new SkiJumpState();
   public override outputSpec = ``;
   public override players = [
-    new Player(0, true, 'Player 1', { space: 0, up: 0, down: 0 }, ''),
+    new Player(0, true, 'Player 1', { space: 0, up: 0, down: 0 }, '', {
+      start: '[SPACE]',
+      jump: '[SPACE]',
+      land: '[SPACE]',
+      restart: '[SPACE]',
+      rotate_up: '[ARROW_DOWN]',
+      rotate_down: '[ARROW_UP]',
+    }),
   ];
 }
