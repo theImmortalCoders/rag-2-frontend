@@ -17,7 +17,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
   template: `
     <button
       (click)="togglePlayerMenu()"
-      class="side-menu-left-button top-0 w-12 h-56 {{
+      class="side-menu-left-button -top-4 w-12 h-60 {{
         isPlayerMenuVisible ? 'left-72' : 'left-0'
       }}">
       <span
@@ -26,11 +26,38 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       >
     </button>
     <div
-      class="w-72 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
+      class="w-72 h-60 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container -top-4 {{
         isPlayerMenuVisible ? 'left-0' : '-left-72'
       }}">
+      <div class="group font-mono absolute left-0 top-0 z-30">
+        <div
+          class="absolute z-30 top-3 left-4 rounded-full bg-lightGray group-hover:bg-mainCreme">
+          <i
+            data-feather="info"
+            class="size-5 text-mainGray group-hover:scale-105 transition-all ease-in-out duration-300"></i>
+        </div>
+        <div
+          class="flex absolute z-20 top-3 left-4 h-5 w-[15.75rem] pointer-events-none opacity-0 group-hover:opacity-100 items-start justify-center rounded-l-full rounded-tr-full bg-mainGray text-mainCreme text-nowrap transition-all ease-in-out duration-300">
+          <p
+            class="text-center py-[2px] ml-5 pr-4 uppercase text-xs border-b-[1px] border-mainCreme w-full">
+            Players menu
+          </p>
+        </div>
+        <div
+          class="flex flex-col w-[14.5rem] absolute z-10 top-8 left-9 p-2 shadow-menuInfoPanelShadow pointer-events-none opacity-0 group-hover:opacity-100 bg-mainGray text-mainCreme transition-all ease-in-out duration-300">
+          <span
+            class="text-bold text-2xs text-mainOrange text-justify leading-tight">
+            In this menu, you can choose all players control source. If you
+            choose WebSocket control for at least one player, an additional menu
+            will appear.
+          </span>
+        </div>
+      </div>
       @for (player of players; track player.id) {
-        <div class="flex flex-col space-y-1 pb-2">
+        <div
+          class="flex flex-col space-y-1 pb-2 {{
+            $index === 0 ? 'mt-4' : 'mt-0'
+          }}">
           <span class="text-mainOrange text-lg font-bold uppercase">{{
             player.name
           }}</span>

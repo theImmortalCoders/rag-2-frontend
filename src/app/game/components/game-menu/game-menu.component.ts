@@ -15,7 +15,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
   template: `
     <button
       (click)="toggleGameMenu()"
-      class="side-menu-right-button top-0 w-12 h-40 {{
+      class="side-menu-right-button -top-4 w-12 h-40 {{
         isGameMenuVisible ? 'right-72' : 'right-0'
       }}">
       <span
@@ -24,7 +24,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       >
     </button>
     <div
-      class="flex flex-col space-y-4 items-center justify-center w-72 h-40 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
+      class="flex flex-col space-y-4 items-center justify-center w-72 h-40 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container -top-4 {{
         isGameMenuVisible ? 'right-0' : '-right-72'
       }}">
       <div class="group font-mono absolute left-0 top-0 z-30">
