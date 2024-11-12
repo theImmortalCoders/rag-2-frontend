@@ -57,15 +57,24 @@ import {
             class="flex flex-col space-y-4 w-full text-sm sm:text-base">
             @if (modalVisibility === 'addNewGame') {
               <div class="flex flex-col space-y-1">
-                <label for="newGameName" class="text-start"
-                  >New game name</label
-                >
+                <label for="newGameName" class="text-start">Game name</label>
                 <input
                   id="newGameName"
                   type="text"
                   formControlName="newGameName"
                   placeholder="Type new game name"
                   class="custom-input" />
+                <label for="newGameDescription" class="text-start"
+                  >Game description</label
+                >
+                <textarea
+                  id="newGameDescription"
+                  type="text"
+                  formControlName="newGameDescription"
+                  placeholder="Type new game description"
+                  class="custom-input resize-none"
+                  [rows]="5"
+                  [maxlength]="280"></textarea>
               </div>
             } @else if (
               (modalVisibility === 'editGame' ||
@@ -93,6 +102,17 @@ import {
                   formControlName="editedGameName"
                   placeholder="Type edited game name"
                   class="custom-input" />
+                <label for="editedGameDescription" class="text-start"
+                  >Edited game description</label
+                >
+                <textarea
+                  id="editedGameDescription"
+                  type="text"
+                  formControlName="editedGameDescription"
+                  placeholder="Type edited game description"
+                  class="custom-input resize-none"
+                  [rows]="5"
+                  [maxlength]="280"></textarea>
               </div>
             }
           </form>
@@ -130,7 +150,9 @@ export class GameHandlingOptionsComponent implements OnDestroy {
 
   public gameHandlingForm = this._formBuilder.group({
     newGameName: ['', [Validators.required]],
+    newGameDescription: ['', [Validators.required]],
     editedGameName: ['', [Validators.required]],
+    editedGameDescription: ['', [Validators.required]],
   });
 
   public gameList: IGameResponse[] | null = null;
@@ -147,6 +169,17 @@ export class GameHandlingOptionsComponent implements OnDestroy {
     const target = event.target as HTMLSelectElement;
     const selectedId = target?.value;
     this.selectedGameId = parseInt(selectedId, 10);
+    const selectedGame = this.gameList?.find(
+      game => game.id === this.selectedGameId
+    );
+    const selectedGameName = selectedGame ? selectedGame.name : '';
+    const selectedGameDesctiption = selectedGame
+      ? selectedGame.description
+      : '';
+    this.gameHandlingForm.controls.editedGameName.setValue(selectedGameName);
+    this.gameHandlingForm.controls.editedGameDescription.setValue(
+      selectedGameDesctiption
+    );
   }
 
   public getGameList(): void {
@@ -193,10 +226,16 @@ export class GameHandlingOptionsComponent implements OnDestroy {
 
   public addNewGameFunction(): void {
     this.errorMessage = null;
-    if (this.gameHandlingForm.value.newGameName) {
+    if (
+      this.gameHandlingForm.value.newGameName &&
+      this.gameHandlingForm.value.newGameDescription
+    ) {
       const formValues = this.gameHandlingForm.value;
-      if (formValues.newGameName) {
-        const gameData: IGameRequest = { name: formValues.newGameName };
+      if (formValues.newGameName && formValues.newGameDescription) {
+        const gameData: IGameRequest = {
+          name: formValues.newGameName,
+          description: formValues.newGameDescription,
+        };
         this._addGameSubscription = this._gameEndpointsService
           .addGame(gameData)
           .subscribe({
@@ -220,17 +259,21 @@ export class GameHandlingOptionsComponent implements OnDestroy {
     this.errorMessage = null;
     if (
       this.gameHandlingForm.value.editedGameName &&
+      this.gameHandlingForm.value.editedGameDescription &&
       this.selectedGameId !== 0
     ) {
       const formValues = this.gameHandlingForm.value;
-      if (formValues.editedGameName) {
-        const gameData: IGameRequest = { name: formValues.editedGameName };
+      if (formValues.editedGameName && formValues.editedGameDescription) {
+        const gameData: IGameRequest = {
+          name: formValues.editedGameName,
+          description: formValues.editedGameDescription,
+        };
         this._editGameSubscription = this._gameEndpointsService
           .updateGame(this.selectedGameId, gameData)
           .subscribe({
             next: () => {
               this._notificationService.addNotification(
-                'Existing game name has been changed!',
+                'Existing game has been edited!',
                 3000
               );
               this.errorMessage = null;

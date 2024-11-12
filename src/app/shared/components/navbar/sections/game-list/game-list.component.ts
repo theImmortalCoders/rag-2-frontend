@@ -27,9 +27,20 @@ import { Subscription } from 'rxjs';
             class="border-mainOrange group-hover:border-green-500 w-3/5 2xl:w-1/2 group-hover:w-full ease-in-out transition-all duration-500" />
         </li>
       }
-      <li class="text-sm xs:text-base text-start 3xl:text-center">
-        Read more about our games...
-      </li>
+      <div class="group">
+        <div class="flex flex-row justify-between items-center">
+          <a
+            [routerLink]="['game-list']"
+            class="text-sm xs:text-base text-start 3xl:text-center text-mainOrange group-hover:text-green-500 ease-in-out transition-all duration-500">
+            Read more...
+          </a>
+          <i
+            data-feather="corner-down-right"
+            class="size-4 xs:size-5 ease-in-out transition-all duration-500 opacity-0 group-hover:opacity-100 text-mainOrange group-hover:text-green-500"></i>
+        </div>
+        <hr
+          class="border-mainOrange group-hover:border-green-500 w-3/5 2xl:w-1/2 group-hover:w-full ease-in-out transition-all duration-500" />
+      </div>
     </ul>
   `,
 })

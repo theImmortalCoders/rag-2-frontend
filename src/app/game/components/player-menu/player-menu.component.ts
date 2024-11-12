@@ -10,6 +10,7 @@ import {
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { Player } from '@gameModels/player.class';
 import { UrlParamService } from 'app/shared/services/url-param.service';
+import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-helper/side-menu-helper.component';
 
 @Component({
   selector: 'app-player-menu',
@@ -17,8 +18,8 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
   template: `
     <button
       (click)="togglePlayerMenu()"
-      class="side-menu-left-button top-0 w-12 h-56 {{
-        isPlayerMenuVisible ? 'left-64' : 'left-0'
+      class="side-menu-left-button -top-4 w-12 h-60 {{
+        isPlayerMenuVisible ? 'left-72' : 'left-0'
       }}">
       <span
         class="[writing-mode:vertical-rl] [text-orientation:upright] tracking-[0.45em]"
@@ -26,16 +27,26 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       >
     </button>
     <div
-      class="w-64 h-56 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-0 {{
-        isPlayerMenuVisible ? 'left-0' : '-left-64'
+      class="w-72 h-60 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container -top-4 {{
+        isPlayerMenuVisible ? 'left-0' : '-left-72'
       }}">
+      <app-side-menu-helper
+        [menuType]="'Data menu'"
+        [descriptionPart1]="
+          'In this menu, you can choose each players control source. If you choose WebSocket control for at least one player, an additional menu will appear.'
+        "
+        [descriptionPart2]="null"
+        [descriptionPart3]="null" />
       @for (player of players; track player.id) {
-        <div class="flex flex-col space-y-1 pb-2">
-          <span class="font-black">{{ player.name }}</span>
-          <span>Select player source:</span>
+        <div
+          class="flex flex-col space-y-1 pb-2 {{ $first ? 'mt-4' : 'mt-0' }}">
+          <span class="text-mainOrange text-lg font-bold uppercase">{{
+            player.name
+          }}</span>
+          <span class="text-mainCreme font-bold">Select player source:</span>
           <select
             #playerSourceSelect
-            class="custom-input w-40"
+            class="custom-input w-full"
             [attr.disabled]="!player.isActive ? 'disabled' : null"
             (change)="updateSources(player, playerSourceSelect.value)">
             @for (source of playerSourceType; track source) {
@@ -60,6 +71,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       }
     </div>
   `,
+  imports: [SideMenuHelperComponent],
 })
 export class PlayerMenuComponent implements OnInit {
   @Input({ required: true }) public players: Player[] = [];

@@ -4,6 +4,8 @@ import { By } from '@angular/platform-browser';
 import feather from 'feather-icons';
 import { NgOptimizedImage } from '@angular/common';
 import { AuthorCardsComponent } from './components/author-cards.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -11,7 +13,13 @@ describe('HomePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgOptimizedImage, AuthorCardsComponent, HomePageComponent],
+      imports: [
+        NgOptimizedImage,
+        AuthorCardsComponent,
+        HomePageComponent,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePageComponent);

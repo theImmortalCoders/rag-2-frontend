@@ -1,13 +1,8 @@
-/* eslint-disable max-lines */
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '@env/environment';
-import {
-  IUserLoginRequest,
-  IUserRequest,
-  IUserResponse,
-} from 'app/shared/models/user.models';
+import { IUserRequest } from 'app/shared/models/user.models';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 
@@ -20,7 +15,7 @@ export class UserEndpointsService {
   public register(userRequest: IUserRequest): Observable<void> {
     return this._httpClient
       .post<void>(
-        environment.backendApiUrl + '/api/User/auth/register',
+        environment.backendApiUrl + '/api/User/register',
         userRequest,
         {
           responseType: 'text' as 'json',
@@ -38,53 +33,11 @@ export class UserEndpointsService {
       );
   }
 
-  public verifyJWTToken(): Observable<boolean> {
-    return this._httpClient
-      .get<void>(environment.backendApiUrl + '/api/User/auth/verify', {
-        responseType: 'json',
-      })
-      .pipe(
-        map(() => {
-          return true;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            return of(false);
-          }
-          return throwError(() => error);
-        })
-      );
-  }
-
-  public login(userLoginRequest: IUserLoginRequest): Observable<string> {
-    return this._httpClient
-      .post<string>(
-        environment.backendApiUrl + '/api/User/auth/login',
-        userLoginRequest,
-        {
-          responseType: 'text' as 'json',
-        }
-      )
-      .pipe(
-        tap({
-          next: (response: string) => {
-            localStorage.setItem('jwtToken', response);
-            console.log('User logged in successfully');
-          },
-        }),
-        catchError((error: HttpErrorResponse) => {
-          const errorMessage = JSON.parse(error.error)['description'];
-          console.error(errorMessage);
-          return throwError(() => errorMessage);
-        })
-      );
-  }
-
   public resendConfirmationEmail(email: string): Observable<void> {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl +
-          `/api/User/auth/resend-confirmation-email?email=${email}`,
+          `/api/User/resend-confirmation-email?email=${email}`,
         {},
         {
           responseType: 'text' as 'json',
@@ -105,8 +58,7 @@ export class UserEndpointsService {
   public confirmAccount(token: string): Observable<void> {
     return this._httpClient
       .post<void>(
-        environment.backendApiUrl +
-          `/api/User/auth/confirm-account?token=${token}`,
+        environment.backendApiUrl + `/api/User/confirm-account?token=${token}`,
         {},
         {
           responseType: 'text' as 'json',
@@ -128,7 +80,7 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl +
-          `/api/User/auth/request-password-reset?email=${email}`,
+          `/api/User/request-password-reset?email=${email}`,
         {},
         {
           responseType: 'text' as 'json',
@@ -153,7 +105,7 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl +
-          `/api/User/auth/reset-password?tokenValue=${tokenValue}&newPassword=${newPassword}`,
+          `/api/User/reset-password?tokenValue=${tokenValue}&newPassword=${newPassword}`,
         {},
         {
           responseType: 'text' as 'json',
@@ -171,69 +123,6 @@ export class UserEndpointsService {
       );
   }
 
-  public refreshToken(): Observable<string> {
-    return this._httpClient
-      .post<string>(
-        environment.backendApiUrl + `/api/User/auth/refresh-token`,
-        {},
-        {
-          responseType: 'text' as 'json',
-        }
-      )
-      .pipe(
-        tap({
-          next: () => {
-            // console.log('Token refreshed successfully');
-          },
-        }),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => errorHandler(error));
-        })
-      );
-  }
-
-  public logout(): Observable<void> {
-    return this._httpClient
-      .post<void>(
-        environment.backendApiUrl + '/api/User/auth/logout',
-        {},
-        {
-          headers: getAuthHeaders(),
-          responseType: 'text' as 'json',
-        }
-      )
-      .pipe(
-        tap({
-          next: () => {
-            console.log('Logout successfully');
-            localStorage.removeItem('jwtToken');
-            localStorage.removeItem('errorCounter');
-          },
-        }),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => errorHandler(error));
-        })
-      );
-  }
-
-  public getMe(): Observable<IUserResponse> {
-    return this._httpClient
-      .get<IUserResponse>(environment.backendApiUrl + '/api/User/auth/me', {
-        responseType: 'json',
-        headers: getAuthHeaders(),
-      })
-      .pipe(
-        tap({
-          next: () => {
-            console.log('Current user data retrieved successfully');
-          },
-        }),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => errorHandler(error));
-        })
-      );
-  }
-
   public changePassword(
     oldPassword: string,
     newPassword: string
@@ -241,7 +130,7 @@ export class UserEndpointsService {
     return this._httpClient
       .post<void>(
         environment.backendApiUrl +
-          `/api/User/auth/change-password?oldPassword=${oldPassword}&newPassword=${newPassword}`,
+          `/api/User/change-password?oldPassword=${oldPassword}&newPassword=${newPassword}`,
         {},
         {
           headers: getAuthHeaders(),
@@ -262,13 +151,10 @@ export class UserEndpointsService {
 
   public deleteAccount(): Observable<void> {
     return this._httpClient
-      .delete<void>(
-        environment.backendApiUrl + '/api/User/auth/delete-account',
-        {
-          headers: getAuthHeaders(),
-          responseType: 'text' as 'json',
-        }
-      )
+      .delete<void>(environment.backendApiUrl + '/api/User/delete-account', {
+        headers: getAuthHeaders(),
+        responseType: 'text' as 'json',
+      })
       .pipe(
         tap({
           next: () => {

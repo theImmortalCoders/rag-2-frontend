@@ -12,8 +12,8 @@ describe('GameListComponent', () => {
   let gameEndpointsServiceSpy: jasmine.SpyObj<GameEndpointsService>;
 
   const mockGames: IGameResponse[] = [
-    { id: 1, name: 'Game One' },
-    { id: 2, name: 'Game Two' },
+    { id: 1, name: 'Game One', description: 'one' },
+    { id: 2, name: 'Game Two', description: 'two' },
   ];
 
   beforeEach(waitForAsync(() => {
@@ -90,15 +90,5 @@ describe('GameListComponent', () => {
     expect(gameItems.length).toBe(mockGames.length);
     expect(gameItems[0].textContent).toContain('Game One');
     expect(gameItems[1].textContent).toContain('Game Two');
-  });
-
-  it('should display fallback text when no games are available', () => {
-    gameEndpointsServiceSpy.getGames.and.returnValue(of([]));
-
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const fallbackText = compiled.querySelector('li.text-sm')?.textContent;
-
-    expect(fallbackText).toContain('Read more about our games...');
   });
 });

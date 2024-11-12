@@ -44,6 +44,10 @@ module.exports = {
         userInfoShadow: '-1px 1px 7px 2px rgba(255, 96, 0, 1)',
         footerShadow: 'inset 0px 4px 25px -8px rgba(93, 93, 93, 1)',
         sideMenuShadow: '-5px 7px 25px -7px rgba(93, 93, 93, 1)',
+        controlPanelShadow:
+          '0 4px 12px rgba(255, 230, 199, 1), 0 -2px 4px rgba(255, 230, 199, 0)',
+        menuInfoPanelShadow:
+          '0 2px 6px rgba(53, 53, 53, 1), 0 -1px 2px rgba(53, 53, 53, 0)',
       },
       animation: {
         typewriter21: 'typewriter 2s steps(21) forwards',
@@ -68,7 +72,7 @@ module.exports = {
     function ({ addUtilities }) {
       addUtilities({
         '.custom-input': {
-          '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-700 focus:outline-none focus:border-mainOrange':
+          '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray selection:bg-lightGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-500 focus:outline-none focus:border-mainOrange':
             {},
         },
         '.custom-input-green': {

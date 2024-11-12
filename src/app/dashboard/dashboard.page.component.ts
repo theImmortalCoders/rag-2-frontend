@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -7,13 +6,12 @@ import {
   OnInit,
 } from '@angular/core';
 import * as feather from 'feather-icons';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import {
   IUserResponse,
   IUserStatsResponse,
 } from 'app/shared/models/user.models';
 import { Subscription } from 'rxjs';
-import { ProgressCircleBarComponent } from './components/sections/user-info/progress-circle-bar.component';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { UserInfoComponent } from './components/sections/user-info/user-info.component';
 import { UserAccountSettingsComponent } from './components/sections/user-account-settings/user-account-settings.component';
@@ -27,8 +25,6 @@ import { TRole } from 'app/shared/models/role.enum';
   selector: 'app-dashboard-page',
   standalone: true,
   imports: [
-    CommonModule,
-    ProgressCircleBarComponent,
     UserInfoComponent,
     UserAccountSettingsComponent,
     GameHandlingOptionsComponent,
@@ -59,7 +55,7 @@ import { TRole } from 'app/shared/models/role.enum';
 export class DashboardPageComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
-  private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
   private _statsEndpointsService = inject(StatsEndpointsService);
 
   private _getMeSubscription = new Subscription();
@@ -72,7 +68,7 @@ export class DashboardPageComponent
   public allowedRolesAdminTeacher: TRole[] = [TRole.Admin, TRole.Teacher];
 
   public ngOnInit(): void {
-    this._getMeSubscription = this._userEndpointsService.getMe().subscribe({
+    this._getMeSubscription = this._authEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
         this.aboutMeUserInfo = response;
         this.getUserStats(this.aboutMeUserInfo.id);

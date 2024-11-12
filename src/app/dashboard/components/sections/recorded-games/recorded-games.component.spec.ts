@@ -53,7 +53,9 @@ describe('RecordedGamesComponent', () => {
   });
 
   it('should get recorded games when available games are fetched', fakeAsync(() => {
-    const mockGames: IGameResponse[] = [{ id: 1, name: 'Game 1' }];
+    const mockGames: IGameResponse[] = [
+      { id: 1, name: 'Game 1', description: 'dfgdfg' },
+    ];
     const mockRecordedGames: IRecordedGameResponse[] = [
       {
         id: 1,
@@ -63,6 +65,7 @@ describe('RecordedGamesComponent', () => {
         endState: {},
         outputSpec: '',
         players: [],
+        sizeMb: 2,
       },
     ];
     mockGameEndpointsService.getGames.and.returnValue(of(mockGames));

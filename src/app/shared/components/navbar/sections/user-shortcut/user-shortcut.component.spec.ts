@@ -6,9 +6,9 @@ import {
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserShortcutComponent } from './user-shortcut.component';
-import { AuthenticationService } from 'app/shared/services/authentication.service';
+import { AppStatusService } from 'app/shared/services/app-status.service';
 import { NotificationService } from 'app/shared/services/notification.service';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import { Router } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { TRole } from 'app/shared/models/role.enum';
@@ -17,8 +17,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('UserShortcutComponent', () => {
   let component: UserShortcutComponent;
   let fixture: ComponentFixture<UserShortcutComponent>;
-  let authService: jasmine.SpyObj<AuthenticationService>;
-  let userEndpointsService: jasmine.SpyObj<UserEndpointsService>;
+  let appStatusService: jasmine.SpyObj<AppStatusService>;
+  let authEndpointsService: jasmine.SpyObj<AuthEndpointsService>;
   let notificationService: jasmine.SpyObj<NotificationService>;
   let router: Router;
   let authStatus$: Subject<boolean>;
@@ -29,8 +29,8 @@ describe('UserShortcutComponent', () => {
     authStatus$ = new Subject<boolean>();
     role$ = new Subject<string>();
 
-    authService = jasmine.createSpyObj(
-      'AuthenticationService',
+    appStatusService = jasmine.createSpyObj(
+      'AppStatusService',
       ['setAuthStatus'],
       {
         authStatus$: authStatus$.asObservable(),
@@ -38,7 +38,7 @@ describe('UserShortcutComponent', () => {
       }
     );
 
-    userEndpointsService = jasmine.createSpyObj('UserEndpointsService', [
+    authEndpointsService = jasmine.createSpyObj('AuthEndpointsService', [
       'logout',
     ]);
     notificationService = jasmine.createSpyObj('NotificationService', [
@@ -53,8 +53,8 @@ describe('UserShortcutComponent', () => {
         UserShortcutComponent,
       ],
       providers: [
-        { provide: AuthenticationService, useValue: authService },
-        { provide: UserEndpointsService, useValue: userEndpointsService },
+        { provide: AppStatusService, useValue: appStatusService },
+        { provide: AuthEndpointsService, useValue: authEndpointsService },
         { provide: NotificationService, useValue: notificationService },
       ],
     }).compileComponents();
@@ -116,13 +116,13 @@ describe('UserShortcutComponent', () => {
     it('should logout user and navigate to home if logged in', fakeAsync(() => {
       component.isLoggedIn = true;
       component.currentUserRole = 'USER' as TRole;
-      userEndpointsService.logout.and.returnValue(of(undefined)); // Mock logout to return an observable
+      authEndpointsService.logout.and.returnValue(of(undefined)); // Mock logout to return an observable
 
       const routerSpy = spyOn(router, 'navigate');
       component.logoutButtonClick();
       tick();
 
-      expect(userEndpointsService.logout).toHaveBeenCalled();
+      expect(authEndpointsService.logout).toHaveBeenCalled();
       expect(routerSpy).toHaveBeenCalledWith(['/']);
       expect(notificationService.addNotification).toHaveBeenCalledWith(
         "You've been logged out successfully!",
@@ -131,13 +131,13 @@ describe('UserShortcutComponent', () => {
       expect(component.isLoggedIn).toBeFalse();
       expect(component.currentUserRole).toBeNull();
       expect(component.isUserInfoVisible).toBeFalse();
-      expect(authService.setAuthStatus).toHaveBeenCalledWith(false);
+      expect(appStatusService.setAuthStatus).toHaveBeenCalledWith(false);
     }));
 
     it('should not attempt logout if user is not logged in', () => {
       component.isLoggedIn = false;
       component.logoutButtonClick();
-      expect(userEndpointsService.logout).not.toHaveBeenCalled();
+      expect(authEndpointsService.logout).not.toHaveBeenCalled();
     });
   });
 

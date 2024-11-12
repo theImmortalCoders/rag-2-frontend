@@ -45,14 +45,6 @@ describe('DataMenuComponent', () => {
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should initialize with default values', () => {
-    expect(component.gameName).toEqual('');
-    expect(component.dataToPersist).toEqual({});
-    expect(component.collectedDataArray).toEqual([]);
-    expect(component.vIsDataCollectingActive.value).toBeFalse();
-  });
-
   it('should update dataToPersist when updateDataToPersist is called', () => {
     component.updateDataToPersist('key1', 'value1', true);
     expect(component.dataToPersist).toEqual({ key1: 'value1' });

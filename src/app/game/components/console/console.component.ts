@@ -15,7 +15,7 @@ import { ConsoleFieldsetComponent } from './console-fieldset/console-fieldset.co
       <div
         [className]="
           consoleClasses['consoleContainer'] +
-          (isConsoleVisible ? ' h-72' : ' h-0')
+          (isConsoleVisible ? ' h-72 py-4' : ' h-0')
         ">
         <app-console-fieldset
           [logData]="logData | exchange_data"

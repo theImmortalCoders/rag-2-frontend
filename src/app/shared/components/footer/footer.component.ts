@@ -40,7 +40,7 @@ import { Component } from '@angular/core';
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">CONTACT</span>
-          <span>the.immortalcoders&#64;gmail.com</span>
+          <span>d.kalandyk&#64;prz.edu.pl</span>
           <span class="font-bold text-base lg:text-lg">PROJECT SUPERVISOR</span>
           <span>Dawid Kalandyk</span>
         </div>

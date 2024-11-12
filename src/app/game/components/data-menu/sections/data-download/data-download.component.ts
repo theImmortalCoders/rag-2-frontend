@@ -1,6 +1,8 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
+import { Game } from '@gameModels/game.class';
+import { Player } from '@gameModels/player.class';
 import { IRecordedGameRequest } from 'app/shared/models/recorded-game.models';
 import { NotificationService } from 'app/shared/services/notification.service';
 
@@ -11,13 +13,13 @@ import { NotificationService } from 'app/shared/services/notification.service';
     <button
       class="font-bold mt-2 border-b-[1px] border-mainOrange w-full text-center"
       (click)="handleCollectingData()">
-      @if (!vIsDataCollectingActive.value) {
+      @if (!isDataCollectingActive) {
         Start collecting data
       } @else {
         Stop collecting data
       }
     </button>
-    @if (collectedDataArray.length > 0 && !vIsDataCollectingActive.value) {
+    @if (collectedDataArray.length > 0 && !isDataCollectingActive) {
       <button
         (click)="generateJSON()"
         class="mt-4 py-1 text-center text-mainCreme border-mainCreme border-[1px] hover:bg-mainCreme hover:text-darkGray transition-all ease-in-out duration-300">
@@ -32,22 +34,33 @@ import { NotificationService } from 'app/shared/services/notification.service';
   </div>`,
 })
 export class DataDownloadComponent {
-  @Input({ required: true }) public vIsDataCollectingActive = { value: false };
-  @Input({ required: true }) public gameName = '';
+  @Input({ required: true }) public game!: Game;
   @Input({ required: true }) public collectedDataArray: TExchangeData[] = [];
 
   @Output() public deleteCollectedDataArrayEmitter = new EventEmitter<void>();
+  @Output() public collectingActiveEmitter = new EventEmitter<boolean>();
 
   private _gameRecordEndpointsService = inject(GameRecordEndpointsService);
   private _notificationService = inject(NotificationService);
+  public isDataCollectingActive = false;
 
   public handleCollectingData(): void {
-    this.vIsDataCollectingActive.value = !this.vIsDataCollectingActive.value;
+    this.isDataCollectingActive = !this.isDataCollectingActive;
+    this.collectingActiveEmitter.emit(this.isDataCollectingActive);
 
-    if (!this.vIsDataCollectingActive.value) {
+    if (!this.isDataCollectingActive) {
       const gameRecordData: IRecordedGameRequest = {
-        gameName: this.gameName,
-        values: this.collectedDataArray,
+        gameName: this.game.name,
+        values: this.collectedDataArray.map(data => {
+          const { timestamp, players, ...rest } = data;
+          return {
+            name: this.game.name,
+            state: rest,
+            players: players,
+            timestamp: timestamp,
+          } as TExchangeData;
+        }),
+        outputSpec: this.game.outputSpec,
       };
       this._gameRecordEndpointsService
         .addGameRecording(gameRecordData)
@@ -82,7 +95,7 @@ export class DataDownloadComponent {
     a.setAttribute('href', url);
     a.setAttribute(
       'download',
-      `${this.gameName}_${new Date().toISOString()}.json`
+      `${this.game.name}_${new Date().toISOString()}.json`
     );
     document.body.appendChild(a);
     a.click();

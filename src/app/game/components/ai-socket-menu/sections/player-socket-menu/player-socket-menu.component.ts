@@ -3,10 +3,9 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Player } from '@gameModels/player.class';
 import { DebugModeMenuComponent } from '../debug-mode-menu/debug-mode-menu.component';
 import { DebugModePanelComponent } from '../debug-mode-panel/debug-mode-panel.component';
-import { SocketDomainInputComponent } from '../socket-domain-input/socket-domain-input.component';
-import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-connected-menu.component';
 import { PlayerSocketConnectionMenuComponent } from '../player-socket-connection-menu/player-socket-connection-menu.component';
 import { Observable } from 'rxjs';
+import { Game } from '@gameModels/game.class';
 
 @Component({
   selector: 'app-player-socket-menu',
@@ -14,14 +13,16 @@ import { Observable } from 'rxjs';
   imports: [
     DebugModeMenuComponent,
     DebugModePanelComponent,
-    SocketDomainInputComponent,
-    SocketConnectedMenuComponent,
     PlayerSocketConnectionMenuComponent,
   ],
 
   template: `
-    {{ player.name }}
-    <app-debug-mode-menu (debugModeEmitter)="isDebugModeActive = $event" />
+    <h3 class="text-mainOrange text-lg font-bold uppercase">
+      {{ player.name }}
+    </h3>
+    <app-debug-mode-menu
+      [canApplyDebugMode]="!isConnected"
+      (debugModeEmitter)="isDebugModeActive = $event" />
     @if (isDebugModeActive) {
       <app-debug-mode-panel
         [player]="player"
@@ -32,6 +33,7 @@ import { Observable } from 'rxjs';
         [player]="player"
         [setDataToSend]="dataToSend"
         (receivedDataEmitter)="receivedDataEmitter.emit($event)"
+        (connectedEmitter)="isConnected = $event"
         [gameName]="gameName"
         [gamePause]="gamePause"
         [gameRestart]="gameRestart" />
@@ -41,11 +43,12 @@ import { Observable } from 'rxjs';
 export class PlayerSocketMenuComponent {
   @Input({ required: true }) public player!: Player;
   @Input({ required: true }) public gameName = '';
-  @Input({ required: true }) public dataToSend: TExchangeData = {};
+  @Input({ required: true }) public dataToSend!: Game;
   @Input({ required: true }) public gamePause = new Observable<boolean>();
   @Input({ required: true }) public gameRestart = new Observable<void>();
 
   @Output() public receivedDataEmitter = new EventEmitter<TExchangeData>();
 
   public isDebugModeActive = false;
+  public isConnected = false;
 }

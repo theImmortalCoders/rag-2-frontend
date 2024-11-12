@@ -5,13 +5,14 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Observable, catchError, throwError, switchMap } from 'rxjs';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
   private _notificationService = inject(NotificationService);
 
   public intercept(
@@ -30,7 +31,7 @@ export class JwtInterceptor implements HttpInterceptor {
             );
           }
 
-          this._userEndpointsService.logout();
+          this._authEndpointsService.logout();
           return throwError(() => errordata);
         })
       );
@@ -60,7 +61,7 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    return this._userEndpointsService.refreshToken().pipe(
+    return this._authEndpointsService.refreshToken().pipe(
       switchMap((token: string) => {
         localStorage.setItem('jwtToken', token);
         return next.handle(this.addTokenHeader(request));

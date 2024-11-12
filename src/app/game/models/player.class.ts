@@ -9,6 +9,7 @@ export class Player {
   public isActive: boolean;
   public inputData: TExchangeData = {};
   public expectedDataDescription = '';
+  public controlsDescription: TExchangeData = {};
 
   public constructor(
     id: number,
@@ -16,6 +17,7 @@ export class Player {
     name: string,
     inputData: TExchangeData = {},
     expectedDataDescription: string,
+    controlsDescription: TExchangeData = {},
     playerType: PlayerSourceType = PlayerSourceType.KEYBOARD
   ) {
     this.isObligatory = isObligatory;
@@ -25,5 +27,6 @@ export class Player {
     this.playerType = playerType;
     this.expectedDataDescription = expectedDataDescription;
     this.inputData = inputData;
+    this.controlsDescription = controlsDescription;
   }
 }
