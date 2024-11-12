@@ -55,9 +55,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       </div>
       @for (player of players; track player.id) {
         <div
-          class="flex flex-col space-y-1 pb-2 {{
-            $index === 0 ? 'mt-4' : 'mt-0'
-          }}">
+          class="flex flex-col space-y-1 pb-2 {{ $first ? 'mt-4' : 'mt-0' }}">
           <span class="text-mainOrange text-lg font-bold uppercase">{{
             player.name
           }}</span>
