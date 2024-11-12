@@ -66,11 +66,11 @@ export abstract class BaseGameWindowComponent
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
       setTimeout(() => this.restart());
-      console.info('Game restarted');
+      console.log('Game restarted');
     });
     this._pauseSubscription = this.gamePause.subscribe(value => {
       this.isPaused = value;
-      console.info('Pause state: ', this.isPaused);
+      console.log('Pause state: ', this.isPaused);
     });
   }
 
