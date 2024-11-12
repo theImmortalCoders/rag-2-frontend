@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Game } from '@gameModels/game.class';
+import { Player } from '@gameModels/player.class';
 import { IRecordedGameRequest } from 'app/shared/models/recorded-game.models';
 import { NotificationService } from 'app/shared/services/notification.service';
 
@@ -51,11 +52,11 @@ export class DataDownloadComponent {
       const gameRecordData: IRecordedGameRequest = {
         gameName: this.game.name,
         values: this.collectedDataArray.map(data => {
-          const { timestamp, ...rest } = data;
+          const { timestamp, players, ...rest } = data;
           return {
             name: this.game.name,
             state: rest,
-            players: this.game.players,
+            players: players,
             timestamp: timestamp,
           } as TExchangeData;
         }),

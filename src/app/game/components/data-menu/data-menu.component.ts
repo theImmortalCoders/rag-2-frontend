@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { KeyValuePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { DataDownloadComponent } from './sections/data-download/data-download.co
 import { UrlParamService } from 'app/shared/services/url-param.service';
 import { Game } from '@gameModels/game.class';
 import { Observable, Subscription } from 'rxjs';
+import { Player } from '@gameModels/player.class';
 
 @Component({
   selector: 'app-data-menu',
@@ -56,7 +57,7 @@ import { Observable, Subscription } from 'rxjs';
     </div>
   `,
 })
-export class DataMenuComponent implements OnInit {
+export class DataMenuComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public game!: Game;
   @Input({ required: true }) public gamePause = new Observable<boolean>();
   @Input({ required: true }) public set setDataPossibleToPersist(
@@ -91,6 +92,10 @@ export class DataMenuComponent implements OnInit {
 
       this.updateDataToPersistFromURL();
     }, 50);
+  }
+
+  public ngOnDestroy(): void {
+    this._pauseSubscription.unsubscribe();
   }
 
   public toggleDataMenu(): void {
@@ -156,6 +161,7 @@ export class DataMenuComponent implements OnInit {
       !this.isPaused
     ) {
       newData['timestamp'] = new Date().toLocaleString('pl-PL');
+      newData['players'] = JSON.parse(JSON.stringify(this.game.players));
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);
       this._lastSavedTime = Date.now();

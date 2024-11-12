@@ -21,17 +21,17 @@ export class Pong extends Game {
   public override state = new PongState();
   public override outputSpec = `
       output:
-        leftPaddleY: number, <0, 600>;
-        rightPaddleY: number, <0, 600>;
-        leftPaddleSpeed: number, <-20, 20>;
-        rightPaddleSpeed: number, <-20, 20>;
-        ballX: number, <0, 1000>;
-        ballY: number, <0, 600>;
-        ballSpeedX: number, <-inf, inf>;
-        ballSpeedY: number, <-inf, inf>;
-        ballSpeedMultiplier: number, <1, inf>;
-        scoreLeft: number, <0, inf>;
-        scoreRight: number, <0, inf>;
+        leftPaddleY: int, <0, 600>;
+        rightPaddleY: int, <0, 600>;
+        leftPaddleSpeed: int, {-20, 0, 20};
+        rightPaddleSpeed: int, {-20, 0, 20};
+        ballX: float, <0, 1000>;
+        ballY: float, <0, 600>;
+        ballSpeedX: float, <-inf, inf>;
+        ballSpeedY: float, <-inf, inf>;
+        ballSpeedMultiplier: float, <1, inf>;
+        scoreLeft: int, <0, inf>;
+        scoreRight: int, <0, inf>;
 
       default values:
         ballX: 500;
@@ -45,7 +45,7 @@ export class Pong extends Game {
       true,
       'Player 1',
       { move: 0 },
-      'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up',
+      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up',
       { up: '[W]', down: '[S]' }
     ),
     new Player(
@@ -53,7 +53,7 @@ export class Pong extends Game {
       true,
       'Player 2',
       { move: 0 },
-      'Value of {-1, 0, 1}, -1: down, 0: stop, 1: up',
+      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up',
       { up: '[ARROW_UP]', down: '[ARROW_DOWN]' }
     ),
   ];

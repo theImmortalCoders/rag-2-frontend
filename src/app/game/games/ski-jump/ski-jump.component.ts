@@ -32,9 +32,9 @@ export class SkiJumpGameWindowComponent
   private _wrongFlightCounter = 0;
   private _windInterval: ReturnType<typeof setTimeout> | undefined;
 
-  private _jumpForce = 1;
-  private _windImpact = 1;
-  private _flightDeviationTolerance = Math.PI / 32;
+  private _jumpForce = 1.1;
+  private _windImpact = 0.7;
+  private _flightDeviationTolerance = Math.PI / 28;
 
   public override game!: SkiJump;
 
@@ -124,7 +124,7 @@ export class SkiJumpGameWindowComponent
   private renderSkis(context: CanvasRenderingContext2D): void {
     const lineLength = 25;
 
-    context.lineWidth = 2;
+    context.lineWidth = 3;
     context.strokeStyle = 'red';
     context.beginPath();
     context.moveTo(this.game.state.jumperX, this.game.state.jumperY);
