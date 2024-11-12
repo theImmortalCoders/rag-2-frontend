@@ -35,15 +35,15 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
             class="size-5 text-mainGray group-hover:scale-105 transition-all ease-in-out duration-300"></i>
         </div>
         <div
-          class="flex absolute z-20 top-3 left-4 h-5 w-[8.5rem] pointer-events-none opacity-0 group-hover:opacity-100 items-start justify-center rounded-l-full rounded-tr-full bg-mainGray text-mainCreme text-nowrap transition-all ease-in-out duration-300">
+          class="flex absolute z-20 top-3 left-4 h-5 w-[15.75rem] pointer-events-none opacity-0 group-hover:opacity-100 items-start justify-center rounded-l-full rounded-tr-full bg-mainGray text-mainCreme text-nowrap transition-all ease-in-out duration-300">
           <p class="text-center py-[2px] pl-8 pr-4 uppercase text-xs">
             Game menu
           </p>
         </div>
         <div
-          class="flex flex-col w-[116px] absolute z-10 top-8 left-9 px-2 pb-2 shadow-menuInfoPanelShadow pointer-events-none opacity-0 group-hover:opacity-100 bg-mainGray text-mainCreme transition-all ease-in-out duration-300">
+          class="flex flex-col w-[14.5rem] absolute z-10 top-8 left-9 px-2 pb-2 shadow-menuInfoPanelShadow pointer-events-none opacity-0 group-hover:opacity-100 bg-mainGray text-mainCreme transition-all ease-in-out duration-300">
           <span
-            class="text-bold text-2xs text-mainOrange text-pretty leading-tight">
+            class="text-bold text-2xs text-mainOrange text-justify leading-tight">
             In this menu, you can pause/resume your game, or restart it from the
             beginning.
           </span>
