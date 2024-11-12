@@ -20,9 +20,8 @@ import { IPlayerInputData } from '@gameModels/player-input-data.type';
 @Component({
   selector: 'app-base-game-window',
   standalone: true,
-  template: `<app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b>`,
+  template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CanvasComponent],
 })
 export abstract class BaseGameWindowComponent
   implements OnInit, OnDestroy, DoCheck, AfterViewInit
@@ -67,11 +66,11 @@ export abstract class BaseGameWindowComponent
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
       setTimeout(() => this.restart());
-      console.info('Game restarted');
+      console.log('Game restarted');
     });
     this._pauseSubscription = this.gamePause.subscribe(value => {
       this.isPaused = value;
-      console.info('Pause state: ', this.isPaused);
+      console.log('Pause state: ', this.isPaused);
     });
   }
 

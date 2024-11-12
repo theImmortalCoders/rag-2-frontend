@@ -16,6 +16,7 @@ import { GameMenuComponent } from './components/game-menu/game-menu.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
 import { SkiJumpGameWindowComponent } from './games/ski-jump/ski-jump.component';
+import { GameControlsComponent } from './components/game-controls/game-controls.component';
 
 @Component({
   selector: 'app-game',
@@ -31,13 +32,14 @@ import { SkiJumpGameWindowComponent } from './games/ski-jump/ski-jump.component'
     CantDisplayGameComponent,
     AuthRequiredDirective,
     SkiJumpGameWindowComponent,
+    GameControlsComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
       @if (isMinWidthXl) {
         @if (game) {
           <div>
-            <div class="absolute top-20 left-0 flex flex-col">
+            <div class="absolute z-10 top-20 left-0 flex flex-col">
               <app-player-menu
                 *appAuthRequired
                 [players]="game.players"
@@ -64,6 +66,7 @@ import { SkiJumpGameWindowComponent } from './games/ski-jump/ski-jump.component'
                 [setDataPossibleToPersist]="gameStateData" />
             </div>
           </div>
+          <app-game-controls [game]="game" />
           <div class="flex w-full items-center justify-center py-12">
             @switch (game.name) {
               @case ('pong') {

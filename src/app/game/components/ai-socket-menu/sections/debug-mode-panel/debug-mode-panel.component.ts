@@ -8,16 +8,16 @@ import { Player } from '@gameModels/player.class';
   standalone: true,
   imports: [KeyValuePipe],
   template: ` @for (variable of inputData | keyvalue; track variable) {
-    <div>
-      <span>{{ variable.key }}:</span>
+    <div class="flex flex-col space-y-1 {{ $last ? 'mb-0' : 'mb-6' }}">
+      <span class="text-mainCreme font-bold">{{ variable.key }}:</span>
       <input
         #variableInput
-        class="custom-input w-52"
+        class="custom-input w-full"
         type="text"
         [defaultValue]="variable.value" />
       <button
         (click)="emitInputData(variable.key, variableInput.value)"
-        class="mt-4 border-b-[1px] border-mainOrange w-full text-center font-black">
+        class="pt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
         Send
       </button>
     </div>
