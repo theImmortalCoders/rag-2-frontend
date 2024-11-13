@@ -39,7 +39,7 @@ import { NgOptimizedImage } from '@angular/common';
           class="text-base 2xs:text-lg lg:text-xl xl:text-2xl text-mainOrange font-bold">
           Main tech-stack:
         </h2>
-        <div class="grid grid-cols-3 gap-y-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-y-2">
           @for (stackItem of author.techStack; track stackItem) {
             <span
               class="flex flex-row items-center space-x-2 text-2xs 2xs:text-xs lg:text-sm xl:text-base"
