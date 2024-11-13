@@ -6,5 +6,5 @@ import { FlappyBird } from '../games/flappy-bird/models/flappy-bird.class';
 export const games: Record<string, Game> = {
   pong: new Pong(),
   skijump: new SkiJump(),
-  flappyBird: new FlappyBird(),
+  flappybird: new FlappyBird(),
 };
