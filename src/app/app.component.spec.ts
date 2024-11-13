@@ -34,6 +34,6 @@ describe('AppComponent', () => {
   });
 
   it(`title has default value`, () => {
-    expect(component.title).toEqual(`rag-2-frontend`);
+    expect(component.title).toEqual(`RUT-AI GAMES 2`);
   });
 });
