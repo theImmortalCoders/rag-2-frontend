@@ -211,7 +211,13 @@ export class DataMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       Date.now() - this._lastSavedTime > this.dataSavingIntervalLimit &&
       !this.isPaused
     ) {
-      newData['timestamp'] = new Date().toLocaleString('pl-PL');
+      const date = new Date();
+      const offsetInMilliseconds = date.getTimezoneOffset() * 60000;
+      const localISOTime = new Date(date.getTime() - offsetInMilliseconds)
+        .toISOString()
+        .slice(0, -1);
+
+      newData['timestamp'] = localISOTime;
       newData['players'] = JSON.parse(JSON.stringify(this.game.players));
       this.dataToPersist = newData;
       this.collectedDataArray.push(this.dataToPersist);

@@ -39,17 +39,18 @@ import { Component } from '@angular/core';
           }
         </div>
         <div class="flex flex-col items-start space-y-2">
+          <span class="font-bold text-base lg:text-lg">PROJECT SUPERVISOR</span>
+          <span>M.Sc. Eng. Dawid Kalandyk</span>
           <span class="font-bold text-base lg:text-lg">CONTACT</span>
           <span>d.kalandyk&#64;prz.edu.pl</span>
-          <span class="font-bold text-base lg:text-lg">PROJECT SUPERVISOR</span>
-          <span>Dawid Kalandyk</span>
         </div>
         <div class="flex flex-col items-start space-y-2">
           <a
             [href]="'https://w.prz.edu.pl/'"
             target="_blank"
-            class="flex flex-row items-center justify-center space-x-2 group">
-            <span class="w-20 xs:w-16 lg:w-20 h-10 xs:h-9 lg:h-10 relative">
+            class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
+            <span
+              class="w-20 xs:w-16 lg:w-20 h-10 xs:h-9 lg:h-10 relative pr-4">
               <img
                 ngSrc="images/prz_orange.png"
                 alt="Logo"
@@ -63,8 +64,9 @@ import { Component } from '@angular/core';
           <a
             [href]="'http://vision.kia.prz.edu.pl/gest/'"
             target="_blank"
-            class="flex flex-row items-center justify-center space-x-2 group">
-            <span class="w-20 xs:w-16 lg:w-20 h-10 xs:h-9 lg:h-10 relative">
+            class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
+            <span
+              class="w-20 xs:w-16 lg:w-20 h-10 xs:h-9 lg:h-10 relative pr-4">
               <img
                 ngSrc="images/gest_orange.png"
                 alt="Logo"
