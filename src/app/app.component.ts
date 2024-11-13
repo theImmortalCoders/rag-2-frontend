@@ -23,5 +23,5 @@ import { NotificationComponent } from './shared/components/notification/notifica
   `,
 })
 export class AppComponent {
-  public title = 'rag-2-frontend';
+  public title = 'RUT-AI GAMES 2';
 }
