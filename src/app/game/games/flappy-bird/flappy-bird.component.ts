@@ -87,7 +87,7 @@ export class FlappyBirdComponent
   private resetBirdAndObstacle(): void {
     this.game.state.birdY = this._canvas.height / 2;
     this.game.state.birdSpeedY = 0;
-    this.game.state.obstacleDistanceX = this._canvas.width;
+    this.game.state.obstacleDistanceX = this._canvas.width / 2;
     this.game.state.obstacleCenterGapY = this.random(100, 500);
     this.game.state.jumpPowerY = 10;
     this.game.state.gravity = 0.5;
