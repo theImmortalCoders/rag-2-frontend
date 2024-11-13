@@ -188,11 +188,13 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
     );
   }
   public onStartDataExchangeClick = (): void => {
-    this.aiSocketService.startDataExchange(
-      this.vSendingInterval.value,
-      this.player.inputData,
-      this.player.id
-    );
+    if (this.vSendingInterval.value) {
+      this.aiSocketService.startDataExchange(
+        this.vSendingInterval.value,
+        this.player.inputData,
+        this.player.id
+      );
+    }
   };
   //
   private emitSocketInput(data: TExchangeData): void {

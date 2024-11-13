@@ -27,12 +27,15 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
         max="1000"
         step="10"
         [defaultValue]="vSendingInterval.value"
-        (change)="updateValue(sendingIntervalInput.valueAsNumber)" />
+        (change)="updateValue(sendingIntervalInput.valueAsNumber)"
+        (keyup)="updateValue(sendingIntervalInput.valueAsNumber)" />
       <button
-        [attr.disabled]="isPaused ? 'disabled' : null"
+        [attr.disabled]="
+          isPaused || !vSendingInterval.value ? 'disabled' : null
+        "
         (click)="startDataExchange(vSendingInterval.value)"
         class="w-full mt-2 text-center {{
-          !isPaused
+          !isPaused && vSendingInterval.value
             ? 'text-green-500 hover:text-mainCreme font-bold border-green-500 bg-lightGray hover:bg-green-500 ease-in-out duration-200 transition-all'
             : ''
         }}  border-[1px] p-1">
@@ -60,6 +63,7 @@ export class SocketConnectedMenuComponent implements OnInit {
 
   public ngOnInit(): void {
     this.syncPropsWithUrl();
+    this.updateValue(50);
   }
 
   public updateValue(value: number): void {
