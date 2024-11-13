@@ -15,6 +15,11 @@ export class FlappyBirdComponent
   extends BaseGameWindowComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
+  private _birdWidth = 20;
+  private _birdHeight = 20;
+  private _obstacleWidth = 50;
+  private _obstacleGapHeight = 200;
+
   public override game!: FlappyBird;
 
   public override ngOnInit(): void {
@@ -26,7 +31,7 @@ export class FlappyBirdComponent
   public override ngAfterViewInit(): void {
     super.ngAfterViewInit();
 
-    this.resetGame();
+    this.resetBirdAndObstacle();
   }
 
   public override ngOnDestroy(): void {
@@ -36,13 +41,17 @@ export class FlappyBirdComponent
   public override restart(): void {
     this.game.state = new FlappyBirdState();
 
-    this.resetGame();
+    this.resetBirdAndObstacle();
   }
 
   protected override update(): void {
     super.update();
 
     if (!this.isPaused) {
+      this.updateBirdPosition();
+      this.updateObstaclePosition();
+      this.updateBirdSpeed();
+      this.checkCollision();
       this.render();
     }
   }
@@ -75,22 +84,91 @@ export class FlappyBirdComponent
 
   //
 
-  private resetGame(): void {
-    setTimeout(() => {
-      this.game.state.birdY = 300;
-      this.game.state.birdSpeedY = 0;
-      this.game.state.obstacleDistanceX = 300;
-      this.game.state.obstacleCenterGapY = 200;
-      this.game.state.gravity = 0.5;
-      this.game.state.jumpPowerY = 10;
-      this.game.state.score = 0;
-      this.game.state.isGameActive = false;
-    });
+  private resetBirdAndObstacle(): void {
+    this.game.state.birdY = this._canvas.height / 2;
+    this.game.state.birdSpeedY = 0;
+    this.game.state.obstacleDistanceX = this._canvas.width;
+    this.game.state.obstacleCenterGapY = this.random(100, 500);
+    this.game.state.jumpPowerY = 10;
+    this.game.state.gravity = 0.5;
+  }
+
+  private checkCollision(): void {
+    const birdBottom = this.game.state.birdY + this._birdHeight;
+    const birdTop = this.game.state.birdY;
+
+    if (
+      birdTop <
+        this.game.state.obstacleCenterGapY - this._obstacleGapHeight / 2 ||
+      birdBottom >
+        this.game.state.obstacleCenterGapY + this._obstacleGapHeight / 2
+    ) {
+      if (
+        this.game.state.obstacleDistanceX < 120 &&
+        this.game.state.obstacleDistanceX + this._obstacleWidth > 100
+      ) {
+        this.restart();
+      }
+    }
+  }
+
+  private updateBirdSpeed(): void {
+    if (this.game.players[0].inputData['jump'] === 1) {
+      this.game.state.birdSpeedY = -this.game.state.jumpPowerY;
+    }
+  }
+
+  private updateBirdPosition(): void {
+    this.game.state.birdSpeedY += this.game.state.gravity;
+    this.game.state.birdY += this.game.state.birdSpeedY;
+
+    if (this.game.state.birdY > this._canvas.height - this._birdHeight) {
+      this.restart();
+    }
+
+    if (this.game.state.birdY < 0) {
+      this.restart();
+    }
+  }
+
+  private updateObstaclePosition(): void {
+    this.game.state.obstacleDistanceX -= 2;
+
+    if (this.game.state.obstacleDistanceX < -this._obstacleWidth) {
+      this.game.state.obstacleDistanceX = this._canvas.width;
+      this.game.state.obstacleCenterGapY = this.random(200, 400);
+      this.game.state.score++;
+    }
   }
 
   private render(): void {
     const context = this._canvas.getContext('2d');
-    if (!context) return;
-    context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+    if (context) {
+      context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+      context.fillStyle = 'red';
+      context.fillRect(
+        100,
+        this.game.state.birdY,
+        this._birdWidth,
+        this._birdHeight
+      );
+      context.fillStyle = 'blue';
+      context.fillRect(
+        this.game.state.obstacleDistanceX,
+        0,
+        this._obstacleWidth,
+        this.game.state.obstacleCenterGapY - this._obstacleGapHeight / 2
+      );
+      context.fillRect(
+        this.game.state.obstacleDistanceX,
+        this.game.state.obstacleCenterGapY + this._obstacleGapHeight / 2,
+        this._obstacleWidth,
+        this._canvas.height - this.game.state.obstacleCenterGapY
+      );
+    }
+  }
+
+  private random(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 }
