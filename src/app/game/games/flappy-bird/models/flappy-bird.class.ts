@@ -7,6 +7,7 @@ export class FlappyBirdState implements TGameState {
   public birdSpeedY = 0;
   public gravity = 0;
   public jumpPowerY = 0;
+  public obstacleSpeed = 0;
   public score = 0;
   public difficulty = 0;
   public obstacles = Array.from({ length: 4 }, () => ({
@@ -22,17 +23,19 @@ export class FlappyBird extends Game {
         output:
           birdY: float, <0, 600>;
           birdSpeedY: float, <-inf, inf>;
-          gravity: float, <0.1, 1>;
-          jumpPowerY: float, <5, inf>;
+          gravity: float, <0.5, 1>;
+          jumpPowerY: float, <5, 15>;
+          obstacleSpeed = <2, 10>;
           score: int, <0, inf>;
           difficulty: int, <0, inf>;
-          obstacles: [{distanceX: int, <0, 1900>, centerGapyY: int <0, 600>}];
+          obstacles: [{distanceX: int, <0, 1900>, centerGapyY: int <100, 500>}];
   
         default values:
           birdY: 300;
           birdSpeedY: 0;
           gravity: 0.5;
           jumpPowerY: 10;
+          obstacleSpeed: 2;
           score: 0;
           difficulty: 1;
       `;

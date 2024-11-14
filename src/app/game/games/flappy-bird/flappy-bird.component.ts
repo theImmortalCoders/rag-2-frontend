@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from 'app/game/components/canvas/canvas.component';
 import { BaseGameWindowComponent } from '../base-game.component';
@@ -12,7 +13,8 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
       score: <b>{{ game.state.score }}</b
       >, difficulty: <b>{{ game.state.difficulty }}</b
       >, jumpPower: <b>{{ game.state.jumpPowerY }}</b
-      >, gravity: <b>{{ game.state.gravity }}</b>
+      >, gravity: <b>{{ game.state.gravity }}</b
+      >, obstacle speed: <b>{{ game.state.obstacleSpeed }}</b>
     </div>
     <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
 })
@@ -25,6 +27,7 @@ export class FlappyBirdComponent
   private _obstacleWidth = 50;
   private _obstacleGapHeight = 200;
   private _minDistanceBetweenObstacles = 200;
+  private _passedObstacles: boolean[] = new Array(4).fill(false);
 
   public override game!: FlappyBird;
 
@@ -94,19 +97,21 @@ export class FlappyBirdComponent
   private resetBirdAndObstacle(): void {
     this.game.state.birdY = this._canvas.height / 2;
     this.game.state.birdSpeedY = 0;
-    this.game.state.jumpPowerY = 10;
+    this.game.state.jumpPowerY = 5;
     this.game.state.gravity = 0.5;
+    this.game.state.obstacleSpeed = 2;
 
     const gapBetweenObstacles = 300;
     this.game.state.obstacles.forEach((obstacle, index) => {
       obstacle.distanceX = this._canvas.width + index * gapBetweenObstacles;
-      obstacle.centerGapY = this.random(100, 400);
+      obstacle.centerGapY = this.random(100, 500);
     });
   }
 
   private resetScoreAndDifficulty(): void {
     this.game.state.score = 0;
     this.game.state.difficulty = 1;
+    this._passedObstacles = Array(4).fill(false);
   }
 
   // eslint-disable-next-line complexity
@@ -156,9 +161,24 @@ export class FlappyBirdComponent
 
   private updateObstaclePosition(): void {
     this.game.state.obstacles.forEach((obstacle, index) => {
-      obstacle.distanceX -= 2;
+      // Przesuwanie przeszkody w lewo
+      obstacle.distanceX -= this.game.state.obstacleSpeed;
 
+      // Dodajemy punkt, gdy ptak minie prawą krawędź przeszkody
+      const birdX = 100; // X-owa pozycja ptaka
+      const obstacleRightEdge = obstacle.distanceX + this._obstacleWidth;
+
+      // Jeśli ptak przekroczy prawą krawędź przeszkody
+      if (obstacleRightEdge < birdX && !this._passedObstacles[index]) {
+        this.game.state.score++; // Zwiększamy wynik
+        this._passedObstacles[index] = true; // Oznaczamy przeszkodę jako minioną
+        this.updateDifficulty(); // Aktualizujemy poziom trudności
+        console.log(`Score increased to: ${this.game.state.score}`); // Debug
+      }
+
+      // Resetujemy przeszkodę, gdy wyjdzie poza ekran po lewej stronie
       if (obstacle.distanceX < -this._obstacleWidth) {
+        // Ustawienie nowej pozycji i wysokości dla przeszkody
         const previousObstacle =
           this.game.state.obstacles[
             (index - 1 + this.game.state.obstacles.length) %
@@ -170,9 +190,31 @@ export class FlappyBirdComponent
           this._minDistanceBetweenObstacles +
           this.random(50, 150);
         obstacle.centerGapY = this.random(100, 400);
-        this.game.state.score++;
+
+        // Resetowanie statusu minionej przeszkody
+        this._passedObstacles[index] = false;
       }
     });
+  }
+
+  private updateDifficulty(): void {
+    if (this.game.state.score > 0 && this.game.state.score % 5 === 0) {
+      this.game.state.difficulty++;
+
+      this.game.state.gravity = Math.min(
+        1,
+        this.round(this.game.state.gravity + 0.05, 2)
+      );
+      this.game.state.jumpPowerY = Math.min(
+        15,
+        this.round(this.game.state.jumpPowerY + 0.5, 2)
+      );
+
+      this.game.state.obstacleSpeed = Math.min(
+        10,
+        this.round(this.game.state.obstacleSpeed + 0.2, 2)
+      );
+    }
   }
 
   private render(): void {
@@ -208,5 +250,9 @@ export class FlappyBirdComponent
 
   private random(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  private round(value: number, decimals = 2): number {
+    return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
   }
 }
