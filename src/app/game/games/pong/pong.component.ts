@@ -313,6 +313,9 @@ export class PongGameWindowComponent
         case 'S':
           player1.inputData['move'] = 0;
           break;
+        case ' ':
+          player1.inputData['start'] = 0;
+          break;
       }
     }
 
@@ -321,6 +324,9 @@ export class PongGameWindowComponent
         case 'ArrowUp':
         case 'ArrowDown':
           player2.inputData['move'] = 0;
+          break;
+        case ' ':
+          player2.inputData['start'] = 0;
           break;
       }
     }
