@@ -68,6 +68,10 @@ export class FlappyBirdComponent
   protected override update(): void {
     super.update();
 
+    if (!this.game.state.isGameStarted && this.game.players[0].inputData['jump'] == 1) {
+      this.game.state.isGameStarted = true;
+    }
+    
     if (!this.isPaused && this.game.state.isGameStarted) {
       this.updateBirdPosition();
       this.updateObstaclePosition();
@@ -84,10 +88,6 @@ export class FlappyBirdComponent
       switch (event.key) {
         case ' ':
           event.preventDefault();
-          // eslint-disable-next-line max-depth
-          if (!this.game.state.isGameStarted) {
-            this.game.state.isGameStarted = true;
-          }
           this.game.players[0].inputData['jump'] = 1;
           break;
       }
