@@ -14,7 +14,16 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
       >, difficulty: <b>{{ game.state.difficulty }}</b
       >, jumpPower: <b>{{ game.state.jumpPowerY }}</b
       >, gravity: <b>{{ game.state.gravity }}</b
-      >, obstacle speed: <b>{{ game.state.obstacleSpeed }}</b>
+      >, obstacle speed: <b>{{ game.state.obstacleSpeed }}</b
+      ><b>
+        {{
+          game.state.jumpPowerY === 15 &&
+          game.state.gravity === 1 &&
+          game.state.obstacleSpeed === 10
+            ? ', MAXIMUM DIFFICULTY HAS BEEN REACHED!'
+            : ''
+        }}
+      </b>
     </div>
     <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
 })
@@ -161,24 +170,18 @@ export class FlappyBirdComponent
 
   private updateObstaclePosition(): void {
     this.game.state.obstacles.forEach((obstacle, index) => {
-      // Przesuwanie przeszkody w lewo
       obstacle.distanceX -= this.game.state.obstacleSpeed;
 
-      // Dodajemy punkt, gdy ptak minie prawą krawędź przeszkody
-      const birdX = 100; // X-owa pozycja ptaka
+      const birdX = 100;
       const obstacleRightEdge = obstacle.distanceX + this._obstacleWidth;
 
-      // Jeśli ptak przekroczy prawą krawędź przeszkody
       if (obstacleRightEdge < birdX && !this._passedObstacles[index]) {
-        this.game.state.score++; // Zwiększamy wynik
-        this._passedObstacles[index] = true; // Oznaczamy przeszkodę jako minioną
-        this.updateDifficulty(); // Aktualizujemy poziom trudności
-        console.log(`Score increased to: ${this.game.state.score}`); // Debug
+        this.game.state.score++;
+        this._passedObstacles[index] = true;
+        this.updateDifficulty();
       }
 
-      // Resetujemy przeszkodę, gdy wyjdzie poza ekran po lewej stronie
       if (obstacle.distanceX < -this._obstacleWidth) {
-        // Ustawienie nowej pozycji i wysokości dla przeszkody
         const previousObstacle =
           this.game.state.obstacles[
             (index - 1 + this.game.state.obstacles.length) %
@@ -189,9 +192,8 @@ export class FlappyBirdComponent
           previousObstacle.distanceX +
           this._minDistanceBetweenObstacles +
           this.random(50, 150);
-        obstacle.centerGapY = this.random(100, 400);
+        obstacle.centerGapY = this.random(100, 500);
 
-        // Resetowanie statusu minionej przeszkody
         this._passedObstacles[index] = false;
       }
     });
@@ -199,7 +201,15 @@ export class FlappyBirdComponent
 
   private updateDifficulty(): void {
     if (this.game.state.score > 0 && this.game.state.score % 5 === 0) {
-      this.game.state.difficulty++;
+      if (
+        !(
+          this.game.state.jumpPowerY === 15 &&
+          this.game.state.gravity === 1 &&
+          this.game.state.obstacleSpeed === 10
+        )
+      ) {
+        this.game.state.difficulty++;
+      }
 
       this.game.state.gravity = Math.min(
         1,
