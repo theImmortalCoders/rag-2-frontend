@@ -14,6 +14,7 @@ export class FlappyBirdState implements TGameState {
     distanceX: 0,
     centerGapY: 0,
   }));
+  public isGameStarted = false;
 }
 
 export class FlappyBird extends Game {
@@ -29,6 +30,7 @@ export class FlappyBird extends Game {
           score: int, <0, inf>;
           difficulty: int, <0, inf>;
           obstacles: [{distanceX: int, <0, 1900>, centerGapyY: int <100, 500>}];
+          isGameStarted: boolean;
   
         default values:
           birdY: 300;
@@ -38,6 +40,7 @@ export class FlappyBird extends Game {
           obstacleSpeed: 2;
           score: 0;
           difficulty: 1;
+          isGameStarted: false;
       `;
 
   public override players = [
@@ -47,7 +50,7 @@ export class FlappyBird extends Game {
       'Player 1',
       { jump: 0 },
       '<jump>:  value of {0, 1}, 0: stop, 1: jump',
-      { jump: '[SPACE]' }
+      { jump: '[SPACE]', start: '[SPACE]' }
     ),
   ];
 }

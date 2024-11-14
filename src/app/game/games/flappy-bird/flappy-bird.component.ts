@@ -50,6 +50,7 @@ export class FlappyBirdComponent
     super.ngAfterViewInit();
 
     this.resetBirdAndObstacle();
+    this.render();
   }
 
   public override ngOnDestroy(): void {
@@ -59,6 +60,7 @@ export class FlappyBirdComponent
   public override restart(): void {
     this.game.state = new FlappyBirdState();
 
+    this.game.state.isGameStarted = false;
     this.resetBirdAndObstacle();
     this.resetScoreAndDifficulty();
   }
@@ -66,13 +68,13 @@ export class FlappyBirdComponent
   protected override update(): void {
     super.update();
 
-    if (!this.isPaused) {
+    if (!this.isPaused && this.game.state.isGameStarted) {
       this.updateBirdPosition();
       this.updateObstaclePosition();
       this.updateBirdSpeed();
       this.checkCollision();
-      this.render();
     }
+    this.render();
   }
 
   protected onKeyDown(event: KeyboardEvent): void {
@@ -82,6 +84,10 @@ export class FlappyBirdComponent
       switch (event.key) {
         case ' ':
           event.preventDefault();
+          // eslint-disable-next-line max-depth
+          if (!this.game.state.isGameStarted) {
+            this.game.state.isGameStarted = true;
+          }
           this.game.players[0].inputData['jump'] = 1;
           break;
       }
@@ -156,6 +162,8 @@ export class FlappyBirdComponent
   }
 
   private updateBirdPosition(): void {
+    if (!this.game.state.isGameStarted) return;
+
     this.game.state.birdSpeedY += this.game.state.gravity;
     this.game.state.birdY += this.game.state.birdSpeedY;
 
