@@ -11,7 +11,7 @@ import { Player } from '@gameModels/player.class';
 import { PlayerMenuComponent } from './components/player-menu/player-menu.component';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { games } from './data/games';
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
@@ -113,7 +113,6 @@ export class GamePageComponent implements OnInit, OnDestroy {
   private _router = inject(Router);
   private _routerSubscription = new Subscription();
   private _breakpointSubscription = new Subscription();
-  private _previousUrl = '';
 
   public gameName = '';
   public game!: Game;
@@ -182,11 +181,8 @@ export class GamePageComponent implements OnInit, OnDestroy {
 
   private handleRouterParams(): void {
     this._routerSubscription = this._router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        const currentUrl = event.url.split('?')[0]; // Get the path part of the URL
-        if (this._previousUrl !== currentUrl) {
-          this._previousUrl = currentUrl;
-        }
+      if (event instanceof NavigationEnd) {
+        window.location.reload();
       }
     });
   }

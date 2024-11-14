@@ -44,17 +44,17 @@ export class Pong extends Game {
       0,
       true,
       'Player 1',
-      { move: 0 },
-      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up',
-      { up: '[W]', down: '[S]' }
+      { move: 0, start: 0 },
+      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start',
+      { up: '[W]', down: '[S]', start: '[SPACE]' }
     ),
     new Player(
       1,
       true,
       'Player 2',
-      { move: 0 },
-      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up',
-      { up: '[ARROW_UP]', down: '[ARROW_DOWN]' }
+      { move: 0, start: 0 },
+      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start',
+      { up: '[ARROW_UP]', down: '[ARROW_DOWN]', start: '[SPACE]' }
     ),
   ];
 }

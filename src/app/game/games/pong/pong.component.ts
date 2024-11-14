@@ -21,8 +21,15 @@ export class PongGameWindowComponent
   private _paddleWidth = 10;
   private _paddleJump = 20;
   private _ballWidth = 10;
+
   private _leftPaddleX = 10;
   private _rightPaddleX!: number;
+  private _leftPaddleXHitbox = this._leftPaddleX + this._ballWidth + 10;
+  private _rightPaddleXHitbox!: number;
+
+  private isStarted = false;
+
+  private _ballSpeedMultiplierJump = 0.08;
 
   public override game!: Pong;
 
@@ -40,6 +47,8 @@ export class PongGameWindowComponent
 
   public override restart(): void {
     this.game.state = new PongState();
+
+    this.isStarted = false;
     this.resetPaddlesAndBall();
   }
 
@@ -47,12 +56,20 @@ export class PongGameWindowComponent
 
   protected override update(): void {
     super.update();
+    this.render();
+    this.checkStartButton();
+
+    if (
+      !this.isStarted &&
+      this.game.state.scoreLeft == 0 &&
+      this.game.state.scoreRight == 0
+    )
+      return;
 
     if (!this.isPaused) {
       this.updatePaddlesSpeeds();
       this.updatePaddlesPositions();
       this.updateBallPosition();
-      this.render();
     }
   }
 
@@ -86,6 +103,17 @@ export class PongGameWindowComponent
     }
   }
 
+  private checkStartButton(): void {
+    if (
+      this.game.players[0].inputData['start'] != 0 ||
+      this.game.players[1].inputData['start'] != 0 ||
+      this.game.players[0].inputData['move'] != 0 ||
+      this.game.players[1].inputData['move'] != 0
+    ) {
+      this.isStarted = true;
+    }
+  }
+
   private resetPaddlesAndBall(): void {
     this.game.state.leftPaddleY =
       (this._canvas.height - this._paddleHeight) / 2;
@@ -98,6 +126,12 @@ export class PongGameWindowComponent
     this.game.state.ballSpeedMultiplier = 1;
 
     this._rightPaddleX = this._canvas.width - this._paddleWidth - 10;
+    this._rightPaddleXHitbox = this._rightPaddleX - this._ballWidth;
+
+    this.game.players[0].inputData['start'] = 0;
+    this.game.players[1].inputData['start'] = 0;
+    this.game.players[0].inputData['move'] = 0;
+    this.game.players[1].inputData['move'] = 0;
   }
 
   private updateBallPosition(): void {
@@ -107,10 +141,6 @@ export class PongGameWindowComponent
 
     if (this.game.state.ballSpeedX === 0 && this.game.state.ballSpeedY === 0) {
       this.initializeBallSpeed();
-    }
-
-    if (this.game.state.ballSpeedY == 0) {
-      this.game.state.ballSpeedY = this.random(-1, 1);
     }
 
     if (Math.abs(this.game.state.ballSpeedY) > 12) {
@@ -138,6 +168,9 @@ export class PongGameWindowComponent
       this.game.state.ballY <= 0 + this._ballWidth ||
       this.game.state.ballY >= this._canvas.height - this._ballWidth
     ) {
+      if (Math.abs(this.game.state.ballSpeedY) < 2) {
+        this.game.state.ballSpeedY = 2;
+      }
       this.game.state.ballSpeedY = -this.game.state.ballSpeedY;
     }
   }
@@ -145,34 +178,34 @@ export class PongGameWindowComponent
   private checkCollisionWithPaddles(): void {
     // left paddle
     if (
-      this.game.state.ballX <= this._leftPaddleX + this._ballWidth &&
-      this.game.state.ballY >= this.game.state.leftPaddleY &&
-      this.game.state.ballY <= this.game.state.leftPaddleY + this._paddleHeight
+      this.game.state.ballX <= this._leftPaddleXHitbox &&
+      this.game.state.ballY > this.game.state.leftPaddleY &&
+      this.game.state.ballY < this.game.state.leftPaddleY + this._paddleHeight
     ) {
-      const rotation = this.game.state.leftPaddleSpeed / 6;
+      const rotation = this.game.state.leftPaddleSpeed / 4;
       this.game.state.ballSpeedY += rotation;
-      this.game.state.ballSpeedX = Math.abs(this.game.state.ballSpeedX);
-      this.game.state.ballSpeedMultiplier += 0.05;
-      this.game.state.ballX = this._leftPaddleX + this._ballWidth;
+      this.game.state.ballSpeedX = -this.game.state.ballSpeedX;
+      this.game.state.ballSpeedMultiplier += this._ballSpeedMultiplierJump;
+      this.game.state.ballX = this._leftPaddleXHitbox;
     }
 
     // right paddle
     if (
-      this.game.state.ballX >= this._rightPaddleX - this._ballWidth &&
-      this.game.state.ballY >= this.game.state.rightPaddleY &&
-      this.game.state.ballY <= this.game.state.rightPaddleY + this._paddleHeight
+      this.game.state.ballX >= this._rightPaddleXHitbox &&
+      this.game.state.ballY > this.game.state.rightPaddleY &&
+      this.game.state.ballY < this.game.state.rightPaddleY + this._paddleHeight
     ) {
       const rotation = this.game.state.rightPaddleSpeed / 4;
       this.game.state.ballSpeedY += rotation;
-      this.game.state.ballSpeedX = -Math.abs(this.game.state.ballSpeedX);
-      this.game.state.ballSpeedMultiplier += 0.05;
-      this.game.state.ballX = this._rightPaddleX - this._ballWidth;
+      this.game.state.ballSpeedX = -this.game.state.ballSpeedX;
+      this.game.state.ballSpeedMultiplier += this._ballSpeedMultiplierJump;
+      this.game.state.ballX = this._rightPaddleXHitbox;
     }
   }
 
   private initializeBallSpeed(): void {
-    const ballXInitialSpeed = this.random(5, 8);
-    const ballYInitialSpeed = this.random(3, 5);
+    const ballXInitialSpeed = this.random(7, 9);
+    const ballYInitialSpeed = this.random(2, 4);
 
     this.game.state.ballSpeedX =
       this.random(0, 1) === 0 ? ballXInitialSpeed : -ballXInitialSpeed;
@@ -227,6 +260,8 @@ export class PongGameWindowComponent
     );
   }
 
+  //
+
   protected onKeyDown(event: KeyboardEvent): void {
     const player1 = this.game.players[0];
     const player2 = this.game.players[1];
@@ -241,6 +276,10 @@ export class PongGameWindowComponent
         case 'S':
           player1.inputData['move'] = -1;
           break;
+        case ' ':
+          event.preventDefault();
+          player1.inputData['start'] = 1;
+          break;
       }
     }
 
@@ -253,6 +292,10 @@ export class PongGameWindowComponent
         case 'ArrowDown':
           event.preventDefault();
           player2.inputData['move'] = -1;
+          break;
+        case ' ':
+          event.preventDefault();
+          player2.inputData['start'] = 1;
           break;
       }
     }
@@ -270,6 +313,9 @@ export class PongGameWindowComponent
         case 'S':
           player1.inputData['move'] = 0;
           break;
+        case ' ':
+          player1.inputData['start'] = 0;
+          break;
       }
     }
 
@@ -278,6 +324,9 @@ export class PongGameWindowComponent
         case 'ArrowUp':
         case 'ArrowDown':
           player2.inputData['move'] = 0;
+          break;
+        case ' ':
+          player2.inputData['start'] = 0;
           break;
       }
     }
