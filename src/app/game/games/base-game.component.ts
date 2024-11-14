@@ -62,7 +62,7 @@ export abstract class BaseGameWindowComponent
   protected game!: Game;
   protected _canvas!: HTMLCanvasElement;
 
-  //always call super on override (at top)
+  /** always call super on override (at top) */
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
       setTimeout(() => this.restart());
@@ -74,7 +74,7 @@ export abstract class BaseGameWindowComponent
     });
   }
 
-  //always call super on override (at top)
+  /** always call super on override (at top) */
   public ngAfterViewInit(): void {
     this._canvas = this.gameCanvas.canvasElement.nativeElement;
     window.addEventListener('keydown', event => this.onKeyDown(event));
@@ -83,7 +83,7 @@ export abstract class BaseGameWindowComponent
     setTimeout(() => this.restart());
   }
 
-  //always call super on override (at top)
+  /** always call super on override (at top) */
   public ngOnDestroy(): void {
     this._restartSubscription.unsubscribe();
     this._pauseSubscription.unsubscribe();
@@ -96,15 +96,15 @@ export abstract class BaseGameWindowComponent
     }
   }
 
-  //always call super on override (at top)
+  /** always call super on override (at top) */
   public ngDoCheck(): void {
     this.emitGameStateData();
   }
 
-  //called on reset button click; implement to reset all values to initial state
+  /** called on reset button click; implement to reset all values to initial state */
   public abstract restart(): void;
 
-  //called efery frame; always call super on override (at top)
+  /** called efery frame; always call super on override (at top) */
   protected update(): void {
     this.calculateFPS();
 
@@ -114,9 +114,9 @@ export abstract class BaseGameWindowComponent
     );
   }
 
-  // implement to update game state
+  /** implement to update game state */
   protected abstract onKeyDown(event: KeyboardEvent): void;
-  // implement to update game state
+  /** implement to update game state */
   protected abstract onKeyUp(event: KeyboardEvent): void;
 
   //

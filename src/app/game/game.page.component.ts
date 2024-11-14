@@ -17,6 +17,7 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
 import { SkiJumpGameWindowComponent } from './games/ski-jump/ski-jump.component';
 import { GameControlsComponent } from './components/game-controls/game-controls.component';
+import { FlappyBirdComponent } from './games/flappy-bird/flappy-bird.component';
 
 @Component({
   selector: 'app-game',
@@ -33,6 +34,7 @@ import { GameControlsComponent } from './components/game-controls/game-controls.
     AuthRequiredDirective,
     SkiJumpGameWindowComponent,
     GameControlsComponent,
+    FlappyBirdComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
@@ -80,6 +82,15 @@ import { GameControlsComponent } from './components/game-controls/game-controls.
               }
               @case ('skijump') {
                 <app-ski-jump
+                  class="flex flex-col items-center w-3/4"
+                  [setSocketInputDataReceive]="socketInputData"
+                  (gameStateDataEmitter)="receiveGameOutputData($event)"
+                  [setAbstractGame]="game"
+                  [gameRestart]="gameRestartSubject.asObservable()"
+                  [gamePause]="gamePauseSubject.asObservable()" />
+              }
+              @case ('flappybird') {
+                <app-flappy-bird
                   class="flex flex-col items-center w-3/4"
                   [setSocketInputDataReceive]="socketInputData"
                   (gameStateDataEmitter)="receiveGameOutputData($event)"
