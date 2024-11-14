@@ -8,7 +8,12 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
   selector: 'app-flappy-bird',
   standalone: true,
   imports: [CanvasComponent],
-  template: `<div>score: {{ game.state.score }}</div>
+  template: `<div>
+      score: <b>{{ game.state.score }}</b
+      >, difficulty: <b>{{ game.state.difficulty }}</b
+      >, jumpPower: <b>{{ game.state.jumpPowerY }}</b
+      >, gravity: <b>{{ game.state.gravity }}</b>
+    </div>
     <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
 })
 export class FlappyBirdComponent
@@ -19,6 +24,7 @@ export class FlappyBirdComponent
   private _birdHeight = 20;
   private _obstacleWidth = 50;
   private _obstacleGapHeight = 200;
+  private _minDistanceBetweenObstacles = 200;
 
   public override game!: FlappyBird;
 
@@ -42,6 +48,7 @@ export class FlappyBirdComponent
     this.game.state = new FlappyBirdState();
 
     this.resetBirdAndObstacle();
+    this.resetScoreAndDifficulty();
   }
 
   protected override update(): void {
@@ -87,28 +94,44 @@ export class FlappyBirdComponent
   private resetBirdAndObstacle(): void {
     this.game.state.birdY = this._canvas.height / 2;
     this.game.state.birdSpeedY = 0;
-    this.game.state.obstacleDistanceX = this._canvas.width / 2;
-    this.game.state.obstacleCenterGapY = this.random(100, 500);
     this.game.state.jumpPowerY = 10;
     this.game.state.gravity = 0.5;
+
+    const gapBetweenObstacles = 300;
+    this.game.state.obstacles.forEach((obstacle, index) => {
+      obstacle.distanceX = this._canvas.width + index * gapBetweenObstacles;
+      obstacle.centerGapY = this.random(100, 400);
+    });
   }
 
+  private resetScoreAndDifficulty(): void {
+    this.game.state.score = 0;
+    this.game.state.difficulty = 1;
+  }
+
+  // eslint-disable-next-line complexity
   private checkCollision(): void {
     const birdBottom = this.game.state.birdY + this._birdHeight;
     const birdTop = this.game.state.birdY;
 
-    if (
-      birdTop <
-        this.game.state.obstacleCenterGapY - this._obstacleGapHeight / 2 ||
-      birdBottom >
-        this.game.state.obstacleCenterGapY + this._obstacleGapHeight / 2
-    ) {
+    for (const obstacle of this.game.state.obstacles) {
       if (
-        this.game.state.obstacleDistanceX < 120 &&
-        this.game.state.obstacleDistanceX + this._obstacleWidth > 100
+        obstacle.distanceX < 120 &&
+        obstacle.distanceX + this._obstacleWidth > 100
       ) {
-        this.restart();
+        // eslint-disable-next-line max-depth
+        if (
+          birdTop < obstacle.centerGapY - this._obstacleGapHeight / 2 ||
+          birdBottom > obstacle.centerGapY + this._obstacleGapHeight / 2
+        ) {
+          this.restart();
+        }
+        break;
       }
+    }
+
+    if (birdTop < 0 || birdBottom > this._canvas.height) {
+      this.restart();
     }
   }
 
@@ -132,19 +155,31 @@ export class FlappyBirdComponent
   }
 
   private updateObstaclePosition(): void {
-    this.game.state.obstacleDistanceX -= 2;
+    this.game.state.obstacles.forEach((obstacle, index) => {
+      obstacle.distanceX -= 2;
 
-    if (this.game.state.obstacleDistanceX < -this._obstacleWidth) {
-      this.game.state.obstacleDistanceX = this._canvas.width;
-      this.game.state.obstacleCenterGapY = this.random(200, 400);
-      this.game.state.score++;
-    }
+      if (obstacle.distanceX < -this._obstacleWidth) {
+        const previousObstacle =
+          this.game.state.obstacles[
+            (index - 1 + this.game.state.obstacles.length) %
+              this.game.state.obstacles.length
+          ];
+
+        obstacle.distanceX =
+          previousObstacle.distanceX +
+          this._minDistanceBetweenObstacles +
+          this.random(50, 150);
+        obstacle.centerGapY = this.random(100, 400);
+        this.game.state.score++;
+      }
+    });
   }
 
   private render(): void {
     const context = this._canvas.getContext('2d');
     if (context) {
       context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
       context.fillStyle = 'red';
       context.fillRect(
         100,
@@ -152,19 +187,22 @@ export class FlappyBirdComponent
         this._birdWidth,
         this._birdHeight
       );
+
       context.fillStyle = 'blue';
-      context.fillRect(
-        this.game.state.obstacleDistanceX,
-        0,
-        this._obstacleWidth,
-        this.game.state.obstacleCenterGapY - this._obstacleGapHeight / 2
-      );
-      context.fillRect(
-        this.game.state.obstacleDistanceX,
-        this.game.state.obstacleCenterGapY + this._obstacleGapHeight / 2,
-        this._obstacleWidth,
-        this._canvas.height - this.game.state.obstacleCenterGapY
-      );
+      this.game.state.obstacles.forEach(obstacle => {
+        context.fillRect(
+          obstacle.distanceX,
+          0,
+          this._obstacleWidth,
+          obstacle.centerGapY - this._obstacleGapHeight / 2
+        );
+        context.fillRect(
+          obstacle.distanceX,
+          obstacle.centerGapY + this._obstacleGapHeight / 2,
+          this._obstacleWidth,
+          this._canvas.height - obstacle.centerGapY
+        );
+      });
     }
   }
 
