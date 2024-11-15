@@ -36,8 +36,8 @@ import { NotificationService } from 'app/shared/services/notification.service';
           class="custom-input" />
       </div>
       <div
-        class="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
-        <div class="flex flex-col max-w-fit">
+        class="flex flex-wrap flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
+        <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
           <label
             for="studyCycleYearA"
             [class.text-red-500]="shouldShowError('studyCycleYearA')"
@@ -51,7 +51,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
             class="custom-input"
             (input)="validateNumber($event)" />
         </div>
-        <div class="flex flex-col max-w-fit">
+        <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
           <label
             for="studyCycleYearB"
             [class.text-red-500]="shouldShowError('studyCycleYearB')"
@@ -65,6 +65,10 @@ import { NotificationService } from 'app/shared/services/notification.service';
             class="custom-input"
             (input)="validateNumber($event)" />
         </div>
+        <span
+          class="w-full text-center sm:text-start lg:text-center xl:text-start pt-0 sm:pt-2 lg:pt-0 xl:pt-2 text-xs">
+          (if you are a teacher you do not need to enter the study cycle years)
+        </span>
       </div>
       <div class="flex flex-col space-y-1">
         <label for="email" [class.text-red-500]="shouldShowError('email')"
@@ -115,7 +119,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
         errorMessage !== null
       ) {
         <div class="text-red-500">
-          @for (error of getFormErrors(); track error) {
+          @for (error of getFormErrors(); track $index) {
             <p>{{ error }}</p>
           }
           @if (isPasswordsMatching === false) {
