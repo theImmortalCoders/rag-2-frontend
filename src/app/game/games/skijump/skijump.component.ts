@@ -4,11 +4,11 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { SkiJump, SkiJumpState } from './models/ski-jump.class';
+import { SkiJump, SkiJumpState } from './models/skijump.class';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-ski-jump',
+  selector: 'app-skijump',
   standalone: true,
   imports: [CanvasComponent, CommonModule],
   template: `<div>

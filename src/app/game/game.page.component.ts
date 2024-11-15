@@ -14,10 +14,11 @@ import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
-import { SkiJumpGameWindowComponent } from './games/ski-jump/ski-jump.component';
+
 import { GameControlsComponent } from './components/game-controls/game-controls.component';
-import { FlappyBirdComponent } from './games/flappy-bird/flappy-bird.component';
+import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
+import { FlappyBirdComponent } from './games/flappybird/flappybird.component';
+import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
 
 @Component({
   selector: 'app-game',
@@ -81,7 +82,7 @@ import { FlappyBirdComponent } from './games/flappy-bird/flappy-bird.component';
                   [gamePause]="gamePauseSubject.asObservable()" />
               }
               @case ('skijump') {
-                <app-ski-jump
+                <app-skijump
                   class="flex flex-col items-center w-3/4"
                   [setSocketInputDataReceive]="socketInputData"
                   (gameStateDataEmitter)="receiveGameOutputData($event)"
@@ -90,7 +91,7 @@ import { FlappyBirdComponent } from './games/flappy-bird/flappy-bird.component';
                   [gamePause]="gamePauseSubject.asObservable()" />
               }
               @case ('flappybird') {
-                <app-flappy-bird
+                <app-flappybird
                   class="flex flex-col items-center w-3/4"
                   [setSocketInputDataReceive]="socketInputData"
                   (gameStateDataEmitter)="receiveGameOutputData($event)"

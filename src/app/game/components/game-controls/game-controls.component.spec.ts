@@ -3,7 +3,7 @@ import { GameControlsComponent } from './game-controls.component';
 import { Game } from '@gameModels/game.class';
 import { Player } from '@gameModels/player.class';
 import { By } from '@angular/platform-browser';
-import { SkiJumpState } from 'app/game/games/ski-jump/models/ski-jump.class';
+import { SkiJumpState } from 'app/game/games/skijump/models/skijump.class';
 
 const mockGame: Game = {
   name: 'skijump',
