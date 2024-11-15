@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 /* eslint-disable max-lines */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
@@ -258,77 +257,5 @@ export class PongGameWindowComponent
         this.game.state.leftPaddleY + this.game.state.leftPaddleSpeed
       )
     );
-  }
-
-  //
-
-  protected onKeyDown(event: KeyboardEvent): void {
-    const player1 = this.game.players[0];
-    const player2 = this.game.players[1];
-
-    if (player1.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case 'w':
-        case 'W':
-          player1.inputData['move'] = 1;
-          break;
-        case 's':
-        case 'S':
-          player1.inputData['move'] = -1;
-          break;
-        case ' ':
-          event.preventDefault();
-          player1.inputData['start'] = 1;
-          break;
-      }
-    }
-
-    if (player2.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case 'ArrowUp':
-          event.preventDefault();
-          player2.inputData['move'] = 1;
-          break;
-        case 'ArrowDown':
-          event.preventDefault();
-          player2.inputData['move'] = -1;
-          break;
-        case ' ':
-          event.preventDefault();
-          player2.inputData['start'] = 1;
-          break;
-      }
-    }
-  }
-
-  protected onKeyUp(event: KeyboardEvent): void {
-    const player1 = this.game.players[0];
-    const player2 = this.game.players[1];
-
-    if (player1.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case 'w':
-        case 'W':
-        case 's':
-        case 'S':
-          player1.inputData['move'] = 0;
-          break;
-        case ' ':
-          player1.inputData['start'] = 0;
-          break;
-      }
-    }
-
-    if (player2.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case 'ArrowUp':
-        case 'ArrowDown':
-          player2.inputData['move'] = 0;
-          break;
-        case ' ':
-          player2.inputData['start'] = 0;
-          break;
-      }
-    }
   }
 }

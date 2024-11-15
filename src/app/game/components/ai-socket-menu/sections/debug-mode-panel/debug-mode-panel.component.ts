@@ -36,7 +36,16 @@ export class DebugModePanelComponent implements OnInit {
   }
 
   public emitInputData(key: string, value: string): void {
-    const data = { [key]: Number(value) } as TExchangeData;
+    let parsedValue: unknown = value;
+    if (!isNaN(Number(value))) {
+      parsedValue = Number(value);
+    } else if (
+      value.toLowerCase() === 'true' ||
+      value.toLowerCase() === 'false'
+    ) {
+      parsedValue = value.toLowerCase() === 'true';
+    }
+    const data = { [key]: parsedValue } as TExchangeData;
     this.inputEmitter.emit({ player: this.player, data: data });
   }
 }
