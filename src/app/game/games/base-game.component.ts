@@ -63,7 +63,7 @@ export abstract class BaseGameWindowComponent
   protected game!: Game;
   protected _canvas!: HTMLCanvasElement;
 
-  /** always call super on override (at top) */
+  /** always call super when override (at top) */
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
       setTimeout(() => this.restart());
@@ -75,7 +75,7 @@ export abstract class BaseGameWindowComponent
     });
   }
 
-  /** always call super on override (at top) */
+  /** always call super when override (at top) */
   public ngAfterViewInit(): void {
     this._canvas = this.gameCanvas.canvasElement.nativeElement;
     window.addEventListener('keydown', event => this.onKeyDown(event));
@@ -84,7 +84,7 @@ export abstract class BaseGameWindowComponent
     setTimeout(() => this.restart());
   }
 
-  /** always call super on override (at top) */
+  /** always call super when override (at top) */
   public ngOnDestroy(): void {
     this._restartSubscription.unsubscribe();
     this._pauseSubscription.unsubscribe();
@@ -97,7 +97,7 @@ export abstract class BaseGameWindowComponent
     }
   }
 
-  /** always call super on override (at top) */
+  /** always call super when override (at top) */
   public ngDoCheck(): void {
     this.emitGameStateData();
   }
@@ -115,32 +115,33 @@ export abstract class BaseGameWindowComponent
     );
   }
 
-  /** implement to update game state */
-  protected onKeyDown(event: KeyboardEvent): void {
+  //
+
+  private onKeyDown(event: KeyboardEvent): void {
     for (const player of this.game.players) {
       if (
         player.playerType === PlayerSourceType.KEYBOARD &&
         player.controlsBinding[event.key] !== undefined
       ) {
         event.preventDefault();
-        player.inputData[player.controlsBinding[event.key] as string] = true;
-      }
-    }
-  }
-  /** implement to update game state */
-  protected onKeyUp(event: KeyboardEvent): void {
-    for (const player of this.game.players) {
-      if (
-        player.playerType === PlayerSourceType.KEYBOARD &&
-        player.controlsBinding[event.key] !== undefined
-      ) {
-        event.preventDefault();
-        player.inputData[player.controlsBinding[event.key] as string] = false;
+        player.inputData[player.controlsBinding[event.key].variableName] =
+          player.controlsBinding[event.key].pressedValue;
       }
     }
   }
 
-  //
+  private onKeyUp(event: KeyboardEvent): void {
+    for (const player of this.game.players) {
+      if (
+        player.playerType === PlayerSourceType.KEYBOARD &&
+        player.controlsBinding[event.key] !== undefined
+      ) {
+        event.preventDefault();
+        player.inputData[player.controlsBinding[event.key].variableName] =
+          player.controlsBinding[event.key].releasedValue;
+      }
+    }
+  }
 
   private calculateFPS(): void {
     const now = performance.now();

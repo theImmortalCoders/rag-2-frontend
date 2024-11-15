@@ -70,7 +70,7 @@ export class FlappyBirdComponent
 
     if (
       !this.game.state.isGameStarted &&
-      this.game.players[0].inputData['jump'] === true
+      this.game.players[0].inputData['jump'] === 1
     ) {
       this.game.state.isGameStarted = true;
     }
@@ -83,32 +83,6 @@ export class FlappyBirdComponent
     }
     this.render();
   }
-
-  // protected onKeyDown(event: KeyboardEvent): void {
-  //   const player = this.game.players[0];
-
-  //   if (player.playerType === PlayerSourceType.KEYBOARD) {
-  //     switch (event.key) {
-  //       case ' ':
-  //         event.preventDefault();
-  //         this.game.players[0].inputData['jump'] = 1;
-  //         break;
-  //     }
-  //   }
-  // }
-
-  // protected onKeyUp(event: KeyboardEvent): void {
-  //   const player = this.game.players[0];
-
-  //   if (player.playerType === PlayerSourceType.KEYBOARD) {
-  //     switch (event.key) {
-  //       case ' ':
-  //         event.preventDefault();
-  //         this.game.players[0].inputData['jump'] = 0;
-  //         break;
-  //     }
-  //   }
-  // }
 
   //
 
@@ -159,7 +133,7 @@ export class FlappyBirdComponent
   }
 
   private updateBirdSpeed(): void {
-    if (this.game.players[0].inputData['jump'] === true) {
+    if (this.game.players[0].inputData['jump'] === 1) {
       this.game.state.birdSpeedY = -this.game.state.jumpPowerY;
     }
   }

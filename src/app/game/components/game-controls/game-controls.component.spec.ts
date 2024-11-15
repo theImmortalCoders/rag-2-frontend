@@ -10,7 +10,7 @@ const mockGame: Game = {
   state: new SkiJumpState(),
   outputSpec: '',
   players: [
-    new Player(0, true, 'Player 1', { space: 0, up: 0, down: 0 }, '', {
+    new Player(0, true, 'Player 1', { space: 0, up: 0, down: 0 }, {}, '', {
       start: '[SPACE]',
       jump: '[SPACE]',
       land: '[SPACE]',

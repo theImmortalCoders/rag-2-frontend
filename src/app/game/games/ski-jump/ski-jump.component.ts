@@ -71,45 +71,6 @@ export class SkiJumpGameWindowComponent
     }
   }
 
-  protected override onKeyDown(event: KeyboardEvent): void {
-    const player = this.game.players[0];
-
-    if (player.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case ' ':
-          event.preventDefault();
-          this.game.players[0].inputData['space'] = 1;
-          break;
-        case 'ArrowUp':
-          event.preventDefault();
-          this.game.players[0].inputData['up'] = 1;
-          break;
-        case 'ArrowDown':
-          event.preventDefault();
-          this.game.players[0].inputData['down'] = 1;
-          break;
-      }
-    }
-  }
-
-  protected override onKeyUp(event: KeyboardEvent): void {
-    const player = this.game.players[0];
-
-    if (player.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case ' ':
-          this.game.players[0].inputData['space'] = 0;
-          break;
-        case 'ArrowUp':
-          this.game.players[0].inputData['up'] = 0;
-          break;
-        case 'ArrowDown':
-          this.game.players[0].inputData['down'] = 0;
-          break;
-      }
-    }
-  }
-
   //render
 
   private render(): void {
