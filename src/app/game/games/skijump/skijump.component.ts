@@ -19,7 +19,8 @@ import { CommonModule } from '@angular/common';
         {{ game.state.windPoints | number: '1.0-1' }} pts</b
       >, total:<b> {{ game.state.totalPoints | number: '1.0-1' }} pts</b>
     </div>
-    <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
+    <app-canvas class="bg-zinc-300" #gameCanvas></app-canvas>
+    <b>FPS: {{ fps }}</b> `,
 })
 export class SkiJumpGameWindowComponent
   extends BaseGameWindowComponent
