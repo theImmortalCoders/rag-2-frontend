@@ -262,7 +262,7 @@ export class PongGameWindowComponent
 
   //
 
-  protected onKeyDown(event: KeyboardEvent): void {
+  protected override onKeyDown(event: KeyboardEvent): void {
     const player1 = this.game.players[0];
     const player2 = this.game.players[1];
 
@@ -301,7 +301,7 @@ export class PongGameWindowComponent
     }
   }
 
-  protected onKeyUp(event: KeyboardEvent): void {
+  protected override onKeyUp(event: KeyboardEvent): void {
     const player1 = this.game.players[0];
     const player2 = this.game.players[1];
 

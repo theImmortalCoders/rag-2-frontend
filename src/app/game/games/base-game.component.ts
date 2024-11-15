@@ -16,6 +16,7 @@ import { Observable, Subscription } from 'rxjs';
 import { CanvasComponent } from '../components/canvas/canvas.component';
 import { Game } from '@gameModels/game.class';
 import { IPlayerInputData } from '@gameModels/player-input-data.type';
+import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 @Component({
   selector: 'app-base-game-window',
@@ -115,9 +116,29 @@ export abstract class BaseGameWindowComponent
   }
 
   /** implement to update game state */
-  protected abstract onKeyDown(event: KeyboardEvent): void;
+  protected onKeyDown(event: KeyboardEvent): void {
+    for (const player of this.game.players) {
+      if (
+        player.playerType === PlayerSourceType.KEYBOARD &&
+        player.controlsBinding[event.key] !== undefined
+      ) {
+        event.preventDefault();
+        player.inputData[player.controlsBinding[event.key] as string] = true;
+      }
+    }
+  }
   /** implement to update game state */
-  protected abstract onKeyUp(event: KeyboardEvent): void;
+  protected onKeyUp(event: KeyboardEvent): void {
+    for (const player of this.game.players) {
+      if (
+        player.playerType === PlayerSourceType.KEYBOARD &&
+        player.controlsBinding[event.key] !== undefined
+      ) {
+        event.preventDefault();
+        player.inputData[player.controlsBinding[event.key] as string] = false;
+      }
+    }
+  }
 
   //
 

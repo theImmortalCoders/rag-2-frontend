@@ -10,12 +10,14 @@ export class Player {
   public inputData: TExchangeData = {};
   public expectedDataDescription = '';
   public controlsDescription: TExchangeData = {};
+  public controlsBinding: TExchangeData = {};
 
   public constructor(
     id: number,
     isObligatory: boolean,
     name: string,
     inputData: TExchangeData = {},
+    controlsBinding: TExchangeData = {},
     expectedDataDescription: string,
     controlsDescription: TExchangeData = {},
     playerType: PlayerSourceType = PlayerSourceType.KEYBOARD
@@ -27,6 +29,7 @@ export class Player {
     this.playerType = playerType;
     this.expectedDataDescription = expectedDataDescription;
     this.inputData = inputData;
+    this.controlsBinding = controlsBinding;
     this.controlsDescription = controlsDescription;
   }
 }

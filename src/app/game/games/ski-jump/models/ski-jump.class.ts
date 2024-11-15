@@ -53,6 +53,7 @@ export class SkiJump extends Game {
       true,
       'Player 1',
       { space: 0, up: 0, down: 0 },
+      {},
       '<space>, <up>, <down>: value of {0, 1}, 0: not pressed, 1: pressed',
       {
         start: '[SPACE]',

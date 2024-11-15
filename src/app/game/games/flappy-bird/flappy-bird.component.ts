@@ -68,10 +68,13 @@ export class FlappyBirdComponent
   protected override update(): void {
     super.update();
 
-    if (!this.game.state.isGameStarted && this.game.players[0].inputData['jump'] == 1) {
+    if (
+      !this.game.state.isGameStarted &&
+      this.game.players[0].inputData['jump'] === true
+    ) {
       this.game.state.isGameStarted = true;
     }
-    
+
     if (!this.isPaused && this.game.state.isGameStarted) {
       this.updateBirdPosition();
       this.updateObstaclePosition();
@@ -81,31 +84,31 @@ export class FlappyBirdComponent
     this.render();
   }
 
-  protected onKeyDown(event: KeyboardEvent): void {
-    const player = this.game.players[0];
+  // protected onKeyDown(event: KeyboardEvent): void {
+  //   const player = this.game.players[0];
 
-    if (player.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case ' ':
-          event.preventDefault();
-          this.game.players[0].inputData['jump'] = 1;
-          break;
-      }
-    }
-  }
+  //   if (player.playerType === PlayerSourceType.KEYBOARD) {
+  //     switch (event.key) {
+  //       case ' ':
+  //         event.preventDefault();
+  //         this.game.players[0].inputData['jump'] = 1;
+  //         break;
+  //     }
+  //   }
+  // }
 
-  protected onKeyUp(event: KeyboardEvent): void {
-    const player = this.game.players[0];
+  // protected onKeyUp(event: KeyboardEvent): void {
+  //   const player = this.game.players[0];
 
-    if (player.playerType === PlayerSourceType.KEYBOARD) {
-      switch (event.key) {
-        case ' ':
-          event.preventDefault();
-          this.game.players[0].inputData['jump'] = 0;
-          break;
-      }
-    }
-  }
+  //   if (player.playerType === PlayerSourceType.KEYBOARD) {
+  //     switch (event.key) {
+  //       case ' ':
+  //         event.preventDefault();
+  //         this.game.players[0].inputData['jump'] = 0;
+  //         break;
+  //     }
+  //   }
+  // }
 
   //
 
@@ -156,7 +159,7 @@ export class FlappyBirdComponent
   }
 
   private updateBirdSpeed(): void {
-    if (this.game.players[0].inputData['jump'] === 1) {
+    if (this.game.players[0].inputData['jump'] === true) {
       this.game.state.birdSpeedY = -this.game.state.jumpPowerY;
     }
   }

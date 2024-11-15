@@ -71,7 +71,7 @@ export class SkiJumpGameWindowComponent
     }
   }
 
-  protected onKeyDown(event: KeyboardEvent): void {
+  protected override onKeyDown(event: KeyboardEvent): void {
     const player = this.game.players[0];
 
     if (player.playerType === PlayerSourceType.KEYBOARD) {
@@ -92,7 +92,7 @@ export class SkiJumpGameWindowComponent
     }
   }
 
-  protected onKeyUp(event: KeyboardEvent): void {
+  protected override onKeyUp(event: KeyboardEvent): void {
     const player = this.game.players[0];
 
     if (player.playerType === PlayerSourceType.KEYBOARD) {
