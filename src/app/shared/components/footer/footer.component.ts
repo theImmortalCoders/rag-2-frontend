@@ -21,7 +21,7 @@ import { Component } from '@angular/core';
                 class="object-contain grayscale group-hover:grayscale-0 transition-all ease-in-out duration-500"
                 fill />
             </span>
-            <span class="font-bold text-base lg:text-lg">RUT-AI-GAMES 2</span>
+            <span class="font-bold text-base lg:text-lg">RUT-AI-GAMES 2.0</span>
           </div>
           <span
             >Rzeszów University of Technology<br />
@@ -50,7 +50,7 @@ import { Component } from '@angular/core';
             target="_blank"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
-              class="w-20 xs:w-16 lg:w-20 h-10 xs:h-9 lg:h-10 relative pr-4">
+              class="w-24 xs:w-20 lg:w-24 h-14 xs:h-12 lg:h-14 relative pr-4">
               <img
                 ngSrc="images/prz_orange.png"
                 alt="Logo"
@@ -66,7 +66,7 @@ import { Component } from '@angular/core';
             target="_blank"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
-              class="w-20 xs:w-16 lg:w-20 h-10 xs:h-9 lg:h-10 relative pr-4">
+              class="w-24 xs:w-20 lg:w-24 h-14 xs:h-12 lg:h-14 relative pr-4">
               <img
                 ngSrc="images/gest_orange.png"
                 alt="Logo"
