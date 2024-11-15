@@ -2,11 +2,11 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from 'app/game/components/canvas/canvas.component';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { FlappyBird, FlappyBirdState } from './models/flappy-bird.class';
+import { FlappyBird, FlappyBirdState } from './models/flappybird.class';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 @Component({
-  selector: 'app-flappy-bird',
+  selector: 'app-flappybird',
   standalone: true,
   imports: [CanvasComponent],
   template: `<div>
@@ -25,7 +25,8 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
         }}
       </b>
     </div>
-    <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
+    <app-canvas class="bg-zinc-300" #gameCanvas></app-canvas>
+    <b>FPS: {{ fps }}</b> `,
 })
 export class FlappyBirdComponent
   extends BaseGameWindowComponent
@@ -51,10 +52,6 @@ export class FlappyBirdComponent
 
     this.resetBirdAndObstacle();
     this.render();
-  }
-
-  public override ngOnDestroy(): void {
-    super.ngOnDestroy();
   }
 
   public override restart(): void {

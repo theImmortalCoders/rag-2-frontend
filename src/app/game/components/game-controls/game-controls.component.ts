@@ -9,7 +9,7 @@ import { Game } from '@gameModels/game.class';
   template: `
     <div class="group font-mono absolute left-0 top-0 z-30">
       <div
-        class="absolute z-30 top-3 left-4 rounded-full bg-gray-400 group-hover:bg-mainCreme border-2 border-mainGray transition-all ease-in-out duration-300">
+        class="absolute z-30 top-3 left-4 rounded-full bg-zinc-400 group-hover:bg-mainCreme border-2 border-mainGray transition-all ease-in-out duration-300">
         <i
           data-feather="info"
           class="size-9 text-mainGray group-hover:scale-110 transition-all ease-in-out duration-300"></i>

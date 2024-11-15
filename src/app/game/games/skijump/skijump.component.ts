@@ -4,11 +4,11 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from '../../components/canvas/canvas.component';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { SkiJump, SkiJumpState } from './models/ski-jump.class';
+import { SkiJump, SkiJumpState } from './models/skijump.class';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-ski-jump',
+  selector: 'app-skijump',
   standalone: true,
   imports: [CanvasComponent, CommonModule],
   template: `<div>
@@ -19,7 +19,8 @@ import { CommonModule } from '@angular/common';
         {{ game.state.windPoints | number: '1.0-1' }} pts</b
       >, total:<b> {{ game.state.totalPoints | number: '1.0-1' }} pts</b>
     </div>
-    <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
+    <app-canvas class="bg-zinc-300" #gameCanvas></app-canvas>
+    <b>FPS: {{ fps }}</b> `,
 })
 export class SkiJumpGameWindowComponent
   extends BaseGameWindowComponent

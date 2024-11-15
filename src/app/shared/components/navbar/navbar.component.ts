@@ -38,7 +38,7 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
               fill />
           </a>
           <span class="text-3xl hidden md:block">{{
-            isMinWidthLg ? 'RUT-AI-GAMES 2' : 'RAG-2'
+            isMinWidthLg ? 'RUT-AI-GAMES 2.0' : 'RAG-2'
           }}</span>
         </div>
         <div
