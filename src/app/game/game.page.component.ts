@@ -38,7 +38,7 @@ import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
     FlappyBirdComponent,
   ],
   template: `
-    <div class="flex flex-col min-h-all w-full items-center bg-gray-400">
+    <div class="flex flex-col min-h-all w-full items-center bg-zinc-400">
       @if (isMinWidthXl) {
         @if (game) {
           <div>

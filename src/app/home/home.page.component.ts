@@ -29,7 +29,7 @@ import { ShortGameStatsComponent } from './components/short-game-stats.component
             What's going on here?
           </h1>
           <span
-            class="text-sm sm:text-base md:text-lg lg:text-xl text-mainCreme"
+            class="text-sm sm:text-base md:text-lg lg:text-xl text-mainCreme pt-2 pb-2 sm:pb-0"
             >Authors:</span
           >
           <div

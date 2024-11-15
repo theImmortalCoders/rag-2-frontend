@@ -25,7 +25,8 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
         }}
       </b>
     </div>
-    <app-canvas #gameCanvas></app-canvas> <b>FPS: {{ fps }}</b> `,
+    <app-canvas class="bg-zinc-300" #gameCanvas></app-canvas>
+    <b>FPS: {{ fps }}</b> `,
 })
 export class FlappyBirdComponent
   extends BaseGameWindowComponent
