@@ -40,7 +40,9 @@ describe('PlayerMenuComponent', () => {
     fixture = TestBed.createComponent(PlayerMenuComponent);
     component = fixture.componentInstance;
 
-    mockPlayers = [new Player(1, true, 'p1', {}, PlayerSourceType.KEYBOARD)];
+    mockPlayers = [
+      new Player(1, true, 'p1', {}, {}, PlayerSourceType.KEYBOARD),
+    ];
 
     component.players = mockPlayers;
     fixture.detectChanges();
