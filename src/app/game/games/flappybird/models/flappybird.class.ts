@@ -23,13 +23,13 @@ export class FlappyBird extends Game {
   public override outputSpec = `
         output:
           birdY: float, <0, 600>;
-          birdSpeedY: float, <-inf, inf>;
+          birdSpeedY: float, <-20, 90>;
           gravity: float, <0.5, 1>;
           jumpPowerY: float, <5, 15>;
           obstacleSpeed = <2, 10>;
           score: int, <0, inf>;
           difficulty: int, <0, inf>;
-          obstacles: [{distanceX: int, <0, 1900>, centerGapyY: int <100, 500>}];
+          obstacles: [{distanceX: int, <-50, 1900>, centerGapyY: int <100, 500>}];
           isGameStarted: boolean;
   
         default values:
