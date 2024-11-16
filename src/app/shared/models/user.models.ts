@@ -4,8 +4,8 @@ export interface IUserRequest {
   email: string;
   password: string;
   name: string;
-  studyCycleYearA: number;
-  studyCycleYearB: number;
+  studyCycleYearA: number | null;
+  studyCycleYearB: number | null;
 }
 
 export interface IUserLoginRequest {
