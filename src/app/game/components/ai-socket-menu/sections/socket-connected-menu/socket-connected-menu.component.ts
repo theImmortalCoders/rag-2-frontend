@@ -23,7 +23,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
         type="number"
         #sendingIntervalInput
         class="custom-input w-52 my-2"
-        min="10"
+        min="50"
         max="1000"
         step="10"
         [defaultValue]="vSendingInterval.value"
@@ -67,6 +67,10 @@ export class SocketConnectedMenuComponent implements OnInit {
   }
 
   public updateValue(value: number): void {
+    if (value < 50) {
+      value = 50;
+    }
+
     this.vSendingInterval.value = value;
 
     this._urlParamService.setQueryParam(
