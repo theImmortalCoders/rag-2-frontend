@@ -1,4 +1,12 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+/* eslint-disable max-lines */
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { Game } from '@gameModels/game.class';
 import { ConsoleComponent } from './components/console/console.component';
 import { TExchangeData } from '@gameModels/exchange-data.type';
@@ -14,7 +22,6 @@ import { games } from './data/games';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { GameMenuComponent } from './components/game-menu/game-menu.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-
 import { GameControlsComponent } from './components/game-controls/game-controls.component';
 import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
 import { FlappyBirdComponent } from './games/flappybird/flappybird.component';
@@ -44,12 +51,10 @@ import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
           <div>
             <div class="absolute z-10 top-20 left-0 flex flex-col">
               <app-player-menu
-                *appAuthRequired
                 [players]="game.players"
                 (playerSourceChangeEmitter)="updatePlayers($event)" />
               @if (filterPlayersByActiveAndSocket(game.players).length > 0) {
                 <app-ai-socket-menu
-                  *appAuthRequired
                   [dataToSend]="gameData"
                   [gameName]="game.name"
                   [players]="filterPlayersByActiveAndSocket(game.players)"
@@ -109,7 +114,7 @@ import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
     </div>
   `,
 })
-export class GamePageComponent implements OnInit, OnDestroy {
+export class GamePageComponent implements OnInit, OnDestroy, AfterViewInit {
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
   private _routerSubscription = new Subscription();
@@ -125,7 +130,10 @@ export class GamePageComponent implements OnInit, OnDestroy {
   public gamePauseSubject = new Subject<boolean>();
   public isMinWidthXl = false;
 
-  public constructor(private _breakpointObserver: BreakpointObserver) {
+  public constructor(
+    private _breakpointObserver: BreakpointObserver,
+    private _cdr: ChangeDetectorRef
+  ) {
     this._breakpointSubscription = this._breakpointObserver
       .observe(['(min-width: 1280px)'])
       .subscribe((state: BreakpointState) => {
@@ -142,12 +150,20 @@ export class GamePageComponent implements OnInit, OnDestroy {
     this.handleRouterParams();
   }
 
+  public ngAfterViewInit(): void {
+    this._cdr.detectChanges();
+  }
+
   public receiveGameOutputData(data: Game): void {
     this.gameData = JSON.parse(JSON.stringify(data));
     this.gameStateData = JSON.parse(
       JSON.stringify(this.gameData.state as TExchangeData)
     );
     this.logData['game window'] = this.gameStateData;
+    this.logData['gameProps'] = {
+      outputSpec: this.gameData.outputSpec,
+      playerExpectedInput: this.gameData.players[0].expectedDataDescription,
+    };
   }
 
   public receiveSocketInputData(data: TExchangeData): void {

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
+import { NotificationService } from 'app/shared/services/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class AiSocketService {
   private isDataSendingActive = false;
   private _dataToSend: TExchangeData = {};
   public isDataExchangeDesired = false;
+  private _notificationService = inject(NotificationService);
 
   public connect(
     socketUrl: string,
@@ -20,35 +22,17 @@ export class AiSocketService {
     onMessage: (event: MessageEvent<string>) => void,
     onClose: () => void
   ): void {
-    try {
-      this._authEndpointsService.verifyJWTToken().subscribe({
-        next: (isValid: boolean) => {
-          if (isValid) {
-            const urlWithJwt = `${socketUrl}?jwt=${localStorage.getItem('jwtToken')}`;
-            this._socket = new WebSocket(urlWithJwt);
-            this._socket.addEventListener('open', () => {
-              this.isSocketConnected = true;
-              onOpen();
-            });
-            this._socket.addEventListener('message', event => {
-              onMessage(event);
-            });
-            this._socket.addEventListener('close', () => {
-              this.stopDataExchange();
-              this.isSocketConnected = false;
-              onClose();
-            });
-          }
-        },
-        error: () => {
-          this._authEndpointsService.logout();
-        },
-      });
-    } catch (error) {
-      this.stopDataExchange();
-      this.isSocketConnected = false;
-      onClose();
-    }
+    this._authEndpointsService.verifyJWTToken().subscribe({
+      next: (isValid: boolean) => {
+        if (isValid) {
+          socketUrl = `${socketUrl}?jwt=${localStorage.getItem('jwtToken')}`;
+        }
+        this.defineSocket(socketUrl, onOpen, onMessage, onClose);
+      },
+      error: () => {
+        this.defineSocket(socketUrl, onOpen, onMessage, onClose);
+      },
+    });
   }
 
   public startDataExchange = (
@@ -104,7 +88,42 @@ export class AiSocketService {
     this._dataToSend = data;
   }
 
+  public closeSocket(): void {
+    this.stopDataExchange();
+    this.isSocketConnected = false;
+    if (this._socket) {
+      this._socket.close();
+    }
+  }
+
   //
+
+  private defineSocket(
+    socketUrl: string,
+    onOpen: () => void,
+    onMessage: (event: MessageEvent<string>) => void,
+    onClose: () => void
+  ): void {
+    this._socket = new WebSocket(socketUrl);
+    this._socket.addEventListener('open', () => {
+      this.isSocketConnected = true;
+      onOpen();
+    });
+    this._socket.addEventListener('message', event => {
+      onMessage(event);
+    });
+    this._socket.addEventListener('close', e => {
+      if (e.code === 401) {
+        this._notificationService.addNotification(
+          'Max guest users limit reached. Log in to play or try again later.',
+          5000
+        );
+      }
+      this.stopDataExchange();
+      this.isSocketConnected = false;
+      onClose();
+    });
+  }
 
   private sendDataToSocket(
     dataToSend: TExchangeData,

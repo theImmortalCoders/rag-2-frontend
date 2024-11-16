@@ -84,6 +84,7 @@ import { Game } from '@gameModels/game.class';
 export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public set setDataToSend(data: Game) {
+    if (!data) return;
     this.dataToSend = {
       name: data.name,
       outputSpec: data.outputSpec,
@@ -152,6 +153,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   }
   public ngOnDestroy(): void {
     this.aiSocketService.stopDataExchange();
+    this.aiSocketService.closeSocket();
     this._pauseSubscription.unsubscribe();
     this._restartSubscription.unsubscribe();
     this._pageVisibilitySubscription.unsubscribe();
