@@ -150,8 +150,8 @@ export class RegisterFormComponent implements OnDestroy {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     repeatedPassword: ['', [Validators.required, Validators.minLength(8)]],
-    studyCycleYearA: [NaN, [Validators.required]],
-    studyCycleYearB: [NaN, [Validators.required]],
+    studyCycleYearA: [null],
+    studyCycleYearB: [null],
   });
 
   public submitButton(): void {
