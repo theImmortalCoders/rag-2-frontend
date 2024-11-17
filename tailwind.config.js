@@ -21,6 +21,9 @@ module.exports = {
       backgroundImage: {
         homeImageAI: "url('/images/home.jpg')",
         homeImageUser: "url('/images/user.png')",
+        homeImageUser0: "url('/images/marcin.jpg')",
+        homeImageUser1: "url('/images/pawel.jpg')",
+        homeImageUser2: "url('/images/bartek.jpg')",
       },
       height: {
         navbar: '80px',

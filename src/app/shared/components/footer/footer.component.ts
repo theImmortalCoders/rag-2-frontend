@@ -50,7 +50,7 @@ import { Component } from '@angular/core';
             target="_blank"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
-              class="w-24 xs:w-20 lg:w-24 h-14 xs:h-12 lg:h-14 relative pr-4">
+              class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
               <img
                 ngSrc="images/prz_orange.png"
                 alt="Logo"
@@ -66,7 +66,7 @@ import { Component } from '@angular/core';
             target="_blank"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
-              class="w-24 xs:w-20 lg:w-24 h-14 xs:h-12 lg:h-14 relative pr-4">
+              class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
               <img
                 ngSrc="images/gest_orange.png"
                 alt="Logo"
