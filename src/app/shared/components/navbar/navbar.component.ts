@@ -37,9 +37,9 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
               class="object-contain"
               fill />
           </a>
-          <span class="text-3xl hidden md:block">{{
+          <a [routerLink]="['/']" class="text-3xl hidden md:block">{{
             isMinWidthLg ? 'RUT-AI-GAMES 2.0' : 'RAG-2'
-          }}</span>
+          }}</a>
         </div>
         <div
           class="game-list-container text-xl xs:text-2xl flex flex-col w-3/5 2xs:w-1/2 sm:w-2/5 md:w-[30%] lg:w-1/4 xl:w-1/6 relative items-center justify-center">
