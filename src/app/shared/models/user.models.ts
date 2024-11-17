@@ -11,6 +11,7 @@ export interface IUserRequest {
 export interface IUserLoginRequest {
   email: string;
   password: string;
+  rememberMe: boolean;
 }
 
 export interface IUserResponse {
