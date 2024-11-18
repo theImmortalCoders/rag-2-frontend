@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
+  FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -11,6 +12,8 @@ import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotificationService } from 'app/shared/services/notification.service';
+import { ICourseResponse } from 'app/shared/models/course.models';
+import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 
 @Component({
   selector: 'app-register-form',
@@ -35,6 +38,21 @@ import { NotificationService } from 'app/shared/services/notification.service';
           placeholder="Type your name"
           class="custom-input" />
       </div>
+      <div class="flex flex-col space-y-1">
+        <label for="email" [class.text-red-500]="shouldShowError('email')"
+          >Email</label
+        >
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Type your email"
+          class="custom-input" />
+      </div>
+      <span class="w-full text-justify text-xs">
+        (as a teacher you don't need to enter the study cycle years, course and
+        group)
+      </span>
       <div
         class="flex flex-wrap flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
         <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
@@ -65,20 +83,33 @@ import { NotificationService } from 'app/shared/services/notification.service';
             class="custom-input"
             (input)="validateNumber($event)" />
         </div>
-        <span
-          class="w-full text-center sm:text-start lg:text-center xl:text-start pt-0 sm:pt-2 lg:pt-0 xl:pt-2 text-xs">
-          (if you are a teacher you do not need to enter the study cycle years)
-        </span>
       </div>
       <div class="flex flex-col space-y-1">
-        <label for="email" [class.text-red-500]="shouldShowError('email')"
-          >Email</label
+        <label
+          for="courseId"
+          class="text-start"
+          [class.text-red-500]="shouldShowError('courseId')"
+          >Course</label
+        >
+        <select formControlName="courseId" class="custom-input">
+          <option [ngValue]="null">No course choosen</option>
+          @for (course of courseList; track course.id) {
+            <option [ngValue]="course.id">{{ course.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="flex flex-col space-y-1">
+        <label
+          for="group"
+          class="text-start"
+          [class.text-red-500]="shouldShowError('group')"
+          >Group</label
         >
         <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="Type your email"
+          id="group"
+          type="text"
+          formControlName="group"
+          placeholder="Type your group"
           class="custom-input" />
       </div>
       <div class="flex flex-col space-y-1">
@@ -133,15 +164,18 @@ import { NotificationService } from 'app/shared/services/notification.service';
     </form>
   `,
 })
-export class RegisterFormComponent implements OnDestroy {
+export class RegisterFormComponent implements OnInit, OnDestroy {
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
+  private _courseEndpointsService = inject(CourseEndpointsService);
   private _notificationService = inject(NotificationService);
 
   private _router: Router = new Router();
   private _registerSubscription = new Subscription();
+  private _getCoursesSubscription = new Subscription();
 
+  public courseList: ICourseResponse[] | null = null;
   public isPasswordsMatching: boolean | undefined;
   public errorMessage: string | null = null;
 
@@ -152,7 +186,23 @@ export class RegisterFormComponent implements OnDestroy {
     repeatedPassword: ['', [Validators.required, Validators.minLength(8)]],
     studyCycleYearA: [null],
     studyCycleYearB: [null],
+    courseId: new FormControl<number | null>(null),
+    group: ['', []],
   });
+
+  public ngOnInit(): void {
+    this.getCourseList();
+  }
+
+  public getCourseList(): void {
+    this._getCoursesSubscription = this._courseEndpointsService
+      .getCourses()
+      .subscribe({
+        next: (response: ICourseResponse[]) => {
+          this.courseList = response;
+        },
+      });
+  }
 
   public submitButton(): void {
     this.errorMessage = null;
@@ -167,7 +217,10 @@ export class RegisterFormComponent implements OnDestroy {
         name: formValues.name,
         studyCycleYearA: formValues.studyCycleYearA,
         studyCycleYearB: formValues.studyCycleYearB,
+        courseId: formValues.courseId ? formValues.courseId : null,
+        group: formValues.group ? formValues.group : null,
       };
+      console.log(userRequest);
       this._registerSubscription = this._userEndpointsService
         .register(userRequest)
         .subscribe({
@@ -202,5 +255,6 @@ export class RegisterFormComponent implements OnDestroy {
 
   public ngOnDestroy(): void {
     this._registerSubscription.unsubscribe();
+    this._getCoursesSubscription.unsubscribe();
   }
 }
