@@ -33,14 +33,35 @@ import { ProgressCircleBarComponent } from './progress-circle-bar.component';
               {{ aboutMeUserInfo?.email }}
             </span>
           </h2>
-          <h2>
-            Your study cycle years:
-            <span class="text-mainCreme">
-              {{ aboutMeUserInfo?.studyCycleYearA }}/{{
-                aboutMeUserInfo?.studyCycleYearB
-              }}
-            </span>
-          </h2>
+          @if (
+            aboutMeUserInfo?.studyCycleYearA !== null &&
+            aboutMeUserInfo?.studyCycleYearB !== null
+          ) {
+            <h2>
+              Your study cycle years:
+              <span class="text-mainCreme">
+                {{ aboutMeUserInfo?.studyCycleYearA }}/{{
+                  aboutMeUserInfo?.studyCycleYearB
+                }}
+              </span>
+            </h2>
+          }
+          @if (aboutMeUserInfo?.course !== null) {
+            <h2>
+              Your course of study:
+              <span class="text-mainCreme">
+                {{ aboutMeUserInfo?.course }}
+              </span>
+            </h2>
+          }
+          @if (aboutMeUserInfo?.group !== null) {
+            <h2>
+              Your group:
+              <span class="text-mainCreme">
+                {{ aboutMeUserInfo?.group }}
+              </span>
+            </h2>
+          }
           <h2>
             Your types of games played:
             <span class="text-mainCreme">
