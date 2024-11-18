@@ -10,7 +10,6 @@ describe('CoursesSettingsComponent', () => {
   let component: CoursesSettingsComponent;
   let fixture: ComponentFixture<CoursesSettingsComponent>;
   let courseEndpointsService: jasmine.SpyObj<CourseEndpointsService>;
-  let notificationService: jasmine.SpyObj<NotificationService>;
 
   beforeEach(async () => {
     const courseEndpointsServiceSpy = jasmine.createSpyObj(
@@ -41,9 +40,6 @@ describe('CoursesSettingsComponent', () => {
     courseEndpointsService = TestBed.inject(
       CourseEndpointsService
     ) as jasmine.SpyObj<CourseEndpointsService>;
-    notificationService = TestBed.inject(
-      NotificationService
-    ) as jasmine.SpyObj<NotificationService>;
   });
 
   it('should create the component', () => {
