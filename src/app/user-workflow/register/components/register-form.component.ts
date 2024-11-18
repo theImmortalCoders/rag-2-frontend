@@ -48,70 +48,74 @@ import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
           formControlName="email"
           placeholder="Type your email"
           class="custom-input" />
+        <span class="w-full text-justify text-xs">
+          (domain &#64;stud.prz.edu.pl or &#64;prz.edu.pl)
+        </span>
       </div>
-      <span class="w-full text-justify text-xs">
-        (as a teacher you don't need to enter the study cycle years, course and
-        group)
-      </span>
-      <div
-        class="flex flex-wrap flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
-        <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
+      @if (
+        registerForm.value.email &&
+        registerForm.value.email.endsWith('@stud.prz.edu.pl')
+      ) {
+        <div
+          class="flex flex-wrap flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
+          <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
+            <label
+              for="studyCycleYearA"
+              [class.text-red-500]="shouldShowError('studyCycleYearA')"
+              >Study cycle year</label
+            >
+            <input
+              id="studyCycleYearA"
+              type="number"
+              formControlName="studyCycleYearA"
+              placeholder="Type year A"
+              class="custom-input"
+              (input)="validateNumber($event)" />
+          </div>
+          <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
+            <label
+              for="studyCycleYearB"
+              [class.text-red-500]="shouldShowError('studyCycleYearB')"
+              >Study cycle year</label
+            >
+            <input
+              id="studyCycleYearB"
+              type="number"
+              formControlName="studyCycleYearB"
+              placeholder="Type year B"
+              class="custom-input"
+              (input)="validateNumber($event)" />
+          </div>
+        </div>
+        <div class="flex flex-col space-y-1">
           <label
-            for="studyCycleYearA"
-            [class.text-red-500]="shouldShowError('studyCycleYearA')"
-            >Study cycle year</label
+            for="courseId"
+            class="text-start"
+            [class.text-red-500]="shouldShowError('courseId')"
+            >Course</label
+          >
+          <select formControlName="courseId" class="custom-input">
+            <option [ngValue]="null">No course choosen</option>
+            @for (course of courseList; track course.id) {
+              <option [ngValue]="course.id">{{ course.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="flex flex-col space-y-1">
+          <label
+            for="group"
+            class="text-start"
+            [class.text-red-500]="shouldShowError('group')"
+            >Group</label
           >
           <input
-            id="studyCycleYearA"
-            type="number"
-            formControlName="studyCycleYearA"
-            placeholder="Type year A"
-            class="custom-input"
-            (input)="validateNumber($event)" />
+            id="group"
+            type="text"
+            formControlName="group"
+            placeholder="Type your group"
+            class="custom-input" />
         </div>
-        <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
-          <label
-            for="studyCycleYearB"
-            [class.text-red-500]="shouldShowError('studyCycleYearB')"
-            >Study cycle year</label
-          >
-          <input
-            id="studyCycleYearB"
-            type="number"
-            formControlName="studyCycleYearB"
-            placeholder="Type year B"
-            class="custom-input"
-            (input)="validateNumber($event)" />
-        </div>
-      </div>
-      <div class="flex flex-col space-y-1">
-        <label
-          for="courseId"
-          class="text-start"
-          [class.text-red-500]="shouldShowError('courseId')"
-          >Course</label
-        >
-        <select formControlName="courseId" class="custom-input">
-          <option [ngValue]="null">No course choosen</option>
-          @for (course of courseList; track course.id) {
-            <option [ngValue]="course.id">{{ course.name }}</option>
-          }
-        </select>
-      </div>
-      <div class="flex flex-col space-y-1">
-        <label
-          for="group"
-          class="text-start"
-          [class.text-red-500]="shouldShowError('group')"
-          >Group</label
-        >
-        <input
-          id="group"
-          type="text"
-          formControlName="group"
-          placeholder="Type your group"
-          class="custom-input" />
-      </div>
+      }
       <div class="flex flex-col space-y-1">
         <label for="password" [class.text-red-500]="shouldShowError('password')"
           >Password</label
