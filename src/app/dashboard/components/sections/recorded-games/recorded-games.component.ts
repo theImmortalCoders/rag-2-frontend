@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -84,6 +85,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
 export class RecordedGamesComponent
   implements OnInit, OnDestroy, AfterViewChecked
 {
+  @Input({ required: true }) public userId!: number;
   @Output() public refreshDataEmitter = new EventEmitter<boolean>(false);
 
   private _gameRecordEndpointsService = inject(GameRecordEndpointsService);
@@ -120,7 +122,7 @@ export class RecordedGamesComponent
     this.recordedGamesData = [];
     for (const game of this.avalaibleGamesList) {
       this._getRecordedGamesSubscription = this._gameRecordEndpointsService
-        .getAllRecordedGames(game.id)
+        .getAllRecordedGames(game.id, this.userId)
         .subscribe({
           next: response => {
             this.recordedGamesData.push(...response);
