@@ -40,6 +40,18 @@ import {
       </span>
     </h3>
     <h3 class="text-mainOrange">
+      Course of study:
+      <span class="text-mainCreme">
+        {{ selectedUserData.course }}
+      </span>
+    </h3>
+    <h3 class="text-mainOrange">
+      Group:
+      <span class="text-mainCreme">
+        {{ selectedUserData.group }}
+      </span>
+    </h3>
+    <h3 class="text-mainOrange">
       Ban status:
       <span class="text-mainCreme">
         {{ selectedUserData.banned ? 'BANNED' : 'NOT BANNED' }}
@@ -75,6 +87,10 @@ import {
         {{ selectedUserStats.lastPlayed | date: 'dd/MM/yyyy, HH:mm' }}
       </span>
     </h3>
+    <button
+      class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-1 xs:mt-2 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+      Check user game records
+    </button>
   `,
 })
 export class SelectedUserInfoComponent {
