@@ -33,7 +33,7 @@ import { ShortGameStatsComponent } from './components/short-game-stats.component
             >Authors:</span
           >
           <div
-            class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full gap-x-6 xs:gap-x-36 md:gap-x-3 lg:gap-x-8">
+            class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full gap-x-8 xs:gap-x-40 md:gap-x-5 lg:gap-x-12">
             @for (author of authors; track author.name) {
               <button
                 (click)="chooseAuthor($index, author.githubName)"
