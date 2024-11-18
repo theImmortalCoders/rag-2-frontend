@@ -7,6 +7,8 @@ export interface IUserRequest {
   name: string;
   studyCycleYearA: number | null;
   studyCycleYearB: number | null;
+  courseId: number | null;
+  group: string | null;
 }
 
 export interface IUserLoginRequest {

@@ -33,12 +33,6 @@ describe('DataDownloadComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should toggle vIsDataCollectingActive on button click', () => {
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    button.click();
-    fixture.detectChanges();
-  });
-
   it('should display "Start collecting data" when vIsDataCollectingActive is false', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('button')).nativeElement;

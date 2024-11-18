@@ -161,7 +161,7 @@ import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
                 <select formControlName="courseId" class="custom-input">
                   <option [ngValue]="null">No course choosen</option>
                   @for (course of courseList; track course.id) {
-                    <option [value]="course.id">{{ course.name }}</option>
+                    <option [ngValue]="course.id">{{ course.name }}</option>
                   }
                 </select>
               </div>
