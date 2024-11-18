@@ -13,7 +13,6 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
 import { DataMenuComponent } from './components/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/ai-socket-menu/ai-socket-menu.component';
 import { PongGameWindowComponent } from './games/pong/pong.component';
-import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { Subject, Subscription } from 'rxjs';
 import { Player } from '@gameModels/player.class';
 import { PlayerMenuComponent } from './components/player-menu/player-menu.component';
@@ -36,10 +35,8 @@ import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
     AiSocketMenuComponent,
     PongGameWindowComponent,
     ConsoleComponent,
-    AuthRequiredDirective,
     GameMenuComponent,
     CantDisplayGameComponent,
-    AuthRequiredDirective,
     SkiJumpGameWindowComponent,
     GameControlsComponent,
     FlappyBirdComponent,
@@ -68,7 +65,6 @@ import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
                 (pauseEmitter)="gamePauseSubject.next($event)"
                 (restartEmitter)="gameRestartSubject.next()" />
               <app-data-menu
-                *appAuthRequired
                 [game]="game"
                 [gamePause]="gamePauseSubject.asObservable()"
                 [setDataPossibleToPersist]="gameStateData" />

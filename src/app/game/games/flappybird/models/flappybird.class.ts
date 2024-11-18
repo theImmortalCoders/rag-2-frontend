@@ -14,7 +14,6 @@ export class FlappyBirdState implements TGameState {
     distanceX: 0,
     centerGapY: 0,
   }));
-  public isGameStarted = false;
 }
 
 export class FlappyBird extends Game {

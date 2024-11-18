@@ -57,7 +57,6 @@ export class FlappyBirdComponent
   public override restart(): void {
     this.game.state = new FlappyBirdState();
 
-    this.game.state.isGameStarted = false;
     this.resetBirdAndObstacle();
     this.resetScoreAndDifficulty();
   }
@@ -65,14 +64,7 @@ export class FlappyBirdComponent
   protected override update(): void {
     super.update();
 
-    if (
-      !this.game.state.isGameStarted &&
-      this.game.players[0].inputData['jump'] === 1
-    ) {
-      this.game.state.isGameStarted = true;
-    }
-
-    if (!this.isPaused && this.game.state.isGameStarted) {
+    if (!this.isPaused) {
       this.updateBirdPosition();
       this.updateObstaclePosition();
       this.updateBirdSpeed();
@@ -136,8 +128,6 @@ export class FlappyBirdComponent
   }
 
   private updateBirdPosition(): void {
-    if (!this.game.state.isGameStarted) return;
-
     this.game.state.birdSpeedY += this.game.state.gravity;
     this.game.state.birdY += this.game.state.birdSpeedY;
 
