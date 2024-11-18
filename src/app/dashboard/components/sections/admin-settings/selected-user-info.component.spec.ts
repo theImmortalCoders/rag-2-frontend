@@ -20,6 +20,8 @@ describe('SelectedUserInfoComponent', () => {
     banned: false,
     id: 1,
     lastPlayed: '01/01/2023, 12:00',
+    course: { id: 1, name: '' },
+    group: 'l1',
   };
 
   const mockUserStats: IUserStatsResponse = {
