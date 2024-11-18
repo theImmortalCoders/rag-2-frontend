@@ -38,3 +38,11 @@ export interface ILimitsResponse {
   teacherLimitMb: number;
   adminLimitMb: number;
 }
+
+export interface IUserEditRequest {
+  name: string;
+  studyCycleYearA: number;
+  studyCycleYearB: number;
+  courseId: number;
+  group: string;
+}

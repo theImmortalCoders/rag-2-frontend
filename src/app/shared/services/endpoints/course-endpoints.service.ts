@@ -50,7 +50,7 @@ export class CourseEndpointsService {
       );
   }
 
-  public updateGame(
+  public updateCourse(
     courseId: number,
     courseData: ICourseRequest
   ): Observable<void> {
@@ -75,7 +75,7 @@ export class CourseEndpointsService {
       );
   }
 
-  public deleteGame(courseId: number): Observable<void> {
+  public deleteCourse(courseId: number): Observable<void> {
     return this._httpClient
       .delete<void>(environment.backendApiUrl + `/api/Course/${courseId}`, {
         headers: getAuthHeaders(),
