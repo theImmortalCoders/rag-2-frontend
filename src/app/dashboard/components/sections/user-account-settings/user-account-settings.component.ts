@@ -10,6 +10,7 @@ import { FormValidationService } from 'app/shared/services/form-validation.servi
 import { Subscription } from 'rxjs';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-account-settings',
@@ -123,6 +124,7 @@ export class UserAccountSettingsComponent implements OnDestroy {
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
   private _notificationService = inject(NotificationService);
+  private _router = inject(Router);
 
   private _changePasswordSubscribtion = new Subscription();
   private _deleteAccountSubscribtion = new Subscription();
@@ -198,6 +200,8 @@ export class UserAccountSettingsComponent implements OnDestroy {
       .deleteAccount()
       .subscribe({
         next: () => {
+          localStorage.removeItem('jwtToken');
+          this._router.navigate(['']);
           this._notificationService.addNotification(
             'Your account has been permamently deleted!'
           );
