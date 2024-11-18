@@ -42,7 +42,7 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
       class="flex flex-row justify-stretch w-full" />
     <app-recorded-games
       class="flex flex-col px-10"
-      [userId]="aboutMeUserInfo!.id"
+      [userId]="aboutMeUserInfo ? aboutMeUserInfo.id : 0"
       (refreshDataEmitter)="isRefreshNeeded($event)" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
       <app-user-account-settings class="flex flex-col px-10 w-full sm:w-fit" />

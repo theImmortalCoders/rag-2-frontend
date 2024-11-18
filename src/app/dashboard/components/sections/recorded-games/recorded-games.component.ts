@@ -5,9 +5,11 @@ import {
   EventEmitter,
   inject,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
@@ -83,7 +85,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
   `,
 })
 export class RecordedGamesComponent
-  implements OnInit, OnDestroy, AfterViewChecked
+  implements OnInit, OnDestroy, OnChanges, AfterViewChecked
 {
   @Input({ required: true }) public userId!: number;
   @Output() public refreshDataEmitter = new EventEmitter<boolean>(false);
@@ -116,6 +118,10 @@ export class RecordedGamesComponent
 
   public ngAfterViewChecked(): void {
     feather.replace(); //dodane, żeby feather-icons na nowo dodało się do DOM w pętli
+  }
+
+  public ngOnChanges(): void {
+    this.getRecordedGames();
   }
 
   public getRecordedGames(): void {

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   IUserResponse,
   IUserStatsResponse,
@@ -8,7 +9,7 @@ import {
 @Component({
   selector: 'app-selected-user-info',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <h2 class="text-base 2xs:text-lg sm:text-xl text-mainCreme font-bold">
       User's info:
@@ -87,10 +88,11 @@ import {
         {{ selectedUserStats.lastPlayed | date: 'dd/MM/yyyy, HH:mm' }}
       </span>
     </h3>
-    <button
+    <a
+      [routerLink]="['/dashboard/user', selectedUserData.id]"
       class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-1 xs:mt-2 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
       Check user game records
-    </button>
+    </a>
   `,
 })
 export class SelectedUserInfoComponent {
