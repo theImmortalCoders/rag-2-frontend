@@ -1,3 +1,4 @@
+import { ICourseResponse } from './course.models';
 import { TRole } from './role.enum';
 
 export interface IUserRequest {
@@ -19,10 +20,12 @@ export interface IUserResponse {
   email: string;
   role: TRole;
   name: string;
-  studyCycleYearA: number;
-  studyCycleYearB: number;
+  studyCycleYearA: number | null;
+  studyCycleYearB: number | null;
   lastPlayed: string;
   banned: boolean;
+  course: ICourseResponse;
+  group: string;
 }
 
 export interface IUserStatsResponse {
@@ -37,4 +40,12 @@ export interface ILimitsResponse {
   studentLimitMb: number;
   teacherLimitMb: number;
   adminLimitMb: number;
+}
+
+export interface IUserEditRequest {
+  name: string;
+  studyCycleYearA: number | null;
+  studyCycleYearB: number | null;
+  courseId: number | null;
+  group: string | null;
 }

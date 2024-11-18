@@ -55,9 +55,10 @@ describe('DashboardPageComponent', () => {
         studyCycleYearB: 2023,
         lastPlayed: '2024-10-31',
         banned: false,
+        course: { id: 1, name: '' },
+        group: 'l1',
       };
 
-      // Mock the getMe method to return a valid user response
       authEndpointsService.getMe.and.returnValue(of(userResponse));
 
       const userStatsResponse: IUserStatsResponse = {
@@ -68,13 +69,10 @@ describe('DashboardPageComponent', () => {
         lastPlayed: '2023-11-01',
       };
 
-      // Mock the getUserStats method to return user stats
       statsEndpointsService.getUserStats.and.returnValue(of(userStatsResponse));
 
-      // Call ngOnInit to trigger the subscriptions
       component.ngOnInit();
 
-      // Expectations to ensure data is set correctly
       expect(component.aboutMeUserInfo).toEqual(userResponse);
       expect(statsEndpointsService.getUserStats).toHaveBeenCalledWith(
         userResponse.id
@@ -83,7 +81,6 @@ describe('DashboardPageComponent', () => {
     });
 
     it('should handle error from getMe', () => {
-      // Mock getMe to throw an error
       authEndpointsService.getMe.and.returnValue(throwError('error'));
 
       component.ngOnInit();
@@ -101,14 +98,15 @@ describe('DashboardPageComponent', () => {
         studyCycleYearB: 2023,
         lastPlayed: '2024-10-31',
         banned: false,
+        course: { id: 1, name: '' },
+        group: 'l1',
       };
 
       authEndpointsService.getMe.and.returnValue(of(userResponse));
       statsEndpointsService.getUserStats.and.returnValue(throwError('error'));
 
-      component.ngOnInit(); // This triggers the call to getUserStats
+      component.ngOnInit();
 
-      // The error from getUserStats should set userStatsInfo to null
       expect(component.userStatsInfo).toBeNull();
     });
   });

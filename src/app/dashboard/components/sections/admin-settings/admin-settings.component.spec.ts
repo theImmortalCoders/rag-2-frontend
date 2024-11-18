@@ -26,6 +26,8 @@ describe('AdminSettingsComponent', () => {
     studyCycleYearB: 2,
     banned: false,
     lastPlayed: '',
+    course: { id: 1, name: '' },
+    group: 'l1',
   };
 
   const mockUserStats: IUserStatsResponse = {

@@ -39,6 +39,8 @@ describe('UserInfoComponent', () => {
       studyCycleYearB: 3,
       banned: false,
       lastPlayed: '2024-11-01T11:55:09.574Z',
+      course: { id: 1, name: '' },
+      group: 'l1',
     };
 
     component.aboutMeUserInfo = user; // Ustawienie inputa

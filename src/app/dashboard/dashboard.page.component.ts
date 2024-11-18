@@ -20,6 +20,7 @@ import { AdminSettingsComponent } from './components/sections/admin-settings/adm
 import { RecordedGamesComponent } from './components/sections/recorded-games/recorded-games.component';
 import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
 import { TRole } from 'app/shared/models/role.enum';
+import { CoursesSettingsComponent } from './components/sections/courses-settings/courses-settings.component';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -31,6 +32,7 @@ import { TRole } from 'app/shared/models/role.enum';
     AdminSettingsComponent,
     RecordedGamesComponent,
     AllowedRolesDirective,
+    CoursesSettingsComponent,
   ],
   template: `<div
     class="flex flex-col space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
@@ -43,6 +45,7 @@ import { TRole } from 'app/shared/models/role.enum';
       (refreshDataEmitter)="isRefreshNeeded($event)" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
       <app-user-account-settings class="flex flex-col px-10 w-full sm:w-fit" />
+      <app-courses-settings class="flex flex-col px-10 w-full sm:w-fit" />
       <app-game-handling-options
         *appAllowedRoles="allowedRolesAdmin"
         class="flex flex-col px-10 w-full sm:w-fit" />
