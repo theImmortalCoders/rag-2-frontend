@@ -13,8 +13,10 @@ export class AiSocketService {
   private _sendingIntervalID: unknown | null = null;
   private isDataSendingActive = false;
   private _dataToSend: TExchangeData = {};
-  public isDataExchangeDesired = false;
+  private _previousData = '';
   private _notificationService = inject(NotificationService);
+
+  public isDataExchangeDesired = false;
 
   public connect(
     socketUrl: string,
@@ -91,6 +93,7 @@ export class AiSocketService {
   public closeSocket(): void {
     this.stopDataExchange();
     this.isSocketConnected = false;
+    this._previousData = '';
     if (this._socket) {
       this._socket.close();
     }
@@ -121,6 +124,7 @@ export class AiSocketService {
       }
       this.stopDataExchange();
       this.isSocketConnected = false;
+      this._previousData = '';
       onClose();
     });
   }
@@ -131,16 +135,19 @@ export class AiSocketService {
     playerId: number
   ): void {
     if (this._socket && this.isSocketConnected) {
-      this._socket.send(
-        JSON.stringify({
-          name: dataToSend['name'],
-          playerId: playerId,
-          state: dataToSend['state'],
-          players: dataToSend['players'],
-          expectedInput: expectedDataToReceive,
-        })
-      );
-      // console.log('Data sent', this._sendingIntervalID as number);
+      const data: string = JSON.stringify({
+        name: dataToSend['name'],
+        playerId: playerId,
+        state: dataToSend['state'],
+        players: dataToSend['players'],
+        expectedInput: expectedDataToReceive,
+      });
+
+      if (data != this._previousData) {
+        this._socket.send(data);
+      }
+
+      this._previousData = data;
     }
   }
 }
