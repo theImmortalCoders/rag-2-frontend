@@ -55,7 +55,10 @@ export class FlappyBirdComponent
   }
 
   public override restart(): void {
+    this.game.state.failCounter++;
+    const tempFailCounter = this.game.state.failCounter;
     this.game.state = new FlappyBirdState();
+    this.game.state.failCounter = tempFailCounter;
 
     this.game.state.isGameStarted = false;
     this.resetBirdAndObstacle();
