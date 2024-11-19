@@ -19,6 +19,16 @@ import { NotificationService } from 'app/shared/services/notification.service';
         Stop collecting data
       }
     </button>
+    <div class="flex flex-row justify-center gap-2 my-2">
+      <input
+        #shouldCollect
+        type="checkbox"
+        class="accent-mainOrange"
+        id="shouldCollect"
+        [checked]="shouldCollectToDb"
+        (change)="shouldCollectToDb = shouldCollect.checked" />
+      <label for="shouldCollect">Save values to database</label>
+    </div>
     @if (collectedDataArray.length > 0 && !isDataCollectingActive) {
       <button
         (click)="generateJSON()"
@@ -43,6 +53,7 @@ export class DataDownloadComponent {
   private _gameRecordEndpointsService = inject(GameRecordEndpointsService);
   private _notificationService = inject(NotificationService);
   public isDataCollectingActive = false;
+  public shouldCollectToDb = true;
 
   public handleCollectingData(): void {
     this.isDataCollectingActive = !this.isDataCollectingActive;
@@ -51,15 +62,8 @@ export class DataDownloadComponent {
     if (!this.isDataCollectingActive) {
       const gameRecordData: IRecordedGameRequest = {
         gameName: this.game.name,
-        values: this.collectedDataArray.map(data => {
-          const { timestamp, players, ...rest } = data;
-          return {
-            name: this.game.name,
-            state: rest,
-            players: players,
-            timestamp: timestamp,
-          } as TExchangeData;
-        }),
+        players: this.game.players,
+        values: this.mapToSaveableData(this.collectedDataArray),
         outputSpec: this.game.outputSpec,
       };
       this._gameRecordEndpointsService
@@ -67,7 +71,8 @@ export class DataDownloadComponent {
         .subscribe({
           next: () => {
             this._notificationService.addNotification(
-              'Game record data has been saved correctly'
+              'Game record data has been saved correctly',
+              5000
             );
           },
           error: (error: string) => {
@@ -78,7 +83,9 @@ export class DataDownloadComponent {
   }
 
   public generateJSON(): void {
-    this.downloadCsv(JSON.stringify(this.collectedDataArray));
+    this.downloadJson(
+      JSON.stringify(this.mapToSaveableData(this.collectedDataArray))
+    );
   }
 
   public deleteCollectedData(): void {
@@ -87,7 +94,21 @@ export class DataDownloadComponent {
 
   //
 
-  private downloadCsv(csv: string): void {
+  private mapToSaveableData(collectedData: TExchangeData[]): TExchangeData[] {
+    return this.shouldCollectToDb
+      ? collectedData.map(data => {
+          const { timestamp, players, ...rest } = data;
+          return {
+            name: this.game.name,
+            state: rest,
+            players: players,
+            timestamp: timestamp,
+          } as TExchangeData;
+        })
+      : [];
+  }
+
+  private downloadJson(csv: string): void {
     const blob = new Blob([csv], { type: 'text/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
