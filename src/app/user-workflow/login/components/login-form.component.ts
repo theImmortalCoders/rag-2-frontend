@@ -58,7 +58,7 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
           id="rememberMe"
           type="checkbox"
           formControlName="rememberMe"
-          class="custom-input" />
+          class="custom-input accent-mainOrange" />
       </div>
       <button
         type="submit"
