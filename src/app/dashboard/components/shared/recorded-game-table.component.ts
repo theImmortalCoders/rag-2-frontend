@@ -34,16 +34,22 @@ import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
           <span class="flex justify-center w-3/12">{{
             recordedGame.ended | date: 'dd/MM/yyyy, HH:mm:ss'
           }}</span>
-          <span class="flex justify-center w-1/12 text-nowrap"
-            >{{ recordedGame.sizeMb.toPrecision(2) }} MB</span
-          >
-          <button
-            class="flex group justify-center w-1/12"
-            (click)="downloadEmitter.emit(recordedGame.id)">
-            <i
-              data-feather="download"
-              class="text-mainCreme group-hover:text-green-500 size-4 xs:size-5"></i>
-          </button>
+          <span class="flex justify-center w-1/12 text-nowrap">{{
+            recordedGame.isEmptyRecord
+              ? 'limit exceeded'
+              : recordedGame.sizeMb.toPrecision(2) + ' MB'
+          }}</span>
+          @if (recordedGame.isEmptyRecord) {
+            <span class="flex group justify-center w-1/12"> </span>
+          } @else {
+            <button
+              class="flex group justify-center w-1/12"
+              (click)="downloadEmitter.emit(recordedGame.id)">
+              <i
+                data-feather="download"
+                class="text-mainCreme group-hover:text-green-500 size-4 xs:size-5"></i>
+            </button>
+          }
           <button
             class="flex group justify-center w-1/12"
             (click)="deleteEmitter.emit(recordedGame.id)">
