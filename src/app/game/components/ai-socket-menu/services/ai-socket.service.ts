@@ -93,6 +93,7 @@ export class AiSocketService {
   public closeSocket(): void {
     this.stopDataExchange();
     this.isSocketConnected = false;
+    this._previousData = '';
     if (this._socket) {
       this._socket.close();
     }

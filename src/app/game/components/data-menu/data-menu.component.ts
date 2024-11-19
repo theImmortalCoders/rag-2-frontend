@@ -119,6 +119,8 @@ export class DataMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   private _lastSavedTime = 0;
   private _pauseSubscription = new Subscription();
   private isPaused = false;
+  private _previousData = '';
+
   public dataPossibleToPersist: TExchangeData = {};
   public dataToPersist: TExchangeData = {};
   public collectedDataArray: TExchangeData[] = [];
@@ -217,10 +219,17 @@ export class DataMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         .toISOString()
         .slice(0, -1);
 
-      newData['timestamp'] = localISOTime;
       newData['players'] = JSON.parse(JSON.stringify(this.game.players));
+
+      if (JSON.stringify(newData) != this._previousData) {
+        this.collectedDataArray.push(this.dataToPersist);
+      }
+
+      this._previousData = JSON.stringify(newData);
+
+      newData['timestamp'] = localISOTime;
       this.dataToPersist = newData;
-      this.collectedDataArray.push(this.dataToPersist);
+
       this._lastSavedTime = Date.now();
     }
   }
