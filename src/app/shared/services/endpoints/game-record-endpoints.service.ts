@@ -21,11 +21,13 @@ export class GameRecordEndpointsService {
   private _httpClient = inject(HttpClient);
 
   public getAllRecordedGames(
-    gameId: number
+    gameId: number,
+    userId: number
   ): Observable<IRecordedGameResponse[]> {
     return this._httpClient
       .get<IRecordedGameResponse[]>(
-        environment.backendApiUrl + `/api/GameRecord?gameId=${gameId}`,
+        environment.backendApiUrl +
+          `/api/GameRecord?gameId=${gameId}&userId=${userId}`,
         {
           headers: getAuthHeaders(),
           responseType: 'json',

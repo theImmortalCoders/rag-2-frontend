@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { IGameResponse } from 'app/shared/models/game.models';
 import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TRole } from 'app/shared/models/role.enum';
 
 describe('RecordedGamesComponent', () => {
   let component: RecordedGamesComponent;
@@ -66,6 +67,18 @@ describe('RecordedGamesComponent', () => {
         outputSpec: '',
         players: [],
         sizeMb: 2,
+        user: {
+          id: 1,
+          banned: true,
+          course: { id: 1, name: 'ee' },
+          email: 'ttt',
+          group: 'l1',
+          lastPlayed: '',
+          name: '',
+          role: TRole.Student,
+          studyCycleYearA: 2022,
+          studyCycleYearB: 2023,
+        },
       },
     ];
     mockGameEndpointsService.getGames.and.returnValue(of(mockGames));

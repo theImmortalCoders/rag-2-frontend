@@ -4,25 +4,16 @@ import { ModalComponent } from '../../shared/modal.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
-import {
-  IUserResponse,
-  IUserStatsResponse,
-} from 'app/shared/models/user.models';
+import { IUserResponse } from 'app/shared/models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
 import { CommonModule } from '@angular/common';
-import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
-import { SelectedUserInfoComponent } from './selected-user-info.component';
 import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-settings',
   standalone: true,
-  imports: [
-    ModalComponent,
-    CommonModule,
-    SelectedUserInfoComponent,
-    AllowedRolesDirective,
-  ],
+  imports: [ModalComponent, CommonModule, AllowedRolesDirective, RouterLink],
   template: `
     <h1
       class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
@@ -124,14 +115,13 @@ import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive
               </select>
             </div>
           } @else if (
-            modalVisibility === 'getUserDetails' &&
-            selectedUserData !== null &&
-            selectedUserStats !== null
+            modalVisibility === 'getUserDetails' && selectedUserData !== null
           ) {
-            <app-selected-user-info
-              [selectedUserData]="selectedUserData"
-              [selectedUserStats]="selectedUserStats"
-              class="flex flex-col pt-2 xs:pt-4 items-start text-sm 2xs:text-base sm:text-lg" />
+            <a
+              [routerLink]="['/dashboard/user', selectedUserData.id]"
+              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-1 xs:mt-2 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+              Check user details
+            </a>
           }
           @if (modalButtonText !== null) {
             <button
@@ -157,7 +147,6 @@ import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive
 })
 export class AdminSettingsComponent implements OnDestroy {
   private _adminEndpointsService = inject(AdministrationEndpointsService);
-  private _statsEndpointsService = inject(StatsEndpointsService);
   private _notificationService = inject(NotificationService);
 
   private _getUsersSubscription = new Subscription();
@@ -167,7 +156,6 @@ export class AdminSettingsComponent implements OnDestroy {
 
   public usersList: IUserResponse[] | null = null;
   public selectedUserData: IUserResponse | null = null;
-  public selectedUserStats: IUserStatsResponse | null = null;
   public isBanned = false;
   public newUserRole: TRole = TRole.Student;
   public errorMessage: string | null = null;
@@ -182,7 +170,6 @@ export class AdminSettingsComponent implements OnDestroy {
   public modalButtonText: string | null = '';
   public modalButtonFunction!: () => void;
 
-  // eslint-disable-next-line complexity
   public setSelectedUser(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const selectedId = parseInt(target?.value, 10);
@@ -195,24 +182,6 @@ export class AdminSettingsComponent implements OnDestroy {
       });
     } else {
       this.selectedUserData = null;
-    }
-    if (
-      this.modalVisibility === 'getUserDetails' &&
-      this.selectedUserData &&
-      selectedId !== 0
-    ) {
-      this._getUserStatsSubscription = this._statsEndpointsService
-        .getUserStats(this.selectedUserData.id)
-        .subscribe({
-          next: (response: IUserStatsResponse) => {
-            this.selectedUserStats = response;
-          },
-          error: () => {
-            this.selectedUserStats = null;
-          },
-        });
-    } else {
-      this.selectedUserStats = null;
     }
     if (this.selectedUserData === null) {
       this.isBanned = false;

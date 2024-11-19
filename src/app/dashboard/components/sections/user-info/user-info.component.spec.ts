@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserInfoComponent } from './user-info.component';
-import { ProgressCircleBarComponent } from './progress-circle-bar.component';
+import { ProgressCircleBarComponent } from '../../shared/progress-circle-bar.component';
 import {
   IUserResponse,
   IUserStatsResponse,

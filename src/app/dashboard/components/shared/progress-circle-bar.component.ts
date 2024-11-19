@@ -16,7 +16,8 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [],
   template: `
-    <div class="relative size-48 sm:size-64 flex items-center justify-center">
+    <div
+      class="relative size-48 sm:size-64 flex items-center justify-center font-mono">
       <svg class="w-full h-full" viewBox="0 0 64 64">
         <path
           class="text-lightGray"
@@ -45,7 +46,9 @@ import { Subscription } from 'rxjs';
           }}
           MB</span
         >
-        <span class="text-center text-wrap">used of your</span>
+        <span class="text-center text-wrap"
+          >used of {{ isForCurrentUser ? 'your' : 'user’s' }}</span
+        >
         <span class="text-center text-wrap">disk space</span>
       </div>
     </div>
@@ -56,6 +59,7 @@ export class ProgressCircleBarComponent
 {
   @Input({ required: true }) public usedSpace!: number | undefined;
   @Input({ required: true }) public currentUserRole!: TRole | undefined;
+  @Input({ required: true }) public isForCurrentUser!: boolean;
 
   private _adminEndpointsService = inject(AdministrationEndpointsService);
 

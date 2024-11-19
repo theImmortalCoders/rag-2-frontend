@@ -14,22 +14,22 @@ describe('SelectedUserInfoComponent', () => {
   const mockUserData: IUserResponse = {
     name: 'John Doe',
     email: 'john.doe@example.com',
-    role: 'Student' as TRole,
+    role: TRole.Student,
     studyCycleYearA: 1,
     studyCycleYearB: 2,
     banned: false,
     id: 1,
-    lastPlayed: '01/01/2023, 12:00',
-    course: { id: 1, name: '' },
-    group: 'l1',
+    lastPlayed: '2023-11-01T15:30:00.000Z',
+    course: { id: 1, name: 'Computer Science' },
+    group: 'L1',
   };
 
   const mockUserStats: IUserStatsResponse = {
     games: 5,
     plays: 20,
     totalStorageMb: 512,
-    firstPlayed: '01/11/2023, 15:30',
-    lastPlayed: '01/11/2023, 15:30',
+    firstPlayed: '2023-11-01T15:30:00.000Z',
+    lastPlayed: '2023-11-01T15:30:00.000Z',
   };
 
   beforeEach(async () => {
@@ -52,14 +52,14 @@ describe('SelectedUserInfoComponent', () => {
 
   it('should display user name', () => {
     const nameElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(1) span')
+      By.css('h3:nth-of-type(1) .text-mainCreme')
     );
     expect(nameElement.nativeElement.textContent).toContain(mockUserData.name);
   });
 
   it('should display user email', () => {
     const emailElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(2) span')
+      By.css('h3:nth-of-type(2) .text-mainCreme')
     );
     expect(emailElement.nativeElement.textContent).toContain(
       mockUserData.email
@@ -68,51 +68,96 @@ describe('SelectedUserInfoComponent', () => {
 
   it('should display user role', () => {
     const roleElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(3) span')
+      By.css('h3:nth-of-type(3) .text-mainCreme')
     );
     expect(roleElement.nativeElement.textContent).toContain(mockUserData.role);
   });
 
   it('should display study cycle years', () => {
     const studyCycleElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(4) span')
+      By.css('h3:nth-of-type(4) .text-mainCreme')
     );
     expect(studyCycleElement.nativeElement.textContent).toContain(
       `${mockUserData.studyCycleYearA}/${mockUserData.studyCycleYearB}`
     );
   });
 
+  it('should display group', () => {
+    const groupElement = fixture.debugElement.query(
+      By.css('h3:nth-of-type(6) .text-mainCreme')
+    );
+    expect(groupElement.nativeElement.textContent).toContain(
+      mockUserData.group
+    );
+  });
+
   it('should display ban status', () => {
     const banStatusElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(5) span')
+      By.css('h3:nth-of-type(7) .text-mainCreme')
     );
     expect(banStatusElement.nativeElement.textContent).toContain('NOT BANNED');
   });
 
   it('should display types of games played', () => {
     const gamesPlayedElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(6) span')
+      By.css('h3:nth-of-type(8) .text-mainCreme')
     );
     expect(gamesPlayedElement.nativeElement.textContent).toContain(
-      mockUserStats.games
+      mockUserStats.games.toString()
     );
   });
 
   it('should display total plays in all games', () => {
     const totalPlaysElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(7) span')
+      By.css('h3:nth-of-type(9) .text-mainCreme')
     );
     expect(totalPlaysElement.nativeElement.textContent).toContain(
-      mockUserStats.plays
+      mockUserStats.plays.toString()
     );
   });
 
   it('should display total disk space used', () => {
     const totalDiskSpaceElement = fixture.debugElement.query(
-      By.css('h3:nth-of-type(8) span')
+      By.css('h3:nth-of-type(10) .text-mainCreme')
     );
     expect(totalDiskSpaceElement.nativeElement.textContent).toContain(
-      mockUserStats.totalStorageMb.toPrecision(2) + 'MB'
+      `${mockUserStats.totalStorageMb.toPrecision(2)} MB`
     );
+  });
+
+  it('should display the first game date', () => {
+    const firstPlayedElement = fixture.debugElement.query(
+      By.css('h3:nth-of-type(11) .text-mainCreme')
+    );
+    const expectedDate = new Date(mockUserStats.firstPlayed).toLocaleString(
+      'en-GB',
+      {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }
+    );
+    expect(firstPlayedElement.nativeElement.textContent).toContain(
+      expectedDate
+    );
+  });
+
+  it('should display the last game date', () => {
+    const lastPlayedElement = fixture.debugElement.query(
+      By.css('h3:nth-of-type(12) .text-mainCreme')
+    );
+    const expectedDate = new Date(mockUserStats.lastPlayed).toLocaleString(
+      'en-GB',
+      {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }
+    );
+    expect(lastPlayedElement.nativeElement.textContent).toContain(expectedDate);
   });
 });
