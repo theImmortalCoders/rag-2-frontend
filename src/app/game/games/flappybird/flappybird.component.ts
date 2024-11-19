@@ -24,6 +24,9 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
             : ''
         }}
       </b>
+      <span class="text-pink-500 font-black"
+        >fail: {{ game.state.failCounter }}</span
+      >
     </div>
     <app-canvas class="bg-zinc-300" #gameCanvas></app-canvas>
     <b>FPS: {{ fps }}</b> `,
@@ -55,7 +58,10 @@ export class FlappyBirdComponent
   }
 
   public override restart(): void {
+    this.game.state.failCounter++;
+    const tempFailCounter = this.game.state.failCounter;
     this.game.state = new FlappyBirdState();
+    this.game.state.failCounter = tempFailCounter;
 
     this.resetBirdAndObstacle();
     this.resetScoreAndDifficulty();
