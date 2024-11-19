@@ -14,5 +14,6 @@ export interface IRecordedGameResponse {
 export interface IRecordedGameRequest {
   gameName: string;
   outputSpec: string;
+  players: IPlayer[];
   values: TExchangeData[];
 }
