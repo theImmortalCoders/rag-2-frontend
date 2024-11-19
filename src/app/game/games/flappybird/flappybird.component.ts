@@ -55,7 +55,6 @@ export class FlappyBirdComponent
   }
 
   public override restart(): void {
-    this.game.state.failCounter++;
     const tempFailCounter = this.game.state.failCounter;
     this.game.state = new FlappyBirdState();
     this.game.state.failCounter = tempFailCounter;
@@ -121,6 +120,7 @@ export class FlappyBirdComponent
           birdTop < obstacle.centerGapY - this._obstacleGapHeight / 2 ||
           birdBottom > obstacle.centerGapY + this._obstacleGapHeight / 2
         ) {
+          this.game.state.failCounter++;
           this.restart();
         }
         break;
@@ -128,6 +128,7 @@ export class FlappyBirdComponent
     }
 
     if (birdTop < 0 || birdBottom > this._canvas.height) {
+      this.game.state.failCounter++;
       this.restart();
     }
   }
@@ -145,10 +146,12 @@ export class FlappyBirdComponent
     this.game.state.birdY += this.game.state.birdSpeedY;
 
     if (this.game.state.birdY > this._canvas.height - this._birdHeight) {
+      this.game.state.failCounter++;
       this.restart();
     }
 
     if (this.game.state.birdY < 0) {
+      this.game.state.failCounter++;
       this.restart();
     }
   }
