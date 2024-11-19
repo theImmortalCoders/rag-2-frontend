@@ -139,11 +139,9 @@ export class UserDetailsComponent
         },
       });
   }
-
   public ngAfterViewChecked(): void {
     feather.replace(); //dodane, żeby feather-icons na nowo dodało się do DOM w pętli
   }
-
   public getRecordedGames(): void {
     this.recordedGamesData = [];
     for (const game of this.avalaibleGamesList) {
@@ -193,7 +191,6 @@ export class UserDetailsComponent
         },
       });
   }
-
   public ngOnDestroy(): void {
     this._getGamesSubscription.unsubscribe();
     this._getRecordedGamesSubscription.unsubscribe();
