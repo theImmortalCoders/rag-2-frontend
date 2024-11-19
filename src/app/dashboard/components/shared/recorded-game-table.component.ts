@@ -7,7 +7,8 @@ import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="flex flex-col min-w-[44rem] w-full justify-around space-y-0">
+    <div
+      class="flex flex-col min-w-[44rem] w-full justify-around space-y-0 font-mono">
       <div
         class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange text-sm xs:text-base font-bold px-4 py-2">
         <span class="flex justify-center w-[5%]">No.</span>

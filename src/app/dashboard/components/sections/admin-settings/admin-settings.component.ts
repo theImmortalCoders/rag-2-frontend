@@ -120,7 +120,7 @@ import { RouterLink } from '@angular/router';
             <a
               [routerLink]="['/dashboard/user', selectedUserData.id]"
               class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-1 xs:mt-2 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-              Check user game records
+              Check user details
             </a>
           }
           @if (modalButtonText !== null) {
