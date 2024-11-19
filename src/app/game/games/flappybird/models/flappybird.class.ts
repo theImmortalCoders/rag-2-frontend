@@ -48,7 +48,7 @@ export class FlappyBird extends Game {
       0,
       true,
       'Player 1',
-      { jump: 0 },
+      { jump: 0, start: 0 },
       {
         ' ': {
           variableName: 'jump',
@@ -56,7 +56,7 @@ export class FlappyBird extends Game {
           releasedValue: 0,
         },
       },
-      '<jump>:  value of {0, 1}, 0: not jump, 1: jump',
+      '<jump>, <start>:  value of {0, 1}, 0: not jump, 1: jump',
       { jump: '[SPACE]', start: '[SPACE]' }
     ),
   ];
