@@ -9,7 +9,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
