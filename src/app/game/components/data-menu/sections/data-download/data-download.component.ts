@@ -10,15 +10,6 @@ import { NotificationService } from 'app/shared/services/notification.service';
   selector: 'app-data-download',
   standalone: true,
   template: `<div class="flex flex-col">
-    <button
-      class="font-bold mt-2 border-b-[1px] border-mainOrange w-full text-center"
-      (click)="handleCollectingData()">
-      @if (!isDataCollectingActive) {
-        Start collecting data
-      } @else {
-        Stop collecting data
-      }
-    </button>
     <div class="flex flex-row justify-center gap-2 my-2">
       <input
         #shouldCollect
@@ -29,6 +20,15 @@ import { NotificationService } from 'app/shared/services/notification.service';
         (change)="shouldCollectToDb = shouldCollect.checked" />
       <label for="shouldCollect">Save values to database</label>
     </div>
+    <button
+      class="font-bold mt-2 border-b-[1px] border-mainOrange w-full text-center"
+      (click)="handleCollectingData()">
+      @if (!isDataCollectingActive) {
+        Start collecting data
+      } @else {
+        Stop collecting data
+      }
+    </button>
     @if (collectedDataArray.length > 0 && !isDataCollectingActive) {
       <button
         (click)="generateJSON()"
@@ -66,6 +66,7 @@ export class DataDownloadComponent {
         values: this.mapToSaveableData(this.collectedDataArray),
         outputSpec: this.game.outputSpec,
       };
+      console.log(gameRecordData);
       this._gameRecordEndpointsService
         .addGameRecording(gameRecordData)
         .subscribe({
@@ -76,10 +77,21 @@ export class DataDownloadComponent {
             );
           },
           error: (error: string) => {
-            this._notificationService.addNotification(error);
+            this._notificationService.addNotification(error, 5000);
+            if (this.shouldCollectToDb) {
+              this.spaceExceeded(gameRecordData);
+            }
           },
         });
     }
+  }
+
+  private spaceExceeded(data: IRecordedGameRequest): void {
+    const gameRecordData = data;
+    gameRecordData.values = [];
+    this._gameRecordEndpointsService
+      .addGameRecording(gameRecordData)
+      .subscribe({});
   }
 
   public generateJSON(): void {
@@ -96,7 +108,7 @@ export class DataDownloadComponent {
 
   private mapToSaveableData(collectedData: TExchangeData[]): TExchangeData[] {
     return this.shouldCollectToDb
-      ? collectedData.map(data => {
+      ? collectedData.slice(1).map(data => {
           const { timestamp, players, ...rest } = data;
           return {
             name: this.game.name,

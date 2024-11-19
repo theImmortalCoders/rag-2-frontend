@@ -11,6 +11,7 @@ export interface IRecordedGameResponse {
   outputSpec: string;
   endState: TExchangeData;
   sizeMb: number;
+  isEmptyRecord: boolean;
 }
 
 export interface IRecordedGameRequest {
