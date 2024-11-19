@@ -44,6 +44,7 @@ describe('RecordedGameTableComponent', () => {
           studyCycleYearA: 2022,
           studyCycleYearB: 2023,
         },
+        isEmptyRecord: false,
       },
     ];
 
@@ -86,6 +87,7 @@ describe('RecordedGameTableComponent', () => {
           studyCycleYearA: 2022,
           studyCycleYearB: 2023,
         },
+        isEmptyRecord: false,
       },
       {
         id: 2,
@@ -108,6 +110,7 @@ describe('RecordedGameTableComponent', () => {
           studyCycleYearA: 2022,
           studyCycleYearB: 2023,
         },
+        isEmptyRecord: false,
       },
     ];
 

@@ -79,6 +79,7 @@ describe('RecordedGamesComponent', () => {
           studyCycleYearA: 2022,
           studyCycleYearB: 2023,
         },
+        isEmptyRecord: false,
       },
     ];
     mockGameEndpointsService.getGames.and.returnValue(of(mockGames));
