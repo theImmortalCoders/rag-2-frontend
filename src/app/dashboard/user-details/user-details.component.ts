@@ -34,7 +34,7 @@ import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
       </h1>
       <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
       <app-selected-user-info
-        class="mb-4 ml-4 text-xl font-mono"
+        class="mb-4 pl-4 xs:pl-8 text-xl font-mono"
         [selectedUserData]="userInfo"
         [selectedUserStats]="userStats" />
       <h1
