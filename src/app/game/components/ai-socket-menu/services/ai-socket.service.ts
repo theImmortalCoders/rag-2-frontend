@@ -124,6 +124,7 @@ export class AiSocketService {
       }
       this.stopDataExchange();
       this.isSocketConnected = false;
+      this._previousData = '';
       onClose();
     });
   }
