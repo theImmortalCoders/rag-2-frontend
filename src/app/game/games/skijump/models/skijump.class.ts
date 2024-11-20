@@ -12,6 +12,7 @@ export class SkiJumpState implements TGameState {
   public isLanded = false;
   public isCrashed = false;
   public jumperFlightVelocityX = 0;
+  public jumperHeightAboveGround = 0;
   public jumperFlightVelocityY = 0;
   public stylePoints = 0;
   public windPoints = 0;
@@ -35,6 +36,7 @@ export class SkiJump extends Game {
       isCrashed: boolean
       jumperFlightVelocityX: float, <0, inf>
       jumperFlightVelocityY: float, <-inf, inf>
+      jumperHeightAboveGround: float, <0, inf>
       stylePoints: int, <0, 20>
       windPoints: float, <-inf, inf>
       totalPoints: float, <0, inf>

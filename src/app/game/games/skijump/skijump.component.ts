@@ -222,6 +222,7 @@ export class SkiJumpGameWindowComponent
       this.game.state.stylePoints = 0;
       this.game.state.windPoints = 0;
       this.game.state.totalPoints = 0;
+      this.game.state.jumperHeightAboveGround = 0;
     });
   }
 
@@ -250,6 +251,10 @@ export class SkiJumpGameWindowComponent
         return;
       }
     }
+
+    this.game.state.jumperHeightAboveGround =
+      this.calcHillParabola(this.game.state.jumperX) - this.game.state.jumperY;
+
     if (this.game.state.jumperX < this._towerEndX) {
       this.ride();
     } else if (
@@ -257,9 +262,7 @@ export class SkiJumpGameWindowComponent
       this._canvas.height
     ) {
       this.endJump();
-    } else if (
-      this.game.state.jumperY < this.calcHillParabola(this.game.state.jumperX)
-    ) {
+    } else if (this.game.state.jumperHeightAboveGround > 0) {
       this.fly();
     } else {
       this.land();
@@ -382,7 +385,10 @@ export class SkiJumpGameWindowComponent
       this.game.state.stylePoints +
       this.game.state.windPoints;
 
-    if (this.game.state.distance > this._localRecord) {
+    if (
+      this.game.state.distance > this._localRecord &&
+      !this.game.state.isCrashed
+    ) {
       this._localRecord = this.game.state.distance;
     }
 
