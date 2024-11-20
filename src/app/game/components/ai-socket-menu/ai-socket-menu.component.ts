@@ -21,7 +21,7 @@ import { SideMenuHelperComponent } from './sections/side-menu-helper/side-menu-h
   template: `
     <button
       (click)="toggleAISocketMenu()"
-      class="side-menu-left-button top-60 w-12 h-64 {{
+      class="side-menu-left-button top-60 w-12 h-96 {{
         isAISocketMenuVisible ? 'left-72' : 'left-0'
       }}">
       <span
@@ -30,7 +30,7 @@ import { SideMenuHelperComponent } from './sections/side-menu-helper/side-menu-h
       >
     </button>
     <div
-      class="w-72 h-64 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-60 {{
+      class="w-72 h-96 overflow-y-auto p-4 bg-lightGray font-mono text-sm side-menu-container top-60 {{
         isAISocketMenuVisible ? 'left-0' : '-left-72'
       }}">
       <app-side-menu-helper

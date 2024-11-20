@@ -14,12 +14,14 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { Player } from '@gameModels/player.class';
 import { SocketDomainInputComponent } from '../socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-connected-menu.component';
-import { Observable, Subscription } from 'rxjs';
+import { interval, Observable, Subscription, switchMap } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
 import { SocketListService } from '../../services/socket-list.service';
 import { ModelSelectionComponent } from '../model-selection/model-selection.component';
 import { Game } from '@gameModels/game.class';
+import { PingService } from 'app/shared/services/ping.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
@@ -48,7 +50,7 @@ import { Game } from '@gameModels/game.class';
         (recentPhrasesEmitter)="recentPhrases = $event" />
       <span class="text-mainOrange font-bold">STATUS:</span>
       <span
-        class="w-full text-start mb-2 {{
+        class="w-full text-start {{
           aiSocketService.getIsSocketConnected()
             ? 'text-green-500'
             : 'text-red-500'
@@ -58,6 +60,9 @@ import { Game } from '@gameModels/game.class';
         }}</span
       >
       @if (aiSocketService.getIsSocketConnected()) {
+        <span class="text-mainCreme font-bold my-2"
+          >Ping: <b>{{ ping }} ms</b></span
+        >
         <app-socket-connected-menu
           [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"
           [vSendingInterval]="vSendingInterval"
@@ -104,6 +109,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   private _urlParamService = inject(UrlParamService);
   private _socketListService = inject(SocketListService);
 
+  private _pingSubscription = new Subscription();
   private _pauseSubscription = new Subscription();
   private _restartSubscription = new Subscription();
   private _pageVisibilitySubscription = new Subscription();
@@ -117,6 +123,9 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public vSendingInterval = { value: 100 };
   public isPaused = false;
   public canNotConnect = false;
+
+  public ping = 0;
+  private _pingService = inject(PingService);
 
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
@@ -156,6 +165,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
     this.aiSocketService.closeSocket();
     this._pauseSubscription.unsubscribe();
     this._restartSubscription.unsubscribe();
+    this._pingSubscription.unsubscribe();
     this._pageVisibilitySubscription.unsubscribe();
     this._socketListService.clearList();
     this.canNotConnect = false;
@@ -173,6 +183,17 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this.canNotConnect = false;
         this.isConnected = true;
         this.connectedEmitter.emit(true);
+        this._pingSubscription = interval(2000)
+          .pipe(
+            switchMap(() =>
+              this._pingService.measurePing(
+                environment.aiApiUrl + '/ws/' + this.gameName + '/routes/'
+              )
+            )
+          )
+          .subscribe(ping => {
+            this.ping = ping;
+          });
       },
       (event: MessageEvent<string>) => {
         this.emitSocketInput(JSON.parse(event.data));
@@ -181,6 +202,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
         this._socketListService.removeFromList(this.socketUrl);
         this.canNotConnect = false;
         this.isConnected = false;
+        this._pingSubscription.unsubscribe();
         this.connectedEmitter.emit(false);
       }
     );
