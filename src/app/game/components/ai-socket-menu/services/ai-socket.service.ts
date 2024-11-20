@@ -17,6 +17,8 @@ export class AiSocketService {
   private _notificationService = inject(NotificationService);
 
   public isDataExchangeDesired = false;
+  private _ping = 0;
+  private _lastPingSentTime = 0;
 
   public connect(
     socketUrl: string,
@@ -71,6 +73,7 @@ export class AiSocketService {
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
       this.sendDataToSocket(this._dataToSend, expectedDataToReceive, playerId);
+      this.sendPing();
     }, sendingInterval);
   };
 
@@ -99,7 +102,18 @@ export class AiSocketService {
     }
   }
 
+  public getSocketPing(): number {
+    return this._ping;
+  }
+
   //
+
+  private sendPing(): void {
+    if (this._socket && this._socket.readyState === WebSocket.OPEN) {
+      this._lastPingSentTime = Date.now();
+      this._socket.send(JSON.stringify({ type: 'ping' }));
+    }
+  }
 
   private defineSocket(
     socketUrl: string,
@@ -114,6 +128,7 @@ export class AiSocketService {
     });
     this._socket.addEventListener('message', event => {
       onMessage(event);
+      this._ping = Date.now() - this._lastPingSentTime;
     });
     this._socket.addEventListener('close', e => {
       if (e.code === 401) {
@@ -124,6 +139,8 @@ export class AiSocketService {
       this.stopDataExchange();
       this.isSocketConnected = false;
       this._previousData = '';
+      this._ping = 0;
+      this._lastPingSentTime = 0;
       onClose();
     });
   }
