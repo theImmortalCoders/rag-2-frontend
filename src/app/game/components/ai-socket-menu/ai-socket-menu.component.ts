@@ -36,7 +36,7 @@ import { SideMenuHelperComponent } from './sections/side-menu-helper/side-menu-h
       <app-side-menu-helper
         [menuType]="'Data menu'"
         [descriptionPart1]="
-          'In this menu, you can connect selected player to be controlled by selected model or algorithm. You can use previously prepared models or connect yours by entering the correct URL for the local WebSocket server (URL must start with http://).'
+          'In this menu, you can connect selected player to be controlled by selected model or algorithm. You can use previously prepared models or connect yours by entering the correct URL for the local WebSocket server (page URL must start with http://).'
         "
         [descriptionPart2]="
           'After successful connection, you must set the data exchange interval and then start the exchange. From now, the player is controlled by the choosen model.'
