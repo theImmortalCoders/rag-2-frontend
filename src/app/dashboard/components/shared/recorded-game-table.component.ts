@@ -36,7 +36,7 @@ import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
           }}</span>
           <span class="flex justify-center w-1/12 text-nowrap">{{
             recordedGame.isEmptyRecord
-              ? '0.0 MB'
+              ? '-'
               : recordedGame.sizeMb.toPrecision(2) + ' MB'
           }}</span>
           @if (recordedGame.isEmptyRecord) {
