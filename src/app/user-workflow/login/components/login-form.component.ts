@@ -52,6 +52,14 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
           placeholder="Type your password"
           class="custom-input" />
       </div>
+      <div class="flex flex-wrap items-center flex-row space-x-4">
+        <label for="rememberMe">Remember me</label>
+        <input
+          id="rememberMe"
+          type="checkbox"
+          formControlName="rememberMe"
+          class="custom-input accent-mainOrange" />
+      </div>
       <button
         type="submit"
         [disabled]="loginForm.invalid"
@@ -105,6 +113,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   public loginForm = this._formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
+    rememberMe: [false],
   });
 
   public ngOnInit(): void {
@@ -133,6 +142,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
       const userLoginRequest: IUserLoginRequest = {
         email: formValues.email,
         password: formValues.password,
+        rememberMe: formValues.rememberMe,
       };
       this._loginSubscription = this._authEndpointsService
         .login(userLoginRequest)

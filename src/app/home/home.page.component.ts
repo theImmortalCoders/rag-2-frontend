@@ -33,17 +33,24 @@ import { ShortGameStatsComponent } from './components/short-game-stats.component
             >Authors:</span
           >
           <div
-            class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full gap-x-6 xs:gap-x-36 md:gap-x-3 lg:gap-x-8">
+            class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full gap-x-8 xs:gap-x-40 md:gap-x-5 lg:gap-x-12">
             @for (author of authors; track author.name) {
               <button
                 (click)="chooseAuthor($index, author.githubName)"
-                target="_blank"
                 class="{{
                   $index === currentChoosenAuthor.index
                     ? 'scale-125 opacity-100 font-bold'
                     : 'opacity-85'
-                }} bg-homeImageUser text-mainOrange text-wrap lg:text-nowrap ease-in-out transition-all duration-200 size-[90px] xs:size-24 lg:size-28 xl:size-32 bg-center bg-cover rounded-full pt-28 xl:pt-32 flex justify-center text-center text-sm sm:text-base">
-                {{ author.name }}
+                }} {{
+                  $index === 0
+                    ? 'bg-homeImageUser0'
+                    : $index === 1
+                      ? 'bg-homeImageUser1'
+                      : 'bg-homeImageUser2'
+                }} border-2 border-mainOrange text-mainOrange text-wrap lg:text-nowrap ease-in-out transition-all duration-200 size-20 xs:size-24 lg:size-28 xl:size-28 bg-center bg-cover rounded-full pt-20 xs:pt-24 lg:pt-28 mt-4 flex justify-center text-center text-sm sm:text-base">
+                <span class="pt-2">
+                  {{ author.name }}
+                </span>
               </button>
             }
           </div>

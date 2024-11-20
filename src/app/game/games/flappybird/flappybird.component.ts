@@ -3,7 +3,6 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from 'app/game/components/canvas/canvas.component';
 import { BaseGameWindowComponent } from '../base-game.component';
 import { FlappyBird, FlappyBirdState } from './models/flappybird.class';
-import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 
 @Component({
   selector: 'app-flappybird',
@@ -68,8 +67,9 @@ export class FlappyBirdComponent
     super.update();
 
     if (
-      !this.game.state.isGameStarted &&
-      this.game.players[0].inputData['jump'] === 1
+      (!this.game.state.isGameStarted &&
+        this.game.players[0].inputData['jump'] === 1) ||
+      this.game.players[0].inputData['start'] === 1
     ) {
       this.game.state.isGameStarted = true;
     }

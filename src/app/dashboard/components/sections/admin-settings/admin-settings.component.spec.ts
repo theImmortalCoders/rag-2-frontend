@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminSettingsComponent } from './admin-settings.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
-import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { of, throwError } from 'rxjs';
-import {
-  IUserResponse,
-  IUserStatsResponse,
-} from 'app/shared/models/user.models';
+import { IUserResponse } from 'app/shared/models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -15,7 +11,6 @@ describe('AdminSettingsComponent', () => {
   let component: AdminSettingsComponent;
   let fixture: ComponentFixture<AdminSettingsComponent>;
   let adminServiceSpy: jasmine.SpyObj<AdministrationEndpointsService>;
-  let statsServiceSpy: jasmine.SpyObj<StatsEndpointsService>;
 
   const mockUser: IUserResponse = {
     id: 1,
@@ -26,14 +21,8 @@ describe('AdminSettingsComponent', () => {
     studyCycleYearB: 2,
     banned: false,
     lastPlayed: '',
-  };
-
-  const mockUserStats: IUserStatsResponse = {
-    games: 5,
-    plays: 20,
-    totalStorageMb: 512,
-    firstPlayed: '',
-    lastPlayed: '',
+    course: { id: 1, name: '' },
+    group: 'l1',
   };
 
   beforeEach(async () => {
@@ -41,9 +30,6 @@ describe('AdminSettingsComponent', () => {
       'getUsers',
       'banStatus',
       'changeRole',
-    ]);
-    const statsSpy = jasmine.createSpyObj('StatsEndpointsService', [
-      'getUserStats',
     ]);
     const notificationSpy = jasmine.createSpyObj('NotificationService', [
       'addNotification',
@@ -53,7 +39,6 @@ describe('AdminSettingsComponent', () => {
       imports: [AdminSettingsComponent, HttpClientTestingModule],
       providers: [
         { provide: AdministrationEndpointsService, useValue: adminSpy },
-        { provide: StatsEndpointsService, useValue: statsSpy },
         { provide: NotificationService, useValue: notificationSpy },
       ],
     }).compileComponents();
@@ -64,9 +49,6 @@ describe('AdminSettingsComponent', () => {
     adminServiceSpy = TestBed.inject(
       AdministrationEndpointsService
     ) as jasmine.SpyObj<AdministrationEndpointsService>;
-    statsServiceSpy = TestBed.inject(
-      StatsEndpointsService
-    ) as jasmine.SpyObj<StatsEndpointsService>;
 
     fixture.detectChanges();
   });
@@ -83,17 +65,6 @@ describe('AdminSettingsComponent', () => {
     expect(component.modalTitle).toBe('Changing ban status of user');
     expect(component.modalButtonText).toBe('Set ban status');
     expect(component.usersList).toEqual([mockUser]);
-  });
-
-  it('should set user stats when getUserDetailsModal is called and user is selected', () => {
-    adminServiceSpy.getUsers.and.returnValue(of([mockUser]));
-    statsServiceSpy.getUserStats.and.returnValue(of(mockUserStats));
-
-    component.getUserDetailsModal();
-    expect(adminServiceSpy.getUsers).toHaveBeenCalled();
-    component.setSelectedUser({ target: { value: '1' } } as unknown as Event);
-    expect(statsServiceSpy.getUserStats).toHaveBeenCalledWith(mockUser.id);
-    expect(component.selectedUserStats).toEqual(mockUserStats);
   });
 
   it('should update ban status and show notification', () => {

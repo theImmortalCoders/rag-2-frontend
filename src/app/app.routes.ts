@@ -8,9 +8,11 @@ import { Error500PageComponent } from './shared/components/error-pages/error500.
 import { RegisterConfirmComponent } from './user-workflow/register/components/register-confirm.component';
 import { ResetPasswordComponent } from './user-workflow/login/components/reset-password.component';
 import { DashboardPageComponent } from './dashboard/dashboard.page.component';
-import { authGuard } from '@utils/helpers/auth.guard';
-import { guestGuard } from '@utils/helpers/guest.guard';
+import { authGuard } from '@utils/guards/auth.guard';
+import { guestGuard } from '@utils/guards/guest.guard';
 import { GameListPageComponent } from './game-list/game-list.page.component';
+import { UserDetailsComponent } from './dashboard/user-details/user-details.component';
+import { userIdGuard } from '@utils/guards/user-id.gurad';
 
 export const routes: Routes = [
   {
@@ -28,6 +30,12 @@ export const routes: Routes = [
     component: DashboardPageComponent,
     title: 'Dashboard Page',
     canActivate: [authGuard],
+  },
+  {
+    path: 'dashboard/user/:id',
+    component: UserDetailsComponent,
+    title: 'User Details',
+    canActivate: [userIdGuard],
   },
   {
     path: 'game/:gameName',

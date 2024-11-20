@@ -4,7 +4,7 @@ import {
   IUserResponse,
   IUserStatsResponse,
 } from 'app/shared/models/user.models';
-import { ProgressCircleBarComponent } from './progress-circle-bar.component';
+import { ProgressCircleBarComponent } from '../../shared/progress-circle-bar.component';
 
 @Component({
   selector: 'app-user-info',
@@ -33,14 +33,35 @@ import { ProgressCircleBarComponent } from './progress-circle-bar.component';
               {{ aboutMeUserInfo?.email }}
             </span>
           </h2>
-          <h2>
-            Your study cycle years:
-            <span class="text-mainCreme">
-              {{ aboutMeUserInfo?.studyCycleYearA }}/{{
-                aboutMeUserInfo?.studyCycleYearB
-              }}
-            </span>
-          </h2>
+          @if (
+            aboutMeUserInfo?.studyCycleYearA !== null &&
+            aboutMeUserInfo?.studyCycleYearB !== null
+          ) {
+            <h2>
+              Your study cycle years:
+              <span class="text-mainCreme">
+                {{ aboutMeUserInfo?.studyCycleYearA }}/{{
+                  aboutMeUserInfo?.studyCycleYearB
+                }}
+              </span>
+            </h2>
+          }
+          @if (aboutMeUserInfo?.course !== null) {
+            <h2>
+              Your course of study:
+              <span class="text-mainCreme">
+                {{ aboutMeUserInfo?.course }}
+              </span>
+            </h2>
+          }
+          @if (aboutMeUserInfo?.group !== null) {
+            <h2>
+              Your group:
+              <span class="text-mainCreme">
+                {{ aboutMeUserInfo?.group }}
+              </span>
+            </h2>
+          }
           <h2>
             Your types of games played:
             <span class="text-mainCreme">
@@ -70,7 +91,8 @@ import { ProgressCircleBarComponent } from './progress-circle-bar.component';
       <app-progress-circle-bar
         class="flex items-center justify-center w-full lg:w-1/3 xl:w-1/4 pr-0 lg:pr-32 pt-8 lg:pt-4"
         [usedSpace]="userStatsInfo?.totalStorageMb"
-        [currentUserRole]="aboutMeUserInfo?.role" />
+        [currentUserRole]="aboutMeUserInfo?.role"
+        [isForCurrentUser]="true" />
     </div>
   `,
 })

@@ -14,6 +14,7 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
         #dataInput
         [attr.disabled]="checkboxAvailable() ? null : 'disabled'"
         type="checkbox"
+        class="accent-mainOrange"
         [defaultChecked]="true"
         [checked]="isKeyInDataToPersist(variable.key)"
         (change)="

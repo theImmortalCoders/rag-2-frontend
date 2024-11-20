@@ -20,6 +20,7 @@ import { AdminSettingsComponent } from './components/sections/admin-settings/adm
 import { RecordedGamesComponent } from './components/sections/recorded-games/recorded-games.component';
 import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
 import { TRole } from 'app/shared/models/role.enum';
+import { CoursesSettingsComponent } from './components/sections/courses-settings/courses-settings.component';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -31,6 +32,7 @@ import { TRole } from 'app/shared/models/role.enum';
     AdminSettingsComponent,
     RecordedGamesComponent,
     AllowedRolesDirective,
+    CoursesSettingsComponent,
   ],
   template: `<div
     class="flex flex-col space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
@@ -40,9 +42,13 @@ import { TRole } from 'app/shared/models/role.enum';
       class="flex flex-row justify-stretch w-full" />
     <app-recorded-games
       class="flex flex-col px-10"
-      (refreshDataEmitter)="isRefreshNeeded($event)" />
+      [userId]="aboutMeUserInfo ? aboutMeUserInfo.id : 0"
+      (refreshDataEmitter)="userStatsRefresh($event)" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
-      <app-user-account-settings class="flex flex-col px-10 w-full sm:w-fit" />
+      <app-user-account-settings
+        (refreshUserData)="userDataRefresh($event)"
+        class="flex flex-col px-10 w-full sm:w-fit" />
+      <app-courses-settings class="flex flex-col px-10 w-full sm:w-fit" />
       <app-game-handling-options
         *appAllowedRoles="allowedRolesAdmin"
         class="flex flex-col px-10 w-full sm:w-fit" />
@@ -68,6 +74,10 @@ export class DashboardPageComponent
   public allowedRolesAdminTeacher: TRole[] = [TRole.Admin, TRole.Teacher];
 
   public ngOnInit(): void {
+    this.getMeData();
+  }
+
+  public getMeData(): void {
     this._getMeSubscription = this._authEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
         this.aboutMeUserInfo = response;
@@ -96,9 +106,15 @@ export class DashboardPageComponent
       });
   }
 
-  public isRefreshNeeded(isRefreshNeeded: boolean): void {
+  public userStatsRefresh(isRefreshNeeded: boolean): void {
     if (isRefreshNeeded && this.aboutMeUserInfo) {
       this.getUserStats(this.aboutMeUserInfo.id);
+    }
+  }
+
+  public userDataRefresh(isRefreshNeeded: boolean): void {
+    if (isRefreshNeeded) {
+      this.getMeData();
     }
   }
 

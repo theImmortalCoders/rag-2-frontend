@@ -41,7 +41,7 @@ export class AuthRequiredDirective implements OnInit, OnDestroy {
           this._vc.clear();
           if (this._errorCounter === 0 && !localStorage.getItem('jwtToken')) {
             this._notificationService.addNotification(
-              'Some functionalities are available only for logged in users'
+              'Some functionalities are available only for logged in users', 3000
             );
             this._errorCounter++;
             localStorage.setItem('errorCounter', this._errorCounter.toString());

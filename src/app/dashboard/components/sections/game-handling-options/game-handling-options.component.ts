@@ -295,7 +295,7 @@ export class GameHandlingOptionsComponent implements OnDestroy {
         .subscribe({
           next: () => {
             this._notificationService.addNotification(
-              'Existing game name has been deleted!',
+              'Existing game has been deleted!',
               3000
             );
             this.errorMessage = null;

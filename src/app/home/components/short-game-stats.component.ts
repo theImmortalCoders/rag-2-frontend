@@ -50,17 +50,13 @@ import { Subscription } from 'rxjs';
         <span class="text-base md:text-lg lg:text-xl">MB of data</span>
       </div>
     </div>
-    <a class="group">
-      <div class="flex flex-row justify-center items-center w-full">
-        <a
-          [routerLink]="['game-list']"
-          class="text-sm md:text-base lg:text-lg pt-2 md:pt-4 text-center text-mainOrange group-hover:text-green-500 font-bold uppercase tracking-widest ease-in-out transition-all duration-500">
-          Check some details...
-        </a>
-      </div>
-      <hr
-        class="border-mainOrange group-hover:border-green-500 w-0 group-hover:w-full ease-in-out transition-all duration-500" />
-    </a>
+    <div class="flex flex-row justify-center items-center w-full">
+      <button
+        [routerLink]="['game-list']"
+        class="text-sm md:text-base lg:text-lg mt-2 md:m-4 px-2 py-1 rounded-xl text-center border-2 border-mainOrange hover:border-green-500 text-mainOrange hover:text-green-500 font-bold uppercase tracking-widest ease-in-out transition-all duration-500">
+        Begin your journey!
+      </button>
+    </div>
   `,
 })
 export class ShortGameStatsComponent implements OnInit, OnDestroy {

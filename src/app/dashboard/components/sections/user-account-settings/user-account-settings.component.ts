@@ -1,7 +1,14 @@
 /* eslint-disable max-lines */
-import { Component, inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { ModalComponent } from '../../shared/modal.component';
 import {
+  FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -10,6 +17,12 @@ import { FormValidationService } from 'app/shared/services/form-validation.servi
 import { Subscription } from 'rxjs';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
+import { Router } from '@angular/router';
+import { IUserEditRequest, IUserResponse } from 'app/shared/models/user.models';
+import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
+import { ICourseResponse } from 'app/shared/models/course.models';
+import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
+import { TRole } from 'app/shared/models/role.enum';
 
 @Component({
   selector: 'app-user-account-settings',
@@ -28,6 +41,13 @@ import { NotificationService } from 'app/shared/services/notification.service';
         (click)="changePasswordModal()"
         class="dashboard-button group">
         <span>Change your password</span>
+        <i data-feather="edit-3" class="dashboard-icon"></i>
+      </button>
+      <button
+        type="button"
+        (click)="editAccountModal()"
+        class="dashboard-button group">
+        <span>Edit your account data</span>
         <i data-feather="edit" class="dashboard-icon"></i>
       </button>
       <button
@@ -78,6 +98,94 @@ import { NotificationService } from 'app/shared/services/notification.service';
                   class="custom-input" />
               </div>
             </form>
+          } @else if (modalVisibility === 'editAccount') {
+            <form
+              [formGroup]="accountDataForm"
+              class="flex flex-col space-y-4 w-full text-sm sm:text-base">
+              <div class="flex flex-col space-y-1">
+                <label
+                  for="name"
+                  class="text-start"
+                  [class.text-red-500]="shouldShowErrorAccountData('name')"
+                  >Name</label
+                >
+                <input
+                  id="name"
+                  type="text"
+                  formControlName="name"
+                  placeholder="Type your name"
+                  class="custom-input" />
+              </div>
+              @if (userData!.role !== teacherRole) {
+                <div
+                  class="flex flex-wrap flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
+                  <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
+                    <label
+                      for="studyCycleYearA"
+                      class="text-start"
+                      [class.text-red-500]="
+                        shouldShowErrorAccountData('studyCycleYearA')
+                      "
+                      >Study cycle year</label
+                    >
+                    <input
+                      id="studyCycleYearA"
+                      type="number"
+                      formControlName="studyCycleYearA"
+                      placeholder="Type year A"
+                      class="custom-input"
+                      (input)="validateNumber($event)" />
+                  </div>
+                  <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
+                    <label
+                      for="studyCycleYearB"
+                      class="text-start"
+                      [class.text-red-500]="
+                        shouldShowErrorAccountData('studyCycleYearB')
+                      "
+                      >Study cycle year</label
+                    >
+                    <input
+                      id="studyCycleYearB"
+                      type="number"
+                      formControlName="studyCycleYearB"
+                      placeholder="Type year B"
+                      class="custom-input"
+                      (input)="validateNumber($event)" />
+                  </div>
+                </div>
+                <div class="flex flex-col space-y-1">
+                  <label
+                    for="courseId"
+                    class="text-start"
+                    [class.text-red-500]="
+                      shouldShowErrorAccountData('courseId')
+                    "
+                    >Course</label
+                  >
+                  <select formControlName="courseId" class="custom-input">
+                    <option [ngValue]="null">No course choosen</option>
+                    @for (course of courseList; track course.id) {
+                      <option [ngValue]="course.id">{{ course.name }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="flex flex-col space-y-1">
+                  <label
+                    for="group"
+                    class="text-start"
+                    [class.text-red-500]="shouldShowErrorAccountData('group')"
+                    >Group</label
+                  >
+                  <input
+                    id="group"
+                    type="text"
+                    formControlName="group"
+                    placeholder="Type your group"
+                    class="custom-input" />
+                </div>
+              }
+            </form>
           } @else if (modalVisibility === 'deleteAccount') {
             <p class="mb-4 text-sm sm:text-base">
               You will lose all your data, progress, and saved games and will
@@ -113,28 +221,64 @@ import { NotificationService } from 'app/shared/services/notification.service';
               }
             </div>
           }
+          @if (
+            (accountDataForm.invalid &&
+              (accountDataForm.dirty || accountDataForm.touched)) ||
+            errorMessage !== null
+          ) {
+            <div class="text-red-500 mt-6 flex flex-col items-start">
+              @for (error of getFormErrorsAccountData(); track error) {
+                @if (modalVisibility === 'editAccount') {
+                  <p>{{ error }}</p>
+                }
+              }
+            </div>
+          }
         </div>
       </app-modal>
     }
   `,
 })
 export class UserAccountSettingsComponent implements OnDestroy {
+  @Output() public refreshUserData = new EventEmitter<boolean>(false);
+
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
+  private _authEndpointsService = inject(AuthEndpointsService);
+  private _courseEndpointsService = inject(CourseEndpointsService);
   private _notificationService = inject(NotificationService);
+  private _router = inject(Router);
 
+  private _getMeSubscription = new Subscription();
   private _changePasswordSubscribtion = new Subscription();
+  private _editAccountSubscribtion = new Subscription();
   private _deleteAccountSubscribtion = new Subscription();
+  private _getCoursesSubscription = new Subscription();
 
   public changePasswordForm = this._formBuilder.group({
     oldPassword: ['', [Validators.required, Validators.minLength(8)]],
     newPassword: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  public errorMessage: string | null = null;
+  public accountDataForm = this._formBuilder.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    studyCycleYearA: new FormControl<number | null>(null),
+    studyCycleYearB: new FormControl<number | null>(null),
+    courseId: new FormControl<number | null>(null),
+    group: ['', []],
+  });
 
-  public modalVisibility: 'changePassword' | 'deleteAccount' | null = null;
+  public errorMessage: string | null = null;
+  public userData: IUserResponse | null = null;
+  public courseList: ICourseResponse[] | null = null;
+  public teacherRole: TRole = TRole.Teacher;
+
+  public modalVisibility:
+    | 'changePassword'
+    | 'editAccount'
+    | 'deleteAccount'
+    | null = null;
   public modalTitle = '';
   public modalButtonText = '';
   public modalButtonFunction!: () => void;
@@ -146,8 +290,63 @@ export class UserAccountSettingsComponent implements OnDestroy {
     );
   }
 
+  public shouldShowErrorAccountData(controlName: string): boolean | undefined {
+    return this._formValidationService.shouldShowError(
+      this.accountDataForm,
+      controlName
+    );
+  }
+
+  public validateNumber(event: Event): void {
+    this._formValidationService.validateNumber4Digit(event);
+  }
+
   public getFormErrors(): string[] {
     return this._formValidationService.getFormErrors(this.changePasswordForm);
+  }
+
+  public getFormErrorsAccountData(): string[] {
+    return this._formValidationService.getFormErrors(this.accountDataForm);
+  }
+
+  public getCourseList(): void {
+    this._getCoursesSubscription = this._courseEndpointsService
+      .getCourses()
+      .subscribe({
+        next: (response: ICourseResponse[]) => {
+          this.courseList = response;
+        },
+      });
+  }
+
+  public getUserData(): void {
+    this._getMeSubscription = this._authEndpointsService.getMe().subscribe({
+      next: (response: IUserResponse) => {
+        this.userData = response;
+        this.setAccountEditFormControls();
+      },
+      error: () => {
+        this.userData = null;
+      },
+    });
+  }
+
+  public setAccountEditFormControls(): void {
+    this.accountDataForm.controls.name.setValue(
+      this.userData ? this.userData.name : ''
+    );
+    this.accountDataForm.controls.studyCycleYearA.setValue(
+      this.userData ? this.userData.studyCycleYearA : null
+    );
+    this.accountDataForm.controls.studyCycleYearB.setValue(
+      this.userData ? this.userData.studyCycleYearB : null
+    );
+    this.accountDataForm.controls.courseId.setValue(
+      this.userData && this.userData.course ? this.userData.course.id : null
+    );
+    this.accountDataForm.controls.group.setValue(
+      this.userData ? this.userData.group : ''
+    );
   }
 
   public changePasswordModal(): void {
@@ -156,6 +355,16 @@ export class UserAccountSettingsComponent implements OnDestroy {
     this.modalButtonText = 'Change password';
     this.modalButtonFunction = this.changePasswordFunction;
     this.errorMessage = null;
+  }
+
+  public editAccountModal(): void {
+    this.modalVisibility = 'editAccount';
+    this.modalTitle = 'Editing your account data';
+    this.modalButtonText = 'Edit your account data';
+    this.modalButtonFunction = this.editAccountFunction;
+    this.errorMessage = null;
+    this.getCourseList();
+    this.getUserData();
   }
 
   public deleteAccountModal(): void {
@@ -193,11 +402,51 @@ export class UserAccountSettingsComponent implements OnDestroy {
     }
   }
 
+  public editAccountFunction(): void {
+    this.errorMessage = null;
+    if (this.accountDataForm.valid) {
+      const formValues = this.accountDataForm.value;
+      if (
+        formValues.name &&
+        formValues.studyCycleYearA !== undefined &&
+        formValues.studyCycleYearB !== undefined &&
+        formValues.courseId !== undefined
+      ) {
+        const userInfo: IUserEditRequest = {
+          name: formValues.name,
+          studyCycleYearA: formValues.studyCycleYearA,
+          studyCycleYearB: formValues.studyCycleYearB,
+          courseId: formValues.courseId,
+          group: formValues.group ? formValues.group : null,
+        };
+        this._editAccountSubscribtion = this._userEndpointsService
+          .updateAccountInfo(userInfo)
+          .subscribe({
+            next: () => {
+              this._notificationService.addNotification(
+                'Your account data has been changed!',
+                3000
+              );
+              this.refreshUserData.emit(true);
+              this.errorMessage = null;
+              this.modalVisibility = null;
+            },
+            error: (error: string) => {
+              this.refreshUserData.emit(false);
+              this.errorMessage = error;
+            },
+          });
+      }
+    }
+  }
+
   public deleteAccountFunction(): void {
     this._deleteAccountSubscribtion = this._userEndpointsService
       .deleteAccount()
       .subscribe({
         next: () => {
+          localStorage.removeItem('jwtToken');
+          this._router.navigate(['']);
           this._notificationService.addNotification(
             'Your account has been permamently deleted!'
           );
@@ -211,7 +460,10 @@ export class UserAccountSettingsComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this._getMeSubscription.unsubscribe();
     this._changePasswordSubscribtion.unsubscribe();
+    this._editAccountSubscribtion.unsubscribe();
     this._deleteAccountSubscribtion.unsubscribe();
+    this._getCoursesSubscription.unsubscribe();
   }
 }

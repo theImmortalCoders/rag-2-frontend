@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '@env/environment';
-import { IUserRequest } from 'app/shared/models/user.models';
+import { IUserEditRequest, IUserRequest } from 'app/shared/models/user.models';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 
@@ -68,6 +68,30 @@ export class UserEndpointsService {
         tap({
           next: () => {
             console.log('Account confirmed successfully');
+          },
+        }),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => errorHandler(error));
+        })
+      );
+  }
+
+  public updateAccountInfo(
+    editAccountData: IUserEditRequest
+  ): Observable<void> {
+    return this._httpClient
+      .patch<void>(
+        environment.backendApiUrl + `/api/User/update`,
+        editAccountData,
+        {
+          headers: getAuthHeaders(),
+          responseType: 'text' as 'json',
+        }
+      )
+      .pipe(
+        tap({
+          next: () => {
+            console.log('User account data updated successfully');
           },
         }),
         catchError((error: HttpErrorResponse) => {

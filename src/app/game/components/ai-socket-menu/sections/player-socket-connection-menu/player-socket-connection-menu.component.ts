@@ -161,10 +161,10 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
     this.canNotConnect = false;
   }
   public onConnectButtonClick(): void {
-    if (this._socketListService.getSocketList().includes(this.socketUrl)) {
-      this.canNotConnect = true;
-      return;
-    }
+    // if (this._socketListService.getSocketList().includes(this.socketUrl)) {
+    //   this.canNotConnect = true;
+    //   return;
+    // }
     this.aiSocketService.connect(
       this.socketUrl,
       () => {
