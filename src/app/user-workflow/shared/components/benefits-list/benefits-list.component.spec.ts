@@ -36,7 +36,7 @@ describe('BenefitsListComponent', () => {
     expect(items[0].textContent).toContain('Save your games');
     expect(items[1].textContent).toContain('Keep everything together');
     expect(items[2].textContent).toContain("Watch log's console view");
-    expect(items[3].textContent).toContain('Create your own AI models');
+    expect(items[3].textContent).toContain('Track your progress');
   });
 
   it('should call feather.replace on ngAfterViewInit', () => {
