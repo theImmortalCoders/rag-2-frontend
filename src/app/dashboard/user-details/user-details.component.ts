@@ -165,7 +165,7 @@ export class UserDetailsComponent
         next: () => {
           this._notificationService.addNotification(
             `The game record file is downloading`,
-            4000
+            3000
           );
           this.errorMessage = null;
         },

@@ -22,8 +22,8 @@ import * as feather from 'feather-icons';
         <p>Watch log's console view</p>
       </span>
       <span class="flex flex-row items-center space-x-4">
-        <i data-feather="monitor" class="size-6 xs:size-8"></i>
-        <p>Create your own AI models</p>
+        <i data-feather="trending-up" class="size-6 xs:size-8"></i>
+        <p>Track your progress</p>
       </span>
     </div>
   `,

@@ -118,8 +118,7 @@ export class AiSocketService {
     this._socket.addEventListener('close', e => {
       if (e.code === 401) {
         this._notificationService.addNotification(
-          'Max guest users limit reached. Log in to play or try again later.',
-          5000
+          'Max guest users limit reached. Log in to play or try again later.'
         );
       }
       this.stopDataExchange();

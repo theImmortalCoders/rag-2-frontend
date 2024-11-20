@@ -107,7 +107,7 @@ import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
             }
           </div>
         }
-        <app-console [logData]="logData" />
+        <app-console *appAuthRequired [logData]="logData" />
       } @else {
         <app-cant-display-game />
       }
