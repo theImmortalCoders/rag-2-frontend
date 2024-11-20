@@ -1,5 +1,11 @@
 /* eslint-disable max-lines */
-import { Component, inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { ModalComponent } from '../../shared/modal.component';
 import {
   FormControl,
@@ -234,6 +240,8 @@ import { TRole } from 'app/shared/models/role.enum';
   `,
 })
 export class UserAccountSettingsComponent implements OnDestroy {
+  @Output() public refreshUserData = new EventEmitter<boolean>(false);
+
   private _formBuilder = inject(NonNullableFormBuilder);
   private _formValidationService = inject(FormValidationService);
   private _userEndpointsService = inject(UserEndpointsService);
@@ -419,10 +427,12 @@ export class UserAccountSettingsComponent implements OnDestroy {
                 'Your account data has been changed!',
                 3000
               );
+              this.refreshUserData.emit(true);
               this.errorMessage = null;
               this.modalVisibility = null;
             },
             error: (error: string) => {
+              this.refreshUserData.emit(false);
               this.errorMessage = error;
             },
           });

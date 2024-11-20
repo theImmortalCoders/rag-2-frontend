@@ -43,9 +43,11 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
     <app-recorded-games
       class="flex flex-col px-10"
       [userId]="aboutMeUserInfo ? aboutMeUserInfo.id : 0"
-      (refreshDataEmitter)="isRefreshNeeded($event)" />
+      (refreshDataEmitter)="userStatsRefresh($event)" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
-      <app-user-account-settings class="flex flex-col px-10 w-full sm:w-fit" />
+      <app-user-account-settings
+        (refreshUserData)="userDataRefresh($event)"
+        class="flex flex-col px-10 w-full sm:w-fit" />
       <app-courses-settings class="flex flex-col px-10 w-full sm:w-fit" />
       <app-game-handling-options
         *appAllowedRoles="allowedRolesAdmin"
@@ -72,6 +74,10 @@ export class DashboardPageComponent
   public allowedRolesAdminTeacher: TRole[] = [TRole.Admin, TRole.Teacher];
 
   public ngOnInit(): void {
+    this.getMeData();
+  }
+
+  public getMeData(): void {
     this._getMeSubscription = this._authEndpointsService.getMe().subscribe({
       next: (response: IUserResponse) => {
         this.aboutMeUserInfo = response;
@@ -100,9 +106,15 @@ export class DashboardPageComponent
       });
   }
 
-  public isRefreshNeeded(isRefreshNeeded: boolean): void {
+  public userStatsRefresh(isRefreshNeeded: boolean): void {
     if (isRefreshNeeded && this.aboutMeUserInfo) {
       this.getUserStats(this.aboutMeUserInfo.id);
+    }
+  }
+
+  public userDataRefresh(isRefreshNeeded: boolean): void {
+    if (isRefreshNeeded) {
+      this.getMeData();
     }
   }
 
