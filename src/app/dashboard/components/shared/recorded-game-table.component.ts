@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
 import { LoadingSpinnerComponent } from '../../../shared/components/common/loading-spinner.component';
 
@@ -8,7 +15,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/common/loadi
   standalone: true,
   imports: [CommonModule, LoadingSpinnerComponent],
   template: `
-    @if (isEmptyTable(recordedGamesData)) {
+    @if (isLoadingNeeded) {
       <app-loading-spinner />
     } @else {
       <div
@@ -67,12 +74,19 @@ import { LoadingSpinnerComponent } from '../../../shared/components/common/loadi
     }
   `,
 })
-export class RecordedGameTableComponent {
-  @Input({ required: true }) public recordedGamesData!: IRecordedGameResponse[];
+export class RecordedGameTableComponent implements OnChanges {
+  @Input({ required: true }) public recordedGamesData:
+    | IRecordedGameResponse[]
+    | null = null;
   @Output() public downloadEmitter = new EventEmitter<number>();
   @Output() public deleteEmitter = new EventEmitter<number>();
 
-  public isEmptyTable(records: IRecordedGameResponse[]): boolean {
-    return records.length === 0;
+  public isLoadingNeeded = true;
+
+  public ngOnChanges(): void {
+    if (this.recordedGamesData === null) {
+      this.isLoadingNeeded = true;
+    }
+    this.isLoadingNeeded = false;
   }
 }

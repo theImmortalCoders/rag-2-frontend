@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   AfterViewChecked,
   Component,
@@ -88,7 +89,7 @@ export class UserDetailsComponent
   private _getUserStatsSubsription = new Subscription();
 
   public avalaibleGamesList: IGameResponse[] = [];
-  public recordedGamesData: IRecordedGameResponse[] = [];
+  public recordedGamesData: IRecordedGameResponse[] | null = null;
   public errorMessage: string | null = null;
 
   public userInfo: IUserResponse | null = null;
@@ -138,6 +139,8 @@ export class UserDetailsComponent
           this.errorMessage = error;
         },
       });
+
+    this.recordedGamesData = null;
   }
   public ngAfterViewChecked(): void {
     feather.replace(); //dodane, żeby feather-icons na nowo dodało się do DOM w pętli
@@ -149,8 +152,10 @@ export class UserDetailsComponent
         .getAllRecordedGames(game.id, this.userId)
         .subscribe({
           next: response => {
-            this.recordedGamesData.push(...response);
-            this.errorMessage = null;
+            if (this.recordedGamesData !== null) {
+              this.recordedGamesData.push(...response);
+              this.errorMessage = null;
+            }
           },
           error: (error: string) => {
             this.errorMessage = error;

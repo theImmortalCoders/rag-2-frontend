@@ -55,7 +55,7 @@ export class RecordedGamesComponent
   private _getGamesSubscription = new Subscription();
 
   public avalaibleGamesList: IGameResponse[] = [];
-  public recordedGamesData: IRecordedGameResponse[] = [];
+  public recordedGamesData: IRecordedGameResponse[] | null = null;
   public errorMessage: string | null = null;
 
   public ngOnInit(): void {
@@ -71,6 +71,7 @@ export class RecordedGamesComponent
           this.errorMessage = error;
         },
       });
+    this.recordedGamesData = null;
   }
 
   public ngAfterViewChecked(): void {
@@ -88,8 +89,10 @@ export class RecordedGamesComponent
         .getAllRecordedGames(game.id, this.userId)
         .subscribe({
           next: response => {
-            this.recordedGamesData.push(...response);
-            this.errorMessage = null;
+            if (this.recordedGamesData !== null) {
+              this.recordedGamesData.push(...response);
+              this.errorMessage = null;
+            }
           },
           error: (error: string) => {
             this.errorMessage = error;
