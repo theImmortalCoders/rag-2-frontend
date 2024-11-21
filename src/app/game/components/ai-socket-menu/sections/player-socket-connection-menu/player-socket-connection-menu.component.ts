@@ -59,7 +59,7 @@ import { Game } from '@gameModels/game.class';
       >
       @if (aiSocketService.getIsSocketConnected()) {
         <span
-          >Ping: <b>{{ aiSocketService.getSocketPing() }}</b></span
+          >Ping: <b>{{ aiSocketService.getSocketPing() }} ms</b></span
         >
         <app-socket-connected-menu
           [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"

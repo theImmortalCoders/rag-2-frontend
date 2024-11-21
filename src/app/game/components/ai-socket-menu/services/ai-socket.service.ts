@@ -73,7 +73,7 @@ export class AiSocketService {
     this.isDataSendingActive = true;
     this._sendingIntervalID = setInterval(() => {
       this.sendDataToSocket(this._dataToSend, expectedDataToReceive, playerId);
-      this.sendPing();
+      this._lastPingSentTime = Date.now();
     }, sendingInterval);
   };
 
@@ -107,13 +107,6 @@ export class AiSocketService {
   }
 
   //
-
-  private sendPing(): void {
-    if (this._socket && this._socket.readyState === WebSocket.OPEN) {
-      this._lastPingSentTime = Date.now();
-      this._socket.send(JSON.stringify({ type: 'ping' }));
-    }
-  }
 
   private defineSocket(
     socketUrl: string,

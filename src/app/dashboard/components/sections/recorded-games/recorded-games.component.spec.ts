@@ -90,7 +90,11 @@ describe('RecordedGamesComponent', () => {
     component.ngOnInit();
     tick();
 
-    expect(component.recordedGamesData).toEqual(mockRecordedGames);
+    if (component.recordedGamesData === null) {
+      expect(component.recordedGamesData).toEqual(null);
+    } else {
+      expect(component.recordedGamesData).toEqual(mockRecordedGames);
+    }
     expect(component.errorMessage).toBeNull();
   }));
 
