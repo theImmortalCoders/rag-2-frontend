@@ -21,6 +21,7 @@ import { RecordedGamesComponent } from './components/sections/recorded-games/rec
 import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
 import { TRole } from 'app/shared/models/role.enum';
 import { CoursesSettingsComponent } from './components/sections/courses-settings/courses-settings.component';
+import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -32,6 +33,7 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
     AdminSettingsComponent,
     RecordedGamesComponent,
     AllowedRolesDirective,
+    AuthRequiredDirective,
     CoursesSettingsComponent,
   ],
   template: `<div
@@ -41,11 +43,13 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
       [userStatsInfo]="userStatsInfo"
       class="flex flex-row justify-stretch w-full" />
     <app-recorded-games
-      class="flex flex-col px-10"
+      *appAuthRequired
       [userId]="aboutMeUserInfo ? aboutMeUserInfo.id : 0"
-      (refreshDataEmitter)="userStatsRefresh($event)" />
+      (refreshDataEmitter)="userStatsRefresh($event)"
+      class="flex flex-col px-10" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
       <app-user-account-settings
+        *appAuthRequired
         [isOptionsVisible]="optionChoosen === 'user-account'"
         (optionsVisibleEmitter)="changeOptionsVisibility($event)"
         (refreshUserData)="userDataRefresh($event)"
