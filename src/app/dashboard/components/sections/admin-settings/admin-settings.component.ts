@@ -1,5 +1,12 @@
 /* eslint-disable max-lines */
-import { Component, inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { ModalComponent } from '../../shared/modal.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
@@ -160,6 +167,9 @@ import { RouterLink } from '@angular/router';
   `,
 })
 export class AdminSettingsComponent implements OnDestroy {
+  @Input({ required: true }) public isOptionsVisible = false;
+  @Output() public optionsVisibleEmitter = new EventEmitter<string>();
+
   private _adminEndpointsService = inject(AdministrationEndpointsService);
   private _notificationService = inject(NotificationService);
 
@@ -174,7 +184,6 @@ export class AdminSettingsComponent implements OnDestroy {
   public newUserRole: TRole = TRole.Student;
   public errorMessage: string | null = null;
   public allowedRolesAdmin: TRole[] = [TRole.Admin];
-  public isOptionsVisible = false;
 
   public modalVisibility:
     | 'banUnbanUser'
@@ -187,6 +196,9 @@ export class AdminSettingsComponent implements OnDestroy {
 
   public showOptions(): void {
     this.isOptionsVisible = !this.isOptionsVisible;
+    if (this.isOptionsVisible) {
+      this.optionsVisibleEmitter.emit('admin');
+    }
   }
 
   public setSelectedUser(event: Event): void {

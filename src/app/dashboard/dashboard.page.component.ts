@@ -46,14 +46,24 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
       (refreshDataEmitter)="userStatsRefresh($event)" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
       <app-user-account-settings
+        [isOptionsVisible]="optionChoosen === 'user-account'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
         (refreshUserData)="userDataRefresh($event)"
         class="flex flex-col px-10 w-full" />
-      <app-courses-settings class="flex flex-col px-10 w-full" />
+      <app-courses-settings
+        *appAllowedRoles="allowedRolesAdminTeacher"
+        [isOptionsVisible]="optionChoosen === 'courses'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
+        class="flex flex-col px-10 w-full" />
       <app-game-handling-options
         *appAllowedRoles="allowedRolesAdmin"
+        [isOptionsVisible]="optionChoosen === 'game-handling'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
         class="flex flex-col px-10 w-full" />
       <app-admin-settings
         *appAllowedRoles="allowedRolesAdminTeacher"
+        [isOptionsVisible]="optionChoosen === 'admin'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
         class="flex flex-col px-10  w-full" />
     </div>
   </div>`,
@@ -73,8 +83,34 @@ export class DashboardPageComponent
   public allowedRolesAdmin: TRole[] = [TRole.Admin];
   public allowedRolesAdminTeacher: TRole[] = [TRole.Admin, TRole.Teacher];
 
+  public optionChoosen:
+    | 'user-account'
+    | 'courses'
+    | 'game-handling'
+    | 'admin'
+    | null = null;
+
   public ngOnInit(): void {
     this.getMeData();
+  }
+
+  public changeOptionsVisibility(option: string): void {
+    switch (option) {
+      case 'user-account':
+        this.optionChoosen = 'user-account';
+        break;
+      case 'courses':
+        this.optionChoosen = 'courses';
+        break;
+      case 'game-handling':
+        this.optionChoosen = 'game-handling';
+        break;
+      case 'admin':
+        this.optionChoosen = 'admin';
+        break;
+      default:
+        break;
+    }
   }
 
   public getMeData(): void {

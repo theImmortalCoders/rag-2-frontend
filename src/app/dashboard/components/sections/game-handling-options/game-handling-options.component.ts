@@ -1,5 +1,13 @@
 /* eslint-disable max-lines */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { ModalComponent } from '../../shared/modal.component';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
@@ -151,6 +159,9 @@ import {
   `,
 })
 export class GameHandlingOptionsComponent implements OnDestroy {
+  @Input({ required: true }) public isOptionsVisible = false;
+  @Output() public optionsVisibleEmitter = new EventEmitter<string>();
+
   private _gameEndpointsService = inject(GameEndpointsService);
   private _notificationService = inject(NotificationService);
   private _formBuilder = inject(NonNullableFormBuilder);
@@ -172,7 +183,6 @@ export class GameHandlingOptionsComponent implements OnDestroy {
   public gameList: IGameResponse[] | null = null;
 
   public errorMessage: string | null = null;
-  public isOptionsVisible = false;
 
   public modalVisibility: 'addNewGame' | 'editGame' | 'removeGame' | null =
     null;
@@ -182,6 +192,9 @@ export class GameHandlingOptionsComponent implements OnDestroy {
 
   public showOptions(): void {
     this.isOptionsVisible = !this.isOptionsVisible;
+    if (this.isOptionsVisible) {
+      this.optionsVisibleEmitter.emit('game-handling');
+    }
   }
 
   public setSelectedGameId(event: Event): void {

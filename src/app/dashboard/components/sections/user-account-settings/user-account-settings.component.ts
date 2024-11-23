@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  Input,
   OnDestroy,
   Output,
 } from '@angular/core';
@@ -256,6 +257,8 @@ import { TRole } from 'app/shared/models/role.enum';
   `,
 })
 export class UserAccountSettingsComponent implements OnDestroy {
+  @Input({ required: true }) public isOptionsVisible = false;
+  @Output() public optionsVisibleEmitter = new EventEmitter<string>();
   @Output() public refreshUserData = new EventEmitter<boolean>(false);
 
   private _formBuilder = inject(NonNullableFormBuilder);
@@ -289,7 +292,6 @@ export class UserAccountSettingsComponent implements OnDestroy {
   public userData: IUserResponse | null = null;
   public courseList: ICourseResponse[] | null = null;
   public teacherRole: TRole = TRole.Teacher;
-  public isOptionsVisible = false;
 
   public modalVisibility:
     | 'changePassword'
@@ -302,6 +304,9 @@ export class UserAccountSettingsComponent implements OnDestroy {
 
   public showOptions(): void {
     this.isOptionsVisible = !this.isOptionsVisible;
+    if (this.isOptionsVisible) {
+      this.optionsVisibleEmitter.emit('user-account');
+    }
   }
 
   public shouldShowError(controlName: string): boolean | undefined {

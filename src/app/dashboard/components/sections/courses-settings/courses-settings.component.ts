@@ -1,5 +1,12 @@
 /* eslint-disable max-lines */
-import { Component, inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { ModalComponent } from '../../shared/modal.component';
 import {
   ICourseRequest,
@@ -134,6 +141,9 @@ import { NotificationService } from 'app/shared/services/notification.service';
   `,
 })
 export class CoursesSettingsComponent implements OnDestroy {
+  @Input({ required: true }) public isOptionsVisible = false;
+  @Output() public optionsVisibleEmitter = new EventEmitter<string>();
+
   private _courseEndpointsService = inject(CourseEndpointsService);
   private _notificationService = inject(NotificationService);
   private _formBuilder = inject(NonNullableFormBuilder);
@@ -147,7 +157,6 @@ export class CoursesSettingsComponent implements OnDestroy {
 
   public selectedCourseId = 0;
   public errorMessage: string | null = null;
-  public isOptionsVisible = false;
 
   public modalVisibility:
     | 'addNewCourse'
@@ -165,6 +174,9 @@ export class CoursesSettingsComponent implements OnDestroy {
 
   public showOptions(): void {
     this.isOptionsVisible = !this.isOptionsVisible;
+    if (this.isOptionsVisible) {
+      this.optionsVisibleEmitter.emit('courses');
+    }
   }
 
   public setSelectedCourseId(event: Event): void {
