@@ -23,7 +23,7 @@ import { RouterLink } from '@angular/router';
         class="flex items-center justify-center w-fit ease-in-out duration-300 transition-all {{
           isOptionsVisible ? 'rotate-180' : 'rotate-0'
         }}">
-        <i data-feather="chevron-down" class="size-8"></i>
+        <i data-feather="chevron-down" class="size-6 xs:size-8"></i>
       </div>
     </button>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
@@ -31,10 +31,10 @@ import { RouterLink } from '@angular/router';
       class="relative ease-in-out duration-150 transition-all {{
         isOptionsVisible
           ? 'top-0 opacity-100 z-30 h-fit'
-          : '-top-16 opacity-0 -z-50 h-0'
+          : '-top-32 xs:-top-16 opacity-0 -z-50 h-0'
       }}">
       <div
-        class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
+        class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 lg:space-x-20 w-full">
         <button
           type="button"
           *appAllowedRoles="allowedRolesAdmin"
