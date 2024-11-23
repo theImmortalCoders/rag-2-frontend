@@ -35,7 +35,7 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
     CoursesSettingsComponent,
   ],
   template: `<div
-    class="flex flex-col space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
+    class="flex flex-col overflow-y-hidden space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
     <app-user-info
       [aboutMeUserInfo]="aboutMeUserInfo"
       [userStatsInfo]="userStatsInfo"

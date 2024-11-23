@@ -41,7 +41,12 @@ import { TRole } from 'app/shared/models/role.enum';
       </div>
     </button>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
-    @if (isOptionsVisible) {
+    <div
+      class="relative ease-in-out duration-150 transition-all {{
+        isOptionsVisible
+          ? 'top-0 opacity-100 z-30 h-fit'
+          : '-top-16 opacity-0 -z-50 h-0'
+      }}">
       <div
         class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
         <button
@@ -247,7 +252,7 @@ import { TRole } from 'app/shared/models/role.enum';
           </div>
         </app-modal>
       }
-    }
+    </div>
   `,
 })
 export class UserAccountSettingsComponent implements OnDestroy {

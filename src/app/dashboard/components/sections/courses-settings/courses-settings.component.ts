@@ -19,104 +19,118 @@ import { NotificationService } from 'app/shared/services/notification.service';
   standalone: true,
   imports: [ModalComponent, ReactiveFormsModule],
   template: `
-    <h1
-      class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
-      Courses settings
-    </h1>
+    <button
+      (click)="showOptions()"
+      class="flex flex-row justify-between text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
+      <span> Courses settings </span>
+      <div
+        class="flex items-center justify-center w-fit ease-in-out duration-300 transition-all {{
+          isOptionsVisible ? 'rotate-180' : 'rotate-0'
+        }}">
+        <i data-feather="chevron-down" class="size-8"></i>
+      </div>
+    </button>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
-      class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
-      <button
-        type="button"
-        (click)="addNewCourseModal()"
-        class="dashboard-button group">
-        <span>Add new course to system</span>
-        <i data-feather="plus-square" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        (click)="editCourseModal()"
-        class="dashboard-button group">
-        <span>Edit existing course</span>
-        <i data-feather="edit" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        (click)="removeCourseModal()"
-        class="dashboard-button group">
-        <span>Remove existing course</span>
-        <i data-feather="trash-2" class="dashboard-icon"></i>
-      </button>
-    </div>
-    @if (modalVisibility !== null) {
-      <app-modal (closeModal)="hideModal()">
-        <div class="flex flex-col items-start w-full font-mono">
-          <h2
-            class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
-            {{ modalTitle }}
-          </h2>
-          <form
-            [formGroup]="courseForm"
-            class="flex flex-col space-y-4 w-full text-sm sm:text-base">
-            @if (modalVisibility === 'addNewCourse') {
-              <div class="flex flex-col space-y-1">
-                <label for="newCourseName" class="text-start"
-                  >Course name</label
-                >
-                <input
-                  id="newCourseName"
-                  type="text"
-                  formControlName="newCourseName"
-                  placeholder="Type new course name"
-                  class="custom-input" />
-              </div>
-            } @else if (
-              (modalVisibility === 'editCourse' ||
-                modalVisibility === 'removeCourse') &&
-              courseList !== null
-            ) {
-              <select
-                id="selectedGameId"
-                class="custom-input"
-                (change)="setSelectedCourseId($event)">
-                <option value="0">Choose existing course</option>
-                @for (course of courseList; track course.id) {
-                  <option [value]="course.id">{{ course.name }}</option>
-                }
-              </select>
-            }
-            @if (modalVisibility === 'editCourse') {
-              <div class="flex flex-col space-y-1">
-                <label for="editedCourseName" class="text-start"
-                  >Edited course name</label
-                >
-                <input
-                  id="editedCourseName"
-                  type="text"
-                  formControlName="editedCourseName"
-                  placeholder="Type edited course name"
-                  class="custom-input" />
-              </div>
-            }
-          </form>
-          <button
-            class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
-            (click)="modalButtonFunction()">
-            {{ modalButtonText }}
-          </button>
-          <button
-            (click)="hideModal()"
-            class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
-            x
-          </button>
-          <div class="text-red-500 mt-6 text-sm sm:text-base">
-            @if (errorMessage !== null) {
-              <p>{{ errorMessage }}</p>
-            }
+      class="relative ease-in-out duration-150 transition-all {{
+        isOptionsVisible
+          ? 'top-0 opacity-100 z-30 h-fit'
+          : '-top-16 opacity-0 -z-50 h-0'
+      }}">
+      <div
+        class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
+        <button
+          type="button"
+          (click)="addNewCourseModal()"
+          class="dashboard-button group">
+          <span>Add new course to system</span>
+          <i data-feather="plus-square" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          (click)="editCourseModal()"
+          class="dashboard-button group">
+          <span>Edit existing course</span>
+          <i data-feather="edit" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          (click)="removeCourseModal()"
+          class="dashboard-button group">
+          <span>Remove existing course</span>
+          <i data-feather="trash-2" class="dashboard-icon"></i>
+        </button>
+      </div>
+      @if (modalVisibility !== null) {
+        <app-modal (closeModal)="hideModal()">
+          <div class="flex flex-col items-start w-full font-mono">
+            <h2
+              class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
+              {{ modalTitle }}
+            </h2>
+            <form
+              [formGroup]="courseForm"
+              class="flex flex-col space-y-4 w-full text-sm sm:text-base">
+              @if (modalVisibility === 'addNewCourse') {
+                <div class="flex flex-col space-y-1">
+                  <label for="newCourseName" class="text-start"
+                    >Course name</label
+                  >
+                  <input
+                    id="newCourseName"
+                    type="text"
+                    formControlName="newCourseName"
+                    placeholder="Type new course name"
+                    class="custom-input" />
+                </div>
+              } @else if (
+                (modalVisibility === 'editCourse' ||
+                  modalVisibility === 'removeCourse') &&
+                courseList !== null
+              ) {
+                <select
+                  id="selectedGameId"
+                  class="custom-input"
+                  (change)="setSelectedCourseId($event)">
+                  <option value="0">Choose existing course</option>
+                  @for (course of courseList; track course.id) {
+                    <option [value]="course.id">{{ course.name }}</option>
+                  }
+                </select>
+              }
+              @if (modalVisibility === 'editCourse') {
+                <div class="flex flex-col space-y-1">
+                  <label for="editedCourseName" class="text-start"
+                    >Edited course name</label
+                  >
+                  <input
+                    id="editedCourseName"
+                    type="text"
+                    formControlName="editedCourseName"
+                    placeholder="Type edited course name"
+                    class="custom-input" />
+                </div>
+              }
+            </form>
+            <button
+              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
+              (click)="modalButtonFunction()">
+              {{ modalButtonText }}
+            </button>
+            <button
+              (click)="hideModal()"
+              class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
+              x
+            </button>
+            <div class="text-red-500 mt-6 text-sm sm:text-base">
+              @if (errorMessage !== null) {
+                <p>{{ errorMessage }}</p>
+              }
+            </div>
           </div>
-        </div>
-      </app-modal>
-    }
+        </app-modal>
+      }
+    </div>
   `,
 })
 export class CoursesSettingsComponent implements OnDestroy {
@@ -133,6 +147,7 @@ export class CoursesSettingsComponent implements OnDestroy {
 
   public selectedCourseId = 0;
   public errorMessage: string | null = null;
+  public isOptionsVisible = false;
 
   public modalVisibility:
     | 'addNewCourse'
@@ -147,6 +162,10 @@ export class CoursesSettingsComponent implements OnDestroy {
     newCourseName: ['', [Validators.required]],
     editedCourseName: ['', [Validators.required]],
   });
+
+  public showOptions(): void {
+    this.isOptionsVisible = !this.isOptionsVisible;
+  }
 
   public setSelectedCourseId(event: Event): void {
     const target = event.target as HTMLSelectElement;

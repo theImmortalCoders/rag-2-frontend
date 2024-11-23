@@ -15,134 +15,148 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [ModalComponent, CommonModule, AllowedRolesDirective, RouterLink],
   template: `
-    <h1
-      class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
-      Administration settings
-    </h1>
+    <button
+      (click)="showOptions()"
+      class="flex flex-row justify-between text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
+      <span> Administration settings </span>
+      <div
+        class="flex items-center justify-center w-fit ease-in-out duration-300 transition-all {{
+          isOptionsVisible ? 'rotate-180' : 'rotate-0'
+        }}">
+        <i data-feather="chevron-down" class="size-8"></i>
+      </div>
+    </button>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
-      class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
-      <button
-        type="button"
-        *appAllowedRoles="allowedRolesAdmin"
-        (click)="banUnbanUserModal()"
-        class="dashboard-button group">
-        <span>Ban/unban some user</span>
-        <i data-feather="slash" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        *appAllowedRoles="allowedRolesAdmin"
-        (click)="changeUserRoleModal()"
-        class="dashboard-button group">
-        <span>Change role of some user</span>
-        <i data-feather="edit" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        (click)="getUserDetailsModal()"
-        class="dashboard-button group">
-        <span>Get details of some user</span>
-        <i data-feather="eye" class="dashboard-icon"></i>
-      </button>
-    </div>
-    @if (modalVisibility !== null) {
-      <app-modal (closeModal)="hideModal()">
-        <div class="flex flex-col items-start w-full font-mono">
-          <h2
-            class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
-            {{ modalTitle }}
-          </h2>
-          <div class="flex flex-col space-y-4 w-full text-sm sm:text-base">
-            <select class="custom-input" (change)="setSelectedUser($event)">
-              <option value="0">Choose one user</option>
-              @for (user of usersList; track user.id) {
-                <option [value]="user.id">
-                  {{ user.name }}, {{ user.email }}
-                </option>
-              }
-            </select>
-          </div>
-          @if (
-            modalVisibility === 'banUnbanUser' && selectedUserData !== null
-          ) {
-            <div
-              class="flex flex-row w-full justify-around pt-4 text-sm sm:text-base">
-              <label
-                for="banUser"
-                class="custom-input-red min-w-fit w-1/4 text-center flex flex-row"
-                [class.opacity-70]="!isBanned"
-                [class.underline]="isBanned">
-                <span class="pr-3">BANNED</span>
-                <input
-                  type="radio"
-                  id="banUser"
-                  name="banStatus"
-                  value="true"
-                  [checked]="isBanned"
-                  (change)="changeBanStatus($event)" />
-              </label>
-              <label
-                for="unbanUser"
-                class="custom-input-green min-w-fit w-1/4 text-center flex flex-row"
-                [class.opacity-70]="isBanned"
-                [class.underline]="!isBanned">
-                <span class="pr-3">UNBANNED</span>
-                <input
-                  type="radio"
-                  id="unbanUser"
-                  name="banStatus"
-                  value="true"
-                  [checked]="!isBanned"
-                  (change)="changeBanStatus($event)" />
-              </label>
-            </div>
-          } @else if (
-            modalVisibility === 'changeUserRole' && selectedUserData !== null
-          ) {
-            <div class="flex flex-row pt-4 text-sm sm:text-base">
-              <span>Current user role:&nbsp;</span>
-              <span class="text-mainOrange font-extrabold uppercase">{{
-                selectedUserData.role
-              }}</span>
-            </div>
-            <div class="flex flex-row pt-4 text-sm sm:text-base">
-              <span>Choose new role:&nbsp;</span>
-              <select class="custom-input" (click)="setNewUserRole($event)">
-                <option value="Student">Student</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Admin">Admin</option>
+      class="relative ease-in-out duration-150 transition-all {{
+        isOptionsVisible
+          ? 'top-0 opacity-100 z-30 h-fit'
+          : '-top-16 opacity-0 -z-50 h-0'
+      }}">
+      <div
+        class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
+        <button
+          type="button"
+          *appAllowedRoles="allowedRolesAdmin"
+          (click)="banUnbanUserModal()"
+          class="dashboard-button group">
+          <span>Ban/unban some user</span>
+          <i data-feather="slash" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          *appAllowedRoles="allowedRolesAdmin"
+          (click)="changeUserRoleModal()"
+          class="dashboard-button group">
+          <span>Change role of some user</span>
+          <i data-feather="edit" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          (click)="getUserDetailsModal()"
+          class="dashboard-button group">
+          <span>Get details of some user</span>
+          <i data-feather="eye" class="dashboard-icon"></i>
+        </button>
+      </div>
+      @if (modalVisibility !== null) {
+        <app-modal (closeModal)="hideModal()">
+          <div class="flex flex-col items-start w-full font-mono">
+            <h2
+              class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
+              {{ modalTitle }}
+            </h2>
+            <div class="flex flex-col space-y-4 w-full text-sm sm:text-base">
+              <select class="custom-input" (change)="setSelectedUser($event)">
+                <option value="0">Choose one user</option>
+                @for (user of usersList; track user.id) {
+                  <option [value]="user.id">
+                    {{ user.name }}, {{ user.email }}
+                  </option>
+                }
               </select>
             </div>
-          } @else if (
-            modalVisibility === 'getUserDetails' && selectedUserData !== null
-          ) {
-            <a
-              [routerLink]="['/dashboard/user', selectedUserData.id]"
-              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-1 xs:mt-2 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
-              Check user details
-            </a>
-          }
-          @if (modalButtonText !== null) {
-            <button
-              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
-              (click)="modalButtonFunction()">
-              {{ modalButtonText }}
-            </button>
-          }
-          <button
-            (click)="hideModal()"
-            class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
-            x
-          </button>
-          <div class="text-red-500 mt-6 text-sm sm:text-base">
-            @if (errorMessage !== null) {
-              <p>{{ errorMessage }}</p>
+            @if (
+              modalVisibility === 'banUnbanUser' && selectedUserData !== null
+            ) {
+              <div
+                class="flex flex-row w-full justify-around pt-4 text-sm sm:text-base">
+                <label
+                  for="banUser"
+                  class="custom-input-red min-w-fit w-1/4 text-center flex flex-row"
+                  [class.opacity-70]="!isBanned"
+                  [class.underline]="isBanned">
+                  <span class="pr-3">BANNED</span>
+                  <input
+                    type="radio"
+                    id="banUser"
+                    name="banStatus"
+                    value="true"
+                    [checked]="isBanned"
+                    (change)="changeBanStatus($event)" />
+                </label>
+                <label
+                  for="unbanUser"
+                  class="custom-input-green min-w-fit w-1/4 text-center flex flex-row"
+                  [class.opacity-70]="isBanned"
+                  [class.underline]="!isBanned">
+                  <span class="pr-3">UNBANNED</span>
+                  <input
+                    type="radio"
+                    id="unbanUser"
+                    name="banStatus"
+                    value="true"
+                    [checked]="!isBanned"
+                    (change)="changeBanStatus($event)" />
+                </label>
+              </div>
+            } @else if (
+              modalVisibility === 'changeUserRole' && selectedUserData !== null
+            ) {
+              <div class="flex flex-row pt-4 text-sm sm:text-base">
+                <span>Current user role:&nbsp;</span>
+                <span class="text-mainOrange font-extrabold uppercase">{{
+                  selectedUserData.role
+                }}</span>
+              </div>
+              <div class="flex flex-row pt-4 text-sm sm:text-base">
+                <span>Choose new role:&nbsp;</span>
+                <select class="custom-input" (click)="setNewUserRole($event)">
+                  <option value="Student">Student</option>
+                  <option value="Teacher">Teacher</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
+            } @else if (
+              modalVisibility === 'getUserDetails' && selectedUserData !== null
+            ) {
+              <a
+                [routerLink]="['/dashboard/user', selectedUserData.id]"
+                class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-1 xs:mt-2 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base">
+                Check user details
+              </a>
             }
+            @if (modalButtonText !== null) {
+              <button
+                class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
+                (click)="modalButtonFunction()">
+                {{ modalButtonText }}
+              </button>
+            }
+            <button
+              (click)="hideModal()"
+              class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
+              x
+            </button>
+            <div class="text-red-500 mt-6 text-sm sm:text-base">
+              @if (errorMessage !== null) {
+                <p>{{ errorMessage }}</p>
+              }
+            </div>
           </div>
-        </div>
-      </app-modal>
-    }
+        </app-modal>
+      }
+    </div>
   `,
 })
 export class AdminSettingsComponent implements OnDestroy {
@@ -160,6 +174,7 @@ export class AdminSettingsComponent implements OnDestroy {
   public newUserRole: TRole = TRole.Student;
   public errorMessage: string | null = null;
   public allowedRolesAdmin: TRole[] = [TRole.Admin];
+  public isOptionsVisible = false;
 
   public modalVisibility:
     | 'banUnbanUser'
@@ -169,6 +184,10 @@ export class AdminSettingsComponent implements OnDestroy {
   public modalTitle = '';
   public modalButtonText: string | null = '';
   public modalButtonFunction!: () => void;
+
+  public showOptions(): void {
+    this.isOptionsVisible = !this.isOptionsVisible;
+  }
 
   public setSelectedUser(event: Event): void {
     const target = event.target as HTMLSelectElement;

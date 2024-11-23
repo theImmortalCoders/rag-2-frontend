@@ -16,124 +16,138 @@ import {
   standalone: true,
   imports: [ModalComponent, ReactiveFormsModule],
   template: `
-    <h1
-      class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
-      Game handling options
-    </h1>
+    <button
+      (click)="showOptions()"
+      class="flex flex-row justify-between text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
+      <span> Game handling options </span>
+      <div
+        class="flex items-center justify-center w-fit ease-in-out duration-300 transition-all {{
+          isOptionsVisible ? 'rotate-180' : 'rotate-0'
+        }}">
+        <i data-feather="chevron-down" class="size-8"></i>
+      </div>
+    </button>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
-      class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
-      <button
-        type="button"
-        (click)="addNewGameModal()"
-        class="dashboard-button group">
-        <span>Add new game to system</span>
-        <i data-feather="plus-square" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        (click)="editGameModal()"
-        class="dashboard-button group">
-        <span>Edit existing game</span>
-        <i data-feather="edit" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        (click)="removeGameModal()"
-        class="dashboard-button group">
-        <span>Remove existing game</span>
-        <i data-feather="trash-2" class="dashboard-icon"></i>
-      </button>
-    </div>
-    @if (modalVisibility !== null) {
-      <app-modal (closeModal)="hideModal()">
-        <div class="flex flex-col items-start w-full font-mono">
-          <h2
-            class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
-            {{ modalTitle }}
-          </h2>
-          <form
-            [formGroup]="gameHandlingForm"
-            class="flex flex-col space-y-4 w-full text-sm sm:text-base">
-            @if (modalVisibility === 'addNewGame') {
-              <div class="flex flex-col space-y-1">
-                <label for="newGameName" class="text-start">Game name</label>
-                <input
-                  id="newGameName"
-                  type="text"
-                  formControlName="newGameName"
-                  placeholder="Type new game name"
-                  class="custom-input" />
-                <label for="newGameDescription" class="text-start"
-                  >Game description</label
-                >
-                <textarea
-                  id="newGameDescription"
-                  type="text"
-                  formControlName="newGameDescription"
-                  placeholder="Type new game description"
-                  class="custom-input resize-none"
-                  [rows]="5"
-                  [maxlength]="280"></textarea>
-              </div>
-            } @else if (
-              (modalVisibility === 'editGame' ||
-                modalVisibility === 'removeGame') &&
-              gameList !== null
-            ) {
-              <select
-                id="selectedGameId"
-                class="custom-input"
-                (change)="setSelectedGameId($event)">
-                <option value="0">Choose existing game</option>
-                @for (game of gameList; track game.id) {
-                  <option [value]="game.id">{{ game.name }}</option>
-                }
-              </select>
-            }
-            @if (modalVisibility === 'editGame') {
-              <div class="flex flex-col space-y-1">
-                <label for="editedGameName" class="text-start"
-                  >Edited game name</label
-                >
-                <input
-                  id="editedGameName"
-                  type="text"
-                  formControlName="editedGameName"
-                  placeholder="Type edited game name"
-                  class="custom-input" />
-                <label for="editedGameDescription" class="text-start"
-                  >Edited game description</label
-                >
-                <textarea
-                  id="editedGameDescription"
-                  type="text"
-                  formControlName="editedGameDescription"
-                  placeholder="Type edited game description"
-                  class="custom-input resize-none"
-                  [rows]="5"
-                  [maxlength]="280"></textarea>
-              </div>
-            }
-          </form>
-          <button
-            class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
-            (click)="modalButtonFunction()">
-            {{ modalButtonText }}
-          </button>
-          <button
-            (click)="hideModal()"
-            class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
-            x
-          </button>
-          <div class="text-red-500 mt-6 text-sm sm:text-base">
-            @if (errorMessage !== null) {
-              <p>{{ errorMessage }}</p>
-            }
+      class="relative ease-in-out duration-150 transition-all {{
+        isOptionsVisible
+          ? 'top-0 opacity-100 z-30 h-fit'
+          : '-top-16 opacity-0 -z-50 h-0'
+      }}">
+      <div
+        class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
+        <button
+          type="button"
+          (click)="addNewGameModal()"
+          class="dashboard-button group">
+          <span>Add new game to system</span>
+          <i data-feather="plus-square" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          (click)="editGameModal()"
+          class="dashboard-button group">
+          <span>Edit existing game</span>
+          <i data-feather="edit" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          (click)="removeGameModal()"
+          class="dashboard-button group">
+          <span>Remove existing game</span>
+          <i data-feather="trash-2" class="dashboard-icon"></i>
+        </button>
+      </div>
+      @if (modalVisibility !== null) {
+        <app-modal (closeModal)="hideModal()">
+          <div class="flex flex-col items-start w-full font-mono">
+            <h2
+              class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
+              {{ modalTitle }}
+            </h2>
+            <form
+              [formGroup]="gameHandlingForm"
+              class="flex flex-col space-y-4 w-full text-sm sm:text-base">
+              @if (modalVisibility === 'addNewGame') {
+                <div class="flex flex-col space-y-1">
+                  <label for="newGameName" class="text-start">Game name</label>
+                  <input
+                    id="newGameName"
+                    type="text"
+                    formControlName="newGameName"
+                    placeholder="Type new game name"
+                    class="custom-input" />
+                  <label for="newGameDescription" class="text-start"
+                    >Game description</label
+                  >
+                  <textarea
+                    id="newGameDescription"
+                    type="text"
+                    formControlName="newGameDescription"
+                    placeholder="Type new game description"
+                    class="custom-input resize-none"
+                    [rows]="5"
+                    [maxlength]="280"></textarea>
+                </div>
+              } @else if (
+                (modalVisibility === 'editGame' ||
+                  modalVisibility === 'removeGame') &&
+                gameList !== null
+              ) {
+                <select
+                  id="selectedGameId"
+                  class="custom-input"
+                  (change)="setSelectedGameId($event)">
+                  <option value="0">Choose existing game</option>
+                  @for (game of gameList; track game.id) {
+                    <option [value]="game.id">{{ game.name }}</option>
+                  }
+                </select>
+              }
+              @if (modalVisibility === 'editGame') {
+                <div class="flex flex-col space-y-1">
+                  <label for="editedGameName" class="text-start"
+                    >Edited game name</label
+                  >
+                  <input
+                    id="editedGameName"
+                    type="text"
+                    formControlName="editedGameName"
+                    placeholder="Type edited game name"
+                    class="custom-input" />
+                  <label for="editedGameDescription" class="text-start"
+                    >Edited game description</label
+                  >
+                  <textarea
+                    id="editedGameDescription"
+                    type="text"
+                    formControlName="editedGameDescription"
+                    placeholder="Type edited game description"
+                    class="custom-input resize-none"
+                    [rows]="5"
+                    [maxlength]="280"></textarea>
+                </div>
+              }
+            </form>
+            <button
+              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
+              (click)="modalButtonFunction()">
+              {{ modalButtonText }}
+            </button>
+            <button
+              (click)="hideModal()"
+              class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
+              x
+            </button>
+            <div class="text-red-500 mt-6 text-sm sm:text-base">
+              @if (errorMessage !== null) {
+                <p>{{ errorMessage }}</p>
+              }
+            </div>
           </div>
-        </div>
-      </app-modal>
-    }
+        </app-modal>
+      }
+    </div>
   `,
 })
 export class GameHandlingOptionsComponent implements OnDestroy {
@@ -158,12 +172,17 @@ export class GameHandlingOptionsComponent implements OnDestroy {
   public gameList: IGameResponse[] | null = null;
 
   public errorMessage: string | null = null;
+  public isOptionsVisible = false;
 
   public modalVisibility: 'addNewGame' | 'editGame' | 'removeGame' | null =
     null;
   public modalTitle = '';
   public modalButtonText = '';
   public modalButtonFunction!: () => void;
+
+  public showOptions(): void {
+    this.isOptionsVisible = !this.isOptionsVisible;
+  }
 
   public setSelectedGameId(event: Event): void {
     const target = event.target as HTMLSelectElement;
