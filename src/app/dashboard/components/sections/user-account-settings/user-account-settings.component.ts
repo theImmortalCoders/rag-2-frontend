@@ -445,7 +445,6 @@ export class UserAccountSettingsComponent implements OnDestroy {
           courseId: formValues.courseId,
           group: formValues.group ? formValues.group : null,
         };
-        console.log(userInfo);
         this._editAccountSubscribtion = this._userEndpointsService
           .updateAccountInfo(userInfo)
           .subscribe({
