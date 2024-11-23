@@ -25,7 +25,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
     </h1>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
-      class="flex flex-col xs:flex-row justify-around gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-4 sm:space-x-8 w-full">
+      class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 sm:space-x-20 w-full">
       <button
         type="button"
         (click)="addNewCourseModal()"

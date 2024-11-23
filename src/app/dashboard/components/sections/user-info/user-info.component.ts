@@ -50,7 +50,7 @@ import { ProgressCircleBarComponent } from '../../shared/progress-circle-bar.com
             <h2>
               Your course of study:
               <span class="text-mainCreme">
-                {{ aboutMeUserInfo?.course }}
+                {{ aboutMeUserInfo?.course?.name }}
               </span>
             </h2>
           }

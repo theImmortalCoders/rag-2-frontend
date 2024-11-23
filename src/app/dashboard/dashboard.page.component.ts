@@ -47,14 +47,14 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
       <app-user-account-settings
         (refreshUserData)="userDataRefresh($event)"
-        class="flex flex-col px-10 w-full sm:w-fit" />
-      <app-courses-settings class="flex flex-col px-10 w-full sm:w-fit" />
+        class="flex flex-col px-10 w-full" />
+      <app-courses-settings class="flex flex-col px-10 w-full" />
       <app-game-handling-options
         *appAllowedRoles="allowedRolesAdmin"
-        class="flex flex-col px-10 w-full sm:w-fit" />
+        class="flex flex-col px-10 w-full" />
       <app-admin-settings
         *appAllowedRoles="allowedRolesAdminTeacher"
-        class="flex flex-col px-10  w-full sm:w-fit" />
+        class="flex flex-col px-10  w-full" />
     </div>
   </div>`,
 })
