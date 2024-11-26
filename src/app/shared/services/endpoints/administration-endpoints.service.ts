@@ -80,10 +80,41 @@ export class AdministrationEndpointsService {
       );
   }
 
-  public getUsers(): Observable<IUserResponse[]> {
+  // eslint-disable-next-line complexity
+  public getUsers(
+    role: TRole,
+    email?: string,
+    studyCycleYearA?: number,
+    studyCycleYearB?: number,
+    group?: string,
+    courseName?: string,
+    sortDirection?: 'Asc' | 'Desc',
+    sortBy?:
+      | 'Id'
+      | 'Email'
+      | 'Name'
+      | 'StudyCycleYearA'
+      | 'StudyCycleYearB'
+      | 'LastPlayed'
+      | 'CourseName'
+      | 'Group'
+  ): Observable<IUserResponse[]> {
+    const queryParams = new URLSearchParams({ role });
+
+    if (email) queryParams.append('email', email);
+    if (studyCycleYearA !== undefined)
+      queryParams.append('studyCycleYearA', studyCycleYearA.toString());
+    if (studyCycleYearB !== undefined)
+      queryParams.append('studyCycleYearB', studyCycleYearB.toString());
+    if (group) queryParams.append('group', group);
+    if (courseName) queryParams.append('courseName', courseName);
+    if (sortDirection) queryParams.append('sortDirection', sortDirection);
+    if (sortBy) queryParams.append('sortBy', sortBy);
+
     return this._httpClient
       .get<IUserResponse[]>(
-        environment.backendApiUrl + `/api/Administration/users`,
+        environment.backendApiUrl +
+          `/api/Administration/users?${queryParams.toString()}`,
         {
           responseType: 'json',
           headers: getAuthHeaders(),

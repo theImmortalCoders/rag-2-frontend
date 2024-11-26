@@ -234,7 +234,7 @@ export class AdminSettingsComponent implements OnDestroy {
 
   public getUsersList(): void {
     this._getUsersSubscription = this._adminEndpointsService
-      .getUsers()
+      .getUsers(TRole.Admin)
       .subscribe({
         next: (response: IUserResponse[]) => {
           this.usersList = response;
