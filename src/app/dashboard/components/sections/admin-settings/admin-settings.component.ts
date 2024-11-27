@@ -136,7 +136,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
           type="submit"
           class="flex flex-row items-center justify-center gap-x-2 font-bold bg-darkGray hover:bg-mainCreme text-mainCreme hover:text-darkGray border-2 border-mainCreme rounded-md px-2 py-1 ease-in-out duration-150 transition-all">
           <i data-feather="search" class="size-4"> </i>
-          <span>SEARCH...</span>
+          <span>APPLY FILTERS</span>
         </button>
       </form>
       @if (filteredUsers && filteredUsers.length > 0) {
@@ -165,6 +165,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
                   {{ user.role }}
                 </span>
                 <button
+                  *appAllowedRoles="allowedRolesAdmin"
                   (click)="
                     roleChangingId !== user.id
                       ? (roleChangingId = user.id)
@@ -176,6 +177,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
                   </i>
                 </button>
                 <div
+                  *appAllowedRoles="allowedRolesAdmin"
                   class="relative ease-in-out h-6 duration-150 transition-all {{
                     roleChangingId === user.id
                       ? 'left-0 w-fit opacity-100 z-10'
@@ -192,6 +194,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
                 class="flex flex-row gap-x-2 items-center justify-center w-2/12">
                 <span>{{ user.banned ? 'BANNED' : 'NOT BANNED' }}</span>
                 <button
+                  *appAllowedRoles="allowedRolesAdmin"
                   (click)="
                     banChangingId !== user.id
                       ? (banChangingId = user.id)
@@ -203,6 +206,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
                   </i>
                 </button>
                 <div
+                  *appAllowedRoles="allowedRolesAdmin"
                   class="relative ease-in-out h-6 duration-150 transition-all {{
                     banChangingId === user.id
                       ? 'left-0 w-fit opacity-100 z-10'
@@ -211,9 +215,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
                   ban
                 </div>
               </div>
-              <span class="flex justify-center w-2/12"
-                ><i data-feather="external-link" class="size-5"></i
-              ></span>
+              <span class="flex justify-center w-2/12">
+                <a
+                  [routerLink]="['/dashboard/user', user.id]"
+                  target="_blank"
+                  class="hover:text-mainOrange ease-in-out duration-150 transition-all">
+                  <i data-feather="external-link" class="size-5"></i>
+                </a>
+              </span>
             </div>
           }
         </div>
@@ -237,6 +246,7 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
 
   public filterForm!: FormGroup;
   public filteredUsers: IUserResponse[] | null = null;
+  public allowedRolesAdmin: TRole[] = [TRole.Admin];
   public errorMessage: string | null = null;
 
   public roleChangingId = -1;
@@ -287,8 +297,9 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
         next: (response: IUserResponse[]) => {
           this.filteredUsers = response;
         },
-        error: () => {
+        error: error => {
           this.filteredUsers = null;
+          this.errorMessage = error;
         },
       });
   }
