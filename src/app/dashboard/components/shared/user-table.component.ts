@@ -194,6 +194,7 @@ export class UserTableComponent implements OnDestroy {
     | 'Group'
   >();
   @Output() public sortDirectionEmitter = new EventEmitter<'Asc' | 'Desc'>();
+  @Output() public refreshUserTableEmitter = new EventEmitter<boolean>();
 
   private _adminEndpointsService = inject(AdministrationEndpointsService);
   private _notificationService = inject(NotificationService);
@@ -274,6 +275,7 @@ export class UserTableComponent implements OnDestroy {
           this.errorMessage = null;
           this.newUserRole = TRole.Student;
           this.roleChangingId = -1;
+          this.refreshUserTableEmitter.emit(true);
         },
         error: (error: string) => {
           this.errorMessage = error;
@@ -293,6 +295,7 @@ export class UserTableComponent implements OnDestroy {
           );
           this.errorMessage = null;
           this.banChangingId = -1;
+          this.refreshUserTableEmitter.emit(true);
         },
         error: (error: string) => {
           this.errorMessage = error;

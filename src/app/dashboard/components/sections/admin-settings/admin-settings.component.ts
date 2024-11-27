@@ -113,7 +113,8 @@ import { UserTableComponent } from '../../shared/user-table.component';
       <app-user-table
         [filteredUsers]="filteredUsers"
         (sortByEmitter)="sortBy = $event; applyFilters()"
-        (sortDirectionEmitter)="sortDirection = $event; applyFilters()" />
+        (sortDirectionEmitter)="sortDirection = $event; applyFilters()"
+        (refreshUserTableEmitter)="$event ? applyFilters() : null" />
       <div class="text-red-500 mt-6 text-sm sm:text-base">
         @if (errorMessage !== null) {
           <p>{{ errorMessage }}</p>
