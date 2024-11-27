@@ -43,7 +43,7 @@ import { UserTableComponent } from '../../shared/user-table.component';
       <form
         [formGroup]="filterForm"
         (ngSubmit)="applyFilters()"
-        class="w-full flex-col space-y-4 text-mainOrange pb-2">
+        class="w-full flex-col space-y-4 text-mainOrange pb-6">
         <div
           class="w-full flex flex-row gap-x-6 gap-y-2 flex-wrap justify-start">
           <div class="flex flex-col space-y-1 w-full xs:w-fit">
@@ -100,7 +100,7 @@ import { UserTableComponent } from '../../shared/user-table.component';
               placeholder="Type group" />
           </div>
         </div>
-        <div class="w-full flex flex-row gap-x-6 flex-wrap">
+        <div class="w-full flex flex-row gap-x-6 flex-wrap items-end">
           <div class="flex flex-col space-y-1 w-full xs:w-fit">
             <label for="sortDirection">Sort Direction:</label>
             <select
@@ -123,13 +123,13 @@ import { UserTableComponent } from '../../shared/user-table.component';
               <option value="Group">GROUP</option>
             </select>
           </div>
+          <button
+            type="submit"
+            class="flex flex-row h-fit items-center justify-center gap-x-2 font-bold bg-darkGray hover:bg-mainCreme text-mainCreme hover:text-darkGray border-2 border-mainCreme rounded-md px-2 py-1 ease-in-out duration-150 transition-all">
+            <i data-feather="search" class="size-4"> </i>
+            <span>APPLY FILTERS</span>
+          </button>
         </div>
-        <button
-          type="submit"
-          class="flex flex-row items-center justify-center gap-x-2 font-bold bg-darkGray hover:bg-mainCreme text-mainCreme hover:text-darkGray border-2 border-mainCreme rounded-md px-2 py-1 ease-in-out duration-150 transition-all">
-          <i data-feather="search" class="size-4"> </i>
-          <span>APPLY FILTERS</span>
-        </button>
       </form>
       <app-user-table [filteredUsers]="filteredUsers" />
       <div class="text-red-500 mt-6 text-sm sm:text-base">

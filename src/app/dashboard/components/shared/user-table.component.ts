@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Component, inject, Input, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
@@ -19,8 +20,10 @@ import { Subscription } from 'rxjs';
           <div
             class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange text-sm xs:text-base font-bold px-4 py-2">
             <span class="flex justify-center w-[5%]">No.</span>
-            <span class="flex justify-center w-[10%]">Name</span>
             <span class="flex justify-center w-2/12">Email</span>
+            <span class="flex justify-center w-[10%]">Cycle years</span>
+            <span class="flex justify-center w-[7%]">Course</span>
+            <span class="flex justify-center w-[7%]">Group</span>
             <span class="flex justify-center w-2/12">Role</span>
             <span class="flex justify-center w-2/12">Ban status</span>
             <span class="flex justify-center w-[5%]">Details</span>
@@ -31,8 +34,14 @@ import { Subscription } from 'rxjs';
                 $even ? 'bg-lightGray' : 'bg-darkGray'
               }}">
               <span class="flex justify-center w-[5%]">{{ $index + 1 }}.</span>
-              <span class="flex justify-center w-[10%]">{{ user.name }}</span>
               <span class="flex justify-center w-2/12">{{ user.email }}</span>
+              <span class="flex justify-center w-[10%]"
+                >{{ user.studyCycleYearA }}/{{ user.studyCycleYearB }}</span
+              >
+              <span class="flex justify-center w-[7%]">{{
+                user?.course?.name
+              }}</span>
+              <span class="flex justify-center w-[7%]">{{ user.group }}</span>
               <div
                 class="flex flex-row gap-x-2 items-center justify-center w-2/12">
                 <span class="uppercase">
