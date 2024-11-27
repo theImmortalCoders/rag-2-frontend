@@ -1,136 +1,144 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { of, throwError } from 'rxjs';
 import { AdminSettingsComponent } from './admin-settings.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
-import { NotificationService } from 'app/shared/services/notification.service';
-import { of, throwError } from 'rxjs';
 import { IUserResponse } from 'app/shared/models/user.models';
-import { TRole } from 'app/shared/models/role.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TRole } from 'app/shared/models/role.enum';
 
 describe('AdminSettingsComponent', () => {
   let component: AdminSettingsComponent;
   let fixture: ComponentFixture<AdminSettingsComponent>;
-  let adminServiceSpy: jasmine.SpyObj<AdministrationEndpointsService>;
-
-  const mockUser: IUserResponse = {
-    id: 1,
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    role: 'Student' as TRole,
-    studyCycleYearA: 1,
-    studyCycleYearB: 2,
-    banned: false,
-    lastPlayed: '',
-    course: { id: 1, name: '' },
-    group: 'l1',
-  };
+  let mockAdminEndpointsService: jasmine.SpyObj<AdministrationEndpointsService>;
 
   beforeEach(async () => {
-    const adminSpy = jasmine.createSpyObj('AdministrationEndpointsService', [
-      'getUsers',
-      'banStatus',
-      'changeRole',
-    ]);
-    const notificationSpy = jasmine.createSpyObj('NotificationService', [
-      'addNotification',
-    ]);
+    mockAdminEndpointsService = jasmine.createSpyObj(
+      'AdministrationEndpointsService',
+      ['getUsers']
+    );
 
     await TestBed.configureTestingModule({
-      imports: [AdminSettingsComponent, HttpClientTestingModule],
+      imports: [
+        AdminSettingsComponent,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+      ],
       providers: [
-        { provide: AdministrationEndpointsService, useValue: adminSpy },
-        { provide: NotificationService, useValue: notificationSpy },
+        {
+          provide: AdministrationEndpointsService,
+          useValue: mockAdminEndpointsService,
+        },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminSettingsComponent);
     component = fixture.componentInstance;
 
-    adminServiceSpy = TestBed.inject(
-      AdministrationEndpointsService
-    ) as jasmine.SpyObj<AdministrationEndpointsService>;
-
-    fixture.detectChanges();
+    // Mock the subscription response
+    mockAdminEndpointsService.getUsers.and.returnValue(of([]));
   });
 
-  it('should create the component', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load users list when banUnbanUserModal is called', () => {
-    adminServiceSpy.getUsers.and.returnValue(of([mockUser]));
-    component.banUnbanUserModal();
-    expect(adminServiceSpy.getUsers).toHaveBeenCalled();
-    expect(component.modalVisibility).toBe('banUnbanUser');
-    expect(component.modalTitle).toBe('Changing ban status of user');
-    expect(component.modalButtonText).toBe('Set ban status');
-    expect(component.usersList).toEqual([mockUser]);
+  describe('ngOnInit', () => {
+    it('should initialize with users fetched', () => {
+      const mockUsers: IUserResponse[] = [
+        { id: 1, email: 'test@example.com' } as IUserResponse,
+      ];
+      mockAdminEndpointsService.getUsers.and.returnValue(of(mockUsers));
+
+      component.ngOnInit();
+
+      expect(mockAdminEndpointsService.getUsers).toHaveBeenCalled();
+      expect(component.filteredUsers).toEqual(mockUsers);
+      expect(component.errorMessage).toBeNull();
+    });
+
+    it('should handle error when fetching users', () => {
+      const errorMessage = 'Error fetching users';
+      mockAdminEndpointsService.getUsers.and.returnValue(
+        throwError(() => errorMessage)
+      );
+
+      component.ngOnInit();
+
+      expect(mockAdminEndpointsService.getUsers).toHaveBeenCalled();
+      expect(component.filteredUsers).toBeNull();
+      expect(component.errorMessage).toEqual(errorMessage);
+    });
   });
 
-  it('should update ban status and show notification', () => {
-    component.selectedUserData = mockUser;
-    component.isBanned = true;
-    adminServiceSpy.banStatus.and.returnValue(of());
+  describe('showOptions', () => {
+    it('should toggle isOptionsVisible and emit the event if visible', () => {
+      spyOn(component.optionsVisibleEmitter, 'emit');
 
-    component.banUnbanUserFunction();
-    expect(adminServiceSpy.banStatus).toHaveBeenCalledWith(mockUser.id, true);
-    expect(component.modalVisibility).toBeNull();
+      component.showOptions();
+      expect(component.isOptionsVisible).toBeTrue();
+      expect(component.optionsVisibleEmitter.emit).toHaveBeenCalledWith(
+        'admin'
+      );
+
+      component.showOptions();
+      expect(component.isOptionsVisible).toBeFalse();
+    });
   });
 
-  it('should display an error message if changing ban status fails', () => {
-    adminServiceSpy.banStatus.and.returnValue(
-      throwError('Error changing status')
-    );
-    component.selectedUserData = mockUser;
-    component.isBanned = true;
+  describe('applyFilters', () => {
+    it('should apply filters and fetch filtered users', () => {
+      const mockUsers: IUserResponse[] = [
+        { id: 2, email: 'filtered@example.com' } as IUserResponse,
+      ];
+      mockAdminEndpointsService.getUsers.and.returnValue(of(mockUsers));
 
-    component.banUnbanUserFunction();
-    expect(component.errorMessage).toBe('Error changing status');
+      component.filterForm.setValue({
+        role: 'Student',
+        email: 'test@example.com',
+        studyCycleYearA: null,
+        studyCycleYearB: null,
+        group: '',
+        courseName: '',
+      });
+
+      component.applyFilters();
+
+      expect(mockAdminEndpointsService.getUsers).toHaveBeenCalledWith(
+        'Student' as TRole,
+        'test@example.com',
+        undefined,
+        undefined,
+        '',
+        '',
+        'Asc',
+        'Email'
+      );
+      expect(component.filteredUsers).toEqual(mockUsers);
+      expect(component.errorMessage).toBeNull();
+    });
+
+    it('should handle error when applying filters', () => {
+      const errorMessage = 'Error applying filters';
+      mockAdminEndpointsService.getUsers.and.returnValue(
+        throwError(() => errorMessage)
+      );
+
+      component.applyFilters();
+
+      expect(mockAdminEndpointsService.getUsers).toHaveBeenCalled();
+      expect(component.filteredUsers).toBeNull();
+      expect(component.errorMessage).toEqual(errorMessage);
+    });
   });
 
-  it('should update user role and show notification', () => {
-    component.selectedUserData = mockUser;
-    component.newUserRole = TRole.Admin;
-    adminServiceSpy.changeRole.and.returnValue(of());
+  describe('ngOnDestroy', () => {
+    it('should unsubscribe from getUsersSubscription', () => {
+      spyOn(component['_getUsersSubscription'], 'unsubscribe');
 
-    component.changeUserRoleFunction();
-    expect(adminServiceSpy.changeRole).toHaveBeenCalledWith(
-      mockUser.id,
-      TRole.Admin
-    );
-    expect(component.modalVisibility).toBeNull();
-  });
+      component.ngOnDestroy();
 
-  it('should set error message if role change fails', () => {
-    adminServiceSpy.changeRole.and.returnValue(
-      throwError('Error changing role')
-    );
-    component.selectedUserData = mockUser;
-    component.newUserRole = TRole.Admin;
-
-    component.changeUserRoleFunction();
-    expect(component.errorMessage).toBe('Error changing role');
-  });
-
-  it('should hide modal and reset selected user data when hideModal is called', () => {
-    component.modalVisibility = 'banUnbanUser';
-    component.selectedUserData = mockUser;
-
-    component.hideModal();
-    expect(component.modalVisibility).toBeNull();
-    expect(component.selectedUserData).toBeNull();
-  });
-
-  it('should unsubscribe from all subscriptions on component destroy', () => {
-    const subscriptionSpy = jasmine.createSpyObj('Subscription', [
-      'unsubscribe',
-    ]);
-    component['_getUsersSubscription'] = subscriptionSpy;
-    component['_getUserStatsSubscription'] = subscriptionSpy;
-    component['_changeBanStatusSubscription'] = subscriptionSpy;
-    component['_changeRoleSubscription'] = subscriptionSpy;
-
-    component.ngOnDestroy();
-    expect(subscriptionSpy.unsubscribe).toHaveBeenCalledTimes(4);
+      expect(component['_getUsersSubscription'].unsubscribe).toHaveBeenCalled();
+    });
   });
 });
