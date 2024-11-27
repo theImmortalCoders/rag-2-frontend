@@ -6,6 +6,7 @@ import {
   inject,
   Input,
   OnDestroy,
+  OnInit,
   Output,
 } from '@angular/core';
 import * as feather from 'feather-icons';
@@ -121,7 +122,9 @@ import { UserTableComponent } from '../../shared/user-table.component';
     </div>
   `,
 })
-export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
+export class AdminSettingsComponent
+  implements OnInit, AfterViewChecked, OnDestroy
+{
   @Input({ required: true }) public isOptionsVisible = false;
   @Output() public optionsVisibleEmitter = new EventEmitter<string>();
 
@@ -154,6 +157,29 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
     });
   }
 
+  public ngOnInit(): void {
+    this._getUsersSubscription = this._adminEndpointsService
+      .getUsers(
+        TRole.Student,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        this.sortDirection,
+        this.sortBy
+      )
+      .subscribe({
+        next: (response: IUserResponse[]) => {
+          this.filteredUsers = response;
+        },
+        error: error => {
+          this.filteredUsers = null;
+          this.errorMessage = error;
+        },
+      });
+  }
+
   public ngAfterViewChecked(): void {
     feather.replace(); //dodane, żeby feather-icons na nowo dodało się do DOM w pętli
   }
@@ -167,7 +193,6 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
 
   public applyFilters(): void {
     const filters = this.filterForm.value;
-    console.log(this.sortDirection, this.sortBy);
     this._getUsersSubscription = this._adminEndpointsService
       .getUsers(
         filters.role,
