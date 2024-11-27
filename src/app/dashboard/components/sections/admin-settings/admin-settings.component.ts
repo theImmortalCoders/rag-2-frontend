@@ -101,37 +101,18 @@ import { UserTableComponent } from '../../shared/user-table.component';
           </div>
         </div>
         <div class="w-full flex flex-row gap-x-6 flex-wrap items-end">
-          <div class="flex flex-col space-y-1 w-full xs:w-fit">
-            <label for="sortDirection">Sort Direction:</label>
-            <select
-              id="sortDirection"
-              formControlName="sortDirection"
-              class="custom-input">
-              <option value="Asc">ASCENDING</option>
-              <option value="Desc">DESCENDING</option>
-            </select>
-          </div>
-          <div class="flex flex-col space-y-1 w-full xs:w-fit">
-            <label for="sortBy">Sort By:</label>
-            <select id="sortBy" formControlName="sortBy" class="custom-input">
-              <option value="Email">EMAIL</option>
-              <option value="Name">NAME</option>
-              <option value="StudyYearCycleA">STUDY CYCLE YEAR A</option>
-              <option value="StudyYearCycleB">STUDY CYCLE YEAR B</option>
-              <option value="LastPlayed">LAST PLAYED</option>
-              <option value="CourseName">COURSE NAME</option>
-              <option value="Group">GROUP</option>
-            </select>
-          </div>
           <button
             type="submit"
-            class="flex flex-row h-fit items-center justify-center gap-x-2 font-bold bg-darkGray hover:bg-mainCreme text-mainCreme hover:text-darkGray border-2 border-mainCreme rounded-md px-2 py-1 ease-in-out duration-150 transition-all">
+            class="flex flex-row h-fit w-full xs:w-60 items-center justify-center gap-x-2 font-bold bg-darkGray hover:bg-mainCreme text-mainCreme hover:text-darkGray border-2 border-mainCreme rounded-md px-2 py-1 ease-in-out duration-150 transition-all">
             <i data-feather="search" class="size-4"> </i>
             <span>APPLY FILTERS</span>
           </button>
         </div>
       </form>
-      <app-user-table [filteredUsers]="filteredUsers" />
+      <app-user-table
+        [filteredUsers]="filteredUsers"
+        (sortByEmitter)="sortBy = $event; applyFilters()"
+        (sortDirectionEmitter)="sortDirection = $event; applyFilters()" />
       <div class="text-red-500 mt-6 text-sm sm:text-base">
         @if (errorMessage !== null) {
           <p>{{ errorMessage }}</p>
@@ -151,6 +132,17 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
   public filteredUsers: IUserResponse[] | null = null;
   public errorMessage: string | null = null;
 
+  public sortBy:
+    | 'Id'
+    | 'Email'
+    | 'Name'
+    | 'StudyYearCycleA'
+    | 'StudyYearCycleB'
+    | 'LastPlayed'
+    | 'CourseName'
+    | 'Group' = 'Email';
+  public sortDirection: 'Asc' | 'Desc' = 'Asc';
+
   public constructor(private _fb: FormBuilder) {
     this.filterForm = this._fb.group({
       role: [TRole.Student],
@@ -159,8 +151,6 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
       studyCycleYearB: [''],
       group: [''],
       courseName: [''],
-      sortDirection: ['Asc'],
-      sortBy: ['Email'],
     });
   }
 
@@ -177,6 +167,7 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
 
   public applyFilters(): void {
     const filters = this.filterForm.value;
+    console.log(this.sortDirection, this.sortBy);
     this._getUsersSubscription = this._adminEndpointsService
       .getUsers(
         filters.role,
@@ -189,8 +180,8 @@ export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
           : filters.studyCycleYearB,
         filters.group,
         filters.courseName,
-        filters.sortDirection,
-        filters.sortBy
+        this.sortDirection,
+        this.sortBy
       )
       .subscribe({
         next: (response: IUserResponse[]) => {

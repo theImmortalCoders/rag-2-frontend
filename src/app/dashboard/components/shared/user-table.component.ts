@@ -1,5 +1,12 @@
 /* eslint-disable max-lines */
-import { Component, inject, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
@@ -16,17 +23,65 @@ import { Subscription } from 'rxjs';
     @if (filteredUsers && filteredUsers.length > 0) {
       <div class="w-full overflow-x-auto border-mainOrange border-2">
         <div
-          class="flex flex-col min-w-[44rem] w-full justify-around space-y-0 font-mono">
+          class="flex flex-col min-w-[66rem] w-full justify-around space-y-0 font-mono">
           <div
             class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange text-sm xs:text-base font-bold px-4 py-2">
-            <span class="flex justify-center w-[5%]">No.</span>
-            <span class="flex justify-center w-2/12">Email</span>
-            <span class="flex justify-center w-[10%]">Cycle years</span>
-            <span class="flex justify-center w-[7%]">Course</span>
-            <span class="flex justify-center w-[7%]">Group</span>
-            <span class="flex justify-center w-2/12">Role</span>
-            <span class="flex justify-center w-2/12">Ban status</span>
-            <span class="flex justify-center w-[5%]">Details</span>
+            <span class="flex items-center justify-center w-[5%]">No.</span>
+            <div
+              class="flex flex-row gap-x-1 items-center justify-center w-2/12">
+              <button (click)="setSortingBy('Email')">Email</button>
+              @if (sortBy === 'Email') {
+                <span
+                  class="ease-in-out duration-150 transition-all {{
+                    sortDirection === 'Desc' ? 'rotate-180' : ''
+                  }}">
+                  <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              }
+            </div>
+            <div
+              class="flex flex-row gap-x-1 items-center justify-center w-[10%]">
+              <button (click)="setSortingBy('StudyYearCycleA')">
+                Cycle years
+              </button>
+              @if (sortBy === 'StudyYearCycleA') {
+                <span
+                  class="ease-in-out duration-150 transition-all {{
+                    sortDirection === 'Desc' ? 'rotate-180' : ''
+                  }}">
+                  <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              }
+            </div>
+            <div
+              class="flex flex-row gap-x-1 items-center justify-center w-[7%]">
+              <button (click)="setSortingBy('CourseName')">Course</button>
+              @if (sortBy === 'CourseName') {
+                <span
+                  class="ease-in-out duration-150 transition-all {{
+                    sortDirection === 'Desc' ? 'rotate-180' : ''
+                  }}">
+                  <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              }
+            </div>
+            <div
+              class="flex flex-row gap-x-1 items-center justify-center w-[7%]">
+              <button (click)="setSortingBy('Group')">Group</button>
+              @if (sortBy === 'Group') {
+                <span
+                  class="ease-in-out duration-150 transition-all {{
+                    sortDirection === 'Desc' ? 'rotate-180' : ''
+                  }}">
+                  <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              }
+            </div>
+            <span class="flex items-center justify-center w-2/12">Role</span>
+            <span class="flex items-center justify-center w-2/12"
+              >Ban status</span
+            >
+            <span class="flex items-center justify-center w-[5%]">Details</span>
           </div>
           @for (user of filteredUsers; track user.id) {
             <div
@@ -128,6 +183,17 @@ import { Subscription } from 'rxjs';
 export class UserTableComponent implements OnDestroy {
   @Input({ required: true }) public filteredUsers: IUserResponse[] | null =
     null;
+  @Output() public sortByEmitter = new EventEmitter<
+    | 'Id'
+    | 'Email'
+    | 'Name'
+    | 'StudyYearCycleA'
+    | 'StudyYearCycleB'
+    | 'LastPlayed'
+    | 'CourseName'
+    | 'Group'
+  >();
+  @Output() public sortDirectionEmitter = new EventEmitter<'Asc' | 'Desc'>();
 
   private _adminEndpointsService = inject(AdministrationEndpointsService);
   private _notificationService = inject(NotificationService);
@@ -138,9 +204,41 @@ export class UserTableComponent implements OnDestroy {
   public allowedRolesAdmin: TRole[] = [TRole.Admin];
   public errorMessage: string | null = null;
 
+  public sortBy:
+    | 'Id'
+    | 'Email'
+    | 'Name'
+    | 'StudyYearCycleA'
+    | 'StudyYearCycleB'
+    | 'LastPlayed'
+    | 'CourseName'
+    | 'Group' = 'Email';
+  public sortDirection: 'Asc' | 'Desc' = 'Asc';
+
   public roleChangingId = -1;
   public newUserRole = TRole.Student;
   public banChangingId = -1;
+
+  public setSortingBy(
+    value:
+      | 'Id'
+      | 'Email'
+      | 'Name'
+      | 'StudyYearCycleA'
+      | 'StudyYearCycleB'
+      | 'LastPlayed'
+      | 'CourseName'
+      | 'Group'
+  ): void {
+    if (this.sortBy === value && this.sortDirection === 'Asc') {
+      this.sortDirection = 'Desc';
+    } else {
+      this.sortDirection = 'Asc';
+    }
+    this.sortBy = value;
+    this.sortByEmitter.emit(this.sortBy);
+    this.sortDirectionEmitter.emit(this.sortDirection);
+  }
 
   public setNewRoleUserId(id: number): void {
     if (this.roleChangingId !== id) {
