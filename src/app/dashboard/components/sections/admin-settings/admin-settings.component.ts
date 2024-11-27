@@ -22,7 +22,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   selector: 'app-admin-settings',
   standalone: true,
   imports: [
-    ModalComponent,
     CommonModule,
     AllowedRolesDirective,
     RouterLink,
@@ -186,8 +185,12 @@ export class AdminSettingsComponent implements OnDestroy {
       .getUsers(
         filters.role,
         filters.email,
-        filters.studyCycleYearA === null ? '' : filters.studyCycleYearA,
-        filters.studyCycleYearB === null ? '' : filters.studyCycleYearB,
+        filters.studyCycleYearA === null || !filters.studyCycleYearA
+          ? undefined
+          : filters.studyCycleYearA,
+        filters.studyCycleYearB === null || !filters.studyCycleYearB
+          ? undefined
+          : filters.studyCycleYearB,
         filters.group,
         filters.courseName,
         filters.sortDirection,
