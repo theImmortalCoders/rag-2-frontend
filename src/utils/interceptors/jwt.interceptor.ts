@@ -6,7 +6,6 @@ import {
 } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
-import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Observable, catchError, throwError, switchMap } from 'rxjs';
 
