@@ -75,7 +75,7 @@ module.exports = {
     function ({ addUtilities }) {
       addUtilities({
         '.custom-input': {
-          '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray selection:bg-lightGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-500 focus:outline-none focus:border-mainOrange':
+          '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray selection:bg-lightGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-500 focus:outline-none focus:border-mainOrange h-[1.85rem] xs:h-[2.1rem]':
             {},
         },
         '.custom-input-green': {
