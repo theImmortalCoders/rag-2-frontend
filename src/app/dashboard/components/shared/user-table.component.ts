@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
   imports: [RouterLink, AllowedRolesDirective],
   template: `
     @if (filteredUsers && filteredUsers.length > 0) {
-      <div class="w-full overflow-x-auto border-mainOrange border-2">
+      <div class="w-full overflow-auto max-h-96 border-mainOrange border-2">
         <div
           class="flex flex-col min-w-[66rem] w-full justify-around space-y-0 font-mono">
           <div

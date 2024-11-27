@@ -33,7 +33,7 @@ import { RecordedGameTableComponent } from '../../shared/recorded-game-table.com
       [recordedGamesData]="recordedGamesData"
       (downloadEmitter)="downloadGameRecord($event)"
       (deleteEmitter)="deleteGameRecord($event)"
-      class="w-full overflow-x-auto border-mainOrange border-2" />
+      class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
     @if (errorMessage !== null) {
       <div class="text-red-500 mt-6">
         <p>{{ errorMessage }}</p>
