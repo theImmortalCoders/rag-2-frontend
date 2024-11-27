@@ -78,6 +78,10 @@ module.exports = {
           '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray selection:bg-lightGray text-sm xs:text-base text-mainCreme transition-all ease-in-out duration-500 focus:outline-none focus:border-mainOrange h-[1.85rem] xs:h-[2.1rem]':
             {},
         },
+        '.custom-input-small': {
+          '@apply border-[1px] border-mainCreme rounded-md px-2 py-1 bg-mainGray selection:bg-lightGray text-xs xs:text-sm text-mainCreme transition-all ease-in-out duration-500 focus:outline-none focus:border-mainOrange':
+            {},
+        },
         '.custom-input-green': {
           '@apply border-[1px] border-green-700 rounded-md px-2 py-1 bg-mainGray text-sm xs:text-base text-green-700 transition-all ease-in-out duration-700 focus:outline-none focus:border-mainOrange':
             {},

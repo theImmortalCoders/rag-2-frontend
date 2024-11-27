@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
 import {
+  AfterViewChecked,
   Component,
   EventEmitter,
   inject,
@@ -7,7 +8,7 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { ModalComponent } from '../../shared/modal.component';
+import * as feather from 'feather-icons';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
@@ -49,7 +50,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
       <form
         [formGroup]="filterForm"
         (ngSubmit)="applyFilters()"
-        class="w-full flex-col space-y-4 text-mainOrange">
+        class="w-full flex-col space-y-4 text-mainOrange pb-2">
         <div
           class="w-full flex flex-row gap-x-6 gap-y-2 flex-wrap justify-start">
           <div class="flex flex-col space-y-1 w-full xs:w-fit">
@@ -118,7 +119,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
               <option value="Desc">DESCENDING</option>
             </select>
           </div>
-
           <div class="flex flex-col space-y-1 w-full xs:w-fit">
             <label for="sortBy">Sort By:</label>
             <select id="sortBy" formControlName="sortBy" class="custom-input">
@@ -132,18 +132,98 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
             </select>
           </div>
         </div>
-
-        <button type="submit">Apply Filters</button>
+        <button
+          type="submit"
+          class="flex flex-row items-center justify-center gap-x-2 font-bold bg-darkGray hover:bg-mainCreme text-mainCreme hover:text-darkGray border-2 border-mainCreme rounded-md px-2 py-1 ease-in-out duration-150 transition-all">
+          <i data-feather="search" class="size-4"> </i>
+          <span>SEARCH...</span>
+        </button>
       </form>
-      <ul>
-        @for (user of filteredUsers; track user.id) {
-          <li>{{ user.email }}</li>
-        }
-      </ul>
+      @if (filteredUsers && filteredUsers.length > 0) {
+        <div
+          class="flex flex-col min-w-[44rem] w-full justify-around space-y-0 font-mono">
+          <div
+            class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange text-sm xs:text-base font-bold px-4 py-2">
+            <span class="flex justify-center w-[5%]">No.</span>
+            <span class="flex justify-center w-2/12">Name</span>
+            <span class="flex justify-center w-2/12">Email</span>
+            <span class="flex justify-center w-2/12">Role</span>
+            <span class="flex justify-center w-2/12">Ban status</span>
+            <span class="flex justify-center w-2/12">Check details</span>
+          </div>
+          @for (user of filteredUsers; track user.id) {
+            <div
+              class="flex flex-row space-x-4 justify-between px-4 py-2 text-mainCreme text-sm xs:text-base opacity-80 hover:opacity-100 {{
+                $even ? 'bg-lightGray' : 'bg-darkGray'
+              }}">
+              <span class="flex justify-center w-[5%]">{{ $index + 1 }}.</span>
+              <span class="flex justify-center w-2/12">{{ user.name }}</span>
+              <span class="flex justify-center w-2/12">{{ user.email }}</span>
+              <div
+                class="flex flex-row gap-x-2 items-center justify-center w-2/12">
+                <span class="uppercase">
+                  {{ user.role }}
+                </span>
+                <button
+                  (click)="
+                    roleChangingId !== user.id
+                      ? (roleChangingId = user.id)
+                      : (roleChangingId = -1)
+                  ">
+                  <i
+                    data-feather="settings"
+                    class="size-4 hover:scale-125 hover:rotate-90 hover:text-mainOrange ease-in-out transition-transform duration-300">
+                  </i>
+                </button>
+                <div
+                  class="relative ease-in-out h-6 duration-150 transition-all {{
+                    roleChangingId === user.id
+                      ? 'left-0 w-fit opacity-100 z-10'
+                      : '-left-32 xs:-left-16 w-0 text-nowrap opacity-0 -z-50'
+                  }}">
+                  <select class="custom-input-small">
+                    <option value="Student">STUDENT</option>
+                    <option value="Teacher">TEACHER</option>
+                    <option value="Admin">ADMIN</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="flex flex-row gap-x-2 items-center justify-center w-2/12">
+                <span>{{ user.banned ? 'BANNED' : 'NOT BANNED' }}</span>
+                <button
+                  (click)="
+                    banChangingId !== user.id
+                      ? (banChangingId = user.id)
+                      : (banChangingId = -1)
+                  ">
+                  <i
+                    data-feather="settings"
+                    class="size-4 hover:scale-125 hover:rotate-90 hover:text-mainOrange ease-in-out transition-transform duration-300">
+                  </i>
+                </button>
+                <div
+                  class="relative ease-in-out h-6 duration-150 transition-all {{
+                    banChangingId === user.id
+                      ? 'left-0 w-fit opacity-100 z-10'
+                      : '-left-32 xs:-left-16 w-0 text-nowrap opacity-0 -z-50'
+                  }}">
+                  ban
+                </div>
+              </div>
+              <span class="flex justify-center w-2/12"
+                ><i data-feather="external-link" class="size-5"></i
+              ></span>
+            </div>
+          }
+        </div>
+      } @else {
+        <span class="w-full text-mainOrange">No users found.</span>
+      }
     </div>
   `,
 })
-export class AdminSettingsComponent implements OnDestroy {
+export class AdminSettingsComponent implements AfterViewChecked, OnDestroy {
   @Input({ required: true }) public isOptionsVisible = false;
   @Output() public optionsVisibleEmitter = new EventEmitter<string>();
 
@@ -159,6 +239,9 @@ export class AdminSettingsComponent implements OnDestroy {
   public filteredUsers: IUserResponse[] | null = null;
   public errorMessage: string | null = null;
 
+  public roleChangingId = -1;
+  public banChangingId = -1;
+
   public constructor(private _fb: FormBuilder) {
     this.filterForm = this._fb.group({
       role: [TRole.Student],
@@ -170,6 +253,10 @@ export class AdminSettingsComponent implements OnDestroy {
       sortDirection: ['Asc'],
       sortBy: ['Email'],
     });
+  }
+
+  public ngAfterViewChecked(): void {
+    feather.replace(); //dodane, żeby feather-icons na nowo dodało się do DOM w pętli
   }
 
   public showOptions(): void {
