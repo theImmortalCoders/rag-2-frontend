@@ -26,8 +26,30 @@ import { LoadingSpinnerComponent } from '../../../shared/components/common/loadi
             <span class="flex justify-center w-[5%]">No.</span>
             <span class="flex justify-center w-2/12">Game name</span>
             <span class="flex justify-center w-3/12">Game start date</span>
-            <span class="flex justify-center w-3/12">Game end date</span>
-            <span class="flex justify-center w-1/12">Size</span>
+            <div
+              class="flex flex-row gap-x-1 items-center justify-center w-3/12">
+              <button (click)="setSortingBy('Ended')">Game end date</button>
+              @if (sortBy === 'Ended') {
+                <span
+                  class="ease-in-out duration-150 transition-all {{
+                    sortDirection === 'Desc' ? 'rotate-180' : ''
+                  }}">
+                  <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              }
+            </div>
+            <button
+              class="flex flex-row gap-x-1 items-center justify-center w-1/12">
+              <button (click)="setSortingBy('SizeMb')">Size</button>
+              @if (sortBy === 'SizeMb') {
+                <span
+                  class="ease-in-out duration-150 transition-all {{
+                    sortDirection === 'Desc' ? 'rotate-180' : ''
+                  }}">
+                  <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              }
+            </button>
             <span class="flex justify-center w-1/12">Download</span>
             <span class="flex justify-center w-1/12">Delete</span>
           </div>
@@ -82,8 +104,24 @@ export class RecordedGameTableComponent implements OnChanges {
     | null = null;
   @Output() public downloadEmitter = new EventEmitter<number>();
   @Output() public deleteEmitter = new EventEmitter<number>();
+  @Output() public sortByEmitter = new EventEmitter<'Ended' | 'SizeMb'>();
+  @Output() public sortDirectionEmitter = new EventEmitter<'Asc' | 'Desc'>();
 
   public isLoadingNeeded = true;
+
+  public sortBy: 'Ended' | 'SizeMb' = 'Ended';
+  public sortDirection: 'Asc' | 'Desc' = 'Asc';
+
+  public setSortingBy(value: 'Ended' | 'SizeMb'): void {
+    if (this.sortBy === value && this.sortDirection === 'Asc') {
+      this.sortDirection = 'Desc';
+    } else {
+      this.sortDirection = 'Asc';
+    }
+    this.sortBy = value;
+    this.sortByEmitter.emit(this.sortBy);
+    this.sortDirectionEmitter.emit(this.sortDirection);
+  }
 
   public ngOnChanges(): void {
     if (this.recordedGamesData === null) {

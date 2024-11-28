@@ -121,6 +121,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
           [recordedGamesData]="recordedGamesData"
           (downloadEmitter)="downloadGameRecord($event)"
           (deleteEmitter)="deleteGameRecord($event)"
+          (sortByEmitter)="sortBy = $event; applyFilters()"
+          (sortDirectionEmitter)="sortDirection = $event; applyFilters()"
           class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
       } @else {
         <span class="w-full text-mainOrange">No records found.</span>
@@ -153,6 +155,9 @@ export class UserDetailsComponent
   public errorMessage: string | null = null;
 
   public filterForm!: FormGroup;
+
+  public sortBy: 'Ended' | 'SizeMb' = 'Ended';
+  public sortDirection: 'Asc' | 'Desc' = 'Asc';
 
   public userInfo: IUserResponse | null = null;
   public userStats: IUserStatsResponse | null = null;
@@ -226,8 +231,8 @@ export class UserDetailsComponent
         filters.isEmptyRecord,
         filters.endDateFrom,
         filters.endDateTo,
-        'Asc',
-        'Id'
+        this.sortDirection,
+        this.sortBy
       )
       .subscribe({
         next: response => {

@@ -27,7 +27,7 @@ export class GameRecordEndpointsService {
     endDateFrom?: string,
     endDateTo?: string,
     sortDirection?: 'Asc' | 'Desc',
-    sortBy?: 'Id' | 'Ended' | 'SizeMb'
+    sortBy?: 'Ended' | 'SizeMb'
   ): Observable<IRecordedGameResponse[]> {
     const queryParams = new URLSearchParams();
     queryParams.append('gameId', gameId.toString());
@@ -40,6 +40,7 @@ export class GameRecordEndpointsService {
     if (sortBy) queryParams.append('sortBy', sortBy);
     if (sortDirection) queryParams.append('sortDirection', sortDirection);
 
+    console.log(queryParams.toString());
     return this._httpClient
       .get<IRecordedGameResponse[]>(
         environment.backendApiUrl + `/api/GameRecord?${queryParams.toString()}`,
