@@ -22,12 +22,27 @@ export class GameRecordEndpointsService {
 
   public getAllRecordedGames(
     gameId: number,
-    userId: number
+    userId: number,
+    isEmptyRecord?: boolean,
+    endDateFrom?: string,
+    endDateTo?: string,
+    sortDirection?: 'Asc' | 'Desc',
+    sortBy?: 'Id' | 'Ended' | 'SizeMb'
   ): Observable<IRecordedGameResponse[]> {
+    const queryParams = new URLSearchParams();
+    queryParams.append('gameId', gameId.toString());
+    queryParams.append('userId', userId.toString());
+
+    if (isEmptyRecord)
+      queryParams.append('isEmptyRecord', isEmptyRecord.toString());
+    if (endDateFrom) queryParams.append('endDateFrom', endDateFrom);
+    if (endDateTo) queryParams.append('endDateTo', endDateTo);
+    if (sortBy) queryParams.append('sortBy', sortBy);
+    if (sortDirection) queryParams.append('sortDirection', sortDirection);
+
     return this._httpClient
       .get<IRecordedGameResponse[]>(
-        environment.backendApiUrl +
-          `/api/GameRecord?gameId=${gameId}&userId=${userId}`,
+        environment.backendApiUrl + `/api/GameRecord?${queryParams.toString()}`,
         {
           headers: getAuthHeaders(),
           responseType: 'json',

@@ -23,6 +23,7 @@ import {
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { ProgressCircleBarComponent } from '../components/shared/progress-circle-bar.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-details',
@@ -31,6 +32,7 @@ import { ProgressCircleBarComponent } from '../components/shared/progress-circle
     RecordedGameTableComponent,
     SelectedUserInfoComponent,
     ProgressCircleBarComponent,
+    ReactiveFormsModule,
   ],
   template: `
     <div class="flex flex-col px-10 pt-6 pb-12 xl:pt-14">
@@ -60,11 +62,72 @@ import { ProgressCircleBarComponent } from '../components/shared/progress-circle
         Recorded games:
       </h1>
       <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
-      <app-recorded-game-table
-        [recordedGamesData]="recordedGamesData"
-        (downloadEmitter)="downloadGameRecord($event)"
-        (deleteEmitter)="deleteGameRecord($event)"
-        class="w-full overflow-x-auto border-mainOrange border-2" />
+      <form
+        [formGroup]="filterForm"
+        (ngSubmit)="applyFilters()"
+        class="w-full flex-col space-y-4 text-mainOrange pb-6 font-mono">
+        <div
+          class="w-full flex flex-row gap-x-6 gap-y-2 flex-wrap justify-start">
+          <div class="flex flex-col space-y-1 w-full xs:w-fit">
+            <label for="gameId">Game:</label>
+            <select
+              id="gameId"
+              formControlName="gameId"
+              class="custom-input uppercase">
+              @for (game of avalaibleGamesList; track game.id) {
+                <option [value]="game.id" class="uppercase">
+                  {{ game.name }}
+                </option>
+              }
+            </select>
+          </div>
+          <div class="flex flex-col space-y-1 w-full xs:w-fit">
+            <label for="endDateFrom">Game end date from:</label>
+            <input
+              id="endDateFrom"
+              type="datetime-local"
+              formControlName="endDateFrom"
+              class="custom-input"
+              placeholder="Type endDateFrom" />
+          </div>
+          <div class="flex flex-col space-y-1 w-full xs:w-fit">
+            <label for="endDateTo">Game end date to:</label>
+            <input
+              id="endDateTo"
+              type="datetime-local"
+              formControlName="endDateTo"
+              class="custom-input"
+              placeholder="Type endDateTo" />
+          </div>
+          <div class="flex flex-col space-y-1 w-full xs:w-fit">
+            <label for="isEmptyRecord">Only empty records:</label>
+            <span class="h-1">&nbsp;</span>
+            <input
+              id="isEmptyRecord"
+              type="checkbox"
+              formControlName="isEmptyRecord"
+              class="accent-mainOrange h-5 pt-6"
+              placeholder="Type isEmptyRecord" />
+          </div>
+        </div>
+        <div class="w-full flex flex-row gap-x-6 flex-wrap items-end">
+          <button
+            type="submit"
+            class="flex flex-row h-fit w-full xs:w-60 items-center justify-center gap-x-2 font-bold bg-darkGray hover:bg-mainCreme text-mainCreme hover:text-darkGray border-2 border-mainCreme rounded-md px-2 py-1 ease-in-out duration-150 transition-all">
+            <i data-feather="search" class="size-4"> </i>
+            <span>APPLY FILTERS</span>
+          </button>
+        </div>
+      </form>
+      @if (recordedGamesData && recordedGamesData.length > 0) {
+        <app-recorded-game-table
+          [recordedGamesData]="recordedGamesData"
+          (downloadEmitter)="downloadGameRecord($event)"
+          (deleteEmitter)="deleteGameRecord($event)"
+          class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
+      } @else {
+        <span class="w-full text-mainOrange">No records found.</span>
+      }
       @if (errorMessage !== null) {
         <div class="text-red-500 mt-6">
           <p>{{ errorMessage }}</p>
@@ -92,10 +155,21 @@ export class UserDetailsComponent
   public recordedGamesData: IRecordedGameResponse[] | null = null;
   public errorMessage: string | null = null;
 
+  public filterForm!: FormGroup;
+
   public userInfo: IUserResponse | null = null;
   public userStats: IUserStatsResponse | null = null;
 
   public userId!: number;
+
+  public constructor(private _fb: FormBuilder) {
+    this.filterForm = this._fb.group({
+      gameId: [1],
+      isEmptyRecord: [''],
+      endDateFrom: [''],
+      endDateTo: [''],
+    });
+  }
 
   public ngOnInit(): void {
     this._route.params.subscribe(params => {
@@ -107,7 +181,6 @@ export class UserDetailsComponent
         next: response => {
           this.avalaibleGamesList = response;
           this.errorMessage = null;
-          this.getRecordedGames();
         },
         error: (error: string) => {
           this.errorMessage = error;
@@ -140,29 +213,36 @@ export class UserDetailsComponent
         },
       });
 
-    this.recordedGamesData = null;
+    this.applyFilters();
   }
+
   public ngAfterViewChecked(): void {
     feather.replace(); //dodane, żeby feather-icons na nowo dodało się do DOM w pętli
   }
-  public getRecordedGames(): void {
-    this.recordedGamesData = [];
-    for (const game of this.avalaibleGamesList) {
-      this._getRecordedGamesSubscription = this._gameRecordEndpointsService
-        .getAllRecordedGames(game.id, this.userId)
-        .subscribe({
-          next: response => {
-            if (this.recordedGamesData !== null) {
-              this.recordedGamesData.push(...response);
-              this.errorMessage = null;
-            }
-          },
-          error: (error: string) => {
-            this.errorMessage = error;
-          },
-        });
-    }
+
+  public applyFilters(): void {
+    const filters = this.filterForm.value;
+    this._getRecordedGamesSubscription = this._gameRecordEndpointsService
+      .getAllRecordedGames(
+        filters.gameId,
+        this.userId,
+        filters.isEmptyRecord,
+        filters.endDateFrom,
+        filters.endDateTo,
+        'Asc',
+        'Id'
+      )
+      .subscribe({
+        next: response => {
+          this.recordedGamesData = response;
+          this.errorMessage = null;
+        },
+        error: (error: string) => {
+          this.errorMessage = error;
+        },
+      });
   }
+
   public downloadGameRecord(recordedGameId: number): void {
     this._gameRecordEndpointsService
       .downloadSpecificRecordedGame(recordedGameId)
@@ -179,6 +259,7 @@ export class UserDetailsComponent
         },
       });
   }
+
   public deleteGameRecord(recordedGameId: number): void {
     this._gameRecordEndpointsService
       .deleteGameRecording(recordedGameId)
@@ -189,13 +270,14 @@ export class UserDetailsComponent
             3000
           );
           this.errorMessage = null;
-          this.getRecordedGames();
+          this.applyFilters();
         },
         error: (error: string) => {
           this.errorMessage = error;
         },
       });
   }
+
   public ngOnDestroy(): void {
     this._getGamesSubscription.unsubscribe();
     this._getRecordedGamesSubscription.unsubscribe();

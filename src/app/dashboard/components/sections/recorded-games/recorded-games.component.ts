@@ -29,11 +29,15 @@ import { RecordedGameTableComponent } from '../../shared/recorded-game-table.com
       My recorded games
     </h1>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
-    <app-recorded-game-table
-      [recordedGamesData]="recordedGamesData"
-      (downloadEmitter)="downloadGameRecord($event)"
-      (deleteEmitter)="deleteGameRecord($event)"
-      class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
+    @if (recordedGamesData && recordedGamesData.length > 0) {
+      <app-recorded-game-table
+        [recordedGamesData]="recordedGamesData"
+        (downloadEmitter)="downloadGameRecord($event)"
+        (deleteEmitter)="deleteGameRecord($event)"
+        class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
+    } @else {
+      <span class="w-full text-mainOrange">No records found.</span>
+    }
     @if (errorMessage !== null) {
       <div class="text-red-500 mt-6">
         <p>{{ errorMessage }}</p>
