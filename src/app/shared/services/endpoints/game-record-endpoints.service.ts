@@ -23,7 +23,7 @@ export class GameRecordEndpointsService {
   public getAllRecordedGames(
     gameId: number,
     userId: number,
-    isEmptyRecord?: boolean,
+    includeEmptyRecords?: boolean,
     endDateFrom?: string,
     endDateTo?: string,
     sortDirection?: 'Asc' | 'Desc',
@@ -33,8 +33,8 @@ export class GameRecordEndpointsService {
     queryParams.append('gameId', gameId.toString());
     queryParams.append('userId', userId.toString());
 
-    if (isEmptyRecord)
-      queryParams.append('isEmptyRecord', isEmptyRecord.toString());
+    if (includeEmptyRecords)
+      queryParams.append('includeEmptyRecords', includeEmptyRecords.toString());
     if (endDateFrom) queryParams.append('endDateFrom', endDateFrom);
     if (endDateTo) queryParams.append('endDateTo', endDateTo);
     if (sortBy) queryParams.append('sortBy', sortBy);

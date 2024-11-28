@@ -68,14 +68,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
             placeholder="Type endDateTo" />
         </div>
         <div class="flex flex-col space-y-1 w-full xs:w-fit">
-          <label for="isEmptyRecord">Only empty records:</label>
+          <label for="includeEmptyRecords">Include empty records:</label>
           <span class="h-1">&nbsp;</span>
           <input
-            id="isEmptyRecord"
+            id="includeEmptyRecords"
             type="checkbox"
-            formControlName="isEmptyRecord"
+            formControlName="includeEmptyRecords"
             class="accent-mainOrange h-5 pt-6"
-            placeholder="Type isEmptyRecord" />
+            placeholder="Type includeEmptyRecords" />
         </div>
       </div>
       <div class="w-full flex flex-row gap-x-6 flex-wrap items-end">
@@ -130,7 +130,7 @@ export class RecordedGamesComponent
   public constructor(private _fb: FormBuilder) {
     this.filterForm = this._fb.group({
       gameId: [1],
-      isEmptyRecord: [''],
+      includeEmptyRecords: [''],
       endDateFrom: [''],
       endDateTo: [''],
     });
@@ -164,7 +164,7 @@ export class RecordedGamesComponent
       .getAllRecordedGames(
         filters.gameId,
         this.userId,
-        filters.isEmptyRecord,
+        filters.includeEmptyRecords,
         filters.endDateFrom,
         filters.endDateTo,
         this.sortDirection,
