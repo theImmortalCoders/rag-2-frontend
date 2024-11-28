@@ -39,6 +39,10 @@ import { Subscription } from 'rxjs';
                   }}">
                   <i data-feather="chevron-down" class="size-4 "></i>
                 </span>
+              } @else {
+                <span>
+                  <i data-feather="minus" class="size-4 "></i>
+                </span>
               }
             </div>
             <div
@@ -53,6 +57,10 @@ import { Subscription } from 'rxjs';
                   }}">
                   <i data-feather="chevron-down" class="size-4 "></i>
                 </span>
+              } @else {
+                <span>
+                  <i data-feather="minus" class="size-4 "></i>
+                </span>
               }
             </div>
             <div
@@ -65,6 +73,10 @@ import { Subscription } from 'rxjs';
                   }}">
                   <i data-feather="chevron-down" class="size-4 "></i>
                 </span>
+              } @else {
+                <span>
+                  <i data-feather="minus" class="size-4 "></i>
+                </span>
               }
             </div>
             <div
@@ -76,6 +88,10 @@ import { Subscription } from 'rxjs';
                     sortDirection === 'Desc' ? 'rotate-180' : ''
                   }}">
                   <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              } @else {
+                <span>
+                  <i data-feather="minus" class="size-4 "></i>
                 </span>
               }
             </div>

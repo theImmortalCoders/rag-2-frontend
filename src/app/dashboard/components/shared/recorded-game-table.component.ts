@@ -36,6 +36,10 @@ import { LoadingSpinnerComponent } from '../../../shared/components/common/loadi
                   }}">
                   <i data-feather="chevron-down" class="size-4 "></i>
                 </span>
+              } @else {
+                <span>
+                  <i data-feather="minus" class="size-4 "></i>
+                </span>
               }
             </div>
             <button
@@ -47,6 +51,10 @@ import { LoadingSpinnerComponent } from '../../../shared/components/common/loadi
                     sortDirection === 'Desc' ? 'rotate-180' : ''
                   }}">
                   <i data-feather="chevron-down" class="size-4 "></i>
+                </span>
+              } @else {
+                <span>
+                  <i data-feather="minus" class="size-4 "></i>
                 </span>
               }
             </button>
@@ -126,7 +134,8 @@ export class RecordedGameTableComponent implements OnChanges {
   public ngOnChanges(): void {
     if (this.recordedGamesData === null) {
       this.isLoadingNeeded = true;
+    } else {
+      this.isLoadingNeeded = false;
     }
-    this.isLoadingNeeded = false;
   }
 }
