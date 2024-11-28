@@ -50,7 +50,12 @@ export class AuthEndpointsService {
           },
         }),
         catchError((error: HttpErrorResponse) => {
-          const errorMessage = JSON.parse(error.error)['description'];
+          let errorMessage = '';
+          if (localStorage.getItem('jwtToken')) {
+            errorMessage = 'Invalid login attempt';
+          } else {
+            errorMessage = JSON.parse(error.error)['description'];
+          }
           console.error(errorMessage);
           return throwError(() => errorMessage);
         })

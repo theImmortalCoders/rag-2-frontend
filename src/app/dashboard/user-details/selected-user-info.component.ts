@@ -39,7 +39,7 @@ import {
     <h3 class="flex flex-col xs:flex-row space-x-2 text-mainOrange">
       <span> Course of study: </span>
       <span class="text-mainCreme">
-        {{ selectedUserData?.course }}
+        {{ selectedUserData?.course?.name }}
       </span>
     </h3>
     <h3 class="flex flex-col xs:flex-row space-x-2 text-mainOrange">

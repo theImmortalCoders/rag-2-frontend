@@ -96,7 +96,7 @@ describe('UserDetailsComponent', () => {
     expect(mockGameEndpointsService.getGames).toHaveBeenCalled();
     expect(
       mockGameRecordEndpointsService.getAllRecordedGames
-    ).toHaveBeenCalledWith(1, 1);
+    ).toHaveBeenCalledWith(1, 1, '', '', '', 'Asc', 'Ended');
   });
 
   it('should download a game record', () => {
@@ -108,14 +108,14 @@ describe('UserDetailsComponent', () => {
   });
 
   it('should delete a game record and refresh the list', () => {
-    spyOn(component, 'getRecordedGames');
+    spyOn(component, 'applyFilters');
 
     component.deleteGameRecord(1);
 
     expect(
       mockGameRecordEndpointsService.deleteGameRecording
     ).toHaveBeenCalledWith(1);
-    expect(component.getRecordedGames).toHaveBeenCalled();
+    expect(component.applyFilters).toHaveBeenCalled();
   });
 
   it('should unsubscribe from all subscriptions on destroy', () => {

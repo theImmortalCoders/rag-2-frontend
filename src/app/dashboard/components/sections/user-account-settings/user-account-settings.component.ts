@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  Input,
   OnDestroy,
   Output,
 } from '@angular/core';
@@ -29,217 +30,235 @@ import { TRole } from 'app/shared/models/role.enum';
   standalone: true,
   imports: [ModalComponent, ReactiveFormsModule],
   template: `
-    <h1
-      class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
-      My account settings
-    </h1>
+    <button
+      (click)="showOptions()"
+      class="flex flex-row justify-between text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
+      <span> My account settings </span>
+      <div
+        class="flex items-center justify-center w-fit ease-in-out duration-300 transition-all {{
+          isOptionsVisible ? 'rotate-180' : 'rotate-0'
+        }}">
+        <i data-feather="chevron-down" class="size-6 xs:size-8"></i>
+      </div>
+    </button>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
-      class="flex flex-col xs:flex-row justify-around gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-4 sm:space-x-8 w-full">
-      <button
-        type="button"
-        (click)="changePasswordModal()"
-        class="dashboard-button group">
-        <span>Change your password</span>
-        <i data-feather="edit-3" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        (click)="editAccountModal()"
-        class="dashboard-button group">
-        <span>Edit your account data</span>
-        <i data-feather="edit" class="dashboard-icon"></i>
-      </button>
-      <button
-        type="button"
-        (click)="deleteAccountModal()"
-        class="dashboard-button group">
-        <span>Delete your account</span>
-        <i data-feather="trash-2" class="dashboard-icon"></i>
-      </button>
-    </div>
-    @if (modalVisibility !== null) {
-      <app-modal (closeModal)="hideModal()">
-        <div class="flex flex-col items-start w-full font-mono">
-          <h2
-            class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
-            {{ modalTitle }}
-          </h2>
-          @if (modalVisibility === 'changePassword') {
-            <form
-              [formGroup]="changePasswordForm"
-              class="flex flex-col space-y-4 w-full text-sm sm:text-base">
-              <div class="flex flex-col space-y-1">
-                <label
-                  for="oldPassword"
-                  [class.text-red-500]="shouldShowError('oldPassword')"
-                  class="text-start"
-                  >Old password</label
-                >
-                <input
-                  id="oldPassword"
-                  type="password"
-                  formControlName="oldPassword"
-                  placeholder="Type your old password"
-                  class="custom-input" />
-              </div>
-              <div class="flex flex-col space-y-1">
-                <label
-                  for="newPassword"
-                  [class.text-red-500]="shouldShowError('newPassword')"
-                  class="text-start"
-                  >New password</label
-                >
-                <input
-                  id="newPassword"
-                  type="password"
-                  formControlName="newPassword"
-                  placeholder="Type your new password"
-                  class="custom-input" />
-              </div>
-            </form>
-          } @else if (modalVisibility === 'editAccount') {
-            <form
-              [formGroup]="accountDataForm"
-              class="flex flex-col space-y-4 w-full text-sm sm:text-base">
-              <div class="flex flex-col space-y-1">
-                <label
-                  for="name"
-                  class="text-start"
-                  [class.text-red-500]="shouldShowErrorAccountData('name')"
-                  >Name</label
-                >
-                <input
-                  id="name"
-                  type="text"
-                  formControlName="name"
-                  placeholder="Type your name"
-                  class="custom-input" />
-              </div>
-              @if (userData!.role !== teacherRole) {
-                <div
-                  class="flex flex-wrap flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
-                  <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
-                    <label
-                      for="studyCycleYearA"
-                      class="text-start"
-                      [class.text-red-500]="
-                        shouldShowErrorAccountData('studyCycleYearA')
-                      "
-                      >Study cycle year</label
-                    >
-                    <input
-                      id="studyCycleYearA"
-                      type="number"
-                      formControlName="studyCycleYearA"
-                      placeholder="Type year A"
-                      class="custom-input"
-                      (input)="validateNumber($event)" />
-                  </div>
-                  <div class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
-                    <label
-                      for="studyCycleYearB"
-                      class="text-start"
-                      [class.text-red-500]="
-                        shouldShowErrorAccountData('studyCycleYearB')
-                      "
-                      >Study cycle year</label
-                    >
-                    <input
-                      id="studyCycleYearB"
-                      type="number"
-                      formControlName="studyCycleYearB"
-                      placeholder="Type year B"
-                      class="custom-input"
-                      (input)="validateNumber($event)" />
-                  </div>
-                </div>
+      class="relative ease-in-out duration-150 transition-all {{
+        isOptionsVisible
+          ? 'top-0 opacity-100 z-30 h-fit'
+          : '-top-32 xs:-top-16 opacity-0 -z-50 h-0'
+      }}">
+      <div
+        class="flex flex-col xs:flex-row justify-start gap-y-2 xs:gap-y-0 space-x-0 xs:space-x-6 lg:space-x-20 w-full">
+        <button
+          type="button"
+          (click)="changePasswordModal()"
+          class="dashboard-button group">
+          <span>Change your password</span>
+          <i data-feather="edit-3" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          (click)="editAccountModal()"
+          class="dashboard-button group">
+          <span>Edit your account data</span>
+          <i data-feather="edit" class="dashboard-icon"></i>
+        </button>
+        <button
+          type="button"
+          (click)="deleteAccountModal()"
+          class="dashboard-button group">
+          <span>Delete your account</span>
+          <i data-feather="trash-2" class="dashboard-icon"></i>
+        </button>
+      </div>
+      @if (modalVisibility !== null) {
+        <app-modal (closeModal)="hideModal()">
+          <div class="flex flex-col items-start w-full font-mono">
+            <h2
+              class="text-2xl sm:text-3xl text-mainCreme font-bold mb-2 xs:mb-6 sm:mb-10">
+              {{ modalTitle }}
+            </h2>
+            @if (modalVisibility === 'changePassword') {
+              <form
+                [formGroup]="changePasswordForm"
+                class="flex flex-col space-y-4 w-full text-sm sm:text-base">
                 <div class="flex flex-col space-y-1">
                   <label
-                    for="courseId"
+                    for="oldPassword"
+                    [class.text-red-500]="shouldShowError('oldPassword')"
                     class="text-start"
-                    [class.text-red-500]="
-                      shouldShowErrorAccountData('courseId')
-                    "
-                    >Course</label
-                  >
-                  <select formControlName="courseId" class="custom-input">
-                    <option [ngValue]="null">No course choosen</option>
-                    @for (course of courseList; track course.id) {
-                      <option [ngValue]="course.id">{{ course.name }}</option>
-                    }
-                  </select>
-                </div>
-                <div class="flex flex-col space-y-1">
-                  <label
-                    for="group"
-                    class="text-start"
-                    [class.text-red-500]="shouldShowErrorAccountData('group')"
-                    >Group</label
+                    >Old password</label
                   >
                   <input
-                    id="group"
-                    type="text"
-                    formControlName="group"
-                    placeholder="Type your group"
+                    id="oldPassword"
+                    type="password"
+                    formControlName="oldPassword"
+                    placeholder="Type your old password"
                     class="custom-input" />
                 </div>
-              }
-            </form>
-          } @else if (modalVisibility === 'deleteAccount') {
-            <p class="mb-4 text-sm sm:text-base">
-              You will lose all your data, progress, and saved games and will
-              not be able to undo it.
-            </p>
-            <p class="text-red-500 text-sm sm:text-base">
-              Are you sure about this action? It can't be undone later!
-            </p>
-          }
-          <button
-            class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
-            (click)="modalButtonFunction()">
-            {{ modalButtonText }}
-          </button>
-          <button
-            (click)="hideModal()"
-            class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
-            x
-          </button>
-          @if (
-            (changePasswordForm.invalid &&
-              (changePasswordForm.dirty || changePasswordForm.touched)) ||
-            errorMessage !== null
-          ) {
-            <div class="text-red-500 mt-6">
-              @for (error of getFormErrors(); track error) {
-                @if (modalVisibility === 'changePassword') {
-                  <p>{{ error }}</p>
+                <div class="flex flex-col space-y-1">
+                  <label
+                    for="newPassword"
+                    [class.text-red-500]="shouldShowError('newPassword')"
+                    class="text-start"
+                    >New password</label
+                  >
+                  <input
+                    id="newPassword"
+                    type="password"
+                    formControlName="newPassword"
+                    placeholder="Type your new password"
+                    class="custom-input" />
+                </div>
+              </form>
+            } @else if (modalVisibility === 'editAccount') {
+              <form
+                [formGroup]="accountDataForm"
+                class="flex flex-col space-y-4 w-full text-sm sm:text-base">
+                <div class="flex flex-col space-y-1">
+                  <label
+                    for="name"
+                    class="text-start"
+                    [class.text-red-500]="shouldShowErrorAccountData('name')"
+                    >Name</label
+                  >
+                  <input
+                    id="name"
+                    type="text"
+                    formControlName="name"
+                    placeholder="Type your name"
+                    class="custom-input" />
+                </div>
+                @if (userData?.role !== teacherRole) {
+                  <div
+                    class="flex flex-wrap flex-col sm:flex-row lg:flex-col xl:flex-row items-start space-y-4 sm:space-y-0 lg:space-y-4 xl:space-y-0 space-x-0 sm:space-x-2 lg:space-x-0 xl:space-x-2">
+                    <div
+                      class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
+                      <label
+                        for="studyCycleYearA"
+                        class="text-start"
+                        [class.text-red-500]="
+                          shouldShowErrorAccountData('studyCycleYearA')
+                        "
+                        >Study cycle year</label
+                      >
+                      <input
+                        id="studyCycleYearA"
+                        type="number"
+                        formControlName="studyCycleYearA"
+                        placeholder="Type year A"
+                        class="custom-input"
+                        (input)="validateNumber($event)" />
+                    </div>
+                    <div
+                      class="flex flex-col w-full sm:w-fit lg:w-full xl:w-fit">
+                      <label
+                        for="studyCycleYearB"
+                        class="text-start"
+                        [class.text-red-500]="
+                          shouldShowErrorAccountData('studyCycleYearB')
+                        "
+                        >Study cycle year</label
+                      >
+                      <input
+                        id="studyCycleYearB"
+                        type="number"
+                        formControlName="studyCycleYearB"
+                        placeholder="Type year B"
+                        class="custom-input"
+                        (input)="validateNumber($event)" />
+                    </div>
+                  </div>
+                  <div class="flex flex-col space-y-1">
+                    <label
+                      for="courseId"
+                      class="text-start"
+                      [class.text-red-500]="
+                        shouldShowErrorAccountData('courseId')
+                      "
+                      >Course</label
+                    >
+                    <select formControlName="courseId" class="custom-input">
+                      <option [ngValue]="null">No course choosen</option>
+                      @for (course of courseList; track course.id) {
+                        <option [ngValue]="course.id">{{ course.name }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="flex flex-col space-y-1">
+                    <label
+                      for="group"
+                      class="text-start"
+                      [class.text-red-500]="shouldShowErrorAccountData('group')"
+                      >Group</label
+                    >
+                    <input
+                      id="group"
+                      type="text"
+                      formControlName="group"
+                      placeholder="Type your group"
+                      class="custom-input" />
+                  </div>
                 }
-              }
-              @if (errorMessage !== null) {
-                <p>{{ errorMessage }}</p>
-              }
-            </div>
-          }
-          @if (
-            (accountDataForm.invalid &&
-              (accountDataForm.dirty || accountDataForm.touched)) ||
-            errorMessage !== null
-          ) {
-            <div class="text-red-500 mt-6 flex flex-col items-start">
-              @for (error of getFormErrorsAccountData(); track error) {
-                @if (modalVisibility === 'editAccount') {
-                  <p>{{ error }}</p>
+              </form>
+            } @else if (modalVisibility === 'deleteAccount') {
+              <p class="mb-4 text-sm sm:text-base">
+                You will lose all your data, progress, and saved games and will
+                not be able to undo it.
+              </p>
+              <p class="text-red-500 text-sm sm:text-base">
+                Are you sure about this action? It can't be undone later!
+              </p>
+            }
+            <button
+              class="flex flex-row w-full items-center justify-center group space-x-2 rounded-lg mt-4 xs:mt-6 px-2 xs:px-3 py-1 xs:py-2 bg-mainGray text-mainOrange border-2 border-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray text-base"
+              (click)="modalButtonFunction()">
+              {{ modalButtonText }}
+            </button>
+            <button
+              (click)="hideModal()"
+              class="absolute top-1 sm:top-2 right-2 sm:right-4 text-3xl sm:text-5xl text-mainOrange hover:text-mainGray">
+              x
+            </button>
+            @if (
+              (changePasswordForm.invalid &&
+                (changePasswordForm.dirty || changePasswordForm.touched)) ||
+              errorMessage !== null
+            ) {
+              <div class="text-red-500 mt-6">
+                @for (error of getFormErrors(); track error) {
+                  @if (modalVisibility === 'changePassword') {
+                    <p>{{ error }}</p>
+                  }
                 }
-              }
-            </div>
-          }
-        </div>
-      </app-modal>
-    }
+                @if (errorMessage !== null) {
+                  <p>{{ errorMessage }}</p>
+                }
+              </div>
+            }
+            @if (
+              (accountDataForm.invalid &&
+                (accountDataForm.dirty || accountDataForm.touched)) ||
+              errorMessage !== null
+            ) {
+              <div class="text-red-500 mt-6 flex flex-col items-start">
+                @for (error of getFormErrorsAccountData(); track error) {
+                  @if (modalVisibility === 'editAccount') {
+                    <p>{{ error }}</p>
+                  }
+                }
+              </div>
+            }
+          </div>
+        </app-modal>
+      }
+    </div>
   `,
 })
 export class UserAccountSettingsComponent implements OnDestroy {
+  @Input({ required: true }) public isOptionsVisible = false;
+  @Output() public optionsVisibleEmitter = new EventEmitter<string>();
   @Output() public refreshUserData = new EventEmitter<boolean>(false);
 
   private _formBuilder = inject(NonNullableFormBuilder);
@@ -282,6 +301,13 @@ export class UserAccountSettingsComponent implements OnDestroy {
   public modalTitle = '';
   public modalButtonText = '';
   public modalButtonFunction!: () => void;
+
+  public showOptions(): void {
+    this.isOptionsVisible = !this.isOptionsVisible;
+    if (this.isOptionsVisible) {
+      this.optionsVisibleEmitter.emit('user-account');
+    }
+  }
 
   public shouldShowError(controlName: string): boolean | undefined {
     return this._formValidationService.shouldShowError(

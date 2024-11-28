@@ -21,6 +21,7 @@ import { RecordedGamesComponent } from './components/sections/recorded-games/rec
 import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
 import { TRole } from 'app/shared/models/role.enum';
 import { CoursesSettingsComponent } from './components/sections/courses-settings/courses-settings.component';
+import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -32,29 +33,42 @@ import { CoursesSettingsComponent } from './components/sections/courses-settings
     AdminSettingsComponent,
     RecordedGamesComponent,
     AllowedRolesDirective,
+    AuthRequiredDirective,
     CoursesSettingsComponent,
   ],
   template: `<div
-    class="flex flex-col space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
+    class="flex flex-col overflow-y-hidden space-y-10 sm:space-y-16 font-mono w-full bg-mainGray pt-6 pb-12 xl:pt-14">
     <app-user-info
       [aboutMeUserInfo]="aboutMeUserInfo"
       [userStatsInfo]="userStatsInfo"
       class="flex flex-row justify-stretch w-full" />
     <app-recorded-games
-      class="flex flex-col px-10"
+      *appAuthRequired
       [userId]="aboutMeUserInfo ? aboutMeUserInfo.id : 0"
-      (refreshDataEmitter)="userStatsRefresh($event)" />
+      (refreshDataEmitter)="userStatsRefresh($event)"
+      class="flex flex-col px-10" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
       <app-user-account-settings
+        *appAuthRequired
+        [isOptionsVisible]="optionChoosen === 'user-account'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
         (refreshUserData)="userDataRefresh($event)"
-        class="flex flex-col px-10 w-full sm:w-fit" />
-      <app-courses-settings class="flex flex-col px-10 w-full sm:w-fit" />
+        class="flex flex-col px-10 w-full" />
+      <app-courses-settings
+        *appAllowedRoles="allowedRolesAdminTeacher"
+        [isOptionsVisible]="optionChoosen === 'courses'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
+        class="flex flex-col px-10 w-full" />
       <app-game-handling-options
         *appAllowedRoles="allowedRolesAdmin"
-        class="flex flex-col px-10 w-full sm:w-fit" />
+        [isOptionsVisible]="optionChoosen === 'game-handling'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
+        class="flex flex-col px-10 w-full" />
       <app-admin-settings
         *appAllowedRoles="allowedRolesAdminTeacher"
-        class="flex flex-col px-10  w-full sm:w-fit" />
+        [isOptionsVisible]="optionChoosen === 'admin'"
+        (optionsVisibleEmitter)="changeOptionsVisibility($event)"
+        class="flex flex-col px-10  w-full" />
     </div>
   </div>`,
 })
@@ -73,8 +87,34 @@ export class DashboardPageComponent
   public allowedRolesAdmin: TRole[] = [TRole.Admin];
   public allowedRolesAdminTeacher: TRole[] = [TRole.Admin, TRole.Teacher];
 
+  public optionChoosen:
+    | 'user-account'
+    | 'courses'
+    | 'game-handling'
+    | 'admin'
+    | null = null;
+
   public ngOnInit(): void {
     this.getMeData();
+  }
+
+  public changeOptionsVisibility(option: string): void {
+    switch (option) {
+      case 'user-account':
+        this.optionChoosen = 'user-account';
+        break;
+      case 'courses':
+        this.optionChoosen = 'courses';
+        break;
+      case 'game-handling':
+        this.optionChoosen = 'game-handling';
+        break;
+      case 'admin':
+        this.optionChoosen = 'admin';
+        break;
+      default:
+        break;
+    }
   }
 
   public getMeData(): void {
