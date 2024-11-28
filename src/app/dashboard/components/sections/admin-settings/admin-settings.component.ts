@@ -17,6 +17,8 @@ import { TRole } from 'app/shared/models/role.enum';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserTableComponent } from '../../shared/user-table.component';
+import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
+import { ICourseResponse } from 'app/shared/models/course.models';
 
 @Component({
   selector: 'app-admin-settings',
@@ -84,12 +86,15 @@ import { UserTableComponent } from '../../shared/user-table.component';
           </div>
           <div class="flex flex-col space-y-1 w-full xs:w-fit">
             <label for="courseName">Course Name:</label>
-            <input
+            <select
               id="courseName"
-              type="text"
               formControlName="courseName"
-              class="custom-input"
-              placeholder="Type course name" />
+              class="custom-input">
+              <option [value]="''">Choose course</option>
+              @for (course of avalaibleCourses; track course.id) {
+                <option [value]="course.name">{{ course.name }}</option>
+              }
+            </select>
           </div>
           <div class="flex flex-col space-y-1 w-full xs:w-fit">
             <label for="group">Group:</label>
@@ -130,10 +135,14 @@ export class AdminSettingsComponent
   @Output() public optionsVisibleEmitter = new EventEmitter<string>();
 
   private _adminEndpointsService = inject(AdministrationEndpointsService);
+  private _courseEndpointsService = inject(CourseEndpointsService);
 
   private _getUsersSubscription = new Subscription();
+  private _getCoursesSubscription = new Subscription();
+
   public filterForm!: FormGroup;
   public filteredUsers: IUserResponse[] | null = null;
+  public avalaibleCourses: ICourseResponse[] = [];
   public errorMessage: string | null = null;
 
   public sortBy:
@@ -159,6 +168,18 @@ export class AdminSettingsComponent
   }
 
   public ngOnInit(): void {
+    this._getCoursesSubscription = this._courseEndpointsService
+      .getCourses()
+      .subscribe({
+        next: (response: ICourseResponse[]) => {
+          this.avalaibleCourses = response;
+        },
+        error: error => {
+          this.avalaibleCourses = [];
+          this.errorMessage = error;
+        },
+      });
+
     this._getUsersSubscription = this._adminEndpointsService
       .getUsers(
         TRole.Student,
@@ -222,5 +243,6 @@ export class AdminSettingsComponent
 
   public ngOnDestroy(): void {
     this._getUsersSubscription.unsubscribe();
+    this._getCoursesSubscription.unsubscribe();
   }
 }

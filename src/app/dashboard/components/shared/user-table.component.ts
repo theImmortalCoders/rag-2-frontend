@@ -4,8 +4,10 @@ import {
   EventEmitter,
   inject,
   Input,
+  OnChanges,
   OnDestroy,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
@@ -180,7 +182,7 @@ import { Subscription } from 'rxjs';
     </div>
   `,
 })
-export class UserTableComponent implements OnDestroy {
+export class UserTableComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) public filteredUsers: IUserResponse[] | null =
     null;
   @Output() public sortByEmitter = new EventEmitter<
@@ -219,6 +221,10 @@ export class UserTableComponent implements OnDestroy {
   public roleChangingId = -1;
   public newUserRole = TRole.Student;
   public banChangingId = -1;
+
+  public ngOnChanges(): void {
+    this.errorMessage = null;
+  }
 
   public setSortingBy(
     value:

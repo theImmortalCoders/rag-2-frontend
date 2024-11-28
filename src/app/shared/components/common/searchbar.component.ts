@@ -36,5 +36,9 @@ export class SearchbarComponent<T> {
     });
 
     this.filteredData.emit(filtered);
+
+    if (!this.searchQuery || this.searchQuery === '') {
+      this.filteredData.emit([]);
+    }
   }
 }
