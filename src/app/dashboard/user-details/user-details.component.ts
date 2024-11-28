@@ -37,25 +37,22 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   template: `
     <div class="flex flex-col px-10 pt-6 pb-12 xl:pt-14">
       <div class="flex flex-col lg:flex-row justify-stretch w-full pb-4">
-        @if (true) {
-          <div class="flex flex-col w-[90%] md:w-3/4 pl-2">
-            <h1
-              class="text-lg 2xs:text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start font-mono">
-              {{ userInfo?.email }}
-            </h1>
-            <hr
-              class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
-            <app-selected-user-info
-              class="mb-4 pl-2 xs:pl-6 text-base 2xs:text-lg sm:text-xl font-mono"
-              [selectedUserData]="userInfo"
-              [selectedUserStats]="userStats" />
-          </div>
-          <app-progress-circle-bar
-            class="flex items-center justify-center w-full lg:w-1/3 xl:w-1/4 ml-0 lg:ml-24 pt-8 lg:pt-4"
-            [usedSpace]="userStats?.totalStorageMb"
-            [currentUserRole]="userInfo?.role"
-            [isForCurrentUser]="false" />
-        }
+        <div class="flex flex-col w-[90%] md:w-3/4 pl-2">
+          <h1
+            class="text-lg 2xs:text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start font-mono">
+            {{ userInfo?.email }}
+          </h1>
+          <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
+          <app-selected-user-info
+            class="mb-4 pl-2 xs:pl-6 text-base 2xs:text-lg sm:text-xl font-mono"
+            [selectedUserData]="userInfo"
+            [selectedUserStats]="userStats" />
+        </div>
+        <app-progress-circle-bar
+          class="flex items-center justify-center w-full lg:w-1/3 xl:w-1/4 ml-0 lg:ml-24 pt-8 lg:pt-4"
+          [usedSpace]="userStats?.totalStorageMb"
+          [currentUserRole]="userInfo?.role"
+          [isForCurrentUser]="false" />
       </div>
       <h1
         class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start font-mono">
