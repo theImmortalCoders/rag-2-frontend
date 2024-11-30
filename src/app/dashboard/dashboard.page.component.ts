@@ -44,7 +44,7 @@ import { AuthRequiredDirective } from '@utils/directives/auth-required.directive
       class="flex flex-row justify-stretch w-full" />
     <app-recorded-games
       *appAuthRequired
-      [userId]="aboutMeUserInfo ? aboutMeUserInfo.id : 0"
+      [userId]="aboutMeUserInfo ? aboutMeUserInfo.id : -1"
       (refreshDataEmitter)="userStatsRefresh($event)"
       class="flex flex-col px-10" />
     <div class="flex flex-row flex-wrap justify-stretch gap-y-8 sm:gap-y-12">
