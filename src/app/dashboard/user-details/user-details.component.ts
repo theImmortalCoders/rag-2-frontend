@@ -116,15 +116,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
           </button>
         </div>
       </form>
-      @if (recordedGamesData && recordedGamesData.length > 0) {
-        <app-recorded-game-table
-          [recordedGamesData]="recordedGamesData"
-          (downloadEmitter)="downloadGameRecord($event)"
-          (deleteEmitter)="deleteGameRecord($event)"
-          (sortByEmitter)="sortBy = $event; applyFilters()"
-          (sortDirectionEmitter)="sortDirection = $event; applyFilters()"
-          class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
-      } @else {
+      <app-recorded-game-table
+        [recordedGamesData]="recordedGamesData"
+        [isLoading]="isLoading"
+        (downloadEmitter)="downloadGameRecord($event)"
+        (deleteEmitter)="deleteGameRecord($event)"
+        (sortByEmitter)="sortBy = $event; applyFilters()"
+        (sortDirectionEmitter)="sortDirection = $event; applyFilters()"
+        class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
+      @if (!isLoading && recordedGamesData && recordedGamesData.length === 0) {
         <span class="w-full text-mainOrange">No records found.</span>
       }
       @if (errorMessage !== null) {
@@ -152,6 +152,7 @@ export class UserDetailsComponent
 
   public avalaibleGamesList: IGameResponse[] = [];
   public recordedGamesData: IRecordedGameResponse[] | null = null;
+  public isLoading = false;
   public errorMessage: string | null = null;
 
   public filterForm!: FormGroup;
@@ -223,6 +224,7 @@ export class UserDetailsComponent
   }
 
   public applyFilters(): void {
+    this.isLoading = true;
     const filters = this.filterForm.value;
     this._getRecordedGamesSubscription = this._gameRecordEndpointsService
       .getAllRecordedGames(
@@ -238,9 +240,12 @@ export class UserDetailsComponent
         next: response => {
           this.recordedGamesData = response;
           this.errorMessage = null;
+          this.isLoading = false;
         },
         error: (error: string) => {
+          this.recordedGamesData = null;
           this.errorMessage = error;
+          this.isLoading = false;
         },
       });
   }

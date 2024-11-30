@@ -182,6 +182,7 @@ export class UserEndpointsService {
       .pipe(
         tap({
           next: () => {
+            localStorage.removeItem('jwtToken');
             console.log('Account deleted successfully');
           },
         }),

@@ -15,7 +15,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/common/loadi
   standalone: true,
   imports: [CommonModule, LoadingSpinnerComponent],
   template: `
-    @if (isLoadingNeeded) {
+    @if (isLoading) {
       <app-loading-spinner />
     } @else {
       @if (recordedGamesData && recordedGamesData.length > 0) {
@@ -106,16 +106,15 @@ import { LoadingSpinnerComponent } from '../../../shared/components/common/loadi
     }
   `,
 })
-export class RecordedGameTableComponent implements OnChanges {
+export class RecordedGameTableComponent {
   @Input({ required: true }) public recordedGamesData:
     | IRecordedGameResponse[]
     | null = null;
+  @Input({ required: true }) public isLoading = false;
   @Output() public downloadEmitter = new EventEmitter<number>();
   @Output() public deleteEmitter = new EventEmitter<number>();
   @Output() public sortByEmitter = new EventEmitter<'Ended' | 'SizeMb'>();
   @Output() public sortDirectionEmitter = new EventEmitter<'Asc' | 'Desc'>();
-
-  public isLoadingNeeded = true;
 
   public sortBy: 'Ended' | 'SizeMb' = 'Ended';
   public sortDirection: 'Asc' | 'Desc' = 'Asc';
@@ -129,13 +128,5 @@ export class RecordedGameTableComponent implements OnChanges {
     this.sortBy = value;
     this.sortByEmitter.emit(this.sortBy);
     this.sortDirectionEmitter.emit(this.sortDirection);
-  }
-
-  public ngOnChanges(): void {
-    if (this.recordedGamesData === null) {
-      this.isLoadingNeeded = true;
-    } else {
-      this.isLoadingNeeded = false;
-    }
   }
 }
