@@ -40,7 +40,6 @@ export class GameRecordEndpointsService {
     if (sortBy) queryParams.append('sortBy', sortBy);
     if (sortDirection) queryParams.append('sortDirection', sortDirection);
 
-    console.log(queryParams.toString());
     return this._httpClient
       .get<IRecordedGameResponse[]>(
         environment.backendApiUrl + `/api/GameRecord?${queryParams.toString()}`,

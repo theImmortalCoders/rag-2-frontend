@@ -24,6 +24,7 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import { ICourseResponse } from 'app/shared/models/course.models';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 import { TRole } from 'app/shared/models/role.enum';
+import { AppStatusService } from 'app/shared/services/app-status.service';
 
 @Component({
   selector: 'app-user-account-settings',
@@ -267,6 +268,7 @@ export class UserAccountSettingsComponent implements OnDestroy {
   private _authEndpointsService = inject(AuthEndpointsService);
   private _courseEndpointsService = inject(CourseEndpointsService);
   private _notificationService = inject(NotificationService);
+  private _appStatusService = inject(AppStatusService);
   private _router = inject(Router);
 
   private _getMeSubscription = new Subscription();
@@ -471,7 +473,7 @@ export class UserAccountSettingsComponent implements OnDestroy {
       .deleteAccount()
       .subscribe({
         next: () => {
-          localStorage.removeItem('jwtToken');
+          this._appStatusService.setAuthStatus(false);
           this._router.navigate(['']);
           this._notificationService.addNotification(
             'Your account has been permamently deleted!'
