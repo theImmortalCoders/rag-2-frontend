@@ -155,7 +155,7 @@ export class RecordedGamesComponent
   }
 
   public ngOnChanges(): void {
-    this.applyFilters();
+    if (this.userId !== -1) this.applyFilters();
   }
 
   public applyFilters(): void {
