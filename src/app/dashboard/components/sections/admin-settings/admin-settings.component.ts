@@ -117,6 +117,7 @@ import { ICourseResponse } from 'app/shared/models/course.models';
       </form>
       <app-user-table
         [filteredUsers]="filteredUsers"
+        [isLoading]="isLoading"
         (sortByEmitter)="sortBy = $event; applyFilters()"
         (sortDirectionEmitter)="sortDirection = $event; applyFilters()"
         (refreshUserTableEmitter)="$event ? applyFilters() : null" />
@@ -142,6 +143,7 @@ export class AdminSettingsComponent
 
   public filterForm!: FormGroup;
   public filteredUsers: IUserResponse[] | null = null;
+  public isLoading = false;
   public avalaibleCourses: ICourseResponse[] = [];
   public errorMessage: string | null = null;
 
@@ -214,6 +216,7 @@ export class AdminSettingsComponent
   }
 
   public applyFilters(): void {
+    this.isLoading = true;
     const filters = this.filterForm.value;
     this._getUsersSubscription = this._adminEndpointsService
       .getUsers(
@@ -233,10 +236,13 @@ export class AdminSettingsComponent
       .subscribe({
         next: (response: IUserResponse[]) => {
           this.filteredUsers = response;
+          this.errorMessage = null;
+          this.isLoading = false;
         },
         error: error => {
           this.filteredUsers = null;
           this.errorMessage = error;
+          this.isLoading = false;
         },
       });
   }
