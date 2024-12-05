@@ -8,7 +8,7 @@ import {
   Output,
 } from '@angular/core';
 import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
-import { LoadingSpinnerComponent } from '../../../shared/components/common/loading-spinner.component';
+import { LoadingSpinnerComponent } from 'app/shared/components/common/loading-spinner.component';
 
 @Component({
   selector: 'app-recorded-game-table',
