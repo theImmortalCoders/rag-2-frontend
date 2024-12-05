@@ -96,7 +96,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
       (sortDirectionEmitter)="sortDirection = $event; applyFilters()"
       class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
     @if (!isLoading && recordedGamesData && recordedGamesData.length === 0) {
-      <span class="w-full text-mainOrange">No records found.</span>
+      <span class="w-full text-mainOrange font-mono">No records found.</span>
     }
     @if (errorMessage !== null) {
       <div class="text-red-500 mt-6">

@@ -197,7 +197,7 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
           </div>
         </div>
       } @else {
-        <span class="w-full text-mainOrange">No users found.</span>
+        <span class="w-full text-mainOrange font-mono">No users found.</span>
       }
     }
     <div class="text-red-500 mt-6 text-sm sm:text-base">
