@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { TRole } from 'app/shared/models/role.enum';
-import { ILimitsResponse } from 'app/shared/models/user.models';
+import { ILimitsResponse } from 'app/shared/models/endpoints/user.models';
 import { Subscription } from 'rxjs';
 
 @Component({

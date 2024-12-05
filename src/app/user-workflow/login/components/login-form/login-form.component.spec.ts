@@ -1,24 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RegisterFormComponent } from './register-form.component';
-import { FormValidationService } from '../../../shared/services/form-validation.service';
+import { LoginFormComponent } from './login-form.component';
+import { FormValidationService } from 'app/shared/services/form-validation.service';
 import { By } from '@angular/platform-browser';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
-describe('RegisterFormComponent', () => {
-  let component: RegisterFormComponent;
-  let fixture: ComponentFixture<RegisterFormComponent>;
+describe('LoginFormComponent', () => {
+  let component: LoginFormComponent;
+  let fixture: ComponentFixture<LoginFormComponent>;
   let formValidationService: FormValidationService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RegisterFormComponent],
-      providers: [FormValidationService, HttpClient, HttpHandler],
+      imports: [ReactiveFormsModule, LoginFormComponent, HttpClientModule],
+      providers: [FormValidationService],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegisterFormComponent);
+    fixture = TestBed.createComponent(LoginFormComponent);
     component = fixture.componentInstance;
     formValidationService = TestBed.inject(FormValidationService);
     fixture.detectChanges();
@@ -28,22 +28,13 @@ describe('RegisterFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have a form with 4 controls', () => {
-    expect(component.registerForm.contains('name')).toBeTruthy();
-    expect(component.registerForm.contains('email')).toBeTruthy();
-    expect(component.registerForm.contains('password')).toBeTruthy();
-    expect(component.registerForm.contains('repeatedPassword')).toBeTruthy();
+  it('should have a form with 2 controls', () => {
+    expect(component.loginForm.contains('email')).toBeTruthy();
+    expect(component.loginForm.contains('password')).toBeTruthy();
   });
 
-  it('should make the name control required', () => {
-    const control = component.registerForm.get('name');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
-
-  // eslint-disable-next-line complexity
   it('should make the email control required and valid email format', () => {
-    const control = component.registerForm.get('email');
+    const control = component.loginForm.get('email');
     control?.setValue('');
     expect(control?.valid).toBeFalsy();
 
@@ -54,16 +45,12 @@ describe('RegisterFormComponent', () => {
     expect(control?.valid).toBeTruthy();
   });
 
-  // eslint-disable-next-line complexity
-  it('should make the password control required and with min length of 8', () => {
-    const control = component.registerForm.get('password');
+  it('should make the password control required', () => {
+    const control = component.loginForm.get('password');
     control?.setValue('');
     expect(control?.valid).toBeFalsy();
 
-    control?.setValue('short');
-    expect(control?.valid).toBeFalsy();
-
-    control?.setValue('longenoughpassword');
+    control?.setValue('validpassword');
     expect(control?.valid).toBeTruthy();
   });
 
@@ -78,7 +65,7 @@ describe('RegisterFormComponent', () => {
     spyOn(formValidationService, 'getFormErrors').and.returnValue([
       'Error message',
     ]);
-    component.registerForm.markAllAsTouched();
+    component.loginForm.markAllAsTouched();
     fixture.detectChanges();
     const errorMessages = fixture.debugElement.queryAll(
       By.css('.text-red-500 p')
@@ -90,17 +77,15 @@ describe('RegisterFormComponent', () => {
   });
 
   it('should disable the submit button when form is invalid', () => {
-    component.registerForm.get('name')?.setValue('');
+    component.loginForm.get('email')?.setValue('');
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.disabled).toBeTruthy();
   });
 
   it('should enable the submit button when form is valid', () => {
-    component.registerForm.get('name')?.setValue('Valid Name');
-    component.registerForm.get('email')?.setValue('test@example.com');
-    component.registerForm.get('password')?.setValue('validpassword');
-    component.registerForm.get('repeatedPassword')?.setValue('validpassword');
+    component.loginForm.get('email')?.setValue('test@example.com');
+    component.loginForm.get('password')?.setValue('validpassword');
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.disabled).toBeFalsy();

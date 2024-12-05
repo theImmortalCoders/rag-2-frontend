@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RecordedGameTableComponent } from './recorded-game-table.component';
-import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
+import { IRecordedGameResponse } from 'app/shared/models/endpoints/recorded-game.models';
 import { By } from '@angular/platform-browser';
 import { TRole } from 'app/shared/models/role.enum';
 

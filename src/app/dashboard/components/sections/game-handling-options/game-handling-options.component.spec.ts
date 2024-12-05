@@ -9,7 +9,7 @@ import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
-import { IGameResponse } from 'app/shared/models/game.models';
+import { IGameResponse } from 'app/shared/models/endpoints/game.models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GameHandlingOptionsComponent', () => {

@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import {
   IUserResponse,
   IUserStatsResponse,
-} from 'app/shared/models/user.models';
+} from 'app/shared/models/endpoints/user.models';
 import { TRole } from 'app/shared/models/role.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';

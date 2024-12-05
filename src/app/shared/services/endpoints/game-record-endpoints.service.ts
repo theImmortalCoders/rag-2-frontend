@@ -10,7 +10,7 @@ import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import {
   IRecordedGameRequest,
   IRecordedGameResponse,
-} from 'app/shared/models/recorded-game.models';
+} from 'app/shared/models/endpoints/recorded-game.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { saveAs } from 'file-saver';
 

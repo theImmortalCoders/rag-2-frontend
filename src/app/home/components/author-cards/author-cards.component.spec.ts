@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AuthorCardsComponent } from './author-cards.component';
-import { authorsData, IAuthor } from '../models/author';
+import { authorsData } from 'app/home/models/author';
 import { NgOptimizedImage } from '@angular/common';
 
 describe('AuthorCardsComponent', () => {

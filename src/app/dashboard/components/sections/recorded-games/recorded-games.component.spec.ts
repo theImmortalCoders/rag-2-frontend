@@ -9,8 +9,8 @@ import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { of } from 'rxjs';
-import { IGameResponse } from 'app/shared/models/game.models';
-import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
+import { IGameResponse } from 'app/shared/models/endpoints/game.models';
+import { IRecordedGameResponse } from 'app/shared/models/endpoints/recorded-game.models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TRole } from 'app/shared/models/role.enum';
 

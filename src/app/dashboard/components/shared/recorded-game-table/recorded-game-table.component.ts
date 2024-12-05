@@ -7,7 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
+import { IRecordedGameResponse } from 'app/shared/models/endpoints/recorded-game.models';
 import { LoadingSpinnerComponent } from 'app/shared/components/common/loading-spinner.component';
 
 @Component({

@@ -11,7 +11,7 @@ import { ModalComponent } from '../../../../shared/components/common/modal.compo
 import {
   ICourseRequest,
   ICourseResponse,
-} from 'app/shared/models/course.models';
+} from 'app/shared/models/endpoints/course.models';
 import { Subscription } from 'rxjs';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 import {

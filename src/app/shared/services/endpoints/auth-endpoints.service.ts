@@ -6,7 +6,7 @@ import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import {
   IUserLoginRequest,
   IUserResponse,
-} from 'app/shared/models/user.models';
+} from 'app/shared/models/endpoints/user.models';
 import { Observable, map, catchError, of, throwError, tap } from 'rxjs';
 
 @Injectable({

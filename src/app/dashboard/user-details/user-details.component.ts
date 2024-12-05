@@ -9,8 +9,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
-import { IGameResponse } from 'app/shared/models/game.models';
-import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
+import { IGameResponse } from 'app/shared/models/endpoints/game.models';
+import { IRecordedGameResponse } from 'app/shared/models/endpoints/recorded-game.models';
 import { Subscription } from 'rxjs';
 import { RecordedGameTableComponent } from '../components/shared/recorded-game-table/recorded-game-table.component';
 import { NotificationService } from 'app/shared/services/notification.service';
@@ -19,7 +19,7 @@ import { SelectedUserInfoComponent } from '../components/shared/selected-user-in
 import {
   IUserResponse,
   IUserStatsResponse,
-} from 'app/shared/models/user.models';
+} from 'app/shared/models/endpoints/user.models';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { ProgressCircleBarComponent } from '../components/shared/progress-circle-bar/progress-circle-bar.component';

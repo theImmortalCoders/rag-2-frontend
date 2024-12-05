@@ -10,7 +10,7 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 import {
   IUserResponse,
   IUserStatsResponse,
-} from 'app/shared/models/user.models';
+} from 'app/shared/models/endpoints/user.models';
 import { Subscription } from 'rxjs';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { UserInfoComponent } from './components/sections/user-info/user-info.component';

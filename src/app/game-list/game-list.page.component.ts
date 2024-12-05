@@ -11,7 +11,7 @@ import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import {
   IGameResponse,
   IGameStatsResponse,
-} from 'app/shared/models/game.models';
+} from 'app/shared/models/endpoints/game.models';
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';

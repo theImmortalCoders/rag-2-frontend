@@ -19,9 +19,12 @@ import { Subscription } from 'rxjs';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Router } from '@angular/router';
-import { IUserEditRequest, IUserResponse } from 'app/shared/models/user.models';
+import {
+  IUserEditRequest,
+  IUserResponse,
+} from 'app/shared/models/endpoints/user.models';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
-import { ICourseResponse } from 'app/shared/models/course.models';
+import { ICourseResponse } from 'app/shared/models/endpoints/course.models';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 import { TRole } from 'app/shared/models/role.enum';
 import { AppStatusService } from 'app/shared/services/app-status.service';

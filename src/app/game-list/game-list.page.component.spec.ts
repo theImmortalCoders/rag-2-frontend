@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import {
   IGameResponse,
   IGameStatsResponse,
-} from 'app/shared/models/game.models';
+} from 'app/shared/models/endpoints/game.models';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';

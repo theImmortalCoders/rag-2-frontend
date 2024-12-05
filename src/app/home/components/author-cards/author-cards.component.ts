@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { authorsData, IAuthor } from '../models/author';
+import { authorsData, IAuthor } from 'app/home/models/author';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({

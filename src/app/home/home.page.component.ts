@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import feather from 'feather-icons';
 import { authorsData, IAuthor } from './models/author';
-import { AuthorCardsComponent } from './components/author-cards.component';
-import { ShortGameStatsComponent } from './components/short-game-stats.component';
+import { AuthorCardsComponent } from './components/author-cards/author-cards.component';
+import { ShortGameStatsComponent } from './components/short-game-stats/short-game-stats.component';
 
 @Component({
   selector: 'app-home-page',

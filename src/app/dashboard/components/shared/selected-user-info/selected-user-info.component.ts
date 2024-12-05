@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import {
   IUserResponse,
   IUserStatsResponse,
-} from 'app/shared/models/user.models';
+} from 'app/shared/models/endpoints/user.models';
 
 @Component({
   selector: 'app-selected-user-info',

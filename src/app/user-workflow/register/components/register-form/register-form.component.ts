@@ -7,12 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
-import { IUserRequest } from 'app/shared/models/user.models';
+import { IUserRequest } from 'app/shared/models/endpoints/user.models';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotificationService } from 'app/shared/services/notification.service';
-import { ICourseResponse } from 'app/shared/models/course.models';
+import { ICourseResponse } from 'app/shared/models/endpoints/course.models';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 
 @Component({

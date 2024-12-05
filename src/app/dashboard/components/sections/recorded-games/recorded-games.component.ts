@@ -13,8 +13,8 @@ import {
 } from '@angular/core';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
-import { IGameResponse } from 'app/shared/models/game.models';
-import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
+import { IGameResponse } from 'app/shared/models/endpoints/game.models';
+import { IRecordedGameResponse } from 'app/shared/models/endpoints/recorded-game.models';
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { NotificationService } from 'app/shared/services/notification.service';

@@ -1,5 +1,5 @@
 import { ICourseResponse } from './course.models';
-import { TRole } from './role.enum';
+import { TRole } from '../role.enum';
 
 export interface IUserRequest {
   email: string;

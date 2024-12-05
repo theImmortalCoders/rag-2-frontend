@@ -6,10 +6,10 @@ import {
 } from '@angular/forms';
 import { FormValidationService } from '../../../shared/services/form-validation.service';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
-import { IUserLoginRequest } from 'app/shared/models/user.models';
+import { IUserLoginRequest } from 'app/shared/models/endpoints/user.models';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ForgotPasswordComponent } from './forgot-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { AppStatusService } from 'app/shared/services/app-status.service';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
