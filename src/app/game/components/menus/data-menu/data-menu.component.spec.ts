@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataMenuComponent } from './data-menu.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataTransformService } from '../../../shared/services/data-transform.service';
-import { of } from 'rxjs';
+import { DataTransformService } from 'app/shared/services/data-transform.service';
 import { HttpClientModule } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('DataMenuComponent', () => {
   let component: DataMenuComponent;
