@@ -1,4 +1,4 @@
-import { ICourseResponse } from './course.models';
+import { ICourseResponse } from '@api-models/course.models';
 import { TRole } from '../role.enum';
 
 export interface IUserRequest {

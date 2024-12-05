@@ -6,8 +6,8 @@ import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import {
   IGameStatsResponse,
   IOverallStatsResponse,
-} from 'app/shared/models/endpoints/game.models';
-import { IUserStatsResponse } from 'app/shared/models/endpoints/user.models';
+} from '@api-models/game.models';
+import { IUserStatsResponse } from '@api-models/user.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({

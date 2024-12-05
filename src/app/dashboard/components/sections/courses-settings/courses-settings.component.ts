@@ -8,10 +8,7 @@ import {
   Output,
 } from '@angular/core';
 import { ModalComponent } from '../../../../shared/components/common/modal.component';
-import {
-  ICourseRequest,
-  ICourseResponse,
-} from 'app/shared/models/endpoints/course.models';
+import { ICourseRequest, ICourseResponse } from '@api-models/course.models';
 import { Subscription } from 'rxjs';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 import {

@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { AllowedRolesDirective } from '@utils/directives/allowed-roles.directive';
 import { TRole } from 'app/shared/models/role.enum';
-import { IUserResponse } from 'app/shared/models/endpoints/user.models';
+import { IUserResponse } from '@api-models/user.models';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
 import { LoadingSpinnerComponent } from '../../../../shared/components/common/loading-spinner.component';

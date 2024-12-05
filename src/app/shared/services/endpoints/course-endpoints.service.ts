@@ -3,10 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
-import {
-  ICourseRequest,
-  ICourseResponse,
-} from 'app/shared/models/endpoints/course.models';
+import { ICourseRequest, ICourseResponse } from '@api-models/course.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({

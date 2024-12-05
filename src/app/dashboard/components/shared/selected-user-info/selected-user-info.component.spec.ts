@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectedUserInfoComponent } from './selected-user-info.component';
-import {
-  IUserResponse,
-  IUserStatsResponse,
-} from 'app/shared/models/endpoints/user.models';
+import { IUserResponse, IUserStatsResponse } from '@api-models/user.models';
 import { By } from '@angular/platform-browser';
 import { TRole } from 'app/shared/models/role.enum';
 

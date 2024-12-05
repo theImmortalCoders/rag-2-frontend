@@ -3,10 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
-import {
-  IUserLoginRequest,
-  IUserResponse,
-} from 'app/shared/models/endpoints/user.models';
+import { IUserLoginRequest, IUserResponse } from '@api-models/user.models';
 import { Observable, map, catchError, of, throwError, tap } from 'rxjs';
 
 @Injectable({

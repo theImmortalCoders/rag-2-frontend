@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import {
-  IUserResponse,
-  IUserStatsResponse,
-} from 'app/shared/models/endpoints/user.models';
+import { IUserResponse, IUserStatsResponse } from '@api-models/user.models';
 
 @Component({
   selector: 'app-selected-user-info',

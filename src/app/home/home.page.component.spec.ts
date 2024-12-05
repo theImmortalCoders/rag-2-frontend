@@ -3,7 +3,7 @@ import { HomePageComponent } from './home.page.component';
 import { By } from '@angular/platform-browser';
 import feather from 'feather-icons';
 import { NgOptimizedImage } from '@angular/common';
-import { AuthorCardsComponent } from './components/author-cards.component';
+import { AuthorCardsComponent } from './components/author-cards/author-cards.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 

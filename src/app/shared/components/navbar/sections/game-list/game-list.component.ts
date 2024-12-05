@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
-import { IGameResponse } from 'app/shared/models/endpoints/game.models';
+import { IGameResponse } from '@api-models/game.models';
 import { Subscription } from 'rxjs';
 
 @Component({

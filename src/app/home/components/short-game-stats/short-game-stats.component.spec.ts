@@ -9,7 +9,7 @@ import {
 import { ShortGameStatsComponent } from './short-game-stats.component';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { Subscription, throwError } from 'rxjs';
-import { IOverallStatsResponse } from 'app/shared/models/endpoints/game.models';
+import { IOverallStatsResponse } from '@api-models/game.models';
 import { ElementRef } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';

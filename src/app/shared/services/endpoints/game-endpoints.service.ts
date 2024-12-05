@@ -3,10 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
-import {
-  IGameRequest,
-  IGameResponse,
-} from 'app/shared/models/endpoints/game.models';
+import { IGameRequest, IGameResponse } from '@api-models/game.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({

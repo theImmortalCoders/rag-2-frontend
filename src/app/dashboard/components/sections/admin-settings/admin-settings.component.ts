@@ -12,13 +12,13 @@ import {
 import * as feather from 'feather-icons';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { Subscription } from 'rxjs';
-import { IUserResponse } from 'app/shared/models/endpoints/user.models';
+import { IUserResponse } from '@api-models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserTableComponent } from '../../shared/user-table/user-table.component';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
-import { ICourseResponse } from 'app/shared/models/endpoints/course.models';
+import { ICourseResponse } from '@api-models/course.models';
 
 @Component({
   selector: 'app-admin-settings',

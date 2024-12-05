@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { FormValidationService } from 'app/shared/services/form-validation.service';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
-import { IUserLoginRequest } from 'app/shared/models/endpoints/user.models';
+import { IUserLoginRequest } from '@api-models/user.models';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';

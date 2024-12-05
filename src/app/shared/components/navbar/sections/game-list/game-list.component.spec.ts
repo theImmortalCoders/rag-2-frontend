@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { GameListComponent } from './game-list.component';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
-import { IGameResponse } from 'app/shared/models/endpoints/game.models';
+import { IGameResponse } from '@api-models/game.models';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

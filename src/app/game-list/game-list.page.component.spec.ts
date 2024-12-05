@@ -3,11 +3,7 @@ import { GameListPageComponent } from './game-list.page.component';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { of } from 'rxjs';
-import {
-  IGameResponse,
-  IGameStatsResponse,
-} from 'app/shared/models/endpoints/game.models';
-import { By } from '@angular/platform-browser';
+import { IGameResponse, IGameStatsResponse } from '@api-models/game.models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 

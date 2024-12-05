@@ -2,8 +2,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Game } from '@gameModels/game.class';
-import { Player } from '@gameModels/player.class';
-import { IRecordedGameRequest } from 'app/shared/models/endpoints/recorded-game.models';
+import { IRecordedGameRequest } from '@api-models/recorded-game.models';
 import { NotificationService } from 'app/shared/services/notification.service';
 
 @Component({

@@ -1,13 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { IRecordedGameResponse } from 'app/shared/models/endpoints/recorded-game.models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IRecordedGameResponse } from '@api-models/recorded-game.models';
 import { LoadingSpinnerComponent } from 'app/shared/components/common/loading-spinner.component';
 
 @Component({
@@ -85,6 +78,7 @@ import { LoadingSpinnerComponent } from 'app/shared/components/common/loading-sp
                 <span class="flex group justify-center w-1/12"> </span>
               } @else {
                 <button
+                  id="downloadButton"
                   class="flex group justify-center w-1/12"
                   (click)="downloadEmitter.emit(recordedGame.id)">
                   <i
@@ -93,6 +87,7 @@ import { LoadingSpinnerComponent } from 'app/shared/components/common/loading-sp
                 </button>
               }
               <button
+                id="deleteButton"
                 class="flex group justify-center w-1/12"
                 (click)="deleteEmitter.emit(recordedGame.id)">
                 <i

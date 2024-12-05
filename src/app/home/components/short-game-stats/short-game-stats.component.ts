@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
-import { IOverallStatsResponse } from 'app/shared/models/endpoints/game.models';
+import { IOverallStatsResponse } from '@api-models/game.models';
 import { Subscription } from 'rxjs';
 
 @Component({

@@ -1,6 +1,7 @@
 import { TExchangeData } from '@gameModels/exchange-data.type';
-import { IPlayer } from './player.models';
-import { IUserResponse } from './user.models';
+import { IPlayer } from '@api-models/player.models';
+import { IUserResponse } from '@api-models/user.models';
+
 export interface IRecordedGameResponse {
   id: number;
   gameName: string;

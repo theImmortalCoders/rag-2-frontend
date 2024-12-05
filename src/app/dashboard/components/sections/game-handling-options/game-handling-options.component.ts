@@ -12,10 +12,7 @@ import { ModalComponent } from '../../../../shared/components/common/modal.compo
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
-import {
-  IGameRequest,
-  IGameResponse,
-} from 'app/shared/models/endpoints/game.models';
+import { IGameRequest, IGameResponse } from '@api-models/game.models';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
