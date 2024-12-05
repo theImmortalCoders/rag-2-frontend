@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FormValidationService } from '../../../shared/services/form-validation.service';
+import { FormValidationService } from 'app/shared/services/form-validation.service';
 import { IUserRequest } from 'app/shared/models/endpoints/user.models';
 import { UserEndpointsService } from '@endpoints/user-endpoints.service';
 import { Router } from '@angular/router';

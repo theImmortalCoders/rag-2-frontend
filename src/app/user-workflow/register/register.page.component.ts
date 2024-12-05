@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BenefitsListComponent } from '../shared/components/benefits-list/benefits-list.component';
 import { SideFormPanelComponent } from '../shared/components/side-form-panel/side-form-panel.component';
-import { RegisterFormComponent } from './components/register-form.component';
+import { RegisterFormComponent } from './components/register-form/register-form.component';
 
 @Component({
   selector: 'app-register-page',
