@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RecordedGameTableComponent } from './recorded-game-table.component';
-import { LoadingSpinnerComponent } from 'app/shared/components/common/loading-spinner.component';
+import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.component';
 import { By } from '@angular/platform-browser';
 import { TRole } from 'app/shared/models/role.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

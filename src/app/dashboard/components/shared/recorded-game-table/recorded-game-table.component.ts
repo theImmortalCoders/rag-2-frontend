@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IRecordedGameResponse } from '@api-models/recorded-game.models';
-import { LoadingSpinnerComponent } from 'app/shared/components/common/loading-spinner.component';
+import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.component';
 
 @Component({
   selector: 'app-recorded-game-table',

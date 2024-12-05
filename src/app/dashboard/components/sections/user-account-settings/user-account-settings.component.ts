@@ -7,7 +7,7 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { ModalComponent } from '../../../../shared/components/common/modal.component';
+import { ModalComponent } from '@commonComponents/modal.component';
 import {
   FormControl,
   NonNullableFormBuilder,

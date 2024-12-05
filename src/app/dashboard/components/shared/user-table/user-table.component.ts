@@ -16,7 +16,7 @@ import { TRole } from 'app/shared/models/role.enum';
 import { IUserResponse } from '@api-models/user.models';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
-import { LoadingSpinnerComponent } from '../../../../shared/components/common/loading-spinner.component';
+import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.component';
 
 @Component({
   selector: 'app-user-table',

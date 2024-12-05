@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ModalComponent } from '../../../../shared/components/common/modal.component';
+import { ModalComponent } from '@commonComponents/modal.component';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
