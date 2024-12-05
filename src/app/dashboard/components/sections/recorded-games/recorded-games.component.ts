@@ -18,7 +18,7 @@ import { IRecordedGameResponse } from '@api-models/recorded-game.models';
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { NotificationService } from 'app/shared/services/notification.service';
-import { RecordedGameTableComponent } from '../../shared/recorded-game-table/recorded-game-table.component';
+import { RecordedGameTableComponent } from '@dashboardComponents/recorded-game-table/recorded-game-table.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({

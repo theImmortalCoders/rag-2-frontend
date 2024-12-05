@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { IAiModel } from '../../../../../models/ai-model';
+import { IAiModel } from '@gameModels/ai-model';
 import { AiModelsListEndpointsService } from '@endpoints/ai-models-list-endpoints.service';
 import { environment } from '@env/environment';
 import { Subscription } from 'rxjs';

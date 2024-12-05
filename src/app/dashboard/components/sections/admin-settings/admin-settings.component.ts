@@ -16,7 +16,7 @@ import { IUserResponse } from '@api-models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { UserTableComponent } from '../../shared/user-table/user-table.component';
+import { UserTableComponent } from '@dashboardComponents/user-table/user-table.component';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 import { ICourseResponse } from '@api-models/course.models';
 

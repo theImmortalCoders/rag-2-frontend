@@ -12,14 +12,14 @@ import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.ser
 import { IGameResponse } from '@api-models/game.models';
 import { IRecordedGameResponse } from '@api-models/recorded-game.models';
 import { Subscription } from 'rxjs';
-import { RecordedGameTableComponent } from '../components/shared/recorded-game-table/recorded-game-table.component';
+import { RecordedGameTableComponent } from '@dashboardComponents/recorded-game-table/recorded-game-table.component';
 import { NotificationService } from 'app/shared/services/notification.service';
 import * as feather from 'feather-icons';
-import { SelectedUserInfoComponent } from '../components/shared/selected-user-info/selected-user-info.component';
+import { SelectedUserInfoComponent } from '@dashboardComponents/selected-user-info/selected-user-info.component';
 import { IUserResponse, IUserStatsResponse } from '@api-models/user.models';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
-import { ProgressCircleBarComponent } from '../components/shared/progress-circle-bar/progress-circle-bar.component';
+import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle-bar/progress-circle-bar.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({

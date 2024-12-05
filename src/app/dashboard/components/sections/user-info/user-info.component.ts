@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { IUserResponse, IUserStatsResponse } from '@api-models/user.models';
-import { ProgressCircleBarComponent } from '../../shared/progress-circle-bar/progress-circle-bar.component';
+import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle-bar/progress-circle-bar.component';
 
 @Component({
   selector: 'app-user-info',

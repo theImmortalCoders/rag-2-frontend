@@ -28,7 +28,8 @@
       "@endpoints/*": ["app/shared/services/endpoints/*"],
       "@api-models/*": ["app/shared/models/api-models/*"],
       "@gameModels/*": ["app/game/models/*"],
-      "@commonComponents/*": ["app/shared/components/common/*"]
+      "@commonComponents/*": ["app/shared/components/common/*"],
+      "@dashboardComponents/*": ["app/dashboard/components/shared/*"]
     }
   },
   "angularCompilerOptions": {

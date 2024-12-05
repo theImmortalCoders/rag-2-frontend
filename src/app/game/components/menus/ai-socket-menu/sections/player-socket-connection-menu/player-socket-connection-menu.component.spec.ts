@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerSocketConnectionMenuComponent } from './player-socket-connection-menu.component';
 import { By } from '@angular/platform-browser';
-import { AiSocketService } from '../../../../../services/ai-socket.service';
+import { AiSocketService } from 'app/game/services/ai-socket.service';
 import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-connected-menu.component';
 import { SocketDomainInputComponent } from '../socket-domain-input/socket-domain-input.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModelSelectionComponent } from './model-selection.component';
-import { IAiModel } from '../../../../../models/ai-model';
+import { IAiModel } from '@gameModels/ai-model';
 import { AiModelsListEndpointsService } from '@endpoints/ai-models-list-endpoints.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';

@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { AiSocketService } from '../../../../../services/ai-socket.service';
+import { AiSocketService } from 'app/game/services/ai-socket.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 import { Player } from '@gameModels/player.class';
@@ -17,7 +17,7 @@ import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-co
 import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
-import { SocketListService } from '../../../../../services/socket-list.service';
+import { SocketListService } from 'app/game/services/socket-list.service';
 import { ModelSelectionComponent } from '../model-selection/model-selection.component';
 import { Game } from '@gameModels/game.class';
 

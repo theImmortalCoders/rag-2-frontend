@@ -7,8 +7,8 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { TRole } from '../../app/shared/models/role.enum';
-import { AppStatusService } from '../../app/shared/services/app-status.service';
+import { TRole } from 'app/shared/models/role.enum';
+import { AppStatusService } from 'app/shared/services/app-status.service';
 import { Subscription } from 'rxjs';
 @Directive({
   selector: '[appAllowedRoles]',
