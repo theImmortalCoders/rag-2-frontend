@@ -4,7 +4,7 @@ import { environment } from '@env/environment';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 import { TRole } from 'app/shared/models/role.enum';
-import { ILimitsResponse, IUserResponse } from 'app/shared/models/user.models';
+import { ILimitsResponse, IUserResponse } from '@api-models/user.models';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({

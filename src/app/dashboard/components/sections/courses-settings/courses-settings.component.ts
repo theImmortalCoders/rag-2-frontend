@@ -7,11 +7,8 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { ModalComponent } from '../../shared/modal.component';
-import {
-  ICourseRequest,
-  ICourseResponse,
-} from 'app/shared/models/course.models';
+import { ModalComponent } from '@commonComponents/modal.component';
+import { ICourseRequest, ICourseResponse } from '@api-models/course.models';
 import { Subscription } from 'rxjs';
 import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
 import {

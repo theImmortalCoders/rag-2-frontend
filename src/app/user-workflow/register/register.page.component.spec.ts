@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterPageComponent } from './register.page.component';
-import { RegisterFormComponent } from './components/register-form.component';
+import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { BenefitsListComponent } from '../shared/components/benefits-list/benefits-list.component';
 import { SideFormPanelComponent } from '../shared/components/side-form-panel/side-form-panel.component';
 import { RouterTestingModule } from '@angular/router/testing';

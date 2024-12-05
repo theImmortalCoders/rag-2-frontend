@@ -6,7 +6,7 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import { CanvasUtilsService } from './services/canvas-utils.service';
+import { CanvasUtilsService } from 'app/game/services/canvas-utils.service';
 import * as feather from 'feather-icons';
 
 @Component({

@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { AdminSettingsComponent } from './admin-settings.component';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
-import { IUserResponse } from 'app/shared/models/user.models';
+import { IUserResponse } from '@api-models/user.models';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TRole } from 'app/shared/models/role.enum';
 

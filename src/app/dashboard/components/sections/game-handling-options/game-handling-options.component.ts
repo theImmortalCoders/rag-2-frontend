@@ -8,11 +8,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ModalComponent } from '../../shared/modal.component';
+import { ModalComponent } from '@commonComponents/modal.component';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { Subscription } from 'rxjs';
-import { IGameRequest, IGameResponse } from 'app/shared/models/game.models';
+import { IGameRequest, IGameResponse } from '@api-models/game.models';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,

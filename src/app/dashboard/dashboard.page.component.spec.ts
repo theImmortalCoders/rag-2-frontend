@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardPageComponent } from './dashboard.page.component';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { of, throwError } from 'rxjs';
-import {
-  IUserResponse,
-  IUserStatsResponse,
-} from 'app/shared/models/user.models';
+import { IUserResponse, IUserStatsResponse } from '@api-models/user.models';
 import { TRole } from 'app/shared/models/role.enum';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';

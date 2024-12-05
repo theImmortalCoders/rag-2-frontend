@@ -11,8 +11,7 @@
           "inlineStyle": true,
           "style": "css",
           "skipTests": false,
-          "standalone": true,
-          "flat": true
+          "standalone": true
         },
         "@schematics/angular:class": {
           "skipTests": true
@@ -56,10 +55,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/custom-theme.scss",
-              "src/styles.css"
-            ],
+            "styles": ["src/custom-theme.scss", "src/styles.css"],
             "scripts": []
           },
           "configurations": {
