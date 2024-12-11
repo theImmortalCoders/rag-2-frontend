@@ -10,7 +10,7 @@ import { Pong, PongState } from './models/pong.class';
   imports: [CanvasComponent],
   template: `<div>{{ game.state.scoreLeft }}:{{ game.state.scoreRight }}</div>
     <app-canvas
-      [displayMode]="'vertical'"
+      [displayMode]="'horizontal'"
       class="bg-zinc-300"
       #gameCanvas></app-canvas>
     <b>FPS: {{ fps }}</b> `,

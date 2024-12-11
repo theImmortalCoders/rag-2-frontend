@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
       >, total:<b> {{ game.state.totalPoints | number: '1.0-1' }} pts</b>
     </div>
     <app-canvas
-      [displayMode]="'vertical'"
+      [displayMode]="'horizontal'"
       class="bg-zinc-300"
       #gameCanvas></app-canvas>
     <b>FPS: {{ fps }}</b> `,
