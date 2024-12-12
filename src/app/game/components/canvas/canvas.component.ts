@@ -4,9 +4,10 @@ import {
   ElementRef,
   inject,
   Input,
+  OnInit,
   ViewChild,
 } from '@angular/core';
-import { CanvasUtilsService } from './services/canvas-utils.service';
+import { CanvasUtilsService } from 'app/game/services/canvas-utils.service';
 import * as feather from 'feather-icons';
 
 @Component({
@@ -29,14 +30,31 @@ import * as feather from 'feather-icons';
     </div>
   `,
 })
-export class CanvasComponent implements AfterViewInit {
+export class CanvasComponent implements AfterViewInit, OnInit {
+  @Input({ required: true }) public displayMode: 'vertical' | 'horizontal' =
+    'horizontal';
   private _canvasUtilsService = inject(CanvasUtilsService);
 
   @ViewChild('canvasElement', { static: true })
   public canvasElement!: ElementRef<HTMLCanvasElement>;
 
-  public height = 600;
-  public width = 1000;
+  public height!: number;
+  public width!: number;
+
+  public ngOnInit(): void {
+    switch (this.displayMode) {
+      case 'horizontal':
+        this.height = 600;
+        this.width = 1000;
+        break;
+      case 'vertical':
+        this.height = 600;
+        this.width = 400;
+        break;
+      default:
+        break;
+    }
+  }
 
   private isFullscreen = false;
   private _originalWidth!: number;

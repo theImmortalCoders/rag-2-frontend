@@ -8,10 +8,7 @@ import {
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
-import {
-  IGameResponse,
-  IGameStatsResponse,
-} from 'app/shared/models/game.models';
+import { IGameResponse, IGameStatsResponse } from '@api-models/game.models';
 import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';

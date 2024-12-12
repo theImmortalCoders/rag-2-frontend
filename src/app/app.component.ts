@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
-import { NotificationComponent } from './shared/components/common/notification.component';
-import { CookieConsentComponent } from './shared/components/common/cookie-consent.component';
+import { NotificationComponent } from '@commonComponents/notification.component';
+import { CookieConsentComponent } from '@commonComponents/cookie-consent.component';
 import { CommonModule } from '@angular/common';
 
 @Component({

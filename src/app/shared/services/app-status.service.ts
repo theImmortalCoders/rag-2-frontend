@@ -1,7 +1,7 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import { TRole } from '../models/role.enum';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { IUserResponse } from '../models/user.models';
+import { IUserResponse } from '@api-models/user.models';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
 
 @Injectable({

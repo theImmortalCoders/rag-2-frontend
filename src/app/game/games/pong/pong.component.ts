@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { CanvasComponent } from '../../components/canvas/canvas.component';
+import { CanvasComponent } from 'app/game/components/canvas/canvas.component';
 import { BaseGameWindowComponent } from '../base-game.component';
 import { Pong, PongState } from './models/pong.class';
 
@@ -9,7 +9,10 @@ import { Pong, PongState } from './models/pong.class';
   standalone: true,
   imports: [CanvasComponent],
   template: `<div>{{ game.state.scoreLeft }}:{{ game.state.scoreRight }}</div>
-    <app-canvas class="bg-zinc-300" #gameCanvas></app-canvas>
+    <app-canvas
+      [displayMode]="'horizontal'"
+      class="bg-zinc-300"
+      #gameCanvas></app-canvas>
     <b>FPS: {{ fps }}</b> `,
 })
 export class PongGameWindowComponent

@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '@env/environment';
-import { IUserEditRequest, IUserRequest } from 'app/shared/models/user.models';
+import { IUserEditRequest, IUserRequest } from '@api-models/user.models';
 import { errorHandler } from '@utils/helpers/errorHandler';
 import { getAuthHeaders } from '@utils/helpers/jwtTokenAuthHeader';
 

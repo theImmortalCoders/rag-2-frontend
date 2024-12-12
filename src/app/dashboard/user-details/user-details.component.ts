@@ -9,20 +9,17 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
-import { IGameResponse } from 'app/shared/models/game.models';
-import { IRecordedGameResponse } from 'app/shared/models/recorded-game.models';
+import { IGameResponse } from '@api-models/game.models';
+import { IRecordedGameResponse } from '@api-models/recorded-game.models';
 import { Subscription } from 'rxjs';
-import { RecordedGameTableComponent } from '../components/shared/recorded-game-table.component';
+import { RecordedGameTableComponent } from '@dashboardComponents/recorded-game-table/recorded-game-table.component';
 import { NotificationService } from 'app/shared/services/notification.service';
 import * as feather from 'feather-icons';
-import { SelectedUserInfoComponent } from './selected-user-info.component';
-import {
-  IUserResponse,
-  IUserStatsResponse,
-} from 'app/shared/models/user.models';
+import { SelectedUserInfoComponent } from '@dashboardComponents/selected-user-info/selected-user-info.component';
+import { IUserResponse, IUserStatsResponse } from '@api-models/user.models';
 import { AdministrationEndpointsService } from '@endpoints/administration-endpoints.service';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
-import { ProgressCircleBarComponent } from '../components/shared/progress-circle-bar.component';
+import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle-bar/progress-circle-bar.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -125,7 +122,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
         (sortDirectionEmitter)="sortDirection = $event; applyFilters()"
         class="w-full overflow-auto max-h-96 border-mainOrange border-2" />
       @if (!isLoading && recordedGamesData && recordedGamesData.length === 0) {
-        <span class="w-full text-mainOrange">No records found.</span>
+        <span class="w-full text-mainOrange font-mono">No records found.</span>
       }
       @if (errorMessage !== null) {
         <div class="text-red-500 mt-6">

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginFormComponent } from './components/login-form.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 import { BenefitsListComponent } from '../shared/components/benefits-list/benefits-list.component';
 import { SideFormPanelComponent } from '../shared/components/side-form-panel/side-form-panel.component';
 

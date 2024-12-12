@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { IAiModel } from 'app/game/components/ai-socket-menu/sections/model-selection/models/ai-model';
+import { IAiModel } from '@gameModels/ai-model';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
