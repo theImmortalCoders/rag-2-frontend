@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   inject,
@@ -20,6 +21,8 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
 import { SocketListService } from 'app/game/services/socket-list.service';
 import { ModelSelectionComponent } from '../model-selection/model-selection.component';
 import { Game } from '@gameModels/game.class';
+import { SideMenuHelperComponent } from '../side-menu-helper/side-menu-helper.component';
+import * as feather from 'feather-icons';
 
 @Component({
   selector: 'app-player-socket-connection-menu',
@@ -28,6 +31,7 @@ import { Game } from '@gameModels/game.class';
     SocketDomainInputComponent,
     SocketConnectedMenuComponent,
     ModelSelectionComponent,
+    SideMenuHelperComponent,
   ],
   providers: [AiSocketService],
   template: `
@@ -37,7 +41,8 @@ import { Game } from '@gameModels/game.class';
         [isDisabled]="isConnected ? true : false"
         [gameName]="gameName"
         [currentSocketDomain]="socketUrl"
-        (socketDomainEmitter)="socketUrl = $event" />
+        (socketDomainEmitter)="socketUrl = $event"
+        (isModelSelected)="isPreparedModelSelected = $event" />
       <span class="text-mainCreme font-bold">Custom model address:</span>
       <app-socket-domain-input
         class="mb-2"
@@ -46,7 +51,24 @@ import { Game } from '@gameModels/game.class';
         [gameName]="gameName"
         (socketDomainEmitter)="socketUrl = $event"
         (recentPhrasesEmitter)="recentPhrases = $event" />
-      <span class="text-mainOrange font-bold">STATUS:</span>
+      @if (isPreparedModelSelected) {
+        <div class="relative -top-4 -left-4">
+          <app-side-menu-helper
+            [menuType]="'Warning'"
+            [descriptionPart1]="
+              'When utilizing pre-trained models, the quality of your network connection significantly impacts the model performance. It will consistently be slightly less efficient compared to running it in a local environment.'
+            "
+            [descriptionPart2]="null"
+            [descriptionPart3]="null"
+            [iconType]="'warning'" />
+        </div>
+      }
+      <span
+        class="text-mainOrange font-bold {{
+          isPreparedModelSelected ? 'mt-6' : 'mt-0'
+        }}"
+        >STATUS:</span
+      >
       <span
         class="w-full text-start {{
           aiSocketService.getIsSocketConnected()
@@ -58,9 +80,9 @@ import { Game } from '@gameModels/game.class';
         }}</span
       >
       @if (aiSocketService.getIsSocketConnected()) {
-        <span
-          >Ping: <b>{{ aiSocketService.getSocketPing() }} ms</b></span
-        >
+        <span class="text-mainCreme">
+          Ping: <b>{{ aiSocketService.getSocketPing() }} ms</b>
+        </span>
         <app-socket-connected-menu
           [isDataSendingActive]="aiSocketService.getIsDataSendingActive()"
           [vSendingInterval]="vSendingInterval"
@@ -84,7 +106,9 @@ import { Game } from '@gameModels/game.class';
     </div>
   `,
 })
-export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
+export class PlayerSocketConnectionMenuComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @Input({ required: true }) public gameName = '';
   @Input({ required: true }) public set setDataToSend(data: Game) {
     if (!data) return;
@@ -121,6 +145,7 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
   public vSendingInterval = { value: 100 };
   public isPaused = false;
   public canNotConnect = false;
+  public isPreparedModelSelected = false;
 
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
@@ -154,6 +179,9 @@ export class PlayerSocketConnectionMenuComponent implements OnInit, OnDestroy {
       });
 
     this.syncPropsWithUrl();
+  }
+  public ngAfterViewInit(): void {
+    feather.replace();
   }
   public ngOnDestroy(): void {
     this.aiSocketService.stopDataExchange();

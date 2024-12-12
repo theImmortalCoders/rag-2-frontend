@@ -47,6 +47,7 @@ export class ModelSelectionComponent implements OnInit, OnDestroy, OnChanges {
   @Input({ required: true }) public currentSocketDomain!: string;
 
   @Output() public socketDomainEmitter = new EventEmitter<string>();
+  @Output() public isModelSelected = new EventEmitter<boolean>();
 
   private _aiModelsListEndpointsService = inject(AiModelsListEndpointsService);
 
@@ -83,10 +84,12 @@ export class ModelSelectionComponent implements OnInit, OnDestroy, OnChanges {
         this.selectedModelIndex = modelIndex;
         this.selectedModel = model;
         this.socketDomainEmitter.emit(this.aiModelServiceUrl + model.path);
+        this.isModelSelected.emit(true);
       } else {
         this.selectedModelIndex = -1;
         this.selectedModel = null;
         this.socketDomainEmitter.emit('');
+        this.isModelSelected.emit(false);
       }
     }
   }

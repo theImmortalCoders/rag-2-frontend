@@ -30,7 +30,7 @@ import { SideMenuHelperComponent } from './sections/side-menu-helper/side-menu-h
       >
     </button>
     <div
-      class="w-72 h-80 overflow-y-auto p-4 bg-lightGray font-mono text-sm side-menu-container top-60 {{
+      class="w-72 h-80 overflow-y-auto overflow-x-hidden p-4 bg-lightGray font-mono text-sm side-menu-container top-60 {{
         isAISocketMenuVisible ? 'left-0' : '-left-72'
       }}">
       <app-side-menu-helper
