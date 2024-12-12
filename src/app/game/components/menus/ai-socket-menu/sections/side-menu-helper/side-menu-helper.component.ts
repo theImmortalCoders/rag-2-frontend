@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
+import * as feather from 'feather-icons';
 
 @Component({
   selector: 'app-side-menu-helper',
@@ -7,15 +8,31 @@ import { Component, Input } from '@angular/core';
   template: `
     <div class="group font-mono absolute left-0 top-0 z-30">
       <div
-        class="absolute z-30 top-3 left-4 rounded-full bg-lightGray group-hover:bg-mainCreme">
-        <i
-          data-feather="info"
-          class="size-5 text-mainGray group-hover:scale-105 transition-all ease-in-out duration-300"></i>
+        class="absolute z-30 top-3 left-4 rounded-full bg-lightGray {{
+          iconType === 'info'
+            ? 'group-hover:bg-mainCreme'
+            : 'group-hover:bg-mainGray'
+        }}">
+        @if (iconType === 'info') {
+          <i
+            data-feather="info"
+            class="size-5 text-mainGray group-hover:scale-105 transition-all ease-in-out duration-300"></i>
+        } @else if (iconType === 'warning') {
+          <i
+            data-feather="alert-triangle"
+            class="size-5 text-yellow-400 group-hover:scale-105 transition-all ease-in-out duration-100"></i>
+        }
       </div>
       <div
-        class="flex absolute z-20 top-3 left-4 h-5 w-[15.75rem] pointer-events-none opacity-0 group-hover:opacity-100 items-start justify-center rounded-l-full rounded-tr-full bg-mainGray text-mainCreme text-nowrap transition-all ease-in-out duration-300">
+        class="flex absolute z-20 top-3 left-4 h-5 w-[15.75rem] pointer-events-none opacity-0 group-hover:opacity-100 items-start justify-center rounded-tr-full bg-mainGray text-mainCreme text-nowrap transition-all ease-in-out duration-300 {{
+          iconType === 'info' ? 'rounded-l-full' : 'rounded-tl-[2000px]'
+        }}">
         <p
-          class="text-center py-[2px] ml-5 pr-4 uppercase text-xs border-b-[1px] border-mainCreme w-full">
+          class="text-center py-[2px] ml-5 pr-4 uppercase text-xs w-full border-b-[1px] {{
+            iconType === 'info'
+              ? 'border-mainCreme text-mainCreme'
+              : 'border-yellow-500 text-yellow-500'
+          }}">
           {{ menuType }}
         </p>
       </div>
@@ -35,9 +52,14 @@ import { Component, Input } from '@angular/core';
     </div>
   `,
 })
-export class SideMenuHelperComponent {
+export class SideMenuHelperComponent implements AfterViewInit {
   @Input({ required: true }) public menuType!: string;
   @Input({ required: true }) public descriptionPart1!: string;
   @Input({ required: true }) public descriptionPart2!: string | null;
   @Input({ required: true }) public descriptionPart3!: string | null;
+  @Input() public iconType: 'info' | 'warning' = 'info';
+
+  public ngAfterViewInit(): void {
+    feather.replace();
+  }
 }
