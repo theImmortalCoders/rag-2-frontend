@@ -4,6 +4,11 @@ import { Player } from '@gameModels/player.class';
 
 export class ClimbHillState implements TGameState {
   public score = 0;
+  public distance = 0;
+  public carY = 0;
+  public carXSpeed = 0;
+  public carAngle = 0;
+  public visibleTerrain = [0, 0, 0, 10, 0, 0, 0, 0, 0, 0];
 }
 
 export class ClimbHill extends Game {
