@@ -11,9 +11,10 @@ import { HappyJump, HappyJumpState } from './models/happyjump.class';
   imports: [CanvasComponent],
   template: `
     <div>
-      Score: <b>{{ game.state.score }}</b> | Jump Power:
-      <b>{{ game.state.jumpPowerY }}</b> | Gravity:
-      <b>{{ game.state.gravity }}</b> | Platform Speed:
+      score: <b>{{ game.state.score }}</b
+      >, jumpPower: <b>{{ game.state.jumpPowerY }}</b
+      >, gravity: <b>{{ game.state.gravity }}</b
+      >, platformSpeed:
       <b>{{ game.state.platformSpeed }}</b>
     </div>
     <app-canvas [displayMode]="'vertical'" class="bg-zinc-300" #gameCanvas>
@@ -60,7 +61,7 @@ export class HappyJumpComponent
       this.game.players[0].inputData['start'] === 1
     ) {
       this.game.state.isGameStarted = true;
-      this.game.state.playerSpeedY = this.game.state.jumpPowerY;
+      this.game.state.playerSpeedY = -this.game.state.jumpPowerY;
     }
 
     if (!this.isPaused && this.game.state.isGameStarted) {
@@ -160,7 +161,7 @@ export class HappyJumpComponent
     }
 
     if (isOnPlatform && this.game.players[0].inputData['jump'] === 1) {
-      this.game.state.playerSpeedY = this.game.state.jumpPowerY;
+      this.game.state.playerSpeedY = -this.game.state.jumpPowerY;
     }
   }
 
