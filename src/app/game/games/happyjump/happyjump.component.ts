@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 /* eslint-disable complexity */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from 'app/game/components/canvas/canvas.component';
@@ -29,6 +30,7 @@ export class HappyJumpComponent
   private _platformHeight = 10;
   private _platformWidth = 100;
   private _minPlatformGap = 120;
+  private _visitedPlatforms: boolean[] = new Array(5).fill(false);
 
   public override game!: HappyJump;
 
@@ -81,6 +83,7 @@ export class HappyJumpComponent
     });
 
     this.game.state.score = 0;
+    this._visitedPlatforms = Array(4).fill(false);
   }
 
   private updatePlayerPosition(): void {
@@ -107,13 +110,13 @@ export class HappyJumpComponent
   }
 
   private updatePlatforms(): void {
-    this.game.state.platforms.forEach(platform => {
+    this.game.state.platforms.forEach((platform, index) => {
       platform.y += this.game.state.platformSpeed;
 
       if (platform.y > this._canvas.height) {
         platform.y = -this._platformHeight;
         platform.x = this.random(50, this._canvas.width - this._platformWidth);
-        this.game.state.score++;
+        this._visitedPlatforms[index] = false;
       }
     });
   }
@@ -125,7 +128,7 @@ export class HappyJumpComponent
 
     let isOnPlatform = false;
 
-    for (const platform of this.game.state.platforms) {
+    for (const [index, platform] of this.game.state.platforms.entries()) {
       const platformTop = platform.y;
       const platformBottom = platform.y + this._platformHeight;
       const platformLeft = platform.x;
@@ -142,6 +145,12 @@ export class HappyJumpComponent
         this.game.state.playerY = platformTop - this._playerHeight;
 
         isOnPlatform = true;
+
+        if (!this._visitedPlatforms[index]) {
+          this.game.state.score++;
+          this._visitedPlatforms[index] = true;
+        }
+
         break;
       }
     }
