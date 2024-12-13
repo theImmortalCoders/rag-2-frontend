@@ -45,13 +45,22 @@ export class HappyJumpComponent
 
   public override restart(): void {
     this.game.state = new HappyJumpState();
+    this.game.state.isGameStarted = false;
     this.resetGame();
   }
 
   protected override update(): void {
     super.update();
 
-    if (!this.isPaused) {
+    if (
+      (!this.game.state.isGameStarted &&
+        this.game.players[0].inputData['jump'] === 1) ||
+      this.game.players[0].inputData['start'] === 1
+    ) {
+      this.game.state.isGameStarted = true;
+    }
+
+    if (!this.isPaused && this.game.state.isGameStarted) {
       this.updatePlayerPosition();
       this.updatePlatforms();
       this.checkCollisions();
