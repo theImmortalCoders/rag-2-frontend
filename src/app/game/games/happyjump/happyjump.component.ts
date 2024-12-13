@@ -58,6 +58,7 @@ export class HappyJumpComponent
       this.game.players[0].inputData['start'] === 1
     ) {
       this.game.state.isGameStarted = true;
+      this.game.state.playerSpeedY = this.game.state.jumpPowerY;
     }
 
     if (!this.isPaused && this.game.state.isGameStarted) {
@@ -71,7 +72,7 @@ export class HappyJumpComponent
 
   private resetGame(): void {
     this.game.state.playerX = this._canvas.width / 2 - this._playerWidth / 2;
-    this.game.state.playerY = this._canvas.height / 2;
+    this.game.state.playerY = 570;
     this.game.state.playerSpeedY = 0;
 
     this.game.state.platforms.forEach((platform, index) => {

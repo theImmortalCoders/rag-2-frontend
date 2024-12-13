@@ -4,7 +4,7 @@ import { Player } from '@gameModels/player.class';
 
 export class HappyJumpState implements TGameState {
   public playerX = 400;
-  public playerY = 300;
+  public playerY = 570;
   public playerSpeedX = 0;
   public playerSpeedY = 0;
   public gravity = 0.5;
@@ -39,7 +39,7 @@ export class HappyJump extends Game {
 
       default values:
         playerX: 400;
-        playerY: 300;
+        playerY: 570;
         playerSpeedX: 0;
         playerSpeedY: 0;
         gravity: 0.5;
