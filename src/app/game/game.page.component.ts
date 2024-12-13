@@ -27,6 +27,7 @@ import { CantDisplayGameComponent } from './components/cant-display-game/cant-di
 import { FlappyBirdComponent } from './games/flappybird/flappybird.component';
 import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
 import { HappyJumpComponent } from './games/happyjump/happyjump.component';
+import { ClimbHillComponent } from './games/climbhill/climbhill.component';
 
 @Component({
   selector: 'app-game',
@@ -44,7 +45,6 @@ import { HappyJumpComponent } from './games/happyjump/happyjump.component';
     SkiJumpGameWindowComponent,
     GameControlsComponent,
     FlappyBirdComponent,
-    HappyJumpComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-zinc-400">
@@ -108,6 +108,15 @@ import { HappyJumpComponent } from './games/happyjump/happyjump.component';
               }
               @case ('happyjump') {
                 <app-happyjump
+                  class="flex flex-col items-center w-3/4"
+                  [setSocketInputDataReceive]="socketInputData"
+                  (gameStateDataEmitter)="receiveGameOutputData($event)"
+                  [setAbstractGame]="game"
+                  [gameRestart]="gameRestartSubject.asObservable()"
+                  [gamePause]="gamePauseSubject.asObservable()" />
+              }
+              @case ('climbhill') {
+                <app-climbhill
                   class="flex flex-col items-center w-3/4"
                   [setSocketInputDataReceive]="socketInputData"
                   (gameStateDataEmitter)="receiveGameOutputData($event)"
