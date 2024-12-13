@@ -65,7 +65,6 @@ export class HappyJumpComponent
     this.game.state.playerY = this._canvas.height / 2;
     this.game.state.playerSpeedY = 0;
 
-    // Reset platform positions
     this.game.state.platforms.forEach((platform, index) => {
       platform.y = index * this._minPlatformGap;
       platform.x = this.random(50, this._canvas.width - this._platformWidth);
@@ -77,7 +76,6 @@ export class HappyJumpComponent
   private updatePlayerPosition(): void {
     const input = this.game.players[0].inputData;
 
-    // Ruch poziomy gracza
     if (input['left'] === 1) {
       this.game.state.playerX -= 5;
     }
@@ -85,16 +83,13 @@ export class HappyJumpComponent
       this.game.state.playerX += 5;
     }
 
-    // Aktualizacja prędkości i pozycji gracza
     this.game.state.playerSpeedY += this.game.state.gravity;
     this.game.state.playerY += this.game.state.playerSpeedY;
 
-    // Sprawdzenie, czy gracz spadł poza ekran
     if (this.game.state.playerY > this._canvas.height) {
       this.restart();
     }
 
-    // Ograniczenie ruchu poziomego do krawędzi ekranu
     this.game.state.playerX = Math.max(
       0,
       Math.min(this._canvas.width - this._playerWidth, this.game.state.playerX)
@@ -105,7 +100,6 @@ export class HappyJumpComponent
     this.game.state.platforms.forEach(platform => {
       platform.y += this.game.state.platformSpeed;
 
-      // Jeśli platforma wyjdzie poza dolną krawędź ekranu, resetuj ją
       if (platform.y > this._canvas.height) {
         platform.y = -this._platformHeight;
         platform.x = this.random(50, this._canvas.width - this._platformWidth);
@@ -127,18 +121,15 @@ export class HappyJumpComponent
       const platformLeft = platform.x;
       const platformRight = platform.x + this._platformWidth;
 
-      // Tolerancja na minimalne podskakiwanie
-      // Sprawdzamy, czy gracz jest "w pobliżu" platformy, zamiast sprawdzać dokładne krawędzie
       if (
-        playerBottom >= platformTop && // Gracz nie jest poniżej platformy
-        playerBottom <= platformBottom + 5 && // Dodajemy tolerancję 5 pikseli, aby dać szansę na wykrycie
+        playerBottom >= platformTop &&
+        playerBottom <= platformBottom + 5 &&
         playerRight > platformLeft &&
         playerLeft < platformRight &&
-        this.game.state.playerSpeedY >= 0 // Gracz nie leci w górę (czyli jest na platformie)
+        this.game.state.playerSpeedY >= 0
       ) {
-        // Jeśli gracz dotyka platformy, ustawiamy go dokładnie na jej górnej krawędzi
-        this.game.state.playerSpeedY = 0; // Resetowanie prędkości w osi Y (żeby nie było minimalnego podskakiwania)
-        this.game.state.playerY = platformTop - this._playerHeight; // Pozycja Y gracza na platformie
+        this.game.state.playerSpeedY = 0;
+        this.game.state.playerY = platformTop - this._playerHeight;
 
         isOnPlatform = true;
         break;
@@ -149,9 +140,8 @@ export class HappyJumpComponent
       this.game.state.playerSpeedY = 2;
     }
 
-    // Tylko jeśli gracz jest na platformie, może wykonać skok
     if (isOnPlatform && this.game.players[0].inputData['jump'] === 1) {
-      this.game.state.playerSpeedY = this.game.state.jumpPowerY; // Skok
+      this.game.state.playerSpeedY = this.game.state.jumpPowerY;
     }
   }
 
@@ -160,8 +150,7 @@ export class HappyJumpComponent
     if (context) {
       context.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
-      // Rysowanie gracza
-      context.fillStyle = 'green';
+      context.fillStyle = 'red';
       context.fillRect(
         this.game.state.playerX,
         this.game.state.playerY,
@@ -169,8 +158,7 @@ export class HappyJumpComponent
         this._playerHeight
       );
 
-      // Rysowanie platform
-      context.fillStyle = 'brown';
+      context.fillStyle = 'blue';
       this.game.state.platforms.forEach(platform => {
         context.fillRect(
           platform.x,
