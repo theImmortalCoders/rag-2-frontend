@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-depth */
 /* eslint-disable complexity */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
@@ -12,6 +13,7 @@ import { HappyJump, HappyJumpState } from './models/happyjump.class';
   template: `
     <div>
       score: <b>{{ game.state.score }}</b
+      >, difficulty: <b>{{ game.state.difficulty }}</b
       >, jumpPower: <b>{{ game.state.jumpPowerY }}</b
       >, gravity: <b>{{ game.state.gravity }}</b
       >, platformSpeed:
@@ -84,6 +86,7 @@ export class HappyJumpComponent
     });
 
     this.game.state.score = 0;
+    this.game.state.difficulty = 1;
     this._visitedPlatforms = Array(4).fill(false);
   }
 
@@ -150,6 +153,7 @@ export class HappyJumpComponent
         if (!this._visitedPlatforms[index]) {
           this.game.state.score++;
           this._visitedPlatforms[index] = true;
+          this.increaseDifficulty();
         }
 
         break;
@@ -157,11 +161,34 @@ export class HappyJumpComponent
     }
 
     if (isOnPlatform && this.game.players[0].inputData['jump'] === 0) {
-      this.game.state.playerSpeedY = 2;
+      this.game.state.playerSpeedY = this.game.state.platformSpeed;
     }
 
     if (isOnPlatform && this.game.players[0].inputData['jump'] === 1) {
       this.game.state.playerSpeedY = -this.game.state.jumpPowerY;
+    }
+  }
+
+  private increaseDifficulty(): void {
+    if (this.game.state.score > 0 && this.game.state.score % 10 === 0) {
+      this.game.state.difficulty++;
+
+      this.game.state.gravity = Math.min(
+        1,
+        this.round(this.game.state.gravity + 0.05, 2)
+      );
+
+      if (this.game.state.score > 30) {
+        this.game.state.jumpPowerY = Math.min(
+          15,
+          this.round(this.game.state.jumpPowerY + 0.5, 2)
+        );
+      }
+
+      this.game.state.platformSpeed = Math.min(
+        4,
+        this.round(this.game.state.platformSpeed + 0.4, 2)
+      );
     }
   }
 
@@ -192,5 +219,9 @@ export class HappyJumpComponent
 
   private random(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  private round(value: number, decimals = 2): number {
+    return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
   }
 }

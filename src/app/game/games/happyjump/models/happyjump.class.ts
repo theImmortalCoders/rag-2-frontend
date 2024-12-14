@@ -11,6 +11,7 @@ export class HappyJumpState implements TGameState {
   public jumpPowerY = 10;
   public platformSpeed = 2;
   public score = 0;
+  public difficulty = 0;
   public platforms = Array.from({ length: 5 }, (_, i) => ({
     x: Math.random() * 800,
     y: i * 120,
@@ -33,6 +34,7 @@ export class HappyJump extends Game {
         jumpPowerY: float, <0, inf>;
         platformSpeed: float, <0, inf>;
         score: int, <0, inf>;
+        difficulty: int, <0, inf>
         platforms: [{ x: float, <0, 800>, y: float, <0, 600> }];
         isGameStarted: boolean;
         failCounter: int, <0, inf>
@@ -45,6 +47,8 @@ export class HappyJump extends Game {
         gravity: 0.5;
         jumpPowerY: 10;
         platformSpeed: 2;
+        score: 0;
+        difficulty: 1;
         isGameStarted: false;
         failCounter: 0;
     `;
