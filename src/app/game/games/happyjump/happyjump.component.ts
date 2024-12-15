@@ -50,7 +50,10 @@ export class HappyJumpComponent
   }
 
   public override restart(): void {
+    const tempFailCounter = this.game.state.failCounter;
     this.game.state = new HappyJumpState();
+    this.game.state.failCounter = tempFailCounter;
+
     this.game.state.isGameStarted = false;
     this.resetGame();
   }
@@ -86,9 +89,6 @@ export class HappyJumpComponent
 
   private resetGame(): void {
     this.game.state.playerX = this._canvas.width / 2 - this._playerWidth / 2;
-    console.log(
-      (this.game.state.playerX = this._canvas.width / 2 - this._playerWidth / 2)
-    );
     this.game.state.playerY = 570;
     this.game.state.playerSpeedY = 0;
 
@@ -109,6 +109,7 @@ export class HappyJumpComponent
     this.game.state.playerY += this.game.state.playerSpeedY;
 
     if (this.game.state.playerY > this._canvas.height) {
+      this.game.state.failCounter++;
       this.restart();
     }
 
