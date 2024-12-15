@@ -67,6 +67,14 @@ export class HappyJumpComponent
       this.game.state.playerSpeedY = -this.game.state.jumpPowerY;
     }
 
+    if (this.game.players[0].inputData['left'] === 1) {
+      this.game.state.playerSpeedX = -5;
+    } else if (this.game.players[0].inputData['right'] === 1) {
+      this.game.state.playerSpeedX = 5;
+    } else {
+      this.game.state.playerSpeedX = 0;
+    }
+
     if (!this.isPaused && this.game.state.isGameStarted) {
       this.updatePlayerPosition();
       this.updatePlatforms();
@@ -78,6 +86,9 @@ export class HappyJumpComponent
 
   private resetGame(): void {
     this.game.state.playerX = this._canvas.width / 2 - this._playerWidth / 2;
+    console.log(
+      (this.game.state.playerX = this._canvas.width / 2 - this._playerWidth / 2)
+    );
     this.game.state.playerY = 570;
     this.game.state.playerSpeedY = 0;
 
@@ -92,14 +103,7 @@ export class HappyJumpComponent
   }
 
   private updatePlayerPosition(): void {
-    const input = this.game.players[0].inputData;
-
-    if (input['left'] === 1) {
-      this.game.state.playerX -= 5;
-    }
-    if (input['right'] === 1) {
-      this.game.state.playerX += 5;
-    }
+    this.game.state.playerX += this.game.state.playerSpeedX;
 
     this.game.state.playerSpeedY += this.game.state.gravity;
     this.game.state.playerY += this.game.state.playerSpeedY;
@@ -189,7 +193,9 @@ export class HappyJumpComponent
 
   private increaseDifficulty(): void {
     if (this.game.state.score > 0 && this.game.state.score % 10 === 0) {
-      this.game.state.difficulty++;
+      if (this.game.state.score <= 200) {
+        this.game.state.difficulty++;
+      }
 
       this.game.state.gravity = Math.min(
         1,
