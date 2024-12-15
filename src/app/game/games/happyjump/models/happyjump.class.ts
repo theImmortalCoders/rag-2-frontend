@@ -10,11 +10,13 @@ export class HappyJumpState implements TGameState {
   public gravity = 0.5;
   public jumpPowerY = 10;
   public platformSpeed = 2;
+  public movingPlatforms = 0;
   public score = 0;
   public difficulty = 0;
   public platforms = Array.from({ length: 5 }, (_, i) => ({
     x: Math.random() * 800,
     y: i * 120,
+    directionX: 0,
   }));
   public isGameStarted = false;
   public failCounter = 0;

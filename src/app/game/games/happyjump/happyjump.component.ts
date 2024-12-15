@@ -16,8 +16,9 @@ import { HappyJump, HappyJumpState } from './models/happyjump.class';
       >, difficulty: <b>{{ game.state.difficulty }}</b
       >, jumpPower: <b>{{ game.state.jumpPowerY }}</b
       >, gravity: <b>{{ game.state.gravity }}</b
-      >, platformSpeed:
-      <b>{{ game.state.platformSpeed }}</b>
+      >, platformSpeed: <b>{{ game.state.platformSpeed }}</b
+      >, movingPlatforms:
+      <b>{{ game.state.movingPlatforms }}</b>
     </div>
     <app-canvas [displayMode]="'vertical'" class="bg-zinc-300" #gameCanvas>
     </app-canvas>
@@ -117,6 +118,23 @@ export class HappyJumpComponent
     this.game.state.platforms.forEach((platform, index) => {
       platform.y += this.game.state.platformSpeed;
 
+      if (
+        this.game.state.score >= 60 &&
+        index < this.game.state.movingPlatforms
+      ) {
+        if (platform.directionX === 0) platform.directionX = 1;
+
+        platform.x += platform.directionX * 2;
+
+        if (platform.x <= 0) {
+          platform.x = 0;
+          platform.directionX = 1;
+        } else if (platform.x >= this._canvas.width - this._platformWidth) {
+          platform.x = this._canvas.width - this._platformWidth;
+          platform.directionX = -1;
+        }
+      }
+
       if (platform.y > this._canvas.height) {
         platform.y = -this._platformHeight;
         platform.x = this.random(50, this._canvas.width - this._platformWidth);
@@ -178,6 +196,18 @@ export class HappyJumpComponent
         this.round(this.game.state.gravity + 0.05, 2)
       );
 
+      if (this.game.state.score < 100) {
+        this.game.state.platformSpeed = Math.min(
+          4,
+          this.round(this.game.state.platformSpeed + 0.4, 2)
+        );
+      } else {
+        this.game.state.platformSpeed = Math.min(
+          6,
+          this.round(this.game.state.platformSpeed + 0.4, 2)
+        );
+      }
+
       if (this.game.state.score > 30) {
         this.game.state.jumpPowerY = Math.min(
           15,
@@ -185,10 +215,12 @@ export class HappyJumpComponent
         );
       }
 
-      this.game.state.platformSpeed = Math.min(
-        4,
-        this.round(this.game.state.platformSpeed + 0.4, 2)
-      );
+      if (this.game.state.score < 60) this.game.state.movingPlatforms = 0;
+      if (this.game.state.score >= 60) this.game.state.movingPlatforms = 1;
+      if (this.game.state.score >= 90) this.game.state.movingPlatforms = 2;
+      if (this.game.state.score >= 120) this.game.state.movingPlatforms = 3;
+      if (this.game.state.score >= 150) this.game.state.movingPlatforms = 4;
+      if (this.game.state.score >= 200) this.game.state.movingPlatforms = 5;
     }
   }
 
