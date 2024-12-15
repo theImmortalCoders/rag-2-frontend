@@ -31,6 +31,7 @@ export class HappyJumpComponent
 {
   private _playerWidth = 30;
   private _playerHeight = 30;
+  private _playerXMove = 5;
   private _platformHeight = 10;
   private _platformWidth = 100;
   private _minPlatformGap = 120;
@@ -61,23 +62,7 @@ export class HappyJumpComponent
   protected override update(): void {
     super.update();
 
-    if (
-      (!this.game.state.isGameStarted &&
-        this.game.players[0].inputData['jump'] === 1) ||
-      this.game.players[0].inputData['start'] === 1
-    ) {
-      this.game.state.isGameStarted = true;
-      this.game.state.playerSpeedY = -this.game.state.jumpPowerY;
-    }
-
-    if (this.game.players[0].inputData['left'] === 1) {
-      this.game.state.playerSpeedX = -5;
-    } else if (this.game.players[0].inputData['right'] === 1) {
-      this.game.state.playerSpeedX = 5;
-    } else {
-      this.game.state.playerSpeedX = 0;
-    }
-
+    this.updatePlayerSpeed();
     if (!this.isPaused && this.game.state.isGameStarted) {
       this.updatePlayerPosition();
       this.updatePlatforms();
@@ -100,6 +85,27 @@ export class HappyJumpComponent
     this.game.state.score = 0;
     this.game.state.difficulty = 1;
     this._visitedPlatforms = Array(4).fill(false);
+  }
+
+  private updatePlayerSpeed(): void {
+    if (
+      (!this.game.state.isGameStarted &&
+        this.game.players[0].inputData['jump'] === 1) ||
+      this.game.players[0].inputData['start'] === 1
+    ) {
+      this.game.state.isGameStarted = true;
+      this.game.state.playerSpeedY = -this.game.state.jumpPowerY;
+    }
+
+    if (this.game.players[0].inputData['move'] === -1) {
+      this.game.state.playerSpeedX = -this._playerXMove;
+    }
+    if (this.game.players[0].inputData['move'] === 1) {
+      this.game.state.playerSpeedX = this._playerXMove;
+    }
+    if (this.game.players[0].inputData['move'] === 0) {
+      this.game.state.playerSpeedX = 0;
+    }
   }
 
   private updatePlayerPosition(): void {

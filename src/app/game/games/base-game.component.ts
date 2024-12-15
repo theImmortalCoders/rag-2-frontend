@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 import {
   ChangeDetectionStrategy,
   Component,
@@ -57,6 +58,7 @@ export abstract class BaseGameWindowComponent
   private _lastFrameTime = performance.now();
   private _deltaTimeAccumulator = 0;
   private _frameCount = 0;
+  private _activeKeyBindings: Record<string, Set<string>> = {};
 
   protected _updateTimeout: ReturnType<typeof setTimeout> | undefined;
   protected isPaused = false;
@@ -124,8 +126,18 @@ export abstract class BaseGameWindowComponent
         player.controlsBinding[event.key] !== undefined
       ) {
         event.preventDefault();
-        player.inputData[player.controlsBinding[event.key].variableName] =
-          player.controlsBinding[event.key].pressedValue;
+
+        const control = player.controlsBinding[event.key];
+        const variableName = control.variableName;
+        const pressedValue = control.pressedValue;
+
+        if (!this._activeKeyBindings[variableName]) {
+          this._activeKeyBindings[variableName] = new Set<string>();
+        }
+
+        this._activeKeyBindings[variableName].add(event.key);
+
+        player.inputData[variableName] = pressedValue;
       }
     }
   }
@@ -137,8 +149,18 @@ export abstract class BaseGameWindowComponent
         player.controlsBinding[event.key] !== undefined
       ) {
         event.preventDefault();
-        player.inputData[player.controlsBinding[event.key].variableName] =
-          player.controlsBinding[event.key].releasedValue;
+
+        const control = player.controlsBinding[event.key];
+        const variableName = control.variableName;
+        const releasedValue = control.releasedValue;
+
+        if (this._activeKeyBindings[variableName]) {
+          this._activeKeyBindings[variableName].delete(event.key);
+        }
+
+        if (this._activeKeyBindings[variableName].size === 0) {
+          player.inputData[variableName] = releasedValue;
+        }
       }
     }
   }

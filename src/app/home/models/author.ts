@@ -42,7 +42,7 @@ export const authorsData: IAuthor[] = [
   {
     name: 'Bartłomiej Krówka',
     githubName: 'bkrowka',
-    linkedinName: '',
+    linkedinName: 'bartłomiej-krówka-b45262342',
     role: 'AI Engineer',
     techStack: ['Python', 'Matplotlib', 'OpenAI Gym', 'Stable Baselines 3'],
     hobbies: 'programming, playing video games, listening to music',
