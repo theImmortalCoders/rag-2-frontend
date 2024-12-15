@@ -6,6 +6,7 @@ export class ClimbHillState implements TGameState {
   public score = 0;
   public distance = 0;
   public carY = 0;
+  public carX = 150;
   public carXSpeed = 0;
   public carAngle = 0;
   public terrainShiftBuffer = 0;
@@ -13,6 +14,8 @@ export class ClimbHillState implements TGameState {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0,
   ];
+  public isAirborne = false;
+  public verticalSpeed = 0;
 }
 
 export class ClimbHill extends Game {
