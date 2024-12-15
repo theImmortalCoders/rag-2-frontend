@@ -27,6 +27,10 @@ export class ClimbHillComponent
   private _carX = 150;
   private _carWidth = 100;
   private _carHeight = 50;
+  private _frontWheelY = 0;
+  private _rearWheelY = 0;
+  private _wheelRadius = 20;
+  private _wheelDamping = 0.3;
 
   public override game!: ClimbHill;
 
@@ -79,27 +83,33 @@ export class ClimbHillComponent
 
     const carXInTerrain = this._carX % contextWidth;
     const segmentIndex = Math.floor(carXInTerrain / segmentWidth);
-    const segmentOffset = (carXInTerrain % segmentWidth) / segmentWidth;
 
-    const terrainY1 = terrain[segmentIndex] || 0;
-    const terrainY2 = terrain[segmentIndex + 1] || 0;
-    const targetCarY =
-      this._canvas.height / 2 -
-      (terrainY1 * (1 - segmentOffset) + terrainY2 * segmentOffset);
-
-    const targetCarAngle = Math.atan2(terrainY2 - terrainY1, segmentWidth);
-
-    const smoothingFactor = 0.2;
-    this.game.state.carY = this.lerp(
-      this.game.state.carY,
-      targetCarY,
-      smoothingFactor
+    const frontWheelTerrainHeight = terrain[segmentIndex + 1] || 0;
+    const targetFrontWheelY =
+      this._canvas.height / 2 - frontWheelTerrainHeight + this._wheelRadius;
+    this._frontWheelY = this.lerp(
+      this._frontWheelY,
+      targetFrontWheelY,
+      this._wheelDamping
     );
-    this.game.state.carAngle = this.lerp(
-      this.game.state.carAngle,
-      targetCarAngle,
-      smoothingFactor
+
+    const rearWheelTerrainHeight = terrain[segmentIndex] || 0;
+    const targetRearWheelY =
+      this._canvas.height / 2 - rearWheelTerrainHeight + this._wheelRadius;
+    this._rearWheelY = this.lerp(
+      this._rearWheelY,
+      targetRearWheelY,
+      this._wheelDamping
     );
+
+    const carHeightOffset = (this._frontWheelY + this._rearWheelY) / 2;
+    this.game.state.carY = carHeightOffset;
+
+    const wheelAngle = Math.atan2(
+      this._frontWheelY - this._rearWheelY,
+      this._carWidth
+    );
+    this.game.state.carAngle = wheelAngle;
   }
 
   private generateTerrain(): void {
@@ -148,8 +158,11 @@ export class ClimbHillComponent
     context.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
     context.save();
-    context.translate(this._carX, this.game.state.carY - this._carHeight / 2);
-    context.rotate(-this.game.state.carAngle);
+    context.translate(
+      this._carX,
+      this.game.state.carY - 30 - this._carHeight / 2
+    );
+    context.rotate(this.game.state.carAngle);
     context.fillStyle = 'blue';
     context.fillRect(
       -this._carWidth / 2,
@@ -159,7 +172,33 @@ export class ClimbHillComponent
     );
     context.restore();
 
+    this.drawWheels(context);
+
     this.drawTerrain(context);
+  }
+
+  private drawWheels(context: CanvasRenderingContext2D): void {
+    context.beginPath();
+    context.arc(
+      this._carX + this._carWidth / 2,
+      this._frontWheelY - 30,
+      this._wheelRadius,
+      0,
+      2 * Math.PI
+    );
+    context.fillStyle = 'black';
+    context.fill();
+
+    context.beginPath();
+    context.arc(
+      this._carX - this._carWidth / 2,
+      this._rearWheelY - 30,
+      this._wheelRadius,
+      0,
+      2 * Math.PI
+    );
+    context.fillStyle = 'black';
+    context.fill();
   }
 
   private drawTerrain(context: CanvasRenderingContext2D): void {
@@ -177,6 +216,10 @@ export class ClimbHillComponent
       const y = contextHeight / 2 - terrain[i];
       context.lineTo(x, y);
     }
+    context.lineTo(
+      contextWidth,
+      contextHeight / 2 - terrain[terrain.length - 2]
+    );
     context.lineTo(contextWidth, contextHeight);
     context.lineTo(0, contextHeight);
     context.closePath();
