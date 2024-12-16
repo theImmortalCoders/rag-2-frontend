@@ -41,7 +41,7 @@ export class HappyJumpComponent
 
   public override ngOnInit(): void {
     super.ngOnInit();
-    this.game = new HappyJump();
+    this.game = this.game as HappyJump;
   }
 
   public override ngAfterViewInit(): void {
@@ -89,9 +89,8 @@ export class HappyJumpComponent
 
   private updatePlayerSpeed(): void {
     if (
-      (!this.game.state.isGameStarted &&
-        this.game.players[0].inputData['jump'] === 1) ||
-      this.game.players[0].inputData['start'] === 1
+      !this.game.state.isGameStarted &&
+      this.game.players[0].inputData['jump'] === 1
     ) {
       this.game.state.isGameStarted = true;
       this.game.state.playerSpeedY = -this.game.state.jumpPowerY;
