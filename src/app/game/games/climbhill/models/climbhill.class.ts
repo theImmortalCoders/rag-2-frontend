@@ -16,6 +16,8 @@ export class ClimbHillState implements TGameState {
   ];
   public isAirborne = false;
   public verticalSpeed = 0;
+  public fuel = 100;
+  public nextFuel = 0;
 }
 
 export class ClimbHill extends Game {

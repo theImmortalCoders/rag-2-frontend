@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from 'app/game/components/canvas/canvas.component';
@@ -11,8 +12,9 @@ import { CommonModule } from '@angular/common';
   imports: [CanvasComponent, CommonModule],
   template: `<div>
       score: <b>{{ game.state.score | number: '1.0-0' }}</b
-      >, distance: <b>{{ game.state.distance | number: '1.0-0' }}</b> , speed:
-      <b>{{ game.state.carXSpeed * 20 | number: '1.0-0' }}</b>
+      >, distance: <b>{{ game.state.distance | number: '1.0-0' }}</b
+      >, speed: <b>{{ game.state.carXSpeed * 20 | number: '1.0-0' }}</b
+      >, fuel: <b>{{ game.state.fuel | number: '1.0-0' }}</b>
     </div>
     <app-canvas
       [displayMode]="'horizontal'"
@@ -31,6 +33,8 @@ export class ClimbHillComponent
   private _rearWheelY = 0;
   private _wheelRadius = 20;
   private _wheelDamping = 0.3;
+  private _lastFuelGenerated = 0;
+  private _fuelX = 0;
 
   public override game!: ClimbHill;
 
@@ -52,7 +56,22 @@ export class ClimbHillComponent
   protected override update(): void {
     super.update();
 
-    if (this.game.players[0].inputData['gas'] === 1) {
+    if (this.game.state.fuel <= 0) {
+      this.game.state.carXSpeed -= 0.1;
+      if (this.game.state.carXSpeed < 0) {
+        this.game.state.carXSpeed = 0;
+      }
+    }
+
+    this.game.state.fuel -= 0.1;
+    if (this.game.state.fuel < 0) {
+      this.game.state.fuel = 0;
+    }
+
+    if (
+      this.game.players[0].inputData['gas'] === 1 &&
+      this.game.state.fuel > 0
+    ) {
       this.game.state.carXSpeed += 0.07;
       if (this.game.state.carXSpeed > 5) {
         this.game.state.carXSpeed = 5;
@@ -69,8 +88,23 @@ export class ClimbHillComponent
     this.game.state.distance += this.game.state.carXSpeed;
 
     this.generateTerrain();
+    if (this._lastFuelGenerated > 12000) {
+      const generateFuel = [0, 0, 0, 0, 0, 0, 1];
+      const shouldGenerateFuel = generateFuel[this.random(0, 6)] === 1;
+      if (shouldGenerateFuel) {
+        this.generateFuelPickups();
+      }
+      this._lastFuelGenerated = 0;
+    } else this._lastFuelGenerated += this.game.state.carXSpeed * 100;
+    this.game.state.nextFuel -= this.game.state.carXSpeed * 1.095;
+    if (this.game.state.nextFuel < 1000 && this._fuelX == 0)
+      this._fuelX =
+        this.game.state.visibleTerrain[
+          this.game.state.visibleTerrain.length - 1
+        ] - 30;
+    if (this.game.state.nextFuel < 0) this._fuelX = 0;
     this.updateCarPosition();
-
+    this.checkFuelPickupCollision();
     this.updateScore();
 
     this.render();
@@ -135,12 +169,32 @@ export class ClimbHillComponent
     }
   }
 
+  private generateFuelPickups(): void {
+    if (this.game.state.nextFuel <= 0) {
+      this.game.state.nextFuel = 1000;
+      this._lastFuelGenerated = this.game.state.nextFuel;
+    }
+  }
+
+  private checkFuelPickupCollision(): void {
+    if (
+      this.game.state.nextFuel > 0 &&
+      this.game.state.nextFuel < 200 &&
+      this.game.state.fuel <= this._carX
+    ) {
+      this.game.state.fuel = 100;
+      this.game.state.nextFuel = 0;
+    }
+  }
+
   private resetValues(): void {
     this.game.state.score = 0;
     this.game.state.distance = 0;
     this.game.state.carY = 400;
     this.game.state.carAngle = 0;
     this.game.state.carXSpeed = 0;
+    this.game.state.fuel = 100;
+    this.game.state.nextFuel = 0;
   }
 
   private updateScore(): void {
@@ -173,8 +227,8 @@ export class ClimbHillComponent
     context.restore();
 
     this.drawWheels(context);
-
     this.drawTerrain(context);
+    if (this.game.state.nextFuel > 0) this.drawFuelPickups(context);
   }
 
   private drawWheels(context: CanvasRenderingContext2D): void {
@@ -225,6 +279,11 @@ export class ClimbHillComponent
     context.closePath();
     context.fillStyle = 'green';
     context.fill();
+  }
+
+  private drawFuelPickups(context: CanvasRenderingContext2D): void {
+    context.fillStyle = 'red';
+    context.fillRect(this.game.state.nextFuel, 240 - this._fuelX, 20, 20);
   }
 
   private random(min: number, max: number): number {
