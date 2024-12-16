@@ -45,6 +45,8 @@ import { ClimbHillComponent } from './games/climbhill/climbhill.component';
     SkiJumpGameWindowComponent,
     GameControlsComponent,
     FlappyBirdComponent,
+    HappyJumpComponent,
+    ClimbHillComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-zinc-400">
