@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BenefitsListComponent } from '../shared/components/benefits-list/benefits-list.component';
 import { SideFormPanelComponent } from '../shared/components/side-form-panel/side-form-panel.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
+import { NotificationService } from 'app/shared/services/notification.service';
 
 @Component({
   selector: 'app-register-page',
@@ -27,4 +28,12 @@ import { RegisterFormComponent } from './components/register-form/register-form.
     </div>
   `,
 })
-export class RegisterPageComponent {}
+export class RegisterPageComponent implements OnInit {
+  private _notificationService = inject(NotificationService);
+
+  public ngOnInit(): void {
+    this._notificationService.addNotification(
+      'The system is currently in the testing phase, and any data we store may be deleted without prior notice. A document containing a detailed description of the methods of processing the provided data is currently being prepared. At this time, by providing their data, the user acknowledges that we cannot guarantee its complete security.'
+    );
+  }
+}
