@@ -41,7 +41,7 @@ export class HappyJumpComponent
 
   public override ngOnInit(): void {
     super.ngOnInit();
-    this.game = new HappyJump();
+    this.game = this.game as HappyJump;
   }
 
   public override ngAfterViewInit(): void {
