@@ -70,9 +70,8 @@ export class FlappyBirdComponent
     super.update();
 
     if (
-      (!this.game.state.isGameStarted &&
-        this.game.players[0].inputData['jump'] === 1) ||
-      this.game.players[0].inputData['start'] === 1
+      !this.game.state.isGameStarted &&
+      this.game.players[0].inputData['jump'] === 1
     ) {
       this.game.state.isGameStarted = true;
     }
