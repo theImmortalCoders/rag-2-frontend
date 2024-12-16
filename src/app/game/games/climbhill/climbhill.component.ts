@@ -12,9 +12,9 @@ import { CommonModule } from '@angular/common';
   imports: [CanvasComponent, CommonModule],
   template: `<div>
       score: <b>{{ game.state.score | number: '1.0-0' }}</b
-      >, distance: <b>{{ game.state.distance | number: '1.0-0' }}</b
-      >, speed: <b>{{ game.state.carXSpeed * 20 | number: '1.0-0' }}</b
-      >, fuel: <b>{{ game.state.fuel | number: '1.0-0' }}</b>
+      >, distance: <b>{{ game.state.distance | number: '1.0-0' }}m</b>, speed:
+      <b>{{ game.state.carXSpeed * 12 | number: '1.0-0' }}km/h</b>, fuel:
+      <b>{{ game.state.fuel | number: '1.0-0' }}%</b>
     </div>
     <app-canvas
       [displayMode]="'horizontal'"
@@ -85,7 +85,7 @@ export class ClimbHillComponent
     if (this.game.state.carXSpeed < 0) {
       this.game.state.carXSpeed = 0;
     }
-    this.game.state.distance += this.game.state.carXSpeed;
+    this.game.state.distance += this.game.state.carXSpeed / 20;
 
     this.generateTerrain();
     if (this._lastFuelGenerated > 12000) {
@@ -198,7 +198,7 @@ export class ClimbHillComponent
   }
 
   private updateScore(): void {
-    this.game.state.score = this.round(this.game.state.distance / 100);
+    this.game.state.score = this.round(this.game.state.distance / 10);
   }
 
   private lerp(start: number, end: number, alpha: number): number {
