@@ -62,7 +62,7 @@ export class HappyJump extends Game {
       0,
       true,
       'Player 1',
-      { move: 0, jump: 0, start: 0 },
+      { move: 0, jump: 0 },
       {
         ArrowLeft: {
           variableName: 'move',
@@ -76,12 +76,11 @@ export class HappyJump extends Game {
         },
         ' ': { variableName: 'jump', pressedValue: 1, releasedValue: 0 },
       },
-      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <jump>, <start>:  value of {0, 1}, 0: not jump, 1: jump',
+      '<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <jump>:  value of {0, 1}, 0: not jump, 1: jump',
       {
         left: '[ARROW_LEFT]',
         right: '[ARROW_RIGHT]',
         jump: '[SPACE]',
-        start: '[SPACE]',
       }
     ),
   ];
