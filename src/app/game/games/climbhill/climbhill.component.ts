@@ -67,6 +67,9 @@ export class ClimbHillComponent
     if (this.game.state.fuel < 0) {
       this.game.state.fuel = 0;
     }
+    if (this.game.state.fuel == 0) {
+      this.restart();
+    }
 
     if (
       this.game.players[0].inputData['gas'] === 1 &&
@@ -79,12 +82,31 @@ export class ClimbHillComponent
     } else {
       this.game.state.carXSpeed -= 0.03;
     }
+
     if (this.game.players[0].inputData['brake'] === 1) {
       this.game.state.carXSpeed -= 0.09;
     }
+
+    const terrain = this.game.state.visibleTerrain;
+    const contextWidth = this._canvas.width;
+    const segmentWidth = contextWidth / (terrain.length - 1);
+    const carXInTerrain = this._carX % contextWidth;
+    const segmentIndex = Math.floor(carXInTerrain / segmentWidth);
+
+    const frontWheelTerrainHeight = terrain[segmentIndex + 1] || 0;
+    const rearWheelTerrainHeight = terrain[segmentIndex] || 0;
+    const slope = frontWheelTerrainHeight - rearWheelTerrainHeight;
+
+    const slopeEffect = -slope * 0.005;
+    this.game.state.carXSpeed += slopeEffect;
+
     if (this.game.state.carXSpeed < 0) {
       this.game.state.carXSpeed = 0;
     }
+    if (this.game.state.carXSpeed > 5) {
+      this.game.state.carXSpeed = 5;
+    }
+
     this.game.state.distance += this.game.state.carXSpeed / 20;
 
     this.generateTerrain();
@@ -103,6 +125,7 @@ export class ClimbHillComponent
           this.game.state.visibleTerrain.length - 1
         ] - 30;
     if (this.game.state.nextFuel < 0) this._fuelX = 0;
+
     this.updateCarPosition();
     this.checkFuelPickupCollision();
     this.updateScore();
