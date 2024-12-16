@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-depth */
 import {
   ChangeDetectionStrategy,
@@ -59,6 +60,10 @@ export abstract class BaseGameWindowComponent
   private _deltaTimeAccumulator = 0;
   private _frameCount = 0;
   private _activeKeyBindings: Record<string, Set<string>> = {};
+  private _playerInactivityTimers = new Map<
+    string,
+    ReturnType<typeof setTimeout>
+  >();
 
   protected _updateTimeout: ReturnType<typeof setTimeout> | undefined;
   protected isPaused = false;
@@ -80,8 +85,17 @@ export abstract class BaseGameWindowComponent
   /** always call super when override (at top) */
   public ngAfterViewInit(): void {
     this._canvas = this.gameCanvas.canvasElement.nativeElement;
+
     window.addEventListener('keydown', event => this.onKeyDown(event));
     window.addEventListener('keyup', event => this.onKeyUp(event));
+    window.addEventListener('mousedown', event =>
+      this.onMouseDownOutsideCanvas(event)
+    );
+    document.addEventListener('visibilitychange', () =>
+      this.onVisibilityChange()
+    );
+    window.addEventListener('blur', () => this.onWindowBlur());
+
     this.update();
     setTimeout(() => this.restart());
   }
@@ -93,6 +107,16 @@ export abstract class BaseGameWindowComponent
 
     window.removeEventListener('keydown', event => this.onKeyDown(event));
     window.removeEventListener('keyup', event => this.onKeyUp(event));
+    window.removeEventListener('mousedown', event =>
+      this.onMouseDownOutsideCanvas(event)
+    );
+    document.removeEventListener('visibilitychange', () =>
+      this.onVisibilityChange()
+    );
+    window.removeEventListener('blur', () => this.onWindowBlur());
+
+    this._playerInactivityTimers.forEach(timer => clearTimeout(timer));
+    this._playerInactivityTimers.clear();
 
     if (this._updateTimeout) {
       clearTimeout(this._updateTimeout);
@@ -119,6 +143,61 @@ export abstract class BaseGameWindowComponent
 
   //
 
+  private onVisibilityChange(): void {
+    if (document.hidden) {
+      this.resetActiveKeyBindings();
+    }
+  }
+
+  private onWindowBlur(): void {
+    this.resetActiveKeyBindings();
+  }
+
+  private onMouseDownOutsideCanvas(event: MouseEvent): void {
+    const clickedElement = event.target as HTMLElement;
+
+    if (
+      clickedElement !== this._canvas &&
+      !this._canvas.contains(clickedElement)
+    ) {
+      this.resetActiveKeyBindings();
+    }
+  }
+
+  private resetActiveKeyBindings(): void {
+    this._activeKeyBindings = {};
+
+    for (const player of this.game.players) {
+      if (player.playerType === PlayerSourceType.KEYBOARD) {
+        for (const key in player.controlsBinding) {
+          const variableName = player.controlsBinding[key].variableName;
+          const releasedValue = player.controlsBinding[key].releasedValue;
+          player.inputData[variableName] = releasedValue;
+        }
+      }
+    }
+  }
+
+  private resetInactivityTimer(player: Player): void {
+    if (this._playerInactivityTimers.has(player.id.toString())) {
+      clearTimeout(this._playerInactivityTimers.get(player.id.toString()));
+    }
+
+    const inactivityTimeout = setTimeout(() => {
+      for (const key in player.controlsBinding) {
+        const variableName = player.controlsBinding[key].variableName;
+        const releasedValue = player.controlsBinding[key].releasedValue;
+        player.inputData[variableName] = releasedValue;
+      }
+
+      for (const variableName in this._activeKeyBindings) {
+        this._activeKeyBindings[variableName]?.clear();
+      }
+    }, 1000);
+
+    this._playerInactivityTimers.set(player.id.toString(), inactivityTimeout);
+  }
+
   private onKeyDown(event: KeyboardEvent): void {
     for (const player of this.game.players) {
       if (
@@ -138,6 +217,8 @@ export abstract class BaseGameWindowComponent
         this._activeKeyBindings[variableName].add(event.key);
 
         player.inputData[variableName] = pressedValue;
+
+        this.resetInactivityTimer(player);
       }
     }
   }
@@ -161,6 +242,8 @@ export abstract class BaseGameWindowComponent
         if (this._activeKeyBindings[variableName].size === 0) {
           player.inputData[variableName] = releasedValue;
         }
+
+        this.resetInactivityTimer(player);
       }
     }
   }
