@@ -16,6 +16,15 @@ export class NotificationService {
 
   public addNotification(message: string, duration?: number): void {
     const notifications = this._notificationsSubject.getValue();
+
+    const existingNotification = notifications.find(
+      notification => notification.message === message
+    );
+
+    if (existingNotification) {
+      return;
+    }
+
     const notification: INotification = {
       id: this._notificationIdCounter++,
       message,
