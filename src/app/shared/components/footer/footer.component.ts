@@ -42,7 +42,7 @@ import { Component } from '@angular/core';
           <span class="font-bold text-base lg:text-lg">PROJECT SUPERVISOR</span>
           <span>M.Sc. Eng. Dawid Kalandyk</span>
           <span class="font-bold text-base lg:text-lg">CONTACT</span>
-          <span>d.kalandyk&#64;prz.edu.pl</span>
+          <span>rut-ai&#64;kia.prz.edu.pl</span>
         </div>
         <div class="flex flex-col items-start space-y-2">
           <a
