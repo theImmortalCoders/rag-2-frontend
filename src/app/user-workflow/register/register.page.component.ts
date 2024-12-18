@@ -33,7 +33,7 @@ export class RegisterPageComponent implements OnInit {
 
   public ngOnInit(): void {
     this._notificationService.addNotification(
-      'The system is currently in the testing phase, and any data we store may be deleted without prior notice. A document containing a detailed description of the methods of processing the provided data is currently being prepared. At this time, by providing their data, the user acknowledges that we cannot guarantee its complete security.'
+      'A document containing a detailed description of the methods of processing the provided data is currently being prepared. At this time, by providing their data, the user acknowledges that we cannot guarantee its complete security.'
     );
   }
 }
