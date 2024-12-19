@@ -4,6 +4,7 @@ const path = require('path');
 
 const CLI_TARGET_PATH = 'game/games';
 const PROJECT_TARGET_PATH = 'src/app/game/games';
+const GAMES_TS_PATH = 'src/app/game/data/games.ts'; // Ścieżka do pliku games.ts
 
 function generateGameComponent(componentName) {
   if (!componentName) {
@@ -85,7 +86,53 @@ export class ${gameClassName} extends Game {
       }
       console.log(`Component file created: ${componentFilePath}`);
     });
+
+    // Aktualizacja pliku games.ts
+    updateGamesTs(componentName);
   });
+}
+
+function updateGamesTs(componentName) {
+  // Odczytujemy plik games.ts
+  let gamesTsContent = fs.readFileSync(GAMES_TS_PATH, 'utf-8');
+
+  // Tworzymy nowy import
+  const newGameImport = `import { ${capitalize(componentName)} } from '../games/${componentName.toLowerCase()}/models/${componentName.toLowerCase()}.class';\n`;
+
+  // Dodajemy import tylko jeśli nie istnieje
+  if (!gamesTsContent.includes(newGameImport)) {
+    // Sprawdzamy, czy plik zaczyna się od importów
+    const importSectionEnd = gamesTsContent.indexOf('export const games:');
+
+    if (importSectionEnd !== -1) {
+      // Wstawiamy import zaraz po ostatnim importzie
+      gamesTsContent =
+        gamesTsContent.slice(0, importSectionEnd) +
+        newGameImport +
+        gamesTsContent.slice(importSectionEnd);
+    } else {
+      // Jeśli nie ma sekcji importów, dodajemy na początku
+      gamesTsContent = newGameImport + gamesTsContent;
+    }
+
+    fs.writeFileSync(GAMES_TS_PATH, gamesTsContent, 'utf-8');
+    console.log(`Added import for ${componentName} to games.ts`);
+  } else {
+    console.log(`Import for ${componentName} already exists in games.ts`);
+  }
+
+  // Tworzymy nowy rekord w obiekcie games
+  const newGameEntry = `  ${componentName.toLowerCase()}: new ${capitalize(componentName)}(),\n`;
+
+  // Dodajemy nową grę przed końcem obiektu games
+  const objectEnd = gamesTsContent.lastIndexOf('};');
+  const updatedGamesTs =
+    gamesTsContent.substring(0, objectEnd) +
+    newGameEntry +
+    gamesTsContent.substring(objectEnd);
+
+  fs.writeFileSync(GAMES_TS_PATH, updatedGamesTs, 'utf-8');
+  console.log(`Added ${componentName} game to the games object in games.ts`);
 }
 
 function capitalize(str) {
@@ -104,7 +151,6 @@ import { ${gameClassName}, ${stateClassName} } from './models/${componentName.to
   standalone: true,
   imports: [CanvasComponent],
   template: \`
-    <!-- Other HTML -->
     <app-canvas
       [displayMode]="'horizontal'"
       class="bg-zinc-300"
@@ -115,8 +161,6 @@ export class ${gameClassName}Component
   extends BaseGameWindowComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  //Initialize all constant (non sending) variables
-
   public override game!: ${gameClassName};
 
   public override ngOnInit(): void {
@@ -127,24 +171,16 @@ export class ${gameClassName}Component
   public override ngAfterViewInit(): void {
     super.ngAfterViewInit();
     this.render();
-
-    // Other logic
   }
 
   public override restart(): void {
     this.game.state = new ${stateClassName}();
-
-    // Other logic
   }
 
   protected override update(): void {
     super.update();
     this.render();
-
-    // Other logic
   }
-
-  //
 
   private render(): void {
     const context = this._canvas.getContext('2d');
