@@ -157,7 +157,7 @@ import { ${gameClassName}, ${stateClassName} } from './models/${componentName.to
       #gameCanvas></app-canvas>
     <b>FPS: {{ fps }}</b> \`,
 })
-export class ${gameClassName}Component
+export class ${gameClassName}GameWindowComponent
   extends BaseGameWindowComponent
   implements OnInit, AfterViewInit, OnDestroy
 {

@@ -2,10 +2,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Game } from '@gameModels/game.class';
 import { TExchangeData } from '@gameModels/exchange-data.type';
-import { PongGameWindowComponent } from '../../games/pong/pong.component';
-import { SkiJumpGameWindowComponent } from '../../games/skijump/skijump.component';
-import { FlappyBirdGameWindowComponent } from 'app/game/games/flappybird/flappybird.component';
-import { HappyJumpGameWindowComponent } from '../../games/happyjump/happyjump.component';
+import { PongGameWindowComponent } from '@games/pong/pong.component';
+import { SkiJumpGameWindowComponent } from '@games/skijump/skijump.component';
+import { FlappyBirdGameWindowComponent } from '@games/flappybird/flappybird.component';
+import { HappyJumpGameWindowComponent } from '@games/happyjump/happyjump.component';
 
 @Component({
   selector: 'app-game-renderer',
