@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -12,7 +11,6 @@ import { ConsoleComponent } from './components/console/console.component';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { DataMenuComponent } from './components/menus/data-menu/data-menu.component';
 import { AiSocketMenuComponent } from './components/menus/ai-socket-menu/ai-socket-menu.component';
-import { PongGameWindowComponent } from './games/pong/pong.component';
 import { AuthRequiredDirective } from '@utils/directives/auth-required.directive';
 import { Subject, Subscription } from 'rxjs';
 import { Player } from '@gameModels/player.class';
@@ -24,9 +22,7 @@ import { GameMenuComponent } from './components/menus/game-menu/game-menu.compon
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { GameControlsComponent } from './components/game-controls/game-controls.component';
 import { CantDisplayGameComponent } from './components/cant-display-game/cant-display-game.component';
-import { FlappyBirdComponent } from './games/flappybird/flappybird.component';
-import { SkiJumpGameWindowComponent } from './games/skijump/skijump.component';
-import { HappyJumpComponent } from './games/happyjump/happyjump.component';
+import { GameRendererComponent } from './components/game-renderer/game-renderer.component';
 
 @Component({
   selector: 'app-game',
@@ -35,16 +31,13 @@ import { HappyJumpComponent } from './games/happyjump/happyjump.component';
     PlayerMenuComponent,
     DataMenuComponent,
     AiSocketMenuComponent,
-    PongGameWindowComponent,
     ConsoleComponent,
     AuthRequiredDirective,
     GameMenuComponent,
     CantDisplayGameComponent,
     AuthRequiredDirective,
-    SkiJumpGameWindowComponent,
     GameControlsComponent,
-    FlappyBirdComponent,
-    HappyJumpComponent,
+    GameRendererComponent,
   ],
   template: `
     <div class="flex flex-col min-h-all w-full items-center bg-zinc-400">
@@ -77,46 +70,14 @@ import { HappyJumpComponent } from './games/happyjump/happyjump.component';
             </div>
           </div>
           <app-game-controls [game]="game" />
-          <div class="flex w-full items-center justify-center py-12">
-            @switch (game.name) {
-              @case ('pong') {
-                <app-pong
-                  class="flex flex-col items-center w-3/4"
-                  [setSocketInputDataReceive]="socketInputData"
-                  (gameStateDataEmitter)="receiveGameOutputData($event)"
-                  [setAbstractGame]="game"
-                  [gameRestart]="gameRestartSubject.asObservable()"
-                  [gamePause]="gamePauseSubject.asObservable()" />
-              }
-              @case ('skijump') {
-                <app-skijump
-                  class="flex flex-col items-center w-3/4"
-                  [setSocketInputDataReceive]="socketInputData"
-                  (gameStateDataEmitter)="receiveGameOutputData($event)"
-                  [setAbstractGame]="game"
-                  [gameRestart]="gameRestartSubject.asObservable()"
-                  [gamePause]="gamePauseSubject.asObservable()" />
-              }
-              @case ('flappybird') {
-                <app-flappybird
-                  class="flex flex-col items-center w-3/4"
-                  [setSocketInputDataReceive]="socketInputData"
-                  (gameStateDataEmitter)="receiveGameOutputData($event)"
-                  [setAbstractGame]="game"
-                  [gameRestart]="gameRestartSubject.asObservable()"
-                  [gamePause]="gamePauseSubject.asObservable()" />
-              }
-              @case ('happyjump') {
-                <app-happyjump
-                  class="flex flex-col items-center w-3/4"
-                  [setSocketInputDataReceive]="socketInputData"
-                  (gameStateDataEmitter)="receiveGameOutputData($event)"
-                  [setAbstractGame]="game"
-                  [gameRestart]="gameRestartSubject.asObservable()"
-                  [gamePause]="gamePauseSubject.asObservable()" />
-              }
-            }
-          </div>
+          <app-game-renderer
+            class="flex w-full items-center justify-center py-12"
+            [gameName]="game.name"
+            [game]="game"
+            [socketInputData]="socketInputData"
+            [gameRestart]="gameRestartSubject.asObservable()"
+            [gamePause]="gamePauseSubject.asObservable()"
+            (gameStateDataEmitter)="receiveGameOutputData($event)" />
         }
         <app-console *appAuthRequired [logData]="logData" />
       } @else {

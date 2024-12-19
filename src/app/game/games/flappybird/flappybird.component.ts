@@ -30,7 +30,7 @@ import { FlappyBird, FlappyBirdState } from './models/flappybird.class';
       #gameCanvas></app-canvas>
     <b>FPS: {{ fps }}</b> `,
 })
-export class FlappyBirdComponent
+export class FlappyBirdGameWindowComponent
   extends BaseGameWindowComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
