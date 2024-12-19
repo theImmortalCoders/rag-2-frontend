@@ -6,6 +6,9 @@ on:
 
 jobs:
   build:
+    uses: ./.github/workflows/test.yml
+    
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
