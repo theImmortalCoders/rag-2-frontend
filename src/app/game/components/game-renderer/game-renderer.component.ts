@@ -73,4 +73,5 @@ export class GameRendererComponent {
   public handleGameStateData(data: Game): void {
     this.gameStateDataEmitter.emit(data);
   }
+  //https://www.youtube.com/watch?v=o3I2Eg6Q4LA
 }
