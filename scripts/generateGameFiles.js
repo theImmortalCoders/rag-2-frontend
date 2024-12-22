@@ -4,7 +4,9 @@ const path = require('path');
 
 const CLI_TARGET_PATH = 'game/games';
 const PROJECT_TARGET_PATH = 'src/app/game/games';
-const GAMES_TS_PATH = 'src/app/game/data/games.ts'; // Ścieżka do pliku games.ts
+const GAMES_TS_PATH = 'src/app/game/data/games.ts';
+const GAME_RENDERER_PATH =
+  'src/app/game/components/game-renderer/game-renderer.component.ts';
 
 function generateGameFiles(gameName) {
   if (!gameName) {
@@ -192,6 +194,41 @@ export class ${gameClassName}GameWindowComponent
   //
 }
   `.trim();
+}
+
+function updateGameRenderer(gameName) {
+  // Odczytujemy plik
+  let gameRenderer = fs.readFileSync(GAME_RENDERER_PATH, 'utf-8');
+
+  // Tworzymy nowy import
+  const newGameImport = `import { ${capitalize(gameName)}GameWindowComponent } from '@games/${gameName.toLowerCase()}/${gameName.toLowerCase()}.component';\n`;
+
+  // Dodajemy import tylko jeśli nie istnieje
+  if (!gameRenderer.includes(newGameImport)) {
+    // Sprawdzamy, czy plik zaczyna się od importów
+    const importSectionEnd = gameRenderer.indexOf('@Component({');
+
+    if (importSectionEnd !== -1) {
+      // Wstawiamy import zaraz po ostatnim importzie
+      gameRenderer =
+        gameRenderer.slice(0, importSectionEnd) +
+        newGameImport +
+        gameRenderer.slice(importSectionEnd);
+    } else {
+      // Jeśli nie ma sekcji importów, dodajemy na początku
+      gameRenderer = newGameImport + gameRenderer;
+    }
+
+    fs.writeFileSync(GAME_RENDERER_PATH, gameRenderer, 'utf-8');
+    console.log(`Added import for ${gameName} to game-renderer.component.ts`);
+  } else {
+    console.log(
+      `Import for ${gameName} already exists in game-renderer.component.ts`
+    );
+  }
+
+  fs.writeFileSync(GAME_RENDERER_PATH, updatedGamesTs, 'utf-8');
+  console.log(`Updated game-renderer.component.ts with ${gameName} game data.`);
 }
 
 const gameName = process.argv[2];

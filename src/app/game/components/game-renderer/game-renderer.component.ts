@@ -16,7 +16,6 @@ import { PongGameWindowComponent } from '@games/pong/pong.component';
 import { SkiJumpGameWindowComponent } from '@games/skijump/skijump.component';
 import { FlappyBirdGameWindowComponent } from '@games/flappybird/flappybird.component';
 import { HappyJumpGameWindowComponent } from '@games/happyjump/happyjump.component';
-
 @Component({
   selector: 'app-game-renderer',
   standalone: true,
