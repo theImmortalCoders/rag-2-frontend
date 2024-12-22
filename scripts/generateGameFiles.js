@@ -6,23 +6,23 @@ const CLI_TARGET_PATH = 'game/games';
 const PROJECT_TARGET_PATH = 'src/app/game/games';
 const GAMES_TS_PATH = 'src/app/game/data/games.ts'; // Ścieżka do pliku games.ts
 
-function generateGameComponent(componentName) {
-  if (!componentName) {
+function generateGameFiles(gameName) {
+  if (!gameName) {
     console.error('Error: Component name is required.');
     process.exit(1);
   }
 
-  const componentPath = path.join(PROJECT_TARGET_PATH, componentName);
+  const componentPath = path.join(PROJECT_TARGET_PATH, gameName);
   const modelsPath = path.join(componentPath, 'models');
-  const classFilePath = path.join(modelsPath, `${componentName}.class.ts`);
+  const classFilePath = path.join(modelsPath, `${gameName}.class.ts`);
   const componentFilePath = path.join(
     componentPath,
-    `${componentName}.component.ts`
+    `${gameName}.component.ts`
   );
-  const stateClassName = `${capitalize(componentName)}State`;
-  const gameClassName = `${capitalize(componentName)}`;
+  const stateClassName = `${capitalize(gameName)}State`;
+  const gameClassName = `${capitalize(gameName)}`;
 
-  const command = `npx ng g c ${CLI_TARGET_PATH}/${componentName} --skip-tests`;
+  const command = `npx ng g c ${CLI_TARGET_PATH}/${gameName} --skip-tests`;
 
   console.log(`Running command: ${command}`);
 
@@ -53,7 +53,7 @@ export class ${stateClassName} implements TGameState {
 }
 
 export class ${gameClassName} extends Game {
-    public override name = '${componentName.toLowerCase()}';
+    public override name = '${gameName.toLowerCase()}';
     public override state = new ${stateClassName}();
 
     public override outputSpec = \`\`;
@@ -74,7 +74,7 @@ export class ${gameClassName} extends Game {
     });
 
     const componentFileContent = getComponentFileContent(
-      componentName,
+      gameName,
       stateClassName,
       gameClassName
     );
@@ -88,16 +88,16 @@ export class ${gameClassName} extends Game {
     });
 
     // Aktualizacja pliku games.ts
-    updateGamesTs(componentName);
+    updateGamesTs(gameName);
   });
 }
 
-function updateGamesTs(componentName) {
+function updateGamesTs(gameName) {
   // Odczytujemy plik games.ts
   let gamesTsContent = fs.readFileSync(GAMES_TS_PATH, 'utf-8');
 
   // Tworzymy nowy import
-  const newGameImport = `import { ${capitalize(componentName)} } from '../games/${componentName.toLowerCase()}/models/${componentName.toLowerCase()}.class';\n`;
+  const newGameImport = `import { ${capitalize(gameName)} } from '../games/${gameName.toLowerCase()}/models/${gameName.toLowerCase()}.class';\n`;
 
   // Dodajemy import tylko jeśli nie istnieje
   if (!gamesTsContent.includes(newGameImport)) {
@@ -116,13 +116,13 @@ function updateGamesTs(componentName) {
     }
 
     fs.writeFileSync(GAMES_TS_PATH, gamesTsContent, 'utf-8');
-    console.log(`Added import for ${componentName} to games.ts`);
+    console.log(`Added import for ${gameName} to games.ts`);
   } else {
-    console.log(`Import for ${componentName} already exists in games.ts`);
+    console.log(`Import for ${gameName} already exists in games.ts`);
   }
 
   // Tworzymy nowy rekord w obiekcie games
-  const newGameEntry = `  ${componentName.toLowerCase()}: new ${capitalize(componentName)}(),\n`;
+  const newGameEntry = `  ${gameName.toLowerCase()}: new ${capitalize(gameName)}(),\n`;
 
   // Dodajemy nową grę przed końcem obiektu games
   const objectEnd = gamesTsContent.lastIndexOf('};');
@@ -132,22 +132,22 @@ function updateGamesTs(componentName) {
     gamesTsContent.substring(objectEnd);
 
   fs.writeFileSync(GAMES_TS_PATH, updatedGamesTs, 'utf-8');
-  console.log(`Added ${componentName} game to the games object in games.ts`);
+  console.log(`Added ${gameName} game to the games object in games.ts`);
 }
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function getComponentFileContent(componentName, stateClassName, gameClassName) {
+function getComponentFileContent(gameName, stateClassName, gameClassName) {
   return `
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CanvasComponent } from 'app/game/components/canvas/canvas.component';
 import { BaseGameWindowComponent } from '../base-game.component';
-import { ${gameClassName}, ${stateClassName} } from './models/${componentName.toLowerCase()}.class';
+import { ${gameClassName}, ${stateClassName} } from './models/${gameName.toLowerCase()}.class';
 
 @Component({
-  selector: 'app-${componentName.toLowerCase()}',
+  selector: 'app-${gameName.toLowerCase()}',
   standalone: true,
   imports: [CanvasComponent],
   template: \`
@@ -193,4 +193,4 @@ export class ${gameClassName}GameWindowComponent
 }
 
 const gameName = process.argv[2];
-generateGameComponent(gameName);
+generateGameFiles(gameName);
