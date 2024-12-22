@@ -185,9 +185,11 @@ export class ${gameClassName}GameWindowComponent
   private render(): void {
     const context = this._canvas.getContext('2d');
     if (context) {
-      // Render logic here
+      // Render view here
     }
   }
+
+  //
 }
   `.trim();
 }

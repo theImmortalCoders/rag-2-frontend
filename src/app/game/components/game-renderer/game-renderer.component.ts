@@ -53,13 +53,13 @@ export class GameRendererComponent implements DoCheck, AfterViewInit {
   @Output() public gameStateDataEmitter = new EventEmitter<Game>();
 
   @ViewChildren(PongGameWindowComponent)
-  public pongComponents!: QueryList<PongGameWindowComponent>;
+  public pongComponent!: QueryList<PongGameWindowComponent>;
   @ViewChildren(SkiJumpGameWindowComponent)
-  public skiJumpComponents!: QueryList<SkiJumpGameWindowComponent>;
+  public skiJumpComponent!: QueryList<SkiJumpGameWindowComponent>;
   @ViewChildren(FlappyBirdGameWindowComponent)
-  public flappyBirdComponents!: QueryList<FlappyBirdGameWindowComponent>;
+  public flappyBirdComponent!: QueryList<FlappyBirdGameWindowComponent>;
   @ViewChildren(HappyJumpGameWindowComponent)
-  public happyJumpComponents!: QueryList<HappyJumpGameWindowComponent>;
+  public happyJumpComponent!: QueryList<HappyJumpGameWindowComponent>;
 
   private _gameComponentsMap: Record<string, any> = {};
 
@@ -73,10 +73,10 @@ export class GameRendererComponent implements DoCheck, AfterViewInit {
   }
 
   private initializeGameComponents(): void {
-    this._gameComponentsMap['pong'] = this.pongComponents.toArray();
-    this._gameComponentsMap['skijump'] = this.skiJumpComponents.toArray();
-    this._gameComponentsMap['flappybird'] = this.flappyBirdComponents.toArray();
-    this._gameComponentsMap['happyjump'] = this.happyJumpComponents.toArray();
+    this._gameComponentsMap['pong'] = this.pongComponent.toArray();
+    this._gameComponentsMap['skijump'] = this.skiJumpComponent.toArray();
+    this._gameComponentsMap['flappybird'] = this.flappyBirdComponent.toArray();
+    this._gameComponentsMap['happyjump'] = this.happyJumpComponent.toArray();
   }
 
   private updateGameReferences(): void {
