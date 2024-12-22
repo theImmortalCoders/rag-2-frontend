@@ -1,3 +1,30 @@
+/* 
+  #######################################################
+  !!!!!                   READ ME                   !!!!!
+  #######################################################
+
+  This script is designed to generate all necessary files 
+  and update existing ones during the process of creating 
+  a new game in the RAG-2 system.
+
+  The script creates or modifies the following files:
+  - game.renderer.component.ts
+  - games.ts
+  - [newGameName].component.ts
+  - [newGameName].class.ts
+
+  Then you need to implement the rest of the game's 
+  functionality like logic and view in some of these files.
+
+  How to use the script?
+  In the console, run the following command:
+    npm run newGame [gameName]
+
+  The game name should be written in lowercase letters as
+  a single string, even for multi-word game names (e.g., 
+  "FlappyBird" should be written as "flappybird").
+*/
+
 const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -308,4 +335,4 @@ function updateGameRenderer(gameName) {
 }
 
 const gameName = process.argv[2];
-generateGameFiles(gameName);
+generateGameFiles(gameName.toLowerCase());
