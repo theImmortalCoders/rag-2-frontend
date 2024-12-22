@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e --no-watch --headless",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "newGame": "node scripts/generateGameFiles.js"
   },
   "private": true,
   "dependencies": {

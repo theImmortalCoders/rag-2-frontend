@@ -25,7 +25,7 @@ import { HappyJump, HappyJumpState } from './models/happyjump.class';
     <b>FPS: {{ fps }}</b>
   `,
 })
-export class HappyJumpComponent
+export class HappyJumpGameWindowComponent
   extends BaseGameWindowComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
