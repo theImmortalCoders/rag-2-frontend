@@ -92,6 +92,8 @@ export class ${gameClassName} extends Game {
     // Aktualizacja pliku games.ts
     updateGamesTs(gameName);
   });
+
+  updateGameRenderer(gameName);
 }
 
 function updateGamesTs(gameName) {
@@ -197,37 +199,111 @@ export class ${gameClassName}GameWindowComponent
 }
 
 function updateGameRenderer(gameName) {
-  // Odczytujemy plik
   let gameRenderer = fs.readFileSync(GAME_RENDERER_PATH, 'utf-8');
 
-  // Tworzymy nowy import
   const newGameImport = `import { ${capitalize(gameName)}GameWindowComponent } from '@games/${gameName.toLowerCase()}/${gameName.toLowerCase()}.component';\n`;
 
-  // Dodajemy import tylko jeśli nie istnieje
   if (!gameRenderer.includes(newGameImport)) {
-    // Sprawdzamy, czy plik zaczyna się od importów
     const importSectionEnd = gameRenderer.indexOf('@Component({');
 
     if (importSectionEnd !== -1) {
-      // Wstawiamy import zaraz po ostatnim importzie
       gameRenderer =
         gameRenderer.slice(0, importSectionEnd) +
         newGameImport +
         gameRenderer.slice(importSectionEnd);
     } else {
-      // Jeśli nie ma sekcji importów, dodajemy na początku
       gameRenderer = newGameImport + gameRenderer;
     }
-
-    fs.writeFileSync(GAME_RENDERER_PATH, gameRenderer, 'utf-8');
-    console.log(`Added import for ${gameName} to game-renderer.component.ts`);
-  } else {
-    console.log(
-      `Import for ${gameName} already exists in game-renderer.component.ts`
-    );
   }
 
-  fs.writeFileSync(GAME_RENDERER_PATH, updatedGamesTs, 'utf-8');
+  const newImportsSection = `\t${capitalize(gameName)}GameWindowComponent`;
+  const importsSectionEnd = gameRenderer.indexOf('],');
+
+  if (importsSectionEnd !== -1) {
+    gameRenderer =
+      gameRenderer.slice(0, importsSectionEnd) +
+      newImportsSection +
+      gameRenderer.slice(importsSectionEnd);
+  } else {
+    gameRenderer = newImportsSection + gameRenderer;
+  }
+
+  const caseRegex = /@case/g;
+  let match;
+  let lastCaseIndex = -1;
+
+  while ((match = caseRegex.exec(gameRenderer)) !== null) {
+    lastCaseIndex = match.index;
+  }
+
+  if (lastCaseIndex !== -1) {
+    let lines = gameRenderer.split('\n');
+
+    const lastCaseLine =
+      gameRenderer.slice(0, lastCaseIndex).split('\n').length - 1;
+
+    const insertLine = lastCaseLine + 3;
+    lines.splice(
+      insertLine,
+      0,
+      `\t\t\t@case ('${gameName.toLowerCase()}') {
+        <app-${gameName.toLowerCase()} #${gameName.toLowerCase()} [setAbstractGame]="game" />
+      }`
+    );
+
+    gameRenderer = lines.join('\n');
+  }
+
+  const caseRegex2 = /QueryList</g;
+  let match2;
+  let lastCaseIndex2 = -1;
+
+  while ((match2 = caseRegex2.exec(gameRenderer)) !== null) {
+    lastCaseIndex2 = match2.index;
+  }
+
+  if (lastCaseIndex2 !== -1) {
+    let lines = gameRenderer.split('\n');
+
+    const lastCaseLine =
+      gameRenderer.slice(0, lastCaseIndex2).split('\n').length - 1;
+
+    const insertLine = lastCaseLine + 1;
+    lines.splice(
+      insertLine,
+      0,
+      `\t@ViewChildren(${capitalize(gameName)}GameWindowComponent)
+\tpublic ${gameName}Component!: QueryList<${capitalize(gameName)}GameWindowComponent>;`
+    );
+
+    gameRenderer = lines.join('\n');
+  }
+
+  const caseRegex3 = /toArray()/g;
+  let match3;
+  let lastCaseIndex3 = -1;
+
+  while ((match3 = caseRegex3.exec(gameRenderer)) !== null) {
+    lastCaseIndex3 = match3.index;
+  }
+
+  if (lastCaseIndex3 !== -1) {
+    let lines = gameRenderer.split('\n');
+
+    const lastCaseLine =
+      gameRenderer.slice(0, lastCaseIndex3).split('\n').length - 1;
+
+    const insertLine = lastCaseLine + 1;
+    lines.splice(
+      insertLine,
+      0,
+      `\t\tthis._gameComponentsMap['${gameName}'] = this.${gameName}Component.toArray();`
+    );
+
+    gameRenderer = lines.join('\n');
+  }
+
+  fs.writeFileSync(GAME_RENDERER_PATH, gameRenderer, 'utf-8');
   console.log(`Updated game-renderer.component.ts with ${gameName} game data.`);
 }
 
