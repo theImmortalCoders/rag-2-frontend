@@ -55,6 +55,12 @@ export class HappyJump extends Game {
         difficulty: 1;
         isGameStarted: false;
         failCounter: 0;
+
+      const values:
+        playerWidth: 30;
+        playerHeight: 30;
+        platformHeight: 10;
+        platformWidth: 100;
     `;
 
   public override players = [
