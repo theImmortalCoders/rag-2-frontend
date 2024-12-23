@@ -6,7 +6,6 @@ import { PongGameWindowComponent } from '@games/pong/pong.component';
 import { SkiJumpGameWindowComponent } from '@games/skijump/skijump.component';
 import { FlappyBirdGameWindowComponent } from '@games/flappybird/flappybird.component';
 import { HappyJumpGameWindowComponent } from '@games/happyjump/happyjump.component';
-
 @Component({
   selector: 'app-game-renderer',
   standalone: true,
@@ -25,8 +24,7 @@ import { HappyJumpGameWindowComponent } from '@games/happyjump/happyjump.compone
           [gamePause]="gamePause"
           [setAbstractGame]="game"
           [setSocketInputDataReceive]="socketInputData"
-          (gameStateDataEmitter)="handleGameStateData($event)">
-        </app-pong>
+          (gameStateDataEmitter)="handleGameStateData($event)" />
       }
       @case ('skijump') {
         <app-skijump
@@ -35,8 +33,7 @@ import { HappyJumpGameWindowComponent } from '@games/happyjump/happyjump.compone
           [gamePause]="gamePause"
           [setAbstractGame]="game"
           [setSocketInputDataReceive]="socketInputData"
-          (gameStateDataEmitter)="handleGameStateData($event)">
-        </app-skijump>
+          (gameStateDataEmitter)="handleGameStateData($event)" />
       }
       @case ('flappybird') {
         <app-flappybird
@@ -45,8 +42,7 @@ import { HappyJumpGameWindowComponent } from '@games/happyjump/happyjump.compone
           [gamePause]="gamePause"
           [setAbstractGame]="game"
           [setSocketInputDataReceive]="socketInputData"
-          (gameStateDataEmitter)="handleGameStateData($event)">
-        </app-flappybird>
+          (gameStateDataEmitter)="handleGameStateData($event)" />
       }
       @case ('happyjump') {
         <app-happyjump
@@ -55,8 +51,7 @@ import { HappyJumpGameWindowComponent } from '@games/happyjump/happyjump.compone
           [gamePause]="gamePause"
           [setAbstractGame]="game"
           [setSocketInputDataReceive]="socketInputData"
-          (gameStateDataEmitter)="handleGameStateData($event)">
-        </app-happyjump>
+          (gameStateDataEmitter)="handleGameStateData($event)" />
       }
     }
   `,
