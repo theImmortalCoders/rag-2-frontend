@@ -1,25 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { authorsData, IAuthor } from 'app/home/models/author';
-import { NgOptimizedImage } from '@angular/common';
+import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.component';
 
 @Component({
   selector: 'app-author-cards',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [Rag2LogoComponent],
   template: `
-    <div
+    <app-rag-2-logo
       class="h-64 2xs:h-72 xs:h-80 xl:h-96 w-64 2xs:w-72 xs:w-80 xl:w-96 absolute transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
           ? 'opacity-95 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
           : 'opacity-0 -right-[50rem]'
-      }}">
-      <img
-        ngSrc="images/rag-2.png"
-        alt="Logo"
-        class="object-contain"
-        fill
-        priority />
-    </div>
+      }}"
+      [isPriority]="true" />
     @for (author of authors; track author.name) {
       <div
         class="author-card flex flex-col space-y-1 2xs:space-y-2 w-[85%] xs:w-3/4 md:w-[130%] lg:w-[120%] h-fit bg-mainCreme text-mainGray rounded-xl py-3 2xs:py-4 px-4 2xs:px-5 lg:p-6 absolute transition-all ease-in-out duration-300 {{
