@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
             <span class="size-9 lg:size-10 relative">
               <img
                 ngSrc="images/rag-2.png"
-                alt="Logo"
+                alt="Logo RAG-2"
                 class="object-contain grayscale group-hover:grayscale-0 transition-all ease-in-out duration-500"
                 fill />
             </span>
@@ -53,7 +53,7 @@ import { Component } from '@angular/core';
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
               <img
                 ngSrc="images/prz_orange.png"
-                alt="Logo"
+                alt="Logo PRZ"
                 class="object-contain grayscale group-hover:grayscale-0 transition-all ease-in-out duration-500"
                 fill />
             </span>
@@ -69,7 +69,7 @@ import { Component } from '@angular/core';
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
               <img
                 ngSrc="images/gest_orange.png"
-                alt="Logo"
+                alt="Logo GEST"
                 class="object-contain grayscale group-hover:grayscale-0 transition-all ease-in-out duration-500"
                 fill />
             </span>

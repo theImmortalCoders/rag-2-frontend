@@ -80,7 +80,7 @@ import { ShortGameStatsComponent } from './components/short-game-stats/short-gam
             class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[26rem] lg:w-[30rem] xl:w-[36rem] relative">
             <img
               ngSrc="images/ai.jpg"
-              alt="Logo"
+              alt="ai image"
               class="object-contain rounded-full"
               fill />
           </div>
