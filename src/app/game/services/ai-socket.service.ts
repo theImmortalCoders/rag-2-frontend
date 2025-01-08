@@ -172,6 +172,9 @@ export class AiSocketService {
       clearTimeout(this._inactivityTimeoutID);
     }
     this._inactivityTimeoutID = setTimeout(() => {
+      this._notificationService.addNotification(
+        'No activity detected. Closing WebSocket connection.'
+      );
       console.log('No activity detected. Closing WebSocket connection.');
       this.closeSocket();
     }, this._inactivityTimeInterval);
