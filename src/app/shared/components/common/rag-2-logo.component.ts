@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
   template: `
     <img
       ngSrc="images/rag-2.png"
-      alt="Logo"
+      alt="Logo RAG-2"
       class="object-contain"
       fill
       [priority]="isPriority" />
