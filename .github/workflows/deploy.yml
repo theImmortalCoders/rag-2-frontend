@@ -6,7 +6,11 @@ on:
 
 jobs:
   build:
+    uses: ./.github/workflows/test.yml
+    
+  deploy:
     runs-on: ubuntu-latest
+    needs: [ build ]
     steps:
       - name: Deploy
         uses: appleboy/ssh-action@master
