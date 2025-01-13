@@ -11,6 +11,7 @@ import {
   ViewChild,
   DoCheck,
   AfterViewInit,
+  ElementRef,
 } from '@angular/core';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Player } from '@gameModels/player.class';
@@ -29,14 +30,12 @@ import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
 export abstract class BaseGameWindowComponent
   implements OnInit, OnDestroy, DoCheck, AfterViewInit
 {
-  @Input({ required: true }) public gameRestart = new Observable<void>();
-  @Input({ required: true }) public gamePause = new Observable<boolean>();
+  @Input() public gameRestart = new Observable<void>();
+  @Input() public gamePause = new Observable<boolean>();
   @Input({ required: true }) public set setAbstractGame(value: Game) {
     this.game = value;
   }
-  @Input({ required: true }) public set setSocketInputDataReceive(
-    value: TExchangeData
-  ) {
+  @Input() public set setSocketInputDataReceive(value: TExchangeData) {
     const playerInputData = this.mapReceivedToPlayerAndData(value);
     if (!playerInputData.data || !playerInputData.player) return;
 
@@ -49,6 +48,8 @@ export abstract class BaseGameWindowComponent
 
   @Output() public gameStateDataEmitter = new EventEmitter<Game>();
   @ViewChild('gameCanvas') public gameCanvas!: CanvasComponent;
+
+  public constructor(public el: ElementRef) {}
 
   private _restartSubscription = new Subscription();
   private _pauseSubscription = new Subscription();

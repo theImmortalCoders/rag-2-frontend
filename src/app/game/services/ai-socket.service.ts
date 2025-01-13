@@ -20,6 +20,9 @@ export class AiSocketService {
   private _ping = 0;
   private _lastPingSentTime = 0;
 
+  private _inactivityTimeoutID: ReturnType<typeof setTimeout> | null = null;
+  private readonly _inactivityTimeInterval = 60000;
+
   public connect(
     socketUrl: string,
     onOpen: () => void,
@@ -118,10 +121,12 @@ export class AiSocketService {
     this._socket.addEventListener('open', () => {
       this.isSocketConnected = true;
       onOpen();
+      this.resetInactivityTimeout();
     });
     this._socket.addEventListener('message', event => {
       onMessage(event);
       this._ping = Date.now() - this._lastPingSentTime;
+      this.resetInactivityTimeout();
     });
     this._socket.addEventListener('close', e => {
       if (e.code === 401) {
@@ -134,6 +139,7 @@ export class AiSocketService {
       this._previousData = '';
       this._ping = 0;
       this._lastPingSentTime = 0;
+      this.clearInactivityTimeout();
       onClose();
     });
   }
@@ -154,9 +160,30 @@ export class AiSocketService {
 
       if (data != this._previousData) {
         this._socket.send(data);
+        this.resetInactivityTimeout();
       }
 
       this._previousData = data;
+    }
+  }
+
+  private resetInactivityTimeout(): void {
+    if (this._inactivityTimeoutID) {
+      clearTimeout(this._inactivityTimeoutID);
+    }
+    this._inactivityTimeoutID = setTimeout(() => {
+      this._notificationService.addNotification(
+        'No activity detected. Closing WebSocket connection.'
+      );
+      console.log('No activity detected. Closing WebSocket connection.');
+      this.closeSocket();
+    }, this._inactivityTimeInterval);
+  }
+
+  private clearInactivityTimeout(): void {
+    if (this._inactivityTimeoutID) {
+      clearTimeout(this._inactivityTimeoutID);
+      this._inactivityTimeoutID = null;
     }
   }
 }

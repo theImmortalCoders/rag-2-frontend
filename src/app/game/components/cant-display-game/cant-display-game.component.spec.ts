@@ -47,7 +47,7 @@ describe('Error404PageComponent', () => {
   it('should display the image with the correct attributes', () => {
     const imgElement = fixture.debugElement.query(By.css('img'));
     expect(imgElement.nativeElement.src).toContain('images/rag-2.png');
-    expect(imgElement.nativeElement.alt).toBe('Logo');
+    expect(imgElement.nativeElement.alt).toBe('Logo RAG-2');
   });
 
   it('should have the correct classes applied to the main div', () => {
