@@ -11,7 +11,7 @@ module.exports = {
         '3xl': '1760px',
       },
       colors: {
-        mainGray: '#353535',
+        mainGray: '#272727',
         lightGray: '#5D5D5D',
         darkGray: '#3C3D42',
         mainOrange: '#FF6000',
