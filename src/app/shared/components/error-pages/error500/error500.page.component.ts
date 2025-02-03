@@ -13,7 +13,7 @@ import { Rag2LogoComponent } from '../../common/rag-2-logo.component';
       </h1>
       <div
         class="flex flex-col md:flex-row w-[97%] 2xs:w-11/12 2xl:w-2/3 items-center justify-center border-2 border-mainOrange rounded-lg px-6 py-8 text-mainCreme mb-16">
-        <app-rag-2-logo class="h-80 sm:h-96 w-80 sm:w-96 relative" />
+        <app-rag-2-logo class="h-80 sm:h-96 w-80 sm:w-96 relative" [isPriority]="true"/>
         <div
           class="text-center py-12 md:py-0 pr-6 md:pr-2 pl-6 md:pl-12 lg:pl-16 xl:md-24">
           <h2 class="text-3xl sm:text-4xl pb-4 font-bold">Unfortunately...</h2>
