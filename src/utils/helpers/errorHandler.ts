@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export function errorHandler(error: HttpErrorResponse): string {
   let errorMessage = 'An error has occured';
-  console.info("error", error)
   if (error.status === 401) {
     errorMessage = 'Unauthorized, you have to be logged in';
   } else if (error.status === 403) {
@@ -11,6 +10,7 @@ export function errorHandler(error: HttpErrorResponse): string {
     if (window.location.pathname !== '/error500') {
       window.location.href = '/error500';
     }
+    errorMessage = error.message;
   } else {
     errorMessage = JSON.parse(error.error)['description'];
   }
