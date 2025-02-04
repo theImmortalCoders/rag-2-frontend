@@ -47,15 +47,29 @@ export class ConsoleComponent implements OnDestroy{
   }
 
   public externalConsoleMode(): void {
+    this.isConsoleVisible = false;
     if (this._newWindow && !this._newWindow.closed) {
       this._newWindow.focus();
       return;
     }
 
-    this._newWindow = window.open('', '_blank', 'width=800,height=600');
+    this._newWindow = window.open('', '_blank', 'width=1100,height=600');
     if (this._newWindow) {
-      this._newWindow.document.body.innerHTML = '<div id="consoleFieldsetRoot"></div>';
+      this._newWindow.document.body.innerHTML = `
+        <h1 style="color:#FFE6C7; font-family:monospace;padding-left:2rem;">RAG-2 - External Console Mode</h1>
+        <div id="consoleFieldsetRoot"></div>
+      `;
       this._newWindow.document.title = 'RAG-2 - External Console Mode';
+
+      const consoleStyles = document.querySelectorAll('style');
+      consoleStyles.forEach((style) => {
+        this._newWindow?.document.head.appendChild(style.cloneNode(true));
+      });
+
+      if (this._newWindow?.document.body) {
+        this._newWindow.document.body.style.backgroundColor = '#5D5D5D';
+        this._newWindow.document.body.style.paddingTop = '1rem';
+      }
 
       const componentFactory = this._componentFactoryResolver.resolveComponentFactory(ConsoleFieldsetComponent);
       this._componentRef = componentFactory.create(this._injector);
