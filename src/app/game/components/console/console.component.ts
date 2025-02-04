@@ -15,7 +15,8 @@ import { ConsoleFieldsetComponent } from './console-fieldset/console-fieldset.co
       </button>
       <div
         class="relative w-full max-h-96 transition-all ease-in-out duration-700 bg-lightGray overflow-y-scroll z-50 px-5 {{isConsoleVisible ? ' h-72 py-4' : ' h-0'}}">
-        <button (click)="externalConsoleMode()" class="absolute right-4 top-4 flex flex-row space-x-2 justify-end items-center font-mono text-black hover:text-mainCreme transition-all ease-in-out duration-200">
+        <button class="absolute right-0 top-4 bg-mainOrange px-4 py-1 rounded-l-lg flex flex-row space-x-2 justify-end items-center font-mono text-black border-y-2 border-l-2 border-mainOrange hover:border-black transition-all ease-in-out duration-300"
+          (click)="externalConsoleMode()">
           <span class="uppercase">External console mode</span>
           <i data-feather="external-link" class="size-5"></i>
         </button>
