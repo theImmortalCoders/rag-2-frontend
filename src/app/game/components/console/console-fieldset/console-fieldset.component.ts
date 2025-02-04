@@ -7,10 +7,50 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
   selector: 'app-console-fieldset',
   standalone: true,
   imports: [KeyValuePipe, ExchangeDataPipe],
+  styles: [
+    `
+    .console-fieldset {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 2rem;
+      margin-right: 0.5rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      padding-left: 0.5rem;
+      border-left: 1px solid #FF6000;
+    }
+    .console-key {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      font-family: monospace;
+      position: relative;
+      top: -0.5rem;
+    }
+    .console-value {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: #FFE6C7;
+      font-family: monospace;
+      position: relative;
+      top: -0.5rem;
+    }
+    @media (min-width: 1280px) {
+      .console-value {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+      .console-key{
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+      }
+    }
+    `
+  ],
   template: `
     @for (data of logData | keyvalue; track data.key) {
-      <div class="my-0 ml-8 mr-2 pl-2 py-1 border-l-[1px] border-mainOrange">
-        <span class="font-bold text-base xl:text-lg font-mono relative -top-2">
+      <div class="console-fieldset">
+        <span class="console-key">
           {{ data.key }}:
         </span>
 
@@ -18,7 +58,7 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
           <app-console-fieldset
             [logData]="data.value | exchange_data"></app-console-fieldset>
         } @else {
-          <span class="text-sm xl:text-base text-mainCreme relative -top-2">
+          <span class="console-value">
             {{ data.value }}
           </span>
         }
