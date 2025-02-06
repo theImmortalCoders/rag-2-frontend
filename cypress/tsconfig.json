@@ -1,6 +1,11 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["**/*.ts", "../cypress.config.ts"],
+  "include": [
+    "**/*.ts",
+    "../cypress.config.ts",
+    "e2e/**/*.ts",
+    "support/**/*.ts"
+  ],
   "exclude": [],
   "compilerOptions": {
     "sourceMap": false,
