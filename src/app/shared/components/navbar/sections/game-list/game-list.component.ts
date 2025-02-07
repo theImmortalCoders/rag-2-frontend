@@ -32,7 +32,7 @@ import { Subscription } from 'rxjs';
           <a
             [routerLink]="['game-list']"
             class="text-sm xs:text-base text-start 3xl:text-center text-mainOrange group-hover:text-green-500 ease-in-out transition-all duration-500">
-            Read more...
+            See all games...
           </a>
           <i
             data-feather="corner-down-right"

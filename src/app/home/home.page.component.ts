@@ -37,6 +37,7 @@ import { ShortGameStatsComponent } from './components/short-game-stats/short-gam
               class="grid grid-cols-3 xs:grid-cols-6 md:grid-cols-3 gap-y-10 sm:gap-y-16 lg:flex lg:flex-row w-full gap-x-8 xs:gap-x-40 md:gap-x-5 lg:gap-x-12">
               @for (author of authors; track author.name) {
                 <button
+                  id="authorsButton"
                   (click)="chooseAuthor($index, author.githubName)"
                   class="{{
                     $index === currentChoosenAuthor.index
