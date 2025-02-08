@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
       @for (game of games; track game.id) {
         <li class="w-full group">
           <a
+            id="gameListElement"
             [routerLink]="['game/', game.name]"
             class="flex flex-row justify-between items-center">
             <span
@@ -30,6 +31,7 @@ import { Subscription } from 'rxjs';
       <div class="group">
         <div class="flex flex-row justify-between items-center">
           <a
+            id="seeAllGamesButton"
             [routerLink]="['game-list']"
             class="text-sm xs:text-base text-start 3xl:text-center text-mainOrange group-hover:text-green-500 ease-in-out transition-all duration-500">
             See all games...

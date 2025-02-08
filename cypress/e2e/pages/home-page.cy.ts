@@ -1,8 +1,6 @@
 describe('Home Page E2E Tests', () => {
   beforeEach(() => {
     cy.visit('/');
-    cy.get('#cookieButton').click();
-    cy.get('#testPhaseButton').click();
   });
 
   it('should describe animated h1 correctly', () => {

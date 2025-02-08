@@ -8,4 +8,7 @@ Cypress.on('uncaught:exception', err => {
 
 beforeEach(() => {
   cy.clearLocalStorage();
+  cy.visit('/');
+  cy.get('#cookieButton').click();
+  cy.get('#testPhaseButton').click();
 });
