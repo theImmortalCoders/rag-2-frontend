@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -32,6 +33,7 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
           id="email"
           type="email"
           formControlName="email"
+          name="email"
           placeholder="Type your email"
           class="custom-input"
           list="recentEmails" />
@@ -49,6 +51,7 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
           id="password"
           type="password"
           formControlName="password"
+          name="password"
           placeholder="Type your password"
           class="custom-input" />
       </div>
