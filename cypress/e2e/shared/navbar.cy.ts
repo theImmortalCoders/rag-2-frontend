@@ -1,4 +1,9 @@
 describe('Navbar E2E Tests', () => {
+  beforeEach(() => {
+    cy.mockGetGames();
+    cy.wait('@getGames').its('response.statusCode').should('eq', 200);
+  });
+
   it('logo should navigate to home page correctly', () => {
     cy.get('#navbarLogo').click();
     cy.location('pathname').should('eq', '/');
@@ -35,5 +40,10 @@ describe('Navbar E2E Tests', () => {
     cy.get('#toggleGameListButton').click();
     cy.get('#seeAllGamesButton').click();
     cy.location('pathname').should('eq', '/game-list');
+  });
+
+  it('user shortcut should navigate to login page', () => {
+    cy.get('#userShortcutButton').click();
+    cy.location('pathname').should('eq', '/login');
   });
 });

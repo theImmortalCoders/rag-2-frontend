@@ -3,6 +3,7 @@
 declare namespace Cypress {
   interface Chainable {
     loginMock(email: string, password: string): Chainable<void>;
+    mockGetGames(): Chainable<void>;
   }
 }
 
@@ -32,4 +33,29 @@ Cypress.Commands.add('loginMock', (email: string, password: string) => {
     const token = interception.response.body.token;
     window.localStorage.setItem('jwtToken', token);
   });
+});
+
+Cypress.Commands.add('mockGetGames', () => {
+  cy.intercept('GET', '/api/Game', req => {
+    req.reply({
+      statusCode: 200,
+      body: [
+        {
+          id: 1,
+          name: 'pong',
+          description: 'pong description',
+        },
+        {
+          id: 2,
+          name: 'skijump',
+          description: 'skijump description',
+        },
+        {
+          id: 3,
+          name: 'flappybird',
+          description: 'flappybird description',
+        },
+      ],
+    });
+  }).as('getGames');
 });

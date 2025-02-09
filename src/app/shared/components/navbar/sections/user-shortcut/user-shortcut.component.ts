@@ -12,7 +12,10 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [RouterModule, CommonModule],
   template: `
-    <button (click)="handleButtonClick()" class="mr-5 xs:mr-10">
+    <button
+      id="userShortcutButton"
+      (click)="handleButtonClick()"
+      class="mr-5 xs:mr-10">
       <i
         data-feather="users"
         class="hover:text-green-500 ease-in-out transition-all duration-500 size-8 2xs:size-9"></i>
