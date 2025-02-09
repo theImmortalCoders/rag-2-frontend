@@ -6,6 +6,6 @@
     "outDir": "./out-tsc/spec",
     "types": ["jasmine"]
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"],
-  "exclude": ["cypress/**/*.ts", "cypress.config.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts", "cypress.config.ts"],
+  "exclude": ["cypress/**/*.ts"]
 }

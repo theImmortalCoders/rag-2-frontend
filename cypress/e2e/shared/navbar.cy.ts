@@ -9,7 +9,7 @@ describe('Navbar E2E Tests', () => {
     cy.location('pathname').should('eq', '/');
   });
 
-  it('headline should navigate to home page correctly (execept mobiles)', () => {
+  it('headline should navigate to home page correctly (except mobiles)', () => {
     cy.window().then(win => {
       if (win.innerWidth > 768) {
         cy.get('#navbarHeadline').click();
