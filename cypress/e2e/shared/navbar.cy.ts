@@ -1,4 +1,4 @@
-describe('Navbar E2E Tests', () => {
+describe('Navbar E2E Tests:', () => {
   beforeEach(() => {
     cy.mockGetGames();
     cy.wait('@getGames').its('response.statusCode').should('eq', 200);
@@ -42,8 +42,14 @@ describe('Navbar E2E Tests', () => {
     cy.location('pathname').should('eq', '/game-list');
   });
 
-  it('user shortcut should navigate to login page', () => {
+  it('user shortcut should navigate to login page (not logged in)', () => {
     cy.get('#userShortcutButton').click();
     cy.location('pathname').should('eq', '/login');
+  });
+
+  it('user shortcut should open user menu (logged in)', () => {
+    cy.mockLogin('test123@wp.pl', 'tajnehaslo123');
+    cy.get('#userShortcutButton').click();
+    cy.get('#userShortcutMenu').should('be.visible');
   });
 });

@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
         class="hover:text-green-500 ease-in-out transition-all duration-500 size-8 2xs:size-9"></i>
     </button>
     <div
+      id="userShortcutMenu"
       class="flex flex-col space-y-1 text-sm 2xs:text-base absolute h-24 2xs:h-28 overflow-y-hidden -z-10 transition-all ease-in-out duration-300 {{
         isUserInfoVisible
           ? 'right-0 opacity-100 w-48 md:w-52 lg:w-44 xl:w-56 p-3'

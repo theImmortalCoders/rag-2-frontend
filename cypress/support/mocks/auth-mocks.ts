@@ -3,12 +3,12 @@
 
 declare namespace Cypress {
   interface Chainable {
-    loginMock(email: string, password: string): Chainable<void>;
+    mockLogin(email: string, password: string): Chainable<void>;
     mockVerifyJWTToken(valid: boolean): Chainable<void>;
   }
 }
 
-Cypress.Commands.add('loginMock', (email: string, password: string) => {
+Cypress.Commands.add('mockLogin', (email: string, password: string) => {
   cy.intercept('POST', '/api/Auth/login', req => {
     if (req.body.email === email && req.body.password === password) {
       req.reply({
