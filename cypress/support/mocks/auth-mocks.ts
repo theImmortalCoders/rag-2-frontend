@@ -4,7 +4,8 @@
 declare namespace Cypress {
   interface Chainable {
     mockLogin(email: string, password: string): Chainable<void>;
-    mockVerifyJWTToken(valid: boolean): Chainable<void>;
+    mockVerifyJWTToken(): Chainable<void>;
+    mockGetMe(): Chainable<void>;
   }
 }
 
@@ -36,12 +37,17 @@ Cypress.Commands.add('mockLogin', (email: string, password: string) => {
   });
 });
 
-Cypress.Commands.add('mockVerifyJWTToken', (valid = true) => {
+Cypress.Commands.add('mockVerifyJWTToken', () => {
   cy.intercept('GET', '/api/Auth/verify', req => {
-    if (valid) {
-      req.reply({ statusCode: 200, body: {} });
-    } else {
-      req.reply({ statusCode: 401, body: { message: 'Unauthorized' } });
-    }
+    req.reply({ statusCode: 200, body: {} });
   }).as('verifyJWTToken');
+});
+
+Cypress.Commands.add('mockGetMe', () => {
+  cy.fixture('user.json').then(user => {
+    cy.intercept('GET', '/api/Auth/me', {
+      statusCode: 200,
+      body: user,
+    }).as('getMe');
+  });
 });

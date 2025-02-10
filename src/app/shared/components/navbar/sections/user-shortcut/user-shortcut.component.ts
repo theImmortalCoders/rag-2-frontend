@@ -27,11 +27,14 @@ import { Subscription } from 'rxjs';
           ? 'right-0 opacity-100 w-48 md:w-52 lg:w-44 xl:w-56 p-3'
           : '-right-20 opacity-0 w-0 overflow-x-hidden p-0'
       }} top-[75px] 2xs:top-[83px] bg-mainGray shadow-userInfoShadow rounded-bl-lg">
-      <span class="text-center text-lightOragne font-bold uppercase"
+      <span
+        id="userShortcutMenuRole"
+        class="text-center text-lightOragne font-bold uppercase"
         >Your role: {{ currentUserRole }}</span
       >
       <hr class="border-[1px] border-lightOragne" />
       <a
+        id="userShortcutMenuDashboardButton"
         [routerLink]="['dashboard']"
         (click)="isUserInfoVisible = false"
         class="flex flex-row items-center justify-center space-x-2 text-center hover:text-green-500 ease-in-out transition-all duration-500">

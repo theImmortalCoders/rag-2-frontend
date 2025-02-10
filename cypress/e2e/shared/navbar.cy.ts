@@ -47,9 +47,28 @@ describe('Navbar E2E Tests:', () => {
     cy.location('pathname').should('eq', '/login');
   });
 
-  it('user shortcut should open user menu (logged in)', () => {
-    cy.mockLogin('test123@wp.pl', 'tajnehaslo123');
+  it('user shortcut should open user menu and display correct role (logged in)', () => {
+    cy.fixture('user.json').then(user => {
+      cy.mockGetMe();
+      cy.mockLogin('testuser@stud.prz.edu.pl', 'tajnehaslo123');
+      cy.wait('@getMe').its('response.statusCode').should('eq', 200);
+      cy.get('#userShortcutButton').click();
+      cy.get('#userShortcutMenu').should('be.visible');
+      cy.get('#userShortcutMenuRole').should(
+        'have.text',
+        'Your role: ' + user.role
+      );
+    });
+  });
+
+  it('user shortcut should open user menu and navigate to dashboard correctly (logged in)', () => {
+    cy.mockGetMe();
+    cy.mockLogin('testuser@stud.prz.edu.pl', 'tajnehaslo123');
+    cy.wait('@getMe').its('response.statusCode').should('eq', 200);
     cy.get('#userShortcutButton').click();
-    cy.get('#userShortcutMenu').should('be.visible');
+    cy.get('#userShortcutMenuDashboardButton').click();
+    cy.mockVerifyJWTToken();
+    cy.wait('@verifyJWTToken').its('response.statusCode').should('eq', 200);
+    cy.location('pathname').should('eq', '/dashboard');
   });
 });
