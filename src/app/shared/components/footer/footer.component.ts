@@ -34,6 +34,7 @@ import { RouterModule } from '@angular/router';
           @for (author of authors; track author.name) {
             <a
               [href]="'https://github.com/' + author.githubName"
+              title="The link opens in a new browser window"
               target="_blank"
               >{{ author.name }}</a
             >
@@ -49,6 +50,7 @@ import { RouterModule } from '@angular/router';
           <a
             [href]="'https://w.prz.edu.pl/'"
             target="_blank"
+            title="The link opens in a new browser window"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
@@ -65,6 +67,7 @@ import { RouterModule } from '@angular/router';
           <a
             [href]="'http://vision.kia.prz.edu.pl/gest/'"
             target="_blank"
+            title="The link opens in a new browser window"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
@@ -84,7 +87,7 @@ import { RouterModule } from '@angular/router';
         class="flex flex-row space-x-6 xs:space-x-12 w-full items-center justify-center text-xs lg:text-sm text-mainOrange grayscale">
         <span>&copy; {{currentYear}} RUT & GEST</span>
         <span>PRIVACY POLICY</span>
-        <span [routerLink]="['accessibility-statement']">ACCESSIBILITY STATEMENT</span>
+        <button [routerLink]="['accessibility-statement']">ACCESSIBILITY STATEMENT</button>
       </div>
     </footer>
   `,

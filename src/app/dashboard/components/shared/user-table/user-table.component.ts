@@ -188,6 +188,7 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                   <a
                     [routerLink]="['/dashboard/user', user.id]"
                     target="_blank"
+                    title="The link opens in a new browser window"
                     class="hover:text-mainOrange ease-in-out duration-150 transition-all">
                     <i data-feather="external-link" class="size-5"></i>
                   </a>
