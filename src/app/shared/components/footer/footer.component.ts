@@ -1,10 +1,11 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, RouterModule],
   template: `
     <hr class="w-full h-[1px] bg-mainOrange border-0" />
     <footer
@@ -81,13 +82,16 @@ import { Component } from '@angular/core';
       </div>
       <div
         class="flex flex-row space-x-6 xs:space-x-12 w-full items-center justify-center text-xs lg:text-sm text-mainOrange grayscale">
-        <span>&copy; 2024 RUT & GEST</span>
+        <span>&copy; {{currentYear}} RUT & GEST</span>
         <span>PRIVACY POLICY</span>
+        <span [routerLink]="['accessibility-statement']">ACCESSIBILITY STATEMENT</span>
       </div>
     </footer>
   `,
 })
 export class FooterComponent {
+  public currentYear: number = new Date().getFullYear();
+
   public authors = [
     {
       name: 'Marcin Bator',
