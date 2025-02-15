@@ -31,7 +31,9 @@ import { RouterModule } from '@angular/router';
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">AUTHORS</span>
-          <ul id="authorsFooterList" class="flex flex-col items-start space-y-2">
+          <ul
+            id="authorsFooterList"
+            class="flex flex-col items-start space-y-2">
             @for (author of authors; track author.name) {
               <li>
                 <a
@@ -90,9 +92,11 @@ import { RouterModule } from '@angular/router';
       </div>
       <div
         class="flex flex-row space-x-6 xs:space-x-12 w-full items-center justify-center text-xs lg:text-sm text-mainOrange grayscale">
-        <span>&copy; {{currentYear}} RUT & GEST</span>
+        <span>&copy; {{ currentYear }} RUT & GEST</span>
         <span>PRIVACY POLICY</span>
-        <button [routerLink]="['accessibility-statement']">ACCESSIBILITY STATEMENT</button>
+        <button [routerLink]="['accessibility-statement']">
+          ACCESSIBILITY STATEMENT
+        </button>
       </div>
     </footer>
   `,
