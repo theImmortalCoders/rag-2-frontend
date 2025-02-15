@@ -21,7 +21,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
       <span class="text-mainCreme font-bold">Type sending interval:</span>
       <input
         type="number"
-        id="sendingIntervalInput"
+        id="inGameMenuInputFocusAction"
         #sendingIntervalInput
         class="custom-input w-52 my-2"
         min="50"
