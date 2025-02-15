@@ -1,10 +1,11 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, RouterModule],
   template: `
     <hr class="w-full h-[1px] bg-mainOrange border-0" />
     <footer
@@ -30,13 +31,21 @@ import { Component } from '@angular/core';
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">AUTHORS</span>
-          @for (author of authors; track author.name) {
-            <a
-              [href]="'https://github.com/' + author.githubName"
-              target="_blank"
-              >{{ author.name }}</a
-            >
-          }
+          <ul
+            id="authorsFooterList"
+            class="flex flex-col items-start space-y-2">
+            @for (author of authors; track author.name) {
+              <li>
+                <a
+                  [href]="'https://github.com/' + author.githubName"
+                  title="The link opens in a new browser window"
+                  target="_blank"
+                  [attr.aria-label]="'GitHub profile ' + author.name">
+                  {{ author.name }}</a
+                >
+              </li>
+            }
+          </ul>
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">PROJECT SUPERVISOR</span>
@@ -48,6 +57,7 @@ import { Component } from '@angular/core';
           <a
             [href]="'https://w.prz.edu.pl/'"
             target="_blank"
+            title="The link opens in a new browser window"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
@@ -64,6 +74,7 @@ import { Component } from '@angular/core';
           <a
             [href]="'http://vision.kia.prz.edu.pl/gest/'"
             target="_blank"
+            title="The link opens in a new browser window"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
             <span
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
@@ -81,13 +92,18 @@ import { Component } from '@angular/core';
       </div>
       <div
         class="flex flex-row space-x-6 xs:space-x-12 w-full items-center justify-center text-xs lg:text-sm text-mainOrange grayscale">
-        <span>&copy; 2024 RUT & GEST</span>
+        <span>&copy; {{ currentYear }} RUT & GEST</span>
         <span>PRIVACY POLICY</span>
+        <button [routerLink]="['accessibility-statement']">
+          ACCESSIBILITY STATEMENT
+        </button>
       </div>
     </footer>
   `,
 })
 export class FooterComponent {
+  public currentYear: number = new Date().getFullYear();
+
   public authors = [
     {
       name: 'Marcin Bator',

@@ -28,12 +28,13 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
     } @else {
       @if (filteredUsers && filteredUsers.length > 0) {
         <div class="w-full overflow-auto max-h-96 border-mainOrange border-2">
-          <div
+          <table
             class="flex flex-col min-w-[66rem] w-full justify-around space-y-0 font-mono">
-            <div
+            <tr
               class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange text-sm xs:text-base font-bold px-4 py-2">
-              <span class="flex items-center justify-center w-[5%]">No.</span>
-              <div
+              <th id="no" class="flex items-center justify-center w-[5%]">No.</th>
+              <th
+                id="email"
                 class="flex flex-row gap-x-1 items-center justify-center w-2/12">
                 <button (click)="setSortingBy('Email')">Email</button>
                 @if (sortBy === 'Email') {
@@ -48,8 +49,9 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                     <i data-feather="minus" class="size-4 "></i>
                   </span>
                 }
-              </div>
-              <div
+              </th>
+              <th
+                id="cycle_years"
                 class="flex flex-row gap-x-1 items-center justify-center w-[10%]">
                 <button (click)="setSortingBy('StudyYearCycleA')">
                   Cycle years
@@ -66,8 +68,9 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                     <i data-feather="minus" class="size-4 "></i>
                   </span>
                 }
-              </div>
-              <div
+              </th>
+              <th
+                id="course"
                 class="flex flex-row gap-x-1 items-center justify-center w-[7%]">
                 <button (click)="setSortingBy('CourseName')">Course</button>
                 @if (sortBy === 'CourseName') {
@@ -82,8 +85,9 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                     <i data-feather="minus" class="size-4 "></i>
                   </span>
                 }
-              </div>
-              <div
+              </th>
+              <th
+                id="group"
                 class="flex flex-row gap-x-1 items-center justify-center w-[7%]">
                 <button (click)="setSortingBy('Group')">Group</button>
                 @if (sortBy === 'Group') {
@@ -98,32 +102,33 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                     <i data-feather="minus" class="size-4 "></i>
                   </span>
                 }
-              </div>
-              <span class="flex items-center justify-center w-2/12">Role</span>
-              <span class="flex items-center justify-center w-2/12"
-                >Ban status</span
+              </th>
+              <th id="role" class="flex items-center justify-center w-2/12">Role</th>
+              <th id="ban_status" class="flex items-center justify-center w-2/12"
+                >Ban status</th
               >
-              <span class="flex items-center justify-center w-[5%]"
-                >Details</span
+              <th id="details" class="flex items-center justify-center w-[5%]"
+                >Details</th
               >
-            </div>
+            </tr>
             @for (user of filteredUsers; track user.id) {
-              <div
+              <tr
                 class="flex flex-row space-x-4 justify-between px-4 py-2 text-mainCreme text-sm xs:text-base opacity-80 hover:opacity-100 {{
                   $even ? 'bg-lightGray' : 'bg-darkGray'
                 }}">
-                <span class="flex justify-center w-[5%]"
-                  >{{ $index + 1 }}.</span
+                <td headers="no" class="flex justify-center w-[5%]"
+                  >{{ $index + 1 }}.</td
                 >
-                <span class="flex justify-center w-2/12">{{ user.email }}</span>
-                <span class="flex justify-center w-[10%]"
-                  >{{ user.studyCycleYearA }}/{{ user.studyCycleYearB }}</span
+                <td headers="email" class="flex justify-center w-2/12">{{ user.email }}</td>
+                <td headers="cycle_years" class="flex justify-center w-[10%]"
+                  >{{ user.studyCycleYearA }}/{{ user.studyCycleYearB }}</td
                 >
-                <span class="flex justify-center w-[7%]">{{
+                <td headers="course" class="flex justify-center w-[7%]">{{
                   user?.course?.name
-                }}</span>
-                <span class="flex justify-center w-[7%]">{{ user.group }}</span>
-                <div
+                }}</td>
+                <td headers="group" class="flex justify-center w-[7%]">{{ user.group }}</td>
+                <td
+                  headers="role"
                   class="flex flex-row gap-x-2 items-center justify-center w-2/12">
                   <span class="uppercase">
                     {{ user.role }}
@@ -158,8 +163,9 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                       SET
                     </button>
                   </div>
-                </div>
-                <div
+                </td>
+                <td
+                  headers="ban_status"
                   class="flex flex-row gap-x-2 items-center justify-center w-2/12">
                   <span>{{ user.banned ? 'BANNED' : 'NOT BANNED' }}</span>
                   <button
@@ -183,18 +189,20 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                       {{ user.banned ? 'UNBAN' : 'BAN' }}
                     </button>
                   </div>
-                </div>
-                <span class="flex justify-center w-[5%]">
+                </td>
+                <td headers="details" class="flex justify-center w-[5%]">
                   <a
                     [routerLink]="['/dashboard/user', user.id]"
+                    aria-label="User's dashboard page"
                     target="_blank"
+                    title="The link opens in a new browser window"
                     class="hover:text-mainOrange ease-in-out duration-150 transition-all">
                     <i data-feather="external-link" class="size-5"></i>
                   </a>
-                </span>
-              </div>
+                </td>
+              </tr>
             }
-          </div>
+          </table>
         </div>
       } @else {
         <span class="w-full text-mainOrange font-mono">No users found.</span>

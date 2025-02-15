@@ -10,6 +10,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
         isDisabled ? 'opacity-40' : 'opacity-100'
       }}"
       #socketDomain
+      id="socketDomain"
       placeholder="http://localhost:5000/ws/model/"
       type="text"
       [value]="initialValue"

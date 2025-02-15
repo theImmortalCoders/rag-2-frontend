@@ -12,6 +12,7 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
       }
       <input
         #dataInput
+        id="dataInput"
         [attr.disabled]="checkboxAvailable() ? null : 'disabled'"
         type="checkbox"
         class="accent-mainOrange"
