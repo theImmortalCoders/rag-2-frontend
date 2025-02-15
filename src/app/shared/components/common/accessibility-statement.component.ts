@@ -8,17 +8,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styles: [
     `
       .accessibility-container {
-        min-height: 100vh;
-        max-width: 100%;
         background-color: white;
         margin-top: -1.25rem;
         padding-top: 2rem;
         padding-bottom: 2rem;
         padding-left: 14rem;
         padding-right: 14rem;
-        overflow-y: hidden;
-        position: relative;
-        z-index: 40;
       }
       @media screen and (max-width: 1024px) {
         .accessibility-container {
