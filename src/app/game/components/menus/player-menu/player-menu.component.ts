@@ -62,6 +62,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
               Active:
               <input
                 #playerActive
+                id="playerActive"
                 type="checkbox"
                 class="accent-mainOrange"
                 (change)="updatePlayerActive(player, playerActive.checked)"

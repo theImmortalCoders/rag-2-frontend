@@ -9,11 +9,12 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [RouterModule],
   template: `
-    <ul class="text-base xs:text-lg space-y-2 px-4 py-4">
+    <ul id="gamesNavbarList" class="text-base xs:text-lg space-y-2 px-4 py-4">
       @for (game of games; track game.id) {
         <li class="w-full group">
           <a
             [routerLink]="['game/', game.name]"
+            [attr.aria-label]="game.name + 'game page'"
             class="flex flex-row justify-between items-center">
             <span
               class="uppercase text-mainOrange group-hover:text-green-500 ease-in-out transition-all duration-500"
@@ -31,6 +32,7 @@ import { Subscription } from 'rxjs';
         <div class="flex flex-row justify-between items-center">
           <a
             [routerLink]="['game-list']"
+            aria-label="Game list page"
             class="text-sm xs:text-base text-start 3xl:text-center text-mainOrange group-hover:text-green-500 ease-in-out transition-all duration-500">
             Read more...
           </a>

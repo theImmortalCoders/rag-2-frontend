@@ -33,7 +33,7 @@ import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.
           class="text-base 2xs:text-lg lg:text-xl xl:text-2xl text-mainOrange font-bold">
           Main tech-stack:
         </h2>
-        <ul class="grid grid-cols-2 sm:grid-cols-3 gap-y-2">
+        <ul id="authorsTechStackList" class="grid grid-cols-2 sm:grid-cols-3 gap-y-2">
           @for (stackItem of author.techStack; track stackItem) {
             <li
               class="flex flex-row items-center space-x-2 text-2xs 2xs:text-xs lg:text-sm xl:text-base"
@@ -50,7 +50,11 @@ import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.
           {{ author.hobbies }}
         </h3>
         <div class="flex flex-row space-x-6 xl:space-x-8 pt-2">
-          <a [href]="'https://github.com/' + author.githubName" target="_blank" title="The link opens in a new browser window">
+          <a
+            [href]="'https://github.com/' + author.githubName"
+            target="_blank"
+            title="The link opens in a new browser window"
+            [attr.aria-label]="'GitHub profile ' + author.name">
             <i
               data-feather="github"
               class="relative z-40 size-6 2xs:size-7 lg:size-8 xl:size-10 text-mainGray"></i>
@@ -58,7 +62,8 @@ import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.
           <a
             [href]="'https://linkedin.com/in/' + author.linkedinName"
             target="_blank"
-            title="The link opens in a new browser window">
+            title="The link opens in a new browser window"
+            [attr.aria-label]="'LinkedIn profile' + author.name">
             <i
               data-feather="linkedin"
               class="relative z-40 size-6 2xs:size-7 lg:size-8 xl:size-10 text-mainGray"></i>

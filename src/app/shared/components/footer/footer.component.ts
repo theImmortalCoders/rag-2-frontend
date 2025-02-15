@@ -31,14 +31,19 @@ import { RouterModule } from '@angular/router';
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">AUTHORS</span>
-          @for (author of authors; track author.name) {
-            <a
-              [href]="'https://github.com/' + author.githubName"
-              title="The link opens in a new browser window"
-              target="_blank"
-              >{{ author.name }}</a
-            >
-          }
+          <ul id="authorsFooterList" class="flex flex-col items-start space-y-2">
+            @for (author of authors; track author.name) {
+              <li>
+                <a
+                  [href]="'https://github.com/' + author.githubName"
+                  title="The link opens in a new browser window"
+                  target="_blank"
+                  [attr.aria-label]="'GitHub profile ' + author.name">
+                  {{ author.name }}</a
+                >
+              </li>
+            }
+          </ul>
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">PROJECT SUPERVISOR</span>

@@ -193,6 +193,7 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
                 <td headers="details" class="flex justify-center w-[5%]">
                   <a
                     [routerLink]="['/dashboard/user', user.id]"
+                    aria-label="User's dashboard page"
                     target="_blank"
                     title="The link opens in a new browser window"
                     class="hover:text-mainOrange ease-in-out duration-150 transition-all">
