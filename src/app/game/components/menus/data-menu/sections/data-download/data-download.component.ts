@@ -31,8 +31,9 @@ import { NotificationService } from 'app/shared/services/notification.service';
     @if (collectedDataArray.length > 0 && !isDataCollectingActive) {
       <button
         (click)="generateJSON()"
-        class="mt-4 py-1 text-center text-mainCreme border-mainCreme border-[1px] hover:bg-mainCreme hover:text-darkGray transition-all ease-in-out duration-300">
-        Download JSON ({{ collectedDataArray.length }} records)
+        class="flex flex-col mt-4 py-1 text-center text-mainCreme border-mainCreme border-[1px] hover:bg-mainCreme hover:text-darkGray transition-all ease-in-out duration-300">
+        <span>Download JSON</span>
+        <span>({{downloadedJSONSize}}, {{ collectedDataArray.length }} records)</span>
       </button>
       <button
         (click)="deleteCollectedData()"
@@ -53,6 +54,7 @@ export class DataDownloadComponent {
   private _notificationService = inject(NotificationService);
   public isDataCollectingActive = false;
   public shouldCollectToDb = true;
+  public downloadedJSONSize?: string;
 
   public handleCollectingData(): void {
     this.isDataCollectingActive = !this.isDataCollectingActive;
@@ -66,6 +68,9 @@ export class DataDownloadComponent {
         outputSpec: this.game.outputSpec,
       };
       console.log(gameRecordData);
+      this.downloadedJSONSize = this.formatFileSize(
+        this.getJsonSize(JSON.stringify(this.mapToSaveableData(this.collectedDataArray)))
+      );
       this._gameRecordEndpointsService
         .addGameRecording(gameRecordData)
         .subscribe({
@@ -133,4 +138,20 @@ export class DataDownloadComponent {
     a.click();
     document.body.removeChild(a);
   }
+
+  private getJsonSize(csv: string): number {
+    const blob = new Blob([csv], { type: 'text/json' });
+    return blob.size;
+  }
+
+  private formatFileSize(sizeInBytes: number): string {
+    if (sizeInBytes >= 1024 ** 3) {
+      return (sizeInBytes / (1024 ** 3)).toFixed(2) + ' GB';
+    } else if (sizeInBytes >= 1024 ** 2) {
+      return (sizeInBytes / (1024 ** 2)).toFixed(2) + ' MB';
+    } else if (sizeInBytes >= 1024) {
+      return (sizeInBytes / 1024).toFixed(2) + ' KB';
+    }
+    return sizeInBytes + ' B';
+}
 }

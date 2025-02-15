@@ -9,14 +9,15 @@ import { ConsoleFieldsetComponent } from './console-fieldset/console-fieldset.co
   imports: [ExchangeDataPipe, ConsoleFieldsetComponent],
   template: `
     <div class="absolute bottom-0 left-0 w-full z-50">
-      <button class="w-full bg-lightGray tracking-[0.15em] sticky z-50 top-0 transition-all ease-in-out duration-700 border-b-2 border-mainOrange hover:border-green-500 text-center py-2 uppercase font-bold font-mono text-xl" 
+      <button class="w-full bg-lightGray tracking-[0.15em] sticky z-50 top-0 transition-all ease-in-out duration-700 border-b-2 border-mainOrange hover:border-green-500 text-center py-2 uppercase font-bold font-mono text-xl"
       (click)="toggleConsole()">
         console
       </button>
       <div
         class="relative w-full max-h-96 transition-all ease-in-out duration-700 bg-lightGray overflow-y-scroll z-50 px-5 {{isConsoleVisible ? ' h-72 py-4' : ' h-0'}}">
         <button class="absolute right-0 top-4 bg-mainOrange px-4 py-1 rounded-l-lg flex flex-row space-x-2 justify-end items-center font-mono text-black border-y-2 border-l-2 border-mainOrange hover:border-black transition-all ease-in-out duration-300"
-          (click)="externalConsoleMode()">
+          (click)="externalConsoleMode()"
+          title="The link opens in a new browser window">
           <span class="uppercase">External console mode</span>
           <i data-feather="external-link" class="size-5"></i>
         </button>
@@ -30,7 +31,7 @@ import { ConsoleFieldsetComponent } from './console-fieldset/console-fieldset.co
 export class ConsoleComponent implements OnDestroy{
   @Input({ required: true }) public logData: TExchangeData = {};
   public isConsoleVisible = false;
-  
+
   private _newWindow: Window | null = null;
   private _componentRef: ComponentRef<ConsoleFieldsetComponent> | null = null;
   public constructor(

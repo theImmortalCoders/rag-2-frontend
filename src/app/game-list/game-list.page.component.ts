@@ -52,6 +52,7 @@ interface IExtendendGameStats {
                 <p class="text-2xl uppercase">{{ game.name }}</p>
                 <button
                   [routerLink]="['/game/', game.name]"
+                  [attr.aria-label]="game.name + 'game page'"
                   class="w-fit text-sm hidden group-hover:block rounded-md font-bold text-green-500 bg-lightGray border-[1px] border-green-500 hover:text-mainGray hover:bg-green-500 ease-in-out transition-all duration-200 px-2 py-0 my-0">
                   PLAY IT
                 </button>

@@ -12,6 +12,7 @@ import { Player } from '@gameModels/player.class';
       <span class="text-mainCreme font-bold">{{ variable.key }}:</span>
       <input
         #variableInput
+        id="variableInput"
         class="custom-input w-full"
         type="text"
         [defaultValue]="variable.value" />
