@@ -16,6 +16,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
         padding-left: 14rem;
         padding-right: 14rem;
       }
+      @media screen and (max-width: 1024px) {
+        .accessibility-container {
+          padding-left: 2rem;
+          padding-right: 2rem;
+        }
+      }
     `,
   ],
   template: `
