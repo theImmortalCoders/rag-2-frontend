@@ -94,7 +94,9 @@ import { RouterModule } from '@angular/router';
         class="flex flex-col xs:flex-row space-y-3 xs:space-y-0 space-x-0 xs:space-x-12 w-full items-center justify-center text-sm xs:text-xs lg:text-sm text-mainOrange grayscale">
         <span>&copy; {{ currentYear }} RUT & GEST</span>
         <span>PRIVACY POLICY</span>
-        <button [routerLink]="['accessibility-statement']">
+        <button
+          [routerLink]="['accessibility-statement']"
+          (click)="scrollToTop()">
           ACCESSIBILITY STATEMENT
         </button>
       </div>
@@ -118,4 +120,8 @@ export class FooterComponent {
       githubName: 'bkrowka',
     },
   ];
+
+  public scrollToTop(): void {
+    window.scrollTo(0, 0);
+  }
 }
