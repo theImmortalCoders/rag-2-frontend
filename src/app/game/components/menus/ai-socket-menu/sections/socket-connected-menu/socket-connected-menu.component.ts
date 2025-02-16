@@ -23,7 +23,7 @@ import { UrlParamService } from 'app/shared/services/url-param.service';
         type="number"
         id="inGameMenuInputFocusAction"
         #sendingIntervalInput
-        class="custom-input w-52 my-2"
+        class="custom-input w-full my-2"
         min="50"
         max="1000"
         step="10"

@@ -8,7 +8,7 @@ import { NotificationService } from 'app/shared/services/notification.service';
 })
 export class AiSocketService {
   private _authEndpointsService = inject(AuthEndpointsService);
-  private _socket!: WebSocket;
+  private _socket!: WebSocket | null;
   private isSocketConnected = false;
   private _sendingIntervalID: unknown | null = null;
   private isDataSendingActive = false;
@@ -27,6 +27,7 @@ export class AiSocketService {
     socketUrl: string,
     onOpen: () => void,
     onMessage: (event: MessageEvent<string>) => void,
+    onError: () => void,
     onClose: () => void
   ): void {
     this._authEndpointsService.verifyJWTToken().subscribe({
@@ -34,10 +35,10 @@ export class AiSocketService {
         if (isValid) {
           socketUrl = `${socketUrl}?jwt=${localStorage.getItem('jwtToken')}`;
         }
-        this.defineSocket(socketUrl, onOpen, onMessage, onClose);
+        this.defineSocket(socketUrl, onOpen, onMessage, onError, onClose);
       },
       error: () => {
-        this.defineSocket(socketUrl, onOpen, onMessage, onClose);
+        this.defineSocket(socketUrl, onOpen, onMessage, onError, onClose);
       },
     });
   }
@@ -102,6 +103,7 @@ export class AiSocketService {
     this._previousData = '';
     if (this._socket) {
       this._socket.close();
+      this._socket = null;
     }
   }
 
@@ -115,12 +117,17 @@ export class AiSocketService {
     socketUrl: string,
     onOpen: () => void,
     onMessage: (event: MessageEvent<string>) => void,
+    onError: () => void,
     onClose: () => void
   ): void {
     this._socket = new WebSocket(socketUrl);
     this._socket.addEventListener('open', () => {
       this.isSocketConnected = true;
       onOpen();
+      this.resetInactivityTimeout();
+    });
+    this._socket.addEventListener('error', () => {
+      onError();
       this.resetInactivityTimeout();
     });
     this._socket.addEventListener('message', event => {
