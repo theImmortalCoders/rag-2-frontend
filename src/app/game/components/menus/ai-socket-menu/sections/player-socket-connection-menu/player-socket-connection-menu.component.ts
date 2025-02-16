@@ -45,7 +45,7 @@ import * as feather from 'feather-icons';
       <span class="text-mainCreme font-bold">Custom model address:</span>
       <app-socket-domain-input
         class="mb-2"
-        [isDisabled]="isConnected ? true : false"
+        [isDisabled]="isConnected || !canEditInput"
         [initialValue]="socketUrl"
         [gameName]="gameName"
         (socketDomainEmitter)="socketUrl = $event"
@@ -93,7 +93,9 @@ import * as feather from 'feather-icons';
       } @else {
         <button
           (click)="onConnectButtonClick()"
-          class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
+          class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black cursor-[url('/cursors/stronghold.png'),_auto] {{
+            canEditInput ? 'opacity-100' : 'opacity-50'
+          }}">
           Connect
         </button>
       }
@@ -138,6 +140,7 @@ export class PlayerSocketConnectionMenuComponent
   public vSendingInterval = { value: 100 };
   public isPaused = false;
   public isPreparedModelSelected = false;
+  public canEditInput = true;
 
   public ngOnInit(): void {
     this._restartSubscription = this.gameRestart.subscribe(() => {
@@ -184,15 +187,20 @@ export class PlayerSocketConnectionMenuComponent
     this._pageVisibilitySubscription.unsubscribe();
   }
   public onConnectButtonClick(): void {
+    this.canEditInput = false;
     this.aiSocketService.connect(
       this.socketUrl,
       () => {
+        this.canEditInput = true;
         this.saveRecentPhrase(this.socketUrl);
         this.isConnected = true;
         this.connectedEmitter.emit(true);
       },
       (event: MessageEvent<string>) => {
         this.emitSocketInput(JSON.parse(event.data));
+      },
+      () => {
+        this.canEditInput = true;
       },
       () => {
         this.isConnected = false;
