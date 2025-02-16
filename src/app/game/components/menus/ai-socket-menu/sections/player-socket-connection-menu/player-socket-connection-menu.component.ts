@@ -18,7 +18,6 @@ import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-co
 import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
-import { SocketListService } from 'app/game/services/socket-list.service';
 import { ModelSelectionComponent } from '../model-selection/model-selection.component';
 import { Game } from '@gameModels/game.class';
 import { SideMenuHelperComponent } from '../side-menu-helper/side-menu-helper.component';
@@ -97,11 +96,6 @@ import * as feather from 'feather-icons';
           class="mt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
           Connect
         </button>
-        @if (canNotConnect) {
-          <span class="text-mainRed w-full text-start mt-2"
-            >Cannot connect</span
-          >
-        }
       }
     </div>
   `,
@@ -129,7 +123,6 @@ export class PlayerSocketConnectionMenuComponent
 
   private _pageVisibilityService = inject(PageVisibilityService);
   private _urlParamService = inject(UrlParamService);
-  private _socketListService = inject(SocketListService);
   public aiSocketService = inject(AiSocketService);
 
   private _pingSubscription = new Subscription();
@@ -144,7 +137,6 @@ export class PlayerSocketConnectionMenuComponent
   public playerSourceType = PlayerSourceType;
   public vSendingInterval = { value: 100 };
   public isPaused = false;
-  public canNotConnect = false;
   public isPreparedModelSelected = false;
 
   public ngOnInit(): void {
@@ -190,20 +182,12 @@ export class PlayerSocketConnectionMenuComponent
     this._restartSubscription.unsubscribe();
     this._pingSubscription.unsubscribe();
     this._pageVisibilitySubscription.unsubscribe();
-    this._socketListService.clearList();
-    this.canNotConnect = false;
   }
   public onConnectButtonClick(): void {
-    // if (this._socketListService.getSocketList().includes(this.socketUrl)) {
-    //   this.canNotConnect = true;
-    //   return;
-    // }
     this.aiSocketService.connect(
       this.socketUrl,
       () => {
         this.saveRecentPhrase(this.socketUrl);
-        this._socketListService.addToList(this.socketUrl);
-        this.canNotConnect = false;
         this.isConnected = true;
         this.connectedEmitter.emit(true);
       },
@@ -211,8 +195,6 @@ export class PlayerSocketConnectionMenuComponent
         this.emitSocketInput(JSON.parse(event.data));
       },
       () => {
-        this._socketListService.removeFromList(this.socketUrl);
-        this.canNotConnect = false;
         this.isConnected = false;
         this._pingSubscription.unsubscribe();
         this.connectedEmitter.emit(false);
