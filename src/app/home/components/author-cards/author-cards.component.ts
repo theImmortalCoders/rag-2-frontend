@@ -1,18 +1,31 @@
 import { Component, Input } from '@angular/core';
 import { authorsData, IAuthor } from 'app/home/models/author';
-import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.component';
 import { PRzLogoComponent } from '../../../shared/components/common/prz-logo.component';
+import { GestLogoComponent } from '../../../shared/components/common/gest-logo.component';
 
 @Component({
   selector: 'app-author-cards',
   standalone: true,
-  imports: [PRzLogoComponent],
+  imports: [PRzLogoComponent, GestLogoComponent],
   template: `
     <app-prz-logo
-      class="h-64 2xs:h-72 xs:h-80 xl:h-96 w-64 2xs:w-72 xs:w-80 xl:w-96 absolute transition-all ease-in-out duration-300 {{
+      class="size-64 2xs:size-72 xs:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
-          ? 'opacity-95 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
-          : 'opacity-0 -right-[50rem]'
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
+      }}"
+      [isPriority]="true" />
+    <div
+      class="h-40 2xs:h-48 xs:h-56 xl:h-64 w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
+        currentChoosenAuthor.index === -1
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
+      }}"></div>
+    <app-gest-logo
+      class="size-64 2xs:size-72 xs:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
+        currentChoosenAuthor.index === -1
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
       }}"
       [isPriority]="true" />
     @for (author of authors; track author.name) {

@@ -26,18 +26,18 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
       <div
         class="bg-homeImageAI opacity-40 bg-center fixed z-0 top-0 left-0 h-[100vh] w-[100vw]"></div>
       <div
-        class="pb-10 pt-6 xl:pt-14 relative min-h-all border-b-2 border-mainOrange ">
+        class="flex flex-col justify-end pb-20 xl:pb-10 pt-6 xl:pt-14 relative min-h-all space-y-6 border-b-2 border-mainOrange ">
         <app-rag-2-logo
-          class="h-64 2xs:h-72 xs:h-80 xl:h-96 w-64 2xs:w-72 xs:w-80 xl:w-96 absolute right-5 bottom-5" />
+          class="h-56 2xs:h-72 sm:h-80 xl:h-96 w-56 2xs:w-72 sm:w-80 xl:w-96 absolute right-12 lg:right-5 bottom-96 2xs:bottom-80 lg:bottom-5" />
         <h1
-          class="max-w-[56vw] text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 w-[max-content] text-mainCreme font-mono absolute left-5 bottom-52">
+          class="max-w-[90vw] sm:max-w-[100vw] lg:max-w-[70vw] xl:max-w-[56vw] text-2xl xs:text-3xl lg:text-4xl xl:text-5xl w-[max-content] px-4 lg:pl-4 text-mainCreme font-mono">
           Rzeszów University of Technology Games for Artificial Intelligence 2.0
         </h1>
         <div
-          class="bg-mainGray opacity-80 absolute bottom-16 left-0 text-mainCreme font-mono flex gap-5 flex-row text-2xl py-5 px-20 w-[70vw] justify-around">
+          class="bg-mainGray opacity-80 text-mainCreme font-mono gap-4 2xs:gap-5 xs:gap-12 sm:gap-5 flex flex-row text-base 2xs:text-lg sm:text-xl xl:text-2xl py-5 px-8 sm:px-20 w-[100vw] lg:w-[60vw] xl:w-[70vw] justify-center">
           <a
             href="/game-list"
-            class="flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
+            class="hidden xs:flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Play
           </a>
           <a
@@ -58,7 +58,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
       </div>
       <div
         id="authors"
-        class="pb-10 pt-6 xl:pt-14 relative h-[100vh] border-b-2 border-mainOrange">
+        class="pb-10 pt-6 xl:pt-14 relative min-h-[100vh] border-b-2 border-mainOrange">
         <div
           class="absolute top-0 left-0 w-full h-full bg-mainGray opacity-80"></div>
         <div
