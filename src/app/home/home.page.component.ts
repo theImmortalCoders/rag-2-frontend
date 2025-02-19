@@ -29,7 +29,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
       <div
         class="flex flex-col justify-end pb-20 xl:pb-10 pt-6 xl:pt-14 relative min-h-all space-y-6 border-b-2 border-mainOrange ">
         <app-rag-2-logo
-          class="h-56 2xs:h-72 sm:h-80 xl:h-96 w-56 2xs:w-72 sm:w-80 xl:w-96 absolute right-12 lg:right-5 bottom-96 2xs:bottom-80 lg:bottom-5" />
+          class="h-56 2xs:h-64 sm:h-80 xl:h-96 w-56 2xs:w-72 sm:w-80 xl:w-96 absolute right-12 lg:right-5 bottom-96 2xs:bottom-80 lg:bottom-5" />
         <h1
           class="max-w-[90vw] sm:max-w-[100vw] lg:max-w-[70vw] xl:max-w-[56vw] text-2xl xs:text-3xl lg:text-4xl xl:text-5xl w-[max-content] px-4 lg:pl-4 text-mainCreme font-mono">
           Rzeszów University of Technology Games for Artificial Intelligence 2.0
@@ -65,9 +65,9 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
         <div
           class="absolute top-0 left-0 w-full h-full bg-mainGray opacity-80"></div>
         <div
-          class="flex flex-col mt-20 md:flex-row w-full h-max items-center justify-center md:justify-between lg:justify-evenly text-mainCreme font-mono pb-6">
+          class="flex flex-col mt-12 xs:mt-20 md:flex-row w-full h-max items-center justify-center md:justify-evenly text-mainCreme font-mono pb-6">
           <div
-            class="flex flex-col mt-4 md:mt-16 pl-0 xs:pl-64 sm:pl-24 md:pl-14 lg:pl-6 pr-0 lg:pr-6 pb-40 relative z-50">
+            class="flex flex-col mt-4 md:mt-16 pl-0 xs:pl-[22rem] sm:pl-64 md:pl-0 lg:pl-6 pr-0 md:pr-20 lg:pr-6 pb-8 md:pb-40 relative z-50">
             <h2
               id="animatedHeader"
               class="opacity-0 text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:bg-mainCreme after:absolute after:inset-0 after:w-[0.125em] after:bg-black">
@@ -88,7 +88,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
                       : $index === 1
                         ? 'bg-homeImageUser1'
                         : 'bg-homeImageUser2'
-                  }} border-2 border-mainOrange text-mainOrange text-wrap lg:text-nowrap ease-in-out transition-all duration-200 size-20 xs:size-24 lg:size-28 xl:size-28 bg-center bg-cover rounded-full pt-20 xs:pt-24 lg:pt-28 mt-4 flex justify-center text-center text-sm sm:text-base">
+                  }} border-2 border-mainOrange text-mainOrange text-wrap lg:text-nowrap ease-in-out transition-all duration-200 size-20 xs:size-24 md:size-20 lg:size-24 xl:size-28 bg-center bg-cover rounded-full pt-20 xs:pt-24 md:pt-20 lg:pt-24 xl:pt-28 mt-4 flex justify-center text-center text-sm xs:text-base">
                   <span class="pt-2">
                     {{ author.name }}
                   </span>
@@ -97,11 +97,11 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
             </div>
           </div>
           <app-author-cards
-            class="flex w-full pt-24 md:pt-0 md:w-1/3 items-center justify-center relative"
+            class="flex w-full pt-32 sm:pt-24 md:pt-0 md:w-1/3 lg:w-2/5 xl:w-1/3 items-center justify-center relative"
             [currentChoosenAuthor]="currentChoosenAuthor" />
         </div>
         <div
-          class="flex w-full items-end justify-end text-mainCreme font-mono mt-36 2xs:mt-44 sm:mt-40 md:mt-2 relative z-50">
+          class="flex w-full items-end justify-end text-mainCreme font-mono mt-20 xs:mt-16 sm:mt-12 md:mt-2 relative z-50">
           <span
             class="w-[97%] lg:w-11/12 xl:w-3/4 pr-2 border-l-2 border-b-2 pl-2 pb-2 border-mainOrange text-justify text-sm md:text-base lg:text-lg xl:text-xl">
             Jump into the world of artificial intelligence by making your own

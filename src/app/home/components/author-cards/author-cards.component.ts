@@ -9,20 +9,20 @@ import { GestLogoComponent } from '../../../shared/components/common/gest-logo.c
   imports: [PRzLogoComponent, GestLogoComponent],
   template: `
     <app-prz-logo
-      class="size-64 2xs:size-72 xs:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
+      class="size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
           ? 'opacity-95 translate-x-0'
           : 'opacity-0 translate-x-72'
       }}"
       [isPriority]="true" />
     <div
-      class="h-40 2xs:h-48 xs:h-56 xl:h-64 w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
+      class="h-32 2xs:h-36 xs:h-44 lg:h-48 xl:h-64 w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
           ? 'opacity-95 translate-x-0'
           : 'opacity-0 translate-x-72'
       }}"></div>
     <app-gest-logo
-      class="size-64 2xs:size-72 xs:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
+      class="size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
           ? 'opacity-95 translate-x-0'
           : 'opacity-0 translate-x-72'
