@@ -35,26 +35,27 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
           Rzeszów University of Technology Games for Artificial Intelligence 2.0
         </h1>
         <div
-          class="bg-mainGray opacity-80 text-mainCreme font-mono gap-4 2xs:gap-5 xs:gap-12 lg:gap-20 xl:gap-28 2xl:gap-40 flex flex-row text-base 2xs:text-lg sm:text-xl xl:text-2xl py-5 px-8 sm:px-20 w-[100vw] lg:w-[60vw] xl:w-[70vw] justify-center">
+          id="animatedMenu"
+          class="transform -translate-x-[22rem] opacity-0 transition-all duration-1000 bg-mainGray text-mainCreme font-mono gap-4 2xs:gap-5 xs:gap-12 lg:gap-20 xl:gap-28 2xl:gap-40 flex flex-row text-base 2xs:text-lg sm:text-xl xl:text-2xl py-5 px-8 sm:px-20 w-[100vw] lg:w-[60vw] xl:w-[70vw] justify-center">
           <a
             href="/game-list"
             aria-label="Game list page"
-            class="hidden xs:flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
+            class="hidden xs:block p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Play
           </a>
           <a
             href="#authors"
-            class="flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
+            class="p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Authors
           </a>
           <a
             aria-label="Documentation page"
-            class="flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
+            class="p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Documentation
           </a>
           <a
             href="#stats"
-            class="flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
+            class="p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Stats
           </a>
         </div>
@@ -158,9 +159,17 @@ export class HomePageComponent
     const observerBottomText = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.remove('opacity-0', 'translate-x-[28rem]');
+          entry.target.classList.remove(
+            'opacity-0',
+            'translate-x-[18rem]',
+            '2xs:translate-x-[22rem]'
+          );
         } else {
-          entry.target.classList.add('opacity-0', 'translate-x-[28rem]');
+          entry.target.classList.add(
+            'opacity-0',
+            'translate-x-[18rem]',
+            '2xs:translate-x-[22rem]'
+          );
         }
       });
     }, observerOptions);
@@ -191,6 +200,12 @@ export class HomePageComponent
 
   public ngAfterViewInit(): void {
     feather.replace();
+    setTimeout(() => {
+      document
+        .querySelector('#animatedMenu')
+        ?.classList.remove('-translate-x-[22rem]', 'opacity-0');
+      document.querySelector('#animatedMenu')?.classList.add('opacity-80');
+    }, 100);
   }
 
   public ngAfterViewChecked(): void {

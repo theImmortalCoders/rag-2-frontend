@@ -16,7 +16,7 @@ import { GestLogoComponent } from '../../../shared/components/common/gest-logo.c
       }}"
       [isPriority]="true" />
     <div
-      class="h-32 2xs:h-36 xs:h-44 lg:h-48 xl:h-64 w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
+      class="h-32 2xs:h-36 xs:h-44 lg:h-48 xl:h-64 w-[1px] 2xs:w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
           ? 'opacity-95 translate-x-0'
           : 'opacity-0 translate-x-72'
