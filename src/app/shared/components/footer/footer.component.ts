@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   template: `
     <hr class="w-full h-[1px] bg-mainOrange border-0" />
     <footer
-      class="flex flex-col space-y-6 font-mono items-center bg-mainGray w-full pt-6 pb-2 text-mainCreme text-sm lg:text-base">
+      class="flex flex-col space-y-6 font-mono items-center bg-mainGray w-full pt-6 pb-2 text-mainCreme text-sm lg:text-base relative z-50">
       <div
         class="grid lg:flex grid-cols-1 sm:grid-cols-2 gap-x-0 sm:gap-x-6 md:gap-x-0 gap-y-8 sm:gap-y-4 lg:gap-y-0 lg:flex-row w-full items-center px-8 lg:px-4 xl:px-0 space-x-0 lg:space-x-4 xl:space-x-0 justify-center xl:justify-around">
         <div class="flex flex-col items-start space-y-2">
