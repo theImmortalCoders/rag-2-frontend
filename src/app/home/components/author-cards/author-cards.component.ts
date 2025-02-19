@@ -1,17 +1,31 @@
 import { Component, Input } from '@angular/core';
 import { authorsData, IAuthor } from 'app/home/models/author';
-import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.component';
+import { PRzLogoComponent } from '../../../shared/components/common/prz-logo.component';
+import { GestLogoComponent } from '../../../shared/components/common/gest-logo.component';
 
 @Component({
   selector: 'app-author-cards',
   standalone: true,
-  imports: [Rag2LogoComponent],
+  imports: [PRzLogoComponent, GestLogoComponent],
   template: `
-    <app-rag-2-logo
-      class="h-64 2xs:h-72 xs:h-80 xl:h-96 w-64 2xs:w-72 xs:w-80 xl:w-96 absolute transition-all ease-in-out duration-300 {{
+    <app-prz-logo
+      class="size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
-          ? 'opacity-95 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
-          : 'opacity-0 -right-[50rem]'
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
+      }}"
+      [isPriority]="true" />
+    <div
+      class="h-32 2xs:h-36 xs:h-44 lg:h-48 xl:h-64 w-[1px] 2xs:w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
+        currentChoosenAuthor.index === -1
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
+      }}"></div>
+    <app-gest-logo
+      class="size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
+        currentChoosenAuthor.index === -1
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
       }}"
       [isPriority]="true" />
     @for (author of authors; track author.name) {
@@ -33,13 +47,15 @@ import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.
           class="text-base 2xs:text-lg lg:text-xl xl:text-2xl text-mainOrange font-bold">
           Main tech-stack:
         </h2>
-        <ul id="authorsTechStackList" class="grid grid-cols-2 sm:grid-cols-3 gap-y-2">
+        <ul
+          id="authorsTechStackList"
+          class="grid grid-cols-2 sm:grid-cols-3 gap-y-2">
           @for (stackItem of author.techStack; track stackItem) {
             <li
-              class="flex flex-row items-center space-x-2 text-2xs 2xs:text-xs lg:text-sm xl:text-base"
-              ><i data-feather="circle" class="size-2 text-mainGray"></i>
-              <p class="w-full">{{ stackItem }}</p></li
-            >
+              class="flex flex-row items-center space-x-2 text-2xs 2xs:text-xs lg:text-sm xl:text-base">
+              <i data-feather="circle" class="size-2 text-mainGray"></i>
+              <p class="w-full">{{ stackItem }}</p>
+            </li>
           }
         </ul>
         <h2

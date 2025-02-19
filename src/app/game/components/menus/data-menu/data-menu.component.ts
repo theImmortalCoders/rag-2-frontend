@@ -89,7 +89,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
       >
       <input
         type="number"
-        id="dataSavingIntervalLimitInput"
+        id="inGameMenuInputFocusAction"
         #dataSavingIntervalLimitInput
         class="custom-input w-full mb-2"
         min="10"

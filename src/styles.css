@@ -30,3 +30,18 @@ input:focus-within,
 input:not(:placeholder-shown) {
   cursor: url('/cursors/stronghold_writer.png'), auto;
 }
+
+html {
+  --scroll-behavior: smooth !important;
+  scroll-behavior: smooth !important;
+}
+
+.min-h-all {
+  min-height: calc(100vh - 72px);
+}
+
+@media (min-width: 375px) {
+  .min-h-all {
+    min-height: calc(100vh - 80px);
+  }
+}
