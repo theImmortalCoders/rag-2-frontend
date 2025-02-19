@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { NgOptimizedImage } from '@angular/common';
 import {
   AfterViewChecked,
@@ -34,9 +35,10 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
           Rzeszów University of Technology Games for Artificial Intelligence 2.0
         </h1>
         <div
-          class="bg-mainGray opacity-80 text-mainCreme font-mono gap-4 2xs:gap-5 xs:gap-12 sm:gap-5 flex flex-row text-base 2xs:text-lg sm:text-xl xl:text-2xl py-5 px-8 sm:px-20 w-[100vw] lg:w-[60vw] xl:w-[70vw] justify-center">
+          class="bg-mainGray opacity-80 text-mainCreme font-mono gap-4 2xs:gap-5 xs:gap-12 lg:gap-20 xl:gap-28 2xl:gap-40 flex flex-row text-base 2xs:text-lg sm:text-xl xl:text-2xl py-5 px-8 sm:px-20 w-[100vw] lg:w-[60vw] xl:w-[70vw] justify-center">
           <a
             href="/game-list"
+            aria-label="Game list page"
             class="hidden xs:flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Play
           </a>
@@ -46,6 +48,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
             Authors
           </a>
           <a
+            aria-label="Documentation page"
             class="flex flex-row items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Documentation
           </a>
@@ -66,7 +69,8 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
           <div
             class="flex flex-col mt-4 md:mt-16 pl-0 xs:pl-64 sm:pl-24 md:pl-14 lg:pl-6 pr-0 lg:pr-6 pb-40 relative z-50">
             <h2
-              class="text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter21 before:bg-mainCreme after:absolute after:inset-0 after:w-[0.125em] after:animate-caret21 after:bg-black">
+              id="animatedHeader"
+              class="opacity-0 text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl h-9 xs:h-10 md:h-12 xl:h-16 relative w-[max-content] font-mono before:absolute before:inset-0 before:bg-mainCreme after:absolute after:inset-0 after:w-[0.125em] after:bg-black">
               Meet the authors:
             </h2>
             <div
@@ -145,6 +149,12 @@ export class HomePageComponent
   public constructor(private _el: ElementRef) {}
 
   public ngOnInit(): void {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.3,
+    };
+
     const observerBottomText = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -153,12 +163,30 @@ export class HomePageComponent
           entry.target.classList.add('opacity-0', 'translate-x-[28rem]');
         }
       });
-    });
+    }, observerOptions);
 
     const elementBottomText = this._el.nativeElement.querySelector(
       '#animatedBottomText'
     );
     observerBottomText.observe(elementBottomText);
+
+    const observerHeader = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('opacity-0');
+          entry.target.classList.add(
+            'before:animate-typewriter17',
+            'after:animate-caret17'
+          );
+
+          observerHeader.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const elementHeader =
+      this._el.nativeElement.querySelector('#animatedHeader');
+    observerHeader.observe(elementHeader);
   }
 
   public ngAfterViewInit(): void {
