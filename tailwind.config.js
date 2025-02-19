@@ -32,7 +32,7 @@ module.exports = {
         navbar: '80px',
       },
       minHeight: {
-        all: 'calc(100vh - 80px)',
+        all: 'calc(100vh - 72px)', //dla szerokosci >=375px jest 100vh - 80px
       },
       fontSize: {
         '2xs': '0.625rem',

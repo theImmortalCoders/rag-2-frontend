@@ -116,7 +116,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
       <div
         id="stats"
         class="flex flex-col xs:flex-row items-center justify-center xs:justify-around space-x-0 px-2 xs:px-8 md:px-16 bg-lightGray relative z-30 pt-10 pb-6 md:py-10 border-mainOrange border-b-2">
-        <div class="flex items-center justify-center pr-3 md:pr-2 lg:pr-0">
+        <div class="flex items-center justify-center pr-3 md:pr-8 lg:pr-0">
           <div
             class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[26rem] lg:w-[30rem] xl:w-[36rem] relative">
             <img
@@ -131,7 +131,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
       <div class="flex w-full items-center justify-end bg-lightGray pb-10">
         <span
           id="animatedBottomText"
-          class="transform transition-all duration-1000 flex w-full 2xs:w-[97%] xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-[63%] xl:w-[58%] 2xl:w-1/2 h-20 text-justify items-center justify-center bg-mainOrange text-sm md:text-base lg:text-lg xl:text-xl px-2 xs:px-4 sm:px-10 font-mono mt-0 2xs:mt-4 xs:mt-8 sm:mt-16">
+          class="transform transition-all duration-1000 opacity-95 flex w-full 2xs:w-11/12 sm:w-4/5 md:w-2/3 lg:w-[63%] xl:w-[58%] 2xl:w-1/2 h-20 text-justify items-center justify-center bg-mainOrange text-sm md:text-base lg:text-lg xl:text-xl px-2 xs:px-4 sm:px-10 font-mono mt-8 sm:mt-16">
           Play the games, collect data and build your own AI models that will
           defeat ours!
         </span>
