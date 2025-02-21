@@ -23,9 +23,7 @@ import { SingleDocComponent } from './components/single-doc/single-doc.component
             'Manual of our game creation NPM script and steps to follow if you want to contribute to our system and create your own game'
           "
           [icon]="'tool'"
-          [fileName]="
-            'docs/lista_kontrolna_do_badania_dostepnosci_cyfrowej_strony_rutai_kia_prz_edu_pl.pdf'
-          "
+          [fileName]="'docs/rag-2-game-creation-manual.pdf'"
           [isAvailable]="true" />
         <app-single-doc
           class="flex flex-col p-3 space-y-8 h-full"
@@ -34,9 +32,7 @@ import { SingleDocComponent } from './components/single-doc/single-doc.component
             'Step-by-step instruction of how you can build your own steering service and connect it to one of our games'
           "
           [icon]="'share-2'"
-          [fileName]="
-            'docs/lista_kontrolna_do_badania_dostepnosci_cyfrowej_strony_rutai_kia_prz_edu_pl.pdf'
-          "
+          [fileName]="'/docs/rag-2-models-manual.pdf'"
           [isAvailable]="true" />
         <app-single-doc
           class="flex flex-col p-3 space-y-8 h-full"
