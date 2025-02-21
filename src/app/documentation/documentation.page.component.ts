@@ -1,10 +1,11 @@
 import { AfterViewInit, Component } from '@angular/core';
 import * as feather from 'feather-icons';
+import { SingleDocComponent } from './components/single-doc/single-doc.component';
 
 @Component({
   selector: 'app-documentation-page',
   standalone: true,
-  imports: [],
+  imports: [SingleDocComponent],
   template: `
     <div
       class="flex flex-col mt-6 py-9 md:py-14 px-0 sm:px-4 md:px-8 lg:px-14 xl:px-20 w-full items-center justify-center font-mono">
@@ -14,64 +15,56 @@ import * as feather from 'feather-icons';
       </h1>
       <div
         class="h-[2px] lg:h-[4px] bg-mainCreme w-full mb-2 xs:mb-4 md:mb-8"></div>
-      <div class="grid grid-cols-3 gap-x-16 w-full px-4 pt-8">
-        <div class="flex flex-col p-3 space-y-8">
-          <div
-            class="flex flex-row space-x-2 w-full items-center justify-center">
-            <span class="text-3xl text-mainCreme font-bold tracking-wider"
-              >GAME CREATION</span
-            >
-            <i data-feather="tool" class="text-mainCreme fill- size-6"></i>
-          </div>
-          <span class="text-justify text-mainCreme"
-            >This document provides guidelines for developers on how to create
-            new games while ensuring compatibility with the existing system. It
-            covers best practices, coding standards, and integration
-            requirements to maintain consistency across all projects.</span
-          >
-          <button
-            class="w-full border-[1px] border-mainOrange py-2 px-4 bg-mainGray text-mainOrange font-bold text-center hover:bg-mainOrange hover:text-mainGray ease-in-out transition-all duration-300">
-            DOWNLOAD (PDF, 90MB)
-          </button>
-        </div>
-        <div class="flex flex-col p-3 space-y-8">
-          <div
-            class="flex flex-row space-x-2 w-full items-center justify-center">
-            <span class="text-3xl text-mainCreme font-bold tracking-wider"
-              >MODEL CONNECTION</span
-            >
-            <i data-feather="share-2" class="text-mainCreme fill- size-6"></i>
-          </div>
-          <span class="text-justify text-mainCreme"
-            >This document provides guidelines for developers on how to create
-            new games while ensuring compatibility with the existing system. It
-            covers best practices, coding standards, and integration
-            requirements to maintain consistency across all projects.</span
-          >
-          <button
-            class="w-full border-[1px] border-mainOrange py-2 px-4 bg-mainGray text-mainOrange font-bold text-center hover:bg-mainOrange hover:text-mainGray ease-in-out transition-all duration-300">
-            DOWNLOAD (PDF, 90MB)
-          </button>
-        </div>
-        <div class="flex flex-col p-3 space-y-8">
-          <div
-            class="flex flex-row space-x-2 w-full items-center justify-center">
-            <span class="text-3xl text-mainCreme font-bold tracking-wider"
-              >ACCESSIBILITY STATEMENT</span
-            >
-            <i data-feather="tool" class="text-mainCreme fill- size-6"></i>
-          </div>
-          <span class="text-justify text-mainCreme"
-            >This document provides guidelines for developers on how to create
-            new games while ensuring compatibility with the existing system. It
-            covers best practices, coding standards, and integration
-            requirements to maintain consistency across all projects.</span
-          >
-          <button
-            class="w-full border-[1px] border-mainOrange py-2 px-4 bg-mainGray text-mainOrange font-bold text-center hover:bg-mainOrange hover:text-mainGray ease-in-out transition-all duration-300">
-            DOWNLOAD (PDF, 90MB)
-          </button>
-        </div>
+      <div class="grid grid-cols-3 gap-16 w-full px-10 pt-8 items-stretch">
+        <app-single-doc
+          class="flex flex-col p-3 space-y-8 h-full"
+          [header]="'GAME CREATION'"
+          [description]="
+            'Manual of our game creation NPM script and steps to follow if you want to contribute to our system and create your own game'
+          "
+          [icon]="'tool'"
+          [fileName]="
+            'docs/lista_kontrolna_do_badania_dostepnosci_cyfrowej_strony_rutai_kia_prz_edu_pl.pdf'
+          "
+          [isAvailable]="true" />
+        <app-single-doc
+          class="flex flex-col p-3 space-y-8 h-full"
+          [header]="'MODEL CONNECTION'"
+          [description]="
+            'Step-by-step instruction of how you can build your own steering service and connect it to one of our games'
+          "
+          [icon]="'share-2'"
+          [fileName]="
+            'docs/lista_kontrolna_do_badania_dostepnosci_cyfrowej_strony_rutai_kia_prz_edu_pl.pdf'
+          "
+          [isAvailable]="true" />
+        <app-single-doc
+          class="flex flex-col p-3 space-y-8 h-full"
+          [header]="'MOBILE APP SUPPORT'"
+          [description]="
+            'Instructions on how to install our mobile application and use it to control characters'
+          "
+          [icon]="'smartphone'"
+          [isAvailable]="false" />
+        <app-single-doc
+          class="flex flex-col p-3 space-y-8 h-full"
+          [header]="'SITE RELIABILITY'"
+          [description]="
+            'Description of how we ensure the reliability of our application, e.g. by writing tests'
+          "
+          [icon]="'shield'"
+          [isAvailable]="false" />
+        <app-single-doc
+          class="flex flex-col p-3 space-y-8 h-full"
+          [header]="'ACCESSIBILITY STATEMENT'"
+          [description]="
+            'Learn what accessibility rules we commit to follow on this website'
+          "
+          [icon]="'book-open'"
+          [fileName]="
+            'docs/lista_kontrolna_do_badania_dostepnosci_cyfrowej_strony_rutai_kia_prz_edu_pl.pdf'
+          "
+          [isAvailable]="true" />
       </div>
     </div>
   `,
