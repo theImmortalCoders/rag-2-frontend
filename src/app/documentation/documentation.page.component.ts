@@ -14,7 +14,7 @@ import * as feather from 'feather-icons';
       </h1>
       <div
         class="h-[2px] lg:h-[4px] bg-mainCreme w-full mb-2 xs:mb-4 md:mb-8"></div>
-      <div class="grid grid-cols-4 gap-x-16 w-full px-4 pt-8">
+      <div class="grid grid-cols-3 gap-x-16 w-full px-4 pt-8">
         <div class="flex flex-col p-3 space-y-8">
           <div
             class="flex flex-row space-x-2 w-full items-center justify-center">
@@ -30,17 +30,17 @@ import * as feather from 'feather-icons';
             requirements to maintain consistency across all projects.</span
           >
           <button
-            class="w-full border-[1px] border-mainCreme py-2 px-4 bg-mainGray text-mainCreme font-bold text-center hover:bg-mainCreme hover:text-mainGray ease-in-out transition-all duration-300">
+            class="w-full border-[1px] border-mainOrange py-2 px-4 bg-mainGray text-mainOrange font-bold text-center hover:bg-mainOrange hover:text-mainGray ease-in-out transition-all duration-300">
             DOWNLOAD (PDF, 90MB)
           </button>
         </div>
-        <div class="flex flex-col p-3 space-y-8 border-[2px] border-mainOrange">
+        <div class="flex flex-col p-3 space-y-8">
           <div
             class="flex flex-row space-x-2 w-full items-center justify-center">
             <span class="text-3xl text-mainCreme font-bold tracking-wider"
-              >GAME CREATION</span
+              >MODEL CONNECTION</span
             >
-            <i data-feather="tool" class="text-mainCreme fill- size-6"></i>
+            <i data-feather="share-2" class="text-mainCreme fill- size-6"></i>
           </div>
           <span class="text-justify text-mainCreme"
             >This document provides guidelines for developers on how to create
@@ -49,36 +49,15 @@ import * as feather from 'feather-icons';
             requirements to maintain consistency across all projects.</span
           >
           <button
-            class="w-full border-[1px] border-mainCreme py-2 px-4 bg-mainGray text-mainCreme font-bold text-center hover:bg-mainCreme hover:text-mainGray ease-in-out transition-all duration-300">
+            class="w-full border-[1px] border-mainOrange py-2 px-4 bg-mainGray text-mainOrange font-bold text-center hover:bg-mainOrange hover:text-mainGray ease-in-out transition-all duration-300">
             DOWNLOAD (PDF, 90MB)
           </button>
         </div>
-        <div class="flex flex-col p-3 space-y-8 border-[2px] border-mainOrange">
-          <div
-            class="flex flex-row space-x-2 w-full items-center justify-center">
-            <span class="text-3xl text-mainOrange font-bold tracking-wider"
-              >GAME CREATION</span
-            >
-            <i
-              data-feather="tool"
-              class="text-mainOrange fill-mainOrange size-6"></i>
-          </div>
-          <span class="text-justify text-mainCreme"
-            >This document provides guidelines for developers on how to create
-            new games while ensuring compatibility with the existing system. It
-            covers best practices, coding standards, and integration
-            requirements to maintain consistency across all projects.</span
-          >
-          <button
-            class="w-full border-[1px] border-mainCreme py-2 px-4 bg-mainGray text-mainCreme font-bold text-center hover:bg-mainCreme hover:text-mainGray ease-in-out transition-all duration-300">
-            DOWNLOAD (PDF, 90MB)
-          </button>
-        </div>
-        <div class="flex flex-col p-3 space-y-8 border-[2px] border-mainGray">
+        <div class="flex flex-col p-3 space-y-8">
           <div
             class="flex flex-row space-x-2 w-full items-center justify-center">
             <span class="text-3xl text-mainCreme font-bold tracking-wider"
-              >GAME CREATION</span
+              >ACCESSIBILITY STATEMENT</span
             >
             <i data-feather="tool" class="text-mainCreme fill- size-6"></i>
           </div>
