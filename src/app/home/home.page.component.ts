@@ -163,16 +163,11 @@ export class HomePageComponent
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.remove(
-            'opacity-0',
-            'translate-x-[18rem]',
-            '2xs:translate-x-[22rem]'
+            'sm:opacity-0',
+            'sm:translate-x-[18rem]'
           );
         } else {
-          entry.target.classList.add(
-            'opacity-0',
-            'translate-x-[18rem]',
-            '2xs:translate-x-[22rem]'
-          );
+          entry.target.classList.add('sm:opacity-0', 'sm:translate-x-[18rem]');
         }
       });
     }, observerOptions);
