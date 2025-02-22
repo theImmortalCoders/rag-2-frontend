@@ -12,6 +12,7 @@ import { authorsData, IAuthor } from './models/author';
 import { AuthorCardsComponent } from './components/author-cards/author-cards.component';
 import { ShortGameStatsComponent } from './components/short-game-stats/short-game-stats.component';
 import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -21,6 +22,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
     AuthorCardsComponent,
     ShortGameStatsComponent,
     Rag2LogoComponent,
+    RouterModule,
   ],
   template: `
     <div class="flex flex-col w-full bg-mainGray">
@@ -38,7 +40,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
           id="animatedMenu"
           class="transform -translate-x-[22rem] opacity-0 transition-all duration-1000 bg-mainGray text-mainCreme font-mono gap-4 2xs:gap-5 xs:gap-12 lg:gap-20 xl:gap-28 2xl:gap-40 flex flex-row text-base 2xs:text-lg sm:text-xl xl:text-2xl py-5 px-8 sm:px-20 w-[100vw] lg:w-[60vw] xl:w-[70vw] justify-center">
           <a
-            href="/game-list"
+            [routerLink]="['game-list']"
             aria-label="Game list page"
             class="hidden xs:block p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Play
@@ -49,6 +51,7 @@ import { Rag2LogoComponent } from '../shared/components/common/rag-2-logo.compon
             Authors
           </a>
           <a
+            [routerLink]="['documentation']"
             aria-label="Documentation page"
             class="p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500">
             Documentation
