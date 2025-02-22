@@ -10,7 +10,7 @@ import { SingleDocComponent } from './components/single-doc/single-doc.component
     <div
       class="flex flex-col mt-6 py-9 md:py-14 px-0 sm:px-4 md:px-8 lg:px-14 xl:px-20 w-full items-center justify-center font-mono">
       <h1
-        class="text-center uppercase text-lg 2xs:text-xl xs:text-2xl sm:text-3xl md:text-4xl xl:text-5xl mb-4 md:mb-8 text-mainCreme">
+        class="text-center uppercase text-lg 2xs:text-xl xs:text-2xl sm:text-3xl md:text-4xl xl:text-5xl mb-4 md:mb-8 text-mainCreme px-2">
         Check the documentation we prepared to help:
       </h1>
       <div

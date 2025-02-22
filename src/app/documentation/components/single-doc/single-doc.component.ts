@@ -4,7 +4,6 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-single-doc',
   standalone: true,
-  imports: [],
   template: `
     <div class="flex flex-row space-x-4 w-full items-center justify-center">
       <span
