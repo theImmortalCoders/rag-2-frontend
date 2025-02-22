@@ -8,18 +8,20 @@ import { Component, Input, OnInit } from '@angular/core';
   template: `
     <div class="flex flex-row space-x-4 w-full items-center justify-center">
       <span
-        class="text-3xl text-mainCreme font-bold tracking-wider text-center"
+        class="text-2xl md:text-3xl w-3/4 text-mainCreme font-bold tracking-wider text-center"
         >{{ header }}</span
       >
-      <i [attr.data-feather]="icon" class="text-mainCreme size-6"></i>
+      <i [attr.data-feather]="icon" class="text-mainCreme size-5 md:size-6"></i>
     </div>
-    <span class="text-justify text-mainCreme">{{ description }}</span>
+    <span class="text-justify text-mainCreme text-sm md:text-base">{{
+      description
+    }}</span>
     <button
       [disabled]="!isAvailable"
       (click)="downloadFile()"
       class="{{
         isAvailable ? 'opacity-100' : 'opacity-40 pointer-events-none'
-      }} w-full border-[1px] border-mainOrange py-2 px-4 bg-mainGray text-mainOrange font-bold text-center hover:bg-mainOrange hover:text-mainGray ease-in-out transition-all duration-300">
+      }} w-full border-[1px] border-mainOrange py-2 px-2 xs:px-4 text-sm xs:text-base bg-mainGray text-mainOrange font-bold text-center hover:bg-mainOrange hover:text-mainGray ease-in-out transition-all duration-300">
       {{ buttonText }}
     </button>
   `,

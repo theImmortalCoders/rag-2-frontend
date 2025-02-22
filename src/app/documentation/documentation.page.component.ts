@@ -15,7 +15,8 @@ import { SingleDocComponent } from './components/single-doc/single-doc.component
       </h1>
       <div
         class="h-[2px] lg:h-[4px] bg-mainCreme w-full mb-2 xs:mb-4 md:mb-8"></div>
-      <div class="grid grid-cols-3 gap-16 w-full px-10 pt-8 items-stretch">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-12 2xl:gap-x-16 gap-y-10 md:gap-y-16 w-full px-6 xl:px-10 pt-2 lg:pt-6 xl:pt-8 items-stretch">
         <app-single-doc
           class="flex flex-col p-3 space-y-8 h-full"
           [header]="'GAME CREATION'"
