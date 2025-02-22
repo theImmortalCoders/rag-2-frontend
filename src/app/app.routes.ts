@@ -1,3 +1,4 @@
+import { DocumentationPageComponent } from './documentation/documentation.page.component';
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './home/home.page.component';
 import { GamePageComponent } from './game/game.page.component';
@@ -79,6 +80,11 @@ export const routes: Routes = [
         title: 'Register Confirm Page',
       },
     ],
+  },
+  {
+    path: 'documentation',
+    component: DocumentationPageComponent,
+    title: 'Documentation Page',
   },
   {
     path: 'accessibility-statement',

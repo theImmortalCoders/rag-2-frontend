@@ -4,6 +4,7 @@ import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Game } from '@gameModels/game.class';
 import { IRecordedGameRequest } from '@api-models/recorded-game.models';
 import { NotificationService } from 'app/shared/services/notification.service';
+import { formatFileSize } from '@utils/helpers/formatFileSize';
 
 @Component({
   selector: 'app-data-download',
@@ -33,7 +34,10 @@ import { NotificationService } from 'app/shared/services/notification.service';
         (click)="generateJSON()"
         class="flex flex-col mt-4 py-1 text-center text-mainCreme border-mainCreme border-[1px] hover:bg-mainCreme hover:text-darkGray transition-all ease-in-out duration-300">
         <span>Download JSON</span>
-        <span>({{downloadedJSONSize}}, {{ collectedDataArray.length }} records)</span>
+        <span
+          >({{ downloadedJSONSize }},
+          {{ collectedDataArray.length }} records)</span
+        >
       </button>
       <button
         (click)="deleteCollectedData()"
@@ -68,8 +72,10 @@ export class DataDownloadComponent {
         outputSpec: this.game.outputSpec,
       };
       console.log(gameRecordData);
-      this.downloadedJSONSize = this.formatFileSize(
-        this.getJsonSize(JSON.stringify(this.mapToSaveableData(this.collectedDataArray)))
+      this.downloadedJSONSize = formatFileSize(
+        this.getJsonSize(
+          JSON.stringify(this.mapToSaveableData(this.collectedDataArray))
+        )
       );
       this._gameRecordEndpointsService
         .addGameRecording(gameRecordData)
@@ -143,15 +149,4 @@ export class DataDownloadComponent {
     const blob = new Blob([csv], { type: 'text/json' });
     return blob.size;
   }
-
-  private formatFileSize(sizeInBytes: number): string {
-    if (sizeInBytes >= 1024 ** 3) {
-      return (sizeInBytes / (1024 ** 3)).toFixed(2) + ' GB';
-    } else if (sizeInBytes >= 1024 ** 2) {
-      return (sizeInBytes / (1024 ** 2)).toFixed(2) + ' MB';
-    } else if (sizeInBytes >= 1024) {
-      return (sizeInBytes / 1024).toFixed(2) + ' KB';
-    }
-    return sizeInBytes + ' B';
-}
 }
