@@ -107,8 +107,8 @@ import { RouterModule } from '@angular/router';
         <div
           class="flex flex-col w-full items-end justify-end text-mainCreme font-mono mt-20 xs:mt-16 sm:mt-12 md:mt-2 relative z-50">
           <h1
-            class="w-[97%] lg:w-11/12 xl:w-3/4 text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl font-mono mb-3 sm:mb-6">
-            What's this all for?
+            class="w-[97%] lg:w-11/12 xl:w-3/4 text-xl 2xs:text-2xl lg:text-3xl xl:text-4xl font-mono mb-3 sm:mb-6">
+            What's this all about?
           </h1>
           <span
             class="w-[97%] lg:w-11/12 xl:w-3/4 pr-2 border-l-2 border-b-2 pl-2 pb-2 border-mainOrange text-justify text-sm md:text-base lg:text-lg xl:text-xl">
