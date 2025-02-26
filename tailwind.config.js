@@ -19,11 +19,11 @@ module.exports = {
         mainCreme: '#FFE6C7',
       },
       backgroundImage: {
-        homeImageAI: "url('/images/home.jpg')",
-        homeImageUser: "url('/images/user.png')",
-        homeImageUser0: "url('/images/marcin.jpg')",
-        homeImageUser1: "url('/images/pawel.jpg')",
-        homeImageUser2: "url('/images/bartek.jpg')",
+        homeImageAI: "url('/images/home/home.jpg')",
+        homeImageUser: "url('/images/authors/user.png')",
+        homeImageUser0: "url('/images/authors/marcin.jpg')",
+        homeImageUser1: "url('/images/authors/pawel.jpg')",
+        homeImageUser2: "url('/images/authors/bartek.jpg')",
       },
       height: {
         navbar: '80px',

@@ -7,7 +7,11 @@ import { Component, Input } from '@angular/core';
   imports: [NgOptimizedImage],
   template: `
     <img
-      ngSrc="images/gest_orange.png"
+      [ngSrc]="
+        isEngVersion
+          ? 'images/gest/gest_orange_eng.png'
+          : 'images/gest/gest_orange.png'
+      "
       alt="Logo GEST"
       class="object-contain"
       fill
@@ -16,4 +20,5 @@ import { Component, Input } from '@angular/core';
 })
 export class GestLogoComponent {
   @Input() public isPriority = false;
+  @Input() public isEngVersion = false;
 }

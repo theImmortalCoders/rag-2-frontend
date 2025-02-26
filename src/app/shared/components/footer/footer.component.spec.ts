@@ -43,8 +43,8 @@ describe('FooterComponent', () => {
     const imageElements = fixture.debugElement.queryAll(By.css('img'));
     const expectedSrcs = [
       'images/rag-2.png',
-      'images/prz_orange.png',
-      'images/gest_orange.png',
+      'images/prz/prz_orange.png',
+      'images/gest/gest_orange.png',
     ];
 
     expectedSrcs.forEach((src, index) => {
