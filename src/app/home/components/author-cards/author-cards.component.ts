@@ -9,12 +9,13 @@ import { GestLogoComponent } from '../../../shared/components/common/gest-logo.c
   imports: [PRzLogoComponent, GestLogoComponent],
   template: `
     <app-prz-logo
-      class="size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
+      class="size-32 2xs:size-40 xs:size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 mr-2 xs:mr-5 lg:mr-8 {{
         currentChoosenAuthor.index === -1
           ? 'opacity-95 translate-x-0'
           : 'opacity-0 translate-x-72'
       }}"
-      [isPriority]="true" />
+      [isPriority]="true"
+      [isEngVersion]="true" />
     <div
       class="h-32 2xs:h-36 xs:h-44 lg:h-48 xl:h-64 w-[1px] 2xs:w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
@@ -22,12 +23,13 @@ import { GestLogoComponent } from '../../../shared/components/common/gest-logo.c
           : 'opacity-0 translate-x-72'
       }}"></div>
     <app-gest-logo
-      class="size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
+      class="size-36 2xs:size-44 xs:size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
         currentChoosenAuthor.index === -1
           ? 'opacity-95 translate-x-0'
           : 'opacity-0 translate-x-72'
       }}"
-      [isPriority]="true" />
+      [isPriority]="true"
+      [isEngVersion]="true" />
     @for (author of authors; track author.name) {
       <div
         class="author-card flex flex-col space-y-1 2xs:space-y-2 w-[85%] xs:w-3/4 md:w-[130%] lg:w-[120%] h-fit bg-mainCreme text-mainGray rounded-xl py-3 2xs:py-4 px-4 2xs:px-5 lg:p-6 absolute transition-all ease-in-out duration-300 {{

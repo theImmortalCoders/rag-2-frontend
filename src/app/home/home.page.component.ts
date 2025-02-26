@@ -105,7 +105,11 @@ import { RouterModule } from '@angular/router';
             [currentChoosenAuthor]="currentChoosenAuthor" />
         </div>
         <div
-          class="flex w-full items-end justify-end text-mainCreme font-mono mt-20 xs:mt-16 sm:mt-12 md:mt-2 relative z-50">
+          class="flex flex-col w-full items-end justify-end text-mainCreme font-mono mt-20 xs:mt-16 sm:mt-12 md:mt-2 relative z-50">
+          <h1
+            class="w-[97%] lg:w-11/12 xl:w-3/4 text-2xl 2xs:text-3xl lg:text-4xl xl:text-5xl font-mono mb-3 sm:mb-6">
+            What's this all for?
+          </h1>
           <span
             class="w-[97%] lg:w-11/12 xl:w-3/4 pr-2 border-l-2 border-b-2 pl-2 pb-2 border-mainOrange text-justify text-sm md:text-base lg:text-lg xl:text-xl">
             Jump into the world of artificial intelligence by making your own
@@ -124,7 +128,7 @@ import { RouterModule } from '@angular/router';
           <div
             class="h-28 2xs:h-36 xs:h-28 sm:h-36 md:h-52 lg:h-60 xl:h-64 w-64 2xs:w-80 xs:w-64 sm:w-80 md:w-[26rem] lg:w-[30rem] xl:w-[36rem] relative">
             <img
-              ngSrc="images/ai.jpg"
+              ngSrc="images/home/ai.jpg"
               alt="ai image"
               class="object-contain rounded-full"
               fill />

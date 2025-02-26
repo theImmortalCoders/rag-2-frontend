@@ -62,7 +62,7 @@ import { RouterModule } from '@angular/router';
             <span
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
               <img
-                ngSrc="images/prz_orange.png"
+                ngSrc="images/prz/prz_orange.png"
                 alt="Logo PRZ"
                 class="object-contain grayscale group-hover:grayscale-0 transition-all ease-in-out duration-500"
                 fill />
@@ -79,7 +79,7 @@ import { RouterModule } from '@angular/router';
             <span
               class="w-32 xs:w-28 lg:w-32 h-20 xs:h-16 lg:h-20 relative pr-4">
               <img
-                ngSrc="images/gest_orange.png"
+                ngSrc="images/gest/gest_orange.png"
                 alt="Logo GEST"
                 class="object-contain grayscale group-hover:grayscale-0 transition-all ease-in-out duration-500"
                 fill />

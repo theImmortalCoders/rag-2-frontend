@@ -7,7 +7,11 @@ import { Component, Input } from '@angular/core';
   imports: [NgOptimizedImage],
   template: `
     <img
-      ngSrc="images/prz_orange.png"
+      [ngSrc]="
+        isEngVersion
+          ? 'images/prz/prz_orange_eng.png'
+          : 'images/prz/prz_orange.png'
+      "
       alt="Logo PRZ"
       class="object-contain"
       fill
@@ -16,4 +20,5 @@ import { Component, Input } from '@angular/core';
 })
 export class PRzLogoComponent {
   @Input() public isPriority = false;
+  @Input() public isEngVersion = false;
 }
