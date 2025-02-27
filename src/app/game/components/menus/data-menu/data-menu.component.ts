@@ -40,32 +40,6 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
       class="w-72 h-72 overflow-y-auto p-5 bg-lightGray font-mono text-sm side-menu-container top-40 {{
         isDataMenuVisible ? 'right-0' : '-right-72'
       }}">
-      <div class="group font-mono absolute left-0 top-0 z-30">
-        <div
-          class="absolute z-30 top-3 left-4 rounded-full bg-lightGray group-hover:bg-mainCreme">
-          <i
-            data-feather="info"
-            class="size-5 text-mainGray group-hover:scale-105 transition-all ease-in-out duration-300"></i>
-        </div>
-        <div
-          class="flex absolute z-20 top-3 left-4 h-5 w-[15.75rem] pointer-events-none opacity-0 group-hover:opacity-100 items-start justify-center rounded-l-full rounded-tr-full bg-mainGray text-mainCreme text-nowrap transition-all ease-in-out duration-300">
-          <p
-            class="text-center py-[2px] ml-5 pr-4 uppercase text-xs border-b-[1px] border-mainCreme w-full">
-            Data menu
-          </p>
-        </div>
-        <div
-          class="flex flex-col w-[14.5rem] absolute z-10 top-8 left-9 p-2 shadow-menuInfoPanelShadow pointer-events-none opacity-0 group-hover:opacity-100 bg-mainGray text-mainCreme transition-all ease-in-out duration-300">
-          <span
-            class="text-bold text-2xs text-mainOrange text-justify leading-tight">
-            In this menu, you can select the data to collect from your game by
-            setting an interval for how often it saves, then clicking the button
-            to start. Data will be collected until you stop it, after which you
-            can download or delete the records locally. Every saved game is
-            available on the user's dashboard.
-          </span>
-        </div>
-      </div>
       <app-side-menu-helper
         [menuType]="'Data menu'"
         [descriptionPart1]="

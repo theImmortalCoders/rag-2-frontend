@@ -1,4 +1,11 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 import { TExchangeData } from '@gameModels/exchange-data.type';
 import { Game } from '@gameModels/game.class';
@@ -10,16 +17,6 @@ import { formatFileSize } from '@utils/helpers/formatFileSize';
   selector: 'app-data-download',
   standalone: true,
   template: `<div class="flex flex-col">
-    <div class="flex flex-row justify-center gap-2 my-2">
-      <input
-        #shouldCollect
-        type="checkbox"
-        class="accent-mainOrange"
-        id="shouldCollect"
-        [checked]="shouldCollectToDb"
-        (change)="shouldCollectToDb = shouldCollect.checked" />
-      <label for="shouldCollect">Save values to database</label>
-    </div>
     <button
       class="font-bold mt-2 border-b-[1px] border-mainOrange w-full text-center"
       (click)="handleCollectingData()">
@@ -47,7 +44,7 @@ import { formatFileSize } from '@utils/helpers/formatFileSize';
     }
   </div>`,
 })
-export class DataDownloadComponent {
+export class DataDownloadComponent implements OnDestroy {
   @Input({ required: true }) public game!: Game;
   @Input({ required: true }) public collectedDataArray: TExchangeData[] = [];
 
@@ -57,8 +54,25 @@ export class DataDownloadComponent {
   private _gameRecordEndpointsService = inject(GameRecordEndpointsService);
   private _notificationService = inject(NotificationService);
   public isDataCollectingActive = false;
-  public shouldCollectToDb = true;
   public downloadedJSONSize?: string;
+
+  private isGameAlreadySaved = false;
+
+  public ngOnDestroy(): void {
+    if (!this.isGameAlreadySaved) {
+      const gameRecordData: IRecordedGameRequest = {
+        gameName: this.game.name,
+        players: this.game.players,
+        values: [],
+        outputSpec: this.game.outputSpec,
+      };
+      console.log(this.collectedDataArray);
+
+      this._gameRecordEndpointsService
+        .addGameRecording(gameRecordData)
+        .subscribe({});
+    }
+  }
 
   public handleCollectingData(): void {
     this.isDataCollectingActive = !this.isDataCollectingActive;
@@ -88,11 +102,10 @@ export class DataDownloadComponent {
           },
           error: (error: string) => {
             this._notificationService.addNotification(error, 5000);
-            if (this.shouldCollectToDb) {
-              this.spaceExceeded(gameRecordData);
-            }
+            this.spaceExceeded(gameRecordData);
           },
         });
+      this.isGameAlreadySaved = true;
     }
   }
 
@@ -117,17 +130,15 @@ export class DataDownloadComponent {
   //
 
   private mapToSaveableData(collectedData: TExchangeData[]): TExchangeData[] {
-    return this.shouldCollectToDb
-      ? collectedData.slice(1).map(data => {
-          const { timestamp, players, ...rest } = data;
-          return {
-            name: this.game.name,
-            state: rest,
-            players: players,
-            timestamp: timestamp,
-          } as TExchangeData;
-        })
-      : [];
+    return collectedData.slice(1).map(data => {
+      const { timestamp, players, ...rest } = data;
+      return {
+        name: this.game.name,
+        state: rest,
+        players: players,
+        timestamp: timestamp,
+      } as TExchangeData;
+    });
   }
 
   private downloadJson(csv: string): void {
