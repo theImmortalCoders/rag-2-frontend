@@ -47,6 +47,7 @@ import { formatFileSize } from '@utils/helpers/formatFileSize';
 export class DataDownloadComponent implements OnDestroy {
   @Input({ required: true }) public game!: Game;
   @Input({ required: true }) public collectedDataArray: TExchangeData[] = [];
+  @Input({ required: true }) public isStateChanged = false;
 
   @Output() public deleteCollectedDataArrayEmitter = new EventEmitter<void>();
   @Output() public collectingActiveEmitter = new EventEmitter<boolean>();
@@ -59,14 +60,13 @@ export class DataDownloadComponent implements OnDestroy {
   private isGameAlreadySaved = false;
 
   public ngOnDestroy(): void {
-    if (!this.isGameAlreadySaved) {
+    if (!this.isGameAlreadySaved && this.isStateChanged) {
       const gameRecordData: IRecordedGameRequest = {
         gameName: this.game.name,
         players: this.game.players,
         values: [],
         outputSpec: this.game.outputSpec,
       };
-      console.log(this.collectedDataArray);
 
       this._gameRecordEndpointsService
         .addGameRecording(gameRecordData)

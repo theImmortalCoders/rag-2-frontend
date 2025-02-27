@@ -75,7 +75,8 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
         (collectingActiveEmitter)="isDataCollectingActive = $event"
         [game]="game"
         [collectedDataArray]="collectedDataArray"
-        (deleteCollectedDataArrayEmitter)="collectedDataArray = []" />
+        (deleteCollectedDataArrayEmitter)="collectedDataArray = []"
+        [isStateChanged]="isStateChanged" />
     </div>
   `,
 })
@@ -90,6 +91,7 @@ export class DataMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       this.updateCollectedData();
     }
   }
+  @Input({ required: true }) public isStateChanged = false;
 
   private _lastSavedTime = 0;
   private _pauseSubscription = new Subscription();

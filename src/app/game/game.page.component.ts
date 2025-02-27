@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -66,7 +67,8 @@ import { GameRendererComponent } from './components/game-renderer/game-renderer.
                 *appAuthRequired
                 [game]="game"
                 [gamePause]="gamePauseSubject.asObservable()"
-                [setDataPossibleToPersist]="gameStateData" />
+                [setDataPossibleToPersist]="gameStateData"
+                [isStateChanged]="isStateChanged" />
             </div>
           </div>
           <app-game-controls [game]="game" />
@@ -102,6 +104,12 @@ export class GamePageComponent implements OnInit, OnDestroy, AfterViewInit {
   public gamePauseSubject = new Subject<boolean>();
   public isMinWidthXl = false;
 
+  private _tempGameState: TExchangeData = {};
+  public isStateChanged = false;
+
+  private _elapsedTime = 0;
+  private _intervalId: unknown;
+
   public constructor(
     private _breakpointObserver: BreakpointObserver,
     private _cdr: ChangeDetectorRef
@@ -124,6 +132,9 @@ export class GamePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._cdr.detectChanges();
+    this._intervalId = setInterval(() => {
+      this._elapsedTime++;
+    }, 1000);
   }
 
   public receiveGameOutputData(data: Game): void {
@@ -131,6 +142,20 @@ export class GamePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.gameStateData = JSON.parse(
       JSON.stringify(this.gameData.state as TExchangeData)
     );
+    if (
+      this._elapsedTime > 3 &&
+      this._tempGameState &&
+      JSON.stringify(this._tempGameState) !== JSON.stringify({}) &&
+      !this.deepEqual(
+        this.omitField(this._tempGameState, 'wind'),
+        this.omitField(this.gameStateData, 'wind')
+      )
+    ) {
+      setTimeout(() => {
+        this.isStateChanged = true;
+      }, 0);
+    }
+    this._tempGameState = this.gameStateData;
     this.logData['game window'] = this.gameStateData;
     this.logData['gameProps'] = {
       outputSpec: this.gameData.outputSpec,
@@ -158,6 +183,19 @@ export class GamePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   //
+
+  private omitField<T extends Record<string, unknown>>(
+    obj: T,
+    field: string
+  ): T {
+    if (!obj || typeof obj !== 'object') return obj;
+    const { [field]: _, ...rest } = obj;
+    return rest as T;
+  }
+
+  private deepEqual(obj1: unknown, obj2: unknown): boolean {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+  }
 
   private loadGame(): void {
     const game = games[this.gameName];
