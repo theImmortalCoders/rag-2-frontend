@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IRecordedGameResponse } from '@api-models/recorded-game.models';
 import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.component';
+import { formatFileSize } from '@utils/helpers/formatFileSize';
 
 @Component({
   selector: 'app-recorded-game-table',
@@ -18,7 +19,9 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
             class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange text-sm xs:text-base font-bold px-4 py-2">
             <th id="no" class="flex justify-center w-[5%]">No.</th>
             <th id="game_name" class="flex justify-center w-2/12">Game name</th>
-            <th id="game_start_date" class="flex justify-center w-3/12">Game start date</th>
+            <th id="game_start_date" class="flex justify-center w-3/12">
+              Game start date
+            </th>
             <th
               id="game_end_date"
               class="flex flex-row gap-x-1 items-center justify-center w-3/12">
@@ -61,21 +64,31 @@ import { LoadingSpinnerComponent } from '@commonComponents/loading-spinner.compo
               class="flex flex-row space-x-4 justify-between px-4 py-2 text-mainCreme text-sm xs:text-base opacity-80 hover:opacity-100 {{
                 $even ? 'bg-lightGray' : 'bg-darkGray'
               }}">
-              <td headers="no" class="flex justify-center w-[5%]">{{ $index + 1 }}.</td>
-              <td headers="game_name" class="flex justify-center w-2/12 uppercase">{{
-                recordedGame.gameName
-              }}</td>
-              <td headers="game_start_date" class="flex justify-center w-3/12">{{
-                recordedGame.started | date: 'dd/MM/yyyy, HH:mm:ss'
-              }}</td>
-              <td headers="game_end_date" class="flex justify-center w-3/12">{{
-                recordedGame.ended | date: 'dd/MM/yyyy, HH:mm:ss'
-              }}</td>
-              <td headers="size" class="flex justify-center w-1/12 text-nowrap">{{
-                recordedGame.isEmptyRecord
-                  ? '-'
-                  : recordedGame.sizeMb.toPrecision(2) + ' MB'
-              }}</td>
+              <td headers="no" class="flex justify-center w-[5%]">
+                {{ $index + 1 }}.
+              </td>
+              <td
+                headers="game_name"
+                class="flex justify-center w-2/12 uppercase">
+                {{ recordedGame.gameName }}
+              </td>
+              <td headers="game_start_date" class="flex justify-center w-3/12">
+                {{
+                  recordedGame.started !== recordedGame.ended
+                    ? (recordedGame.started | date: 'dd/MM/yyyy, HH:mm:ss')
+                    : '-'
+                }}
+              </td>
+              <td headers="game_end_date" class="flex justify-center w-3/12">
+                {{ recordedGame.ended | date: 'dd/MM/yyyy, HH:mm:ss' }}
+              </td>
+              <td headers="size" class="flex justify-center w-1/12 text-nowrap">
+                {{
+                  recordedGame.isEmptyRecord
+                    ? '-'
+                    : formatFileSizeFromMb(recordedGame.sizeMb)
+                }}
+              </td>
               <td headers="download" class="flex justify-center w-1/12">
                 @if (recordedGame.isEmptyRecord) {
                   <span> </span>
@@ -129,5 +142,9 @@ export class RecordedGameTableComponent {
     this.sortBy = value;
     this.sortByEmitter.emit(this.sortBy);
     this.sortDirectionEmitter.emit(this.sortDirection);
+  }
+
+  public formatFileSizeFromMb(sizeInMBytes: number): string {
+    return formatFileSize(sizeInMBytes * 1024 * 1024 + 1945);
   }
 }
