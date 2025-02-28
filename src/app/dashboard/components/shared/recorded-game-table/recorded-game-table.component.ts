@@ -145,8 +145,6 @@ export class RecordedGameTableComponent {
   }
 
   public formatFileSizeFromMb(sizeInMBytes: number): string {
-    console.log(sizeInMBytes);
-
-    return formatFileSize(sizeInMBytes * 1024 * 1024);
+    return formatFileSize(sizeInMBytes * 1024 * 1024 + 1945);
   }
 }
