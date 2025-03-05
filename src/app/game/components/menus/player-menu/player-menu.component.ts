@@ -40,9 +40,30 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
       @for (player of players; track player.id) {
         <div
           class="flex flex-col space-y-1 pb-2 {{ $first ? 'mt-4' : 'mt-0' }}">
-          <span class="text-mainOrange text-lg font-bold uppercase">{{
-            player.name
-          }}</span>
+          <div class="flex flex-row space-x-2">
+            @if (editedPlayerId === player.id) {
+              <input
+                #playerName
+                class="custom-input-small text-lg"
+                type="text"
+                [value]="player.name"
+                (change)="setEditedPlayerName(playerName.value)"
+                (keydown)="setEditedPlayerName(playerName.value)" />
+            } @else {
+              <span class="text-mainOrange text-xl font-bold uppercase">{{
+                player.name
+              }}</span>
+            }
+            <button
+              (click)="
+                setEditedPlayerId(player.id); setEditedPlayerName(player.name)
+              "
+              class="flex items-center justify-center border-[1px] border-mainGray rounded-md px-[6px] group hover:bg-mainCreme transition-all ease-in-out duration-300">
+              <i
+                data-feather="edit-3"
+                class="size-3 text-mainCreme group-hover:text-darkGray transition-all ease-in-out duration-300"></i>
+            </button>
+          </div>
           <span class="text-mainCreme font-bold">Select player source:</span>
           <select
             #playerSourceSelect
@@ -83,6 +104,9 @@ export class PlayerMenuComponent implements OnInit {
 
   public isPlayerMenuVisible = false;
 
+  public editedPlayerId = -1;
+  public editedPlayerName = '';
+
   public ngOnInit(): void {
     this.players.forEach(player => {
       this.syncPropsWithUrl(player);
@@ -93,6 +117,19 @@ export class PlayerMenuComponent implements OnInit {
   public playerSourceType = Object.keys(PlayerSourceType).filter(key =>
     isNaN(Number(key))
   );
+
+  public setEditedPlayerId(id: number): void {
+    if (this.editedPlayerId === id) {
+      this.editedPlayerId = -1;
+      console.log(this.editedPlayerName);
+    } else {
+      this.editedPlayerId = id;
+    }
+  }
+
+  public setEditedPlayerName(name: string): void {
+    this.editedPlayerName = name;
+  }
 
   public togglePlayerMenu(): void {
     this.isPlayerMenuVisible = !this.isPlayerMenuVisible;
