@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   AfterViewInit,
   Component,
@@ -44,24 +45,39 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
             @if (editedPlayerId === player.id) {
               <input
                 #playerName
+                id="inGameMenuInputFocusAction"
                 class="custom-input-small text-lg"
                 type="text"
+                maxlength="19"
+                minlength="3"
                 [value]="player.name"
-                (change)="setEditedPlayerName(playerName.value)"
-                (keydown)="setEditedPlayerName(playerName.value)" />
+                (keyup.enter)="
+                  setEditedPlayerId(player.id); setEditedPlayerName(player.name)
+                "
+                (change)="
+                  playerName.value.length > 2 && playerName.value.length < 20
+                    ? setEditedPlayerName(playerName.value)
+                    : null
+                "
+                (keydown)="
+                  playerName.value.length > 2 && playerName.value.length < 20
+                    ? setEditedPlayerName(playerName.value)
+                    : null
+                " />
             } @else {
-              <span class="text-mainOrange text-xl font-bold uppercase">{{
-                player.name
-              }}</span>
+              <span
+                class="text-mainOrange text-xl font-bold uppercase text-center"
+                >{{ player.name }}</span
+              >
             }
             <button
               (click)="
                 setEditedPlayerId(player.id); setEditedPlayerName(player.name)
               "
-              class="flex items-center justify-center border-[1px] border-mainGray rounded-md px-[6px] group hover:bg-mainCreme transition-all ease-in-out duration-300">
+              class="flex items-center justify-center border-[1px] border-mainOrange rounded-md px-[6px] group hover:bg-mainOrange transition-all ease-in-out duration-300">
               <i
                 data-feather="edit-3"
-                class="size-3 text-mainCreme group-hover:text-darkGray transition-all ease-in-out duration-300"></i>
+                class="size-3 text-mainOrange group-hover:text-darkGray transition-all ease-in-out duration-300"></i>
             </button>
           </div>
           <span class="text-mainCreme font-bold">Select player source:</span>
@@ -120,8 +136,12 @@ export class PlayerMenuComponent implements OnInit {
 
   public setEditedPlayerId(id: number): void {
     if (this.editedPlayerId === id) {
+      const player = this.players.find(p => p.id === this.editedPlayerId);
+      if (player) {
+        player.name = this.editedPlayerName;
+        this.updateName(player, this.editedPlayerName);
+      }
       this.editedPlayerId = -1;
-      console.log(this.editedPlayerName);
     } else {
       this.editedPlayerId = id;
     }
@@ -133,6 +153,16 @@ export class PlayerMenuComponent implements OnInit {
 
   public togglePlayerMenu(): void {
     this.isPlayerMenuVisible = !this.isPlayerMenuVisible;
+  }
+
+  public updateName(player: Player, value: string): void {
+    player.name = value;
+
+    this._urlParamService.setQueryParam(
+      'player-' + player.id + '-name',
+      player.name
+    );
+    this.playerSourceChangeEmitter.emit(this.players);
   }
 
   public updateSources(player: Player, value: string): void {
@@ -150,7 +180,7 @@ export class PlayerMenuComponent implements OnInit {
 
     this._urlParamService.setQueryParam(
       'player-' + player.id + '-active',
-      PlayerSourceType[player.playerType]
+      player.isActive ? 'true' : 'false'
     );
     this.playerSourceChangeEmitter.emit(this.players);
   }
@@ -165,6 +195,18 @@ export class PlayerMenuComponent implements OnInit {
       const active = this._urlParamService.getQueryParam(
         'player-' + player.id + '-active'
       );
+      const name = this._urlParamService.getQueryParam(
+        'player-' + player.id + '-name'
+      );
+
+      if (name !== null) {
+        player.name = name;
+      } else {
+        this._urlParamService.setQueryParam(
+          'player-' + player.id + '-name',
+          player.name
+        );
+      }
 
       if (source !== null) {
         player.playerType = source as PlayerSourceType;
