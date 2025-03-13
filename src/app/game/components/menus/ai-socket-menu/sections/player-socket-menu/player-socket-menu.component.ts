@@ -32,7 +32,7 @@ import * as feather from 'feather-icons';
           ? 'cursor-[url(/cursors/stronghold.png),_auto]'
           : 'cursor-[url(/cursors/stronghold_pointer.png),_auto]'
       }}">
-      <h3 class="text-mainOrange text-lg font-bold uppercase">
+      <h3 class="text-mainOrange text-xl font-bold uppercase text-center">
         {{ player.name }}
       </h3>
       <span
