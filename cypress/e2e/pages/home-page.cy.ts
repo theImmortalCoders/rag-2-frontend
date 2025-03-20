@@ -3,8 +3,15 @@ describe('Home Page E2E Tests:', () => {
     cy.visit('/');
   });
 
-  it('should describe animated h1 correctly', () => {
-    cy.contains("What's going on here?").should('be.visible');
+  it('should describe landing page title correctly', () => {
+    cy.contains(
+      'Rzeszów University of Technology Games for Artificial Intelligence 2.0'
+    ).should('be.visible');
+  });
+
+  it('should animate h2 correctly', () => {
+    cy.get('#animatedHeader').first().click();
+    cy.contains('Meet the authors:').should('be.visible');
   });
 
   it('should open author card correctly', () => {

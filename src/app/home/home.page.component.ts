@@ -31,7 +31,8 @@ import { RouterModule } from '@angular/router';
       <div
         class="flex flex-col justify-end pb-20 xl:pb-10 pt-6 xl:pt-14 relative min-h-all space-y-6 border-b-2 border-mainOrange ">
         <app-rag-2-logo
-          class="h-56 2xs:h-64 sm:h-80 xl:h-96 w-56 2xs:w-72 sm:w-80 xl:w-96 absolute right-12 lg:right-5 bottom-96 2xs:bottom-80 lg:bottom-5" [isPriority]="true"/>
+          class="h-56 2xs:h-64 sm:h-80 xl:h-96 w-56 2xs:w-72 sm:w-80 xl:w-96 absolute right-12 lg:right-5 bottom-96 2xs:bottom-80 lg:bottom-5"
+          [isPriority]="true" />
         <h1
           class="max-w-[90vw] sm:max-w-[100vw] lg:max-w-[70vw] xl:max-w-[56vw] text-2xl xs:text-3xl lg:text-4xl xl:text-5xl w-[max-content] px-4 lg:pl-4 text-mainCreme font-mono">
           Rzeszów University of Technology Games for Artificial Intelligence 2.0
