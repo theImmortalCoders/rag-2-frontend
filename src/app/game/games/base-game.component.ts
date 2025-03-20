@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines */
 /* eslint-disable max-depth */
 import {
@@ -203,7 +204,8 @@ export abstract class BaseGameWindowComponent
     for (const player of this.game.players) {
       if (
         player.playerType === PlayerSourceType.KEYBOARD &&
-        player.controlsBinding[event.key] !== undefined
+        player.controlsBinding[event.key] !== undefined &&
+        document.activeElement?.id !== 'inGameMenuInputFocusAction'
       ) {
         event.preventDefault();
 
@@ -228,7 +230,8 @@ export abstract class BaseGameWindowComponent
     for (const player of this.game.players) {
       if (
         player.playerType === PlayerSourceType.KEYBOARD &&
-        player.controlsBinding[event.key] !== undefined
+        player.controlsBinding[event.key] !== undefined &&
+        document.activeElement?.id !== 'inGameMenuInputFocusAction'
       ) {
         event.preventDefault();
 

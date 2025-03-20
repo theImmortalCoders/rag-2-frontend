@@ -1,19 +1,35 @@
 import { Component, Input } from '@angular/core';
 import { authorsData, IAuthor } from 'app/home/models/author';
-import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.component';
+import { PRzLogoComponent } from '../../../shared/components/common/prz-logo.component';
+import { GestLogoComponent } from '../../../shared/components/common/gest-logo.component';
 
 @Component({
   selector: 'app-author-cards',
   standalone: true,
-  imports: [Rag2LogoComponent],
+  imports: [PRzLogoComponent, GestLogoComponent],
   template: `
-    <app-rag-2-logo
-      class="h-64 2xs:h-72 xs:h-80 xl:h-96 w-64 2xs:w-72 xs:w-80 xl:w-96 absolute transition-all ease-in-out duration-300 {{
+    <app-prz-logo
+      class="size-32 2xs:size-40 xs:size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 mr-2 xs:mr-5 lg:mr-8 {{
         currentChoosenAuthor.index === -1
-          ? 'opacity-95 right-[12%] 2xs:right-[20%] xs:right-[30%] md:right-[15%] 2xl:right-1/3'
-          : 'opacity-0 -right-[50rem]'
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
       }}"
-      [isPriority]="true" />
+      [isPriority]="true"
+      [isEngVersion]="true" />
+    <div
+      class="h-32 2xs:h-36 xs:h-44 lg:h-48 xl:h-64 w-[1px] 2xs:w-[2px] bg-mainOrange transition-all ease-in-out duration-300 {{
+        currentChoosenAuthor.index === -1
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
+      }}"></div>
+    <app-gest-logo
+      class="size-36 2xs:size-44 xs:size-48 sm:size-64 md:size-80 xl:size-[22rem] relative transition-all ease-in-out duration-300 {{
+        currentChoosenAuthor.index === -1
+          ? 'opacity-95 translate-x-0'
+          : 'opacity-0 translate-x-72'
+      }}"
+      [isPriority]="true"
+      [isEngVersion]="true" />
     @for (author of authors; track author.name) {
       <div
         id="authorCards"
@@ -34,15 +50,17 @@ import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.
           class="text-base 2xs:text-lg lg:text-xl xl:text-2xl text-mainOrange font-bold">
           Main tech-stack:
         </h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-y-2">
+        <ul
+          id="authorsTechStackList"
+          class="grid grid-cols-2 sm:grid-cols-3 gap-y-2">
           @for (stackItem of author.techStack; track stackItem) {
-            <span
-              class="flex flex-row items-center space-x-2 text-2xs 2xs:text-xs lg:text-sm xl:text-base"
-              ><i data-feather="circle" class="size-2 text-mainGray"></i>
-              <p class="w-full">{{ stackItem }}</p></span
-            >
+            <li
+              class="flex flex-row items-center space-x-2 text-2xs 2xs:text-xs lg:text-sm xl:text-base">
+              <i data-feather="circle" class="size-2 text-mainGray"></i>
+              <p class="w-full">{{ stackItem }}</p>
+            </li>
           }
-        </div>
+        </ul>
         <h2
           class="text-base 2xs:text-lg lg:text-xl xl:text-2xl text-mainOrange font-bold">
           Hobbies and interests:
@@ -51,14 +69,20 @@ import { Rag2LogoComponent } from '../../../shared/components/common/rag-2-logo.
           {{ author.hobbies }}
         </h3>
         <div class="flex flex-row space-x-6 xl:space-x-8 pt-2">
-          <a [href]="'https://github.com/' + author.githubName" target="_blank">
+          <a
+            [href]="'https://github.com/' + author.githubName"
+            target="_blank"
+            title="The link opens in a new browser window"
+            [attr.aria-label]="'GitHub profile ' + author.name">
             <i
               data-feather="github"
               class="relative z-40 size-6 2xs:size-7 lg:size-8 xl:size-10 text-mainGray"></i>
           </a>
           <a
             [href]="'https://linkedin.com/in/' + author.linkedinName"
-            target="_blank">
+            target="_blank"
+            title="The link opens in a new browser window"
+            [attr.aria-label]="'LinkedIn profile' + author.name">
             <i
               data-feather="linkedin"
               class="relative z-40 size-6 2xs:size-7 lg:size-8 xl:size-10 text-mainGray"></i>

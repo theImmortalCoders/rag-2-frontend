@@ -33,7 +33,8 @@ import { TestPhaseComponent } from '@commonComponents/test-phase.component';
       }">
       <app-notification></app-notification>
       <app-navbar />
-      <main class="max-w-full min-h-all overflow-x-hidden relative z-40">
+      <main
+        class="max-w-full min-h-all overflow-x-hidden overflow-y-hidden relative z-40">
         <router-outlet />
       </main>
       <app-footer />

@@ -1,3 +1,4 @@
+import { DocumentationPageComponent } from './documentation/documentation.page.component';
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './home/home.page.component';
 import { GamePageComponent } from './game/game.page.component';
@@ -13,6 +14,7 @@ import { guestGuard } from '@utils/guards/guest.guard';
 import { GameListPageComponent } from './game-list/game-list.page.component';
 import { UserDetailsComponent } from './dashboard/user-details/user-details.component';
 import { userIdGuard } from '@utils/guards/user-id.gurad';
+import { AccessibilityStatementComponent } from '@commonComponents/accessibility-statement.component';
 
 export const routes: Routes = [
   {
@@ -78,6 +80,16 @@ export const routes: Routes = [
         title: 'Register Confirm Page',
       },
     ],
+  },
+  {
+    path: 'documentation',
+    component: DocumentationPageComponent,
+    title: 'Documentation Page',
+  },
+  {
+    path: 'accessibility-statement',
+    component: AccessibilityStatementComponent,
+    title: 'Accessibility statement',
   },
   {
     path: 'error404',

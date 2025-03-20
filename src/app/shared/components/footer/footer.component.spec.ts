@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterComponent } from './footer.component';
 import { NgOptimizedImage } from '@angular/common';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -9,7 +10,7 @@ describe('FooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FooterComponent, NgOptimizedImage], // Import komponentu standalone
+      imports: [FooterComponent, NgOptimizedImage, RouterTestingModule], // Import komponentu standalone
     }).compileComponents();
   });
 
@@ -42,8 +43,8 @@ describe('FooterComponent', () => {
     const imageElements = fixture.debugElement.queryAll(By.css('img'));
     const expectedSrcs = [
       'images/rag-2.png',
-      'images/prz_orange.png',
-      'images/gest_orange.png',
+      'images/prz/prz_orange.png',
+      'images/gest/gest_orange.png',
     ];
 
     expectedSrcs.forEach((src, index) => {

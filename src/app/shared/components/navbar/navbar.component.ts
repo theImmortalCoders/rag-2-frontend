@@ -31,10 +31,11 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
           <a
             id="navbarLogo"
             [routerLink]="['/']"
+            aria-label="Home page"
             class="size-10 2xs:size-12 relative -rotate-6">
             <img
               ngSrc="images/rag-2.png"
-              alt="Logo"
+              alt="Logo RAG-2"
               class="object-contain"
               fill />
           </a>

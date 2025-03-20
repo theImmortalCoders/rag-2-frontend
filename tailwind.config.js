@@ -19,11 +19,11 @@ module.exports = {
         mainCreme: '#FFE6C7',
       },
       backgroundImage: {
-        homeImageAI: "url('/images/home.jpg')",
-        homeImageUser: "url('/images/user.png')",
-        homeImageUser0: "url('/images/marcin.jpg')",
-        homeImageUser1: "url('/images/pawel.jpg')",
-        homeImageUser2: "url('/images/bartek.jpg')",
+        homeImageAI: "url('/images/home/home.jpg')",
+        homeImageUser: "url('/images/authors/user.png')",
+        homeImageUser0: "url('/images/authors/marcin.jpg')",
+        homeImageUser1: "url('/images/authors/pawel.jpg')",
+        homeImageUser2: "url('/images/authors/bartek.jpg')",
       },
       height: {
         navbar: '80px',
@@ -32,7 +32,7 @@ module.exports = {
         navbar: '80px',
       },
       minHeight: {
-        all: 'calc(100vh - 80px)',
+        all: 'calc(100vh - 72px)', //dla szerokosci >=375px jest 100vh - 80px
       },
       fontSize: {
         '2xs': '0.625rem',
@@ -53,9 +53,9 @@ module.exports = {
           '0 2px 6px rgba(53, 53, 53, 1), 0 -1px 2px rgba(53, 53, 53, 0)',
       },
       animation: {
-        typewriter21: 'typewriter 2s steps(21) forwards',
-        caret21:
-          'typewriter 2s steps(21) forwards, blink 2s steps(21) infinite 2s',
+        typewriter17: 'typewriter 2s steps(17) forwards',
+        caret17:
+          'typewriter 2s steps(17) forwards, blink 2s steps(17) infinite 2s',
       },
       keyframes: {
         typewriter: {

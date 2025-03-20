@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
     <div>
       <input
         type="text"
+        id="searchbar"
         class="custom-input"
         [(ngModel)]="searchQuery"
         (input)="onSearch()"

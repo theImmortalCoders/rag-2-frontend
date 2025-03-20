@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   AfterViewInit,
   Component,
@@ -40,9 +41,45 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
       @for (player of players; track player.id) {
         <div
           class="flex flex-col space-y-1 pb-2 {{ $first ? 'mt-4' : 'mt-0' }}">
-          <span class="text-mainOrange text-lg font-bold uppercase">{{
-            player.name
-          }}</span>
+          <div class="flex flex-row space-x-2">
+            @if (editedPlayerId === player.id) {
+              <input
+                #playerName
+                id="inGameMenuInputFocusAction"
+                class="custom-input-small text-lg"
+                type="text"
+                maxlength="19"
+                minlength="3"
+                [value]="player.name"
+                (keyup.enter)="
+                  setEditedPlayerId(player.id); setEditedPlayerName(player.name)
+                "
+                (change)="
+                  playerName.value.length > 2 && playerName.value.length < 20
+                    ? setEditedPlayerName(playerName.value)
+                    : null
+                "
+                (keydown)="
+                  playerName.value.length > 2 && playerName.value.length < 20
+                    ? setEditedPlayerName(playerName.value)
+                    : null
+                " />
+            } @else {
+              <span
+                class="text-mainOrange text-xl font-bold uppercase text-center"
+                >{{ player.name }}</span
+              >
+            }
+            <button
+              (click)="
+                setEditedPlayerId(player.id); setEditedPlayerName(player.name)
+              "
+              class="flex items-center justify-center border-[1px] border-mainOrange rounded-md px-[6px] group hover:bg-mainOrange transition-all ease-in-out duration-300">
+              <i
+                data-feather="edit-3"
+                class="size-3 text-mainOrange group-hover:text-darkGray transition-all ease-in-out duration-300"></i>
+            </button>
+          </div>
           <span class="text-mainCreme font-bold">Select player source:</span>
           <select
             #playerSourceSelect
@@ -62,6 +99,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
               Active:
               <input
                 #playerActive
+                id="playerActive"
                 type="checkbox"
                 class="accent-mainOrange"
                 (change)="updatePlayerActive(player, playerActive.checked)"
@@ -82,6 +120,9 @@ export class PlayerMenuComponent implements OnInit {
 
   public isPlayerMenuVisible = false;
 
+  public editedPlayerId = -1;
+  public editedPlayerName = '';
+
   public ngOnInit(): void {
     this.players.forEach(player => {
       this.syncPropsWithUrl(player);
@@ -93,8 +134,35 @@ export class PlayerMenuComponent implements OnInit {
     isNaN(Number(key))
   );
 
+  public setEditedPlayerId(id: number): void {
+    if (this.editedPlayerId === id) {
+      const player = this.players.find(p => p.id === this.editedPlayerId);
+      if (player) {
+        player.name = this.editedPlayerName;
+        this.updateName(player, this.editedPlayerName);
+      }
+      this.editedPlayerId = -1;
+    } else {
+      this.editedPlayerId = id;
+    }
+  }
+
+  public setEditedPlayerName(name: string): void {
+    this.editedPlayerName = name;
+  }
+
   public togglePlayerMenu(): void {
     this.isPlayerMenuVisible = !this.isPlayerMenuVisible;
+  }
+
+  public updateName(player: Player, value: string): void {
+    player.name = value;
+
+    this._urlParamService.setQueryParam(
+      'player-' + player.id + '-name',
+      player.name
+    );
+    this.playerSourceChangeEmitter.emit(this.players);
   }
 
   public updateSources(player: Player, value: string): void {
@@ -112,7 +180,7 @@ export class PlayerMenuComponent implements OnInit {
 
     this._urlParamService.setQueryParam(
       'player-' + player.id + '-active',
-      PlayerSourceType[player.playerType]
+      player.isActive ? 'true' : 'false'
     );
     this.playerSourceChangeEmitter.emit(this.players);
   }
@@ -127,6 +195,18 @@ export class PlayerMenuComponent implements OnInit {
       const active = this._urlParamService.getQueryParam(
         'player-' + player.id + '-active'
       );
+      const name = this._urlParamService.getQueryParam(
+        'player-' + player.id + '-name'
+      );
+
+      if (name !== null) {
+        player.name = name;
+      } else {
+        this._urlParamService.setQueryParam(
+          'player-' + player.id + '-name',
+          player.name
+        );
+      }
 
       if (source !== null) {
         player.playerType = source as PlayerSourceType;
