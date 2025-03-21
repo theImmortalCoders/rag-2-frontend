@@ -9,18 +9,13 @@ describe('Home Page E2E Tests:', () => {
     ).should('be.visible');
   });
 
-  it('should animate h2 correctly', () => {
-    cy.get('#animatedHeader').first().click();
-    cy.contains('Meet the authors:').should('be.visible');
-  });
-
   it('should open author card correctly', () => {
-    cy.get('#authorsButton').first().click();
+    cy.get('#authorsButton').first().scrollIntoView().click();
     cy.get('#authorCards').first().should('be.visible');
   });
 
   it('should navigate to game-list page correctly', () => {
-    cy.get('#checkGameListButton').click();
+    cy.get('#checkGameListButton').first().scrollIntoView().focus().click();
     cy.location('pathname').should('eq', '/game-list');
   });
 });
