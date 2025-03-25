@@ -5,14 +5,14 @@ describe('Navbar E2E Tests:', () => {
   });
 
   it('logo should navigate to home page correctly', () => {
-    cy.get('#navbarLogo').click();
+    cy.get('#navbarLogo').forceClick();
     cy.location('pathname').should('eq', '/');
   });
 
   it('headline should navigate to home page correctly (except mobiles)', () => {
     cy.window().then(win => {
       if (win.innerWidth > 768) {
-        cy.get('#navbarHeadline').click();
+        cy.get('#navbarHeadline').forceClick();
         cy.location('pathname').should('eq', '/');
       } else {
         cy.get('#navbarHeadline').should('be.null');
@@ -21,13 +21,13 @@ describe('Navbar E2E Tests:', () => {
   });
 
   it('lets play button should open game-list menu', () => {
-    cy.get('#toggleGameListButton').click();
+    cy.get('#toggleGameListButton').forceClick();
     cy.get('#gameListMenu').should('have.class', 'opacity-100');
   });
 
   it('game-list menu should navigate to correct game', () => {
-    cy.get('#toggleGameListButton').click();
-    cy.get('#gameListElement').first().click();
+    cy.get('#toggleGameListButton').forceClick();
+    cy.get('#gameListElement').first().forceClick();
     cy.get('#gameListElement')
       .first()
       .invoke('attr', 'href')
@@ -37,13 +37,13 @@ describe('Navbar E2E Tests:', () => {
   });
 
   it('game-list menu should navigate to game-list page', () => {
-    cy.get('#toggleGameListButton').click();
-    cy.get('#seeAllGamesButton').click();
+    cy.get('#toggleGameListButton').forceClick();
+    cy.get('#seeAllGamesButton').forceClick();
     cy.location('pathname').should('eq', '/game-list');
   });
 
   it('user shortcut should navigate to login page (not logged in)', () => {
-    cy.get('#userShortcutButton').click();
+    cy.get('#userShortcutButton').forceClick();
     cy.location('pathname').should('eq', '/login');
   });
 
@@ -52,7 +52,7 @@ describe('Navbar E2E Tests:', () => {
       cy.mockGetMe();
       cy.mockLogin('testuser@stud.prz.edu.pl', 'tajnehaslo123');
       cy.wait('@getMe').its('response.statusCode').should('eq', 200);
-      cy.get('#userShortcutButton').click();
+      cy.get('#userShortcutButton').forceClick();
       cy.get('#userShortcutMenu').should('be.visible');
       cy.get('#userShortcutMenuRole').should(
         'have.text',
@@ -65,8 +65,8 @@ describe('Navbar E2E Tests:', () => {
     cy.mockGetMe();
     cy.mockLogin('testuser@stud.prz.edu.pl', 'tajnehaslo123');
     cy.wait('@getMe').its('response.statusCode').should('eq', 200);
-    cy.get('#userShortcutButton').click();
-    cy.get('#userShortcutMenuDashboardButton').click();
+    cy.get('#userShortcutButton').forceClick();
+    cy.get('#userShortcutMenuDashboardButton').forceClick();
     cy.mockVerifyJWTToken();
     cy.wait('@verifyJWTToken').its('response.statusCode').should('eq', 200);
     cy.location('pathname').should('eq', '/dashboard');
