@@ -55,7 +55,8 @@ import { RouterModule } from '@angular/router';
         </div>
         <div class="flex flex-col items-start space-y-2">
           <a
-            [href]="'https://w.prz.edu.pl/'"
+            id="przFooterLogo"
+            href="https://w.prz.edu.pl/"
             target="_blank"
             title="The link opens in a new browser window"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
@@ -72,7 +73,8 @@ import { RouterModule } from '@angular/router';
             >
           </a>
           <a
-            [href]="'http://vision.kia.prz.edu.pl/gest/'"
+            id="gestFooterLogo"
+            href="http://vision.kia.prz.edu.pl/gest/"
             target="_blank"
             title="The link opens in a new browser window"
             class="flex flex-col xs:flex-row items-start xs:items-center justify-start xs:justify-center space-y-1 xs:space-y-0 space-x-0 xs:space-x-2 group w-fit sm:w-full">
@@ -91,6 +93,7 @@ import { RouterModule } from '@angular/router';
         </div>
       </div>
       <div
+        id="lowerFooterSection"
         class="flex flex-col xs:flex-row space-y-3 xs:space-y-0 space-x-0 xs:space-x-12 w-full items-center justify-center text-sm xs:text-xs lg:text-sm text-mainOrange grayscale">
         <span>&copy; {{ currentYear }} RUT & GEST</span>
         <span>PRIVACY POLICY</span>
