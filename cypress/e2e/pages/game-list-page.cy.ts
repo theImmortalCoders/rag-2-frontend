@@ -40,13 +40,10 @@ describe('Game List Page E2E Tests:', () => {
     });
   });
 
-  //   it('should switch tile view after DESCRIPTION/STATS button clicked', () => {
-  //     cy.fixture('games.json').then(games => {
-  //       games.forEach((game: any) => {
-  //         cy.get('#gameTile' + game.id).trigger('mousemove');
-  //         cy.get('#gamePageActionButtonTile' + game.id).forceClick();
-  //         cy.get('#gamePageDescriptionTile' + game.id).should('not.exist');
-  //       });
-  //     });
-  //   });
+  it('should switch tile view after DESCRIPTION/STATS button clicked', () => {
+    cy.get('#gameTile1').trigger('mouseover');
+    cy.get('#gamePageActionButtonTile1').forceClick();
+    cy.get('#gamePageDescriptionTile1').should('not.exist');
+    cy.get('#gameTile1').trigger('mouseout');
+  });
 });
