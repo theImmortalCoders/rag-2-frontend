@@ -6,7 +6,9 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   template: `
-    <h1 class="text-xl xs:text-2xl font-bold uppercase tracking-wider">
+    <h1
+      id="sidePanelUserWorkflowHeader"
+      class="text-xl xs:text-2xl font-bold uppercase tracking-wider">
       {{ mainText }}
     </h1>
     <span>

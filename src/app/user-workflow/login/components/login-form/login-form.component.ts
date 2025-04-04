@@ -20,8 +20,13 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
   standalone: true,
   imports: [ReactiveFormsModule, ForgotPasswordComponent],
   template: `
-    <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
+    <h1
+      id="loginHeader"
+      class="text-2xl pb-6 font-bold uppercase tracking-wider">
+      Log in
+    </h1>
     <form
+      id="loginPageForm"
       [formGroup]="loginForm"
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
