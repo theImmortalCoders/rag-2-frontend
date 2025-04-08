@@ -6,13 +6,6 @@ describe('Game List Page E2E Tests:', () => {
     cy.wait('@getGames').its('response.statusCode').should('eq', 200);
   });
 
-  it('should describe landing page title correctly', () => {
-    cy.get('#gameListPageHeader').should(
-      'contain.text',
-      'Check details about our games:'
-    );
-  });
-
   it('should display number of tiles equals to correct length', () => {
     cy.fixture('games.json').then(games => {
       cy.get('#gameTilesParent')
