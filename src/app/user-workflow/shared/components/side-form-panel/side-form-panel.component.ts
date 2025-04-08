@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
     </h1>
     <span>
       <button
+        id="sidePanelNavigateButton"
         [routerLink]="[routerLink]"
         class="w-full my-6 border-[1px] border-mainOrange rounded-md px-2 py-1 text-mainOrange transition-all ease-in-out hover:bg-mainOrange hover:text-mainGray">
         {{ buttonText }}

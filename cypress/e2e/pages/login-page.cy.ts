@@ -24,4 +24,13 @@ describe('Login Page E2E Tests:', () => {
     const text = "Don't you have an account yet?";
     cy.get('#sidePanelUserWorkflowHeader').should('contain.text', text);
   });
+
+  it('should navigate to register page after button clicked', () => {
+    cy.get('#sidePanelNavigateButton').forceClick();
+    cy.location('pathname').should('eq', '/register');
+  });
+
+  it('should have all benefits list elements available', () => {
+    cy.get('#benefitsListParent').children('span').should('have.length', 4);
+  });
 });
