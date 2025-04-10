@@ -1,0 +1,5 @@
+{
+  "studentLimitMb": 25,
+  "teacherLimitMb": 40,
+  "adminLimitMb": 50
+}
