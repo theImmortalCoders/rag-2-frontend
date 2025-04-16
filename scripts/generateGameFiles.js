@@ -148,7 +148,6 @@ import { ${gameClassName}, ${stateClassName} } from './models/${gameName.toLower
   template: \`
     <app-canvas
       [displayMode]="'horizontal'"
-      class="bg-zinc-300"
       #gameCanvas></app-canvas>
     <b>FPS: {{ fps }}</b> \`,
 })
