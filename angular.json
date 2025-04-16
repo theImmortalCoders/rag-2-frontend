@@ -44,6 +44,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/rag-2-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -55,7 +56,11 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/custom-theme.scss", "src/styles.css"],
+            "styles": [
+              "src/custom-theme.scss",
+              "src/styles.css",
+              "./node_modules/rag-2-games-lib/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
