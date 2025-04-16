@@ -1,5 +1,4 @@
-import { TExchangeData } from '@gameModels/exchange-data.type';
-import { PlayerSourceType } from '../player-source-type.enum';
+import { PlayerSourceType, TExchangeData } from 'rag-2-games-lib';
 
 export interface IPlayer {
   id: number;

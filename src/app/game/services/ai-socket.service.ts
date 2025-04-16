@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
-import { TExchangeData } from '@gameModels/exchange-data.type';
+import { TExchangeData } from 'rag-2-games-lib';
 import { NotificationService } from 'app/shared/services/notification.service';
 
 @Injectable({

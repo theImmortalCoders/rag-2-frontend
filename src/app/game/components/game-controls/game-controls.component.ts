@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Game } from '@gameModels/game.class';
+import { Game } from 'rag-2-games-lib';
 
 @Component({
   selector: 'app-game-controls',
