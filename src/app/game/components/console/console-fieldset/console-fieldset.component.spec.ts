@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeyValuePipe } from '@angular/common';
 import { ExchangeDataPipe } from '@utils/pipes/exchange-data.pipe';
 import { ConsoleFieldsetComponent } from './console-fieldset.component';
-import { TExchangeData } from '@gameModels/exchange-data.type';
+import { TExchangeData } from 'rag-2-games-lib';
 
 describe('ConsoleFieldsetComponent', () => {
   let component: ConsoleFieldsetComponent;
