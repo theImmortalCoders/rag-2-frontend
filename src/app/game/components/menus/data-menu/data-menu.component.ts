@@ -6,12 +6,11 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { TExchangeData } from '@gameModels/exchange-data.type';
+import { TExchangeData, Game } from 'rag-2-games-lib';
 import { KeyValuePipe } from '@angular/common';
 import { DataSelectCheckboxComponent } from './sections/data-select-checkbox/data-select-checkbox.component';
 import { DataDownloadComponent } from './sections/data-download/data-download.component';
 import { UrlParamService } from 'app/shared/services/url-param.service';
-import { Game } from '@gameModels/game.class';
 import { Observable, Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-helper/side-menu-helper.component';

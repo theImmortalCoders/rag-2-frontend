@@ -8,8 +8,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
-import { Player } from '@gameModels/player.class';
+import { Player, PlayerSourceType } from 'rag-2-games-lib';
 import { UrlParamService } from 'app/shared/services/url-param.service';
 import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-helper/side-menu-helper.component';
 
