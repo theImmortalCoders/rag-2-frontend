@@ -44,6 +44,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/rag-2-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",

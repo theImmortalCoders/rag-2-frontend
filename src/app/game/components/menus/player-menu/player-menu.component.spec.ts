@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerMenuComponent } from './player-menu.component';
 import { By } from '@angular/platform-browser';
-import { Player } from '@gameModels/player.class';
+import { Player } from 'rag-2-games-lib';
 import { AiSocketService } from 'app/game/services/ai-socket.service';
-import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
+import { PlayerSourceType } from 'rag-2-games-lib';
 
 describe('PlayerMenuComponent', () => {
   let component: PlayerMenuComponent;

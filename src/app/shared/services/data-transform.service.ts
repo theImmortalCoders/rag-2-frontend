@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TExchangeData } from '@gameModels/exchange-data.type';
+import { TExchangeData } from 'rag-2-games-lib';
 
 @Injectable({
   providedIn: 'root',

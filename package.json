@@ -11,7 +11,7 @@
     "e2e": "ng e2e --no-watch --headless",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "newGame": "node scripts/generateGameFiles.js"
+    "games:import": "npm link rag-2-games-lib"
   },
   "private": true,
   "dependencies": {
