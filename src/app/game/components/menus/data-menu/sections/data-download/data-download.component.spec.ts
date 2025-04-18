@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataDownloadComponent } from './data-download.component';
 import { DataTransformService } from 'app/shared/services/data-transform.service';
-import { TExchangeData } from 'rag-2-games-lib';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
 
