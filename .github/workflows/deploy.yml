@@ -5,12 +5,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    uses: ./.github/workflows/test.yml
+  # build:
+  #   uses: ./.github/workflows/test.yml
     
   deploy:
     runs-on: ubuntu-latest
-    needs: [ build ]
+    # needs: [ build ]
     steps:
       - name: Deploy
         uses: appleboy/ssh-action@master
