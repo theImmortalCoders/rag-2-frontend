@@ -6,13 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { TExchangeData } from '@gameModels/exchange-data.type';
-import { Player } from '@gameModels/player.class';
 import { DebugModeMenuComponent } from '../debug-mode-menu/debug-mode-menu.component';
 import { DebugModePanelComponent } from '../debug-mode-panel/debug-mode-panel.component';
 import { PlayerSocketConnectionMenuComponent } from '../player-socket-connection-menu/player-socket-connection-menu.component';
 import { Observable } from 'rxjs';
-import { Game } from '@gameModels/game.class';
+import { Game, Player, TExchangeData } from 'rag-2-games-lib';
 import * as feather from 'feather-icons';
 
 @Component({

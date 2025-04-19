@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { TExchangeData } from '@gameModels/exchange-data.type';
+import { TExchangeData } from 'rag-2-games-lib';
 
 @Component({
   selector: 'app-data-select-checkbox',

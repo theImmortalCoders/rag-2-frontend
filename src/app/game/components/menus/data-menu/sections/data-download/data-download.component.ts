@@ -7,8 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { GameRecordEndpointsService } from '@endpoints/game-record-endpoints.service';
-import { TExchangeData } from '@gameModels/exchange-data.type';
-import { Game } from '@gameModels/game.class';
+import { Game, TExchangeData } from 'rag-2-games-lib';
 import { IRecordedGameRequest } from '@api-models/recorded-game.models';
 import { NotificationService } from 'app/shared/services/notification.service';
 import { formatFileSize } from '@utils/helpers/formatFileSize';

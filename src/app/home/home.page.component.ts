@@ -30,6 +30,7 @@ import { RouterModule } from '@angular/router';
         class="bg-homeImageAI opacity-40 bg-center fixed z-0 top-0 left-0 h-[100vh] w-[100vw]"></div>
       <div
         class="flex flex-col justify-end pb-20 xl:pb-10 pt-6 xl:pt-14 relative min-h-all space-y-6 border-b-2 border-mainOrange ">
+        <div class="hidden">RAG-2</div>
         <app-rag-2-logo
           class="h-56 2xs:h-64 sm:h-80 xl:h-96 w-56 2xs:w-72 sm:w-80 xl:w-96 absolute right-12 lg:right-5 bottom-96 2xs:bottom-80 lg:bottom-5"
           [isPriority]="true" />

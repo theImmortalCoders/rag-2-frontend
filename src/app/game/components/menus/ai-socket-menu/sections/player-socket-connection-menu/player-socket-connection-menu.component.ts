@@ -10,16 +10,13 @@ import {
   Output,
 } from '@angular/core';
 import { AiSocketService } from 'app/game/services/ai-socket.service';
-import { TExchangeData } from '@gameModels/exchange-data.type';
-import { PlayerSourceType } from 'app/shared/models/player-source-type.enum';
-import { Player } from '@gameModels/player.class';
 import { SocketDomainInputComponent } from '../socket-domain-input/socket-domain-input.component';
 import { SocketConnectedMenuComponent } from '../socket-connected-menu/socket-connected-menu.component';
 import { Observable, Subscription } from 'rxjs';
 import { PageVisibilityService } from 'app/shared/services/page-visibility.service';
 import { UrlParamService } from 'app/shared/services/url-param.service';
 import { ModelSelectionComponent } from '../model-selection/model-selection.component';
-import { Game } from '@gameModels/game.class';
+import { Game, TExchangeData, PlayerSourceType, Player } from 'rag-2-games-lib';
 import { SideMenuHelperComponent } from '../side-menu-helper/side-menu-helper.component';
 import * as feather from 'feather-icons';
 

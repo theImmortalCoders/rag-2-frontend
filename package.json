@@ -1,6 +1,6 @@
 {
   "name": "rag-2-frontend",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +14,7 @@
     "e2e:dev": "npx ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "newGame": "node scripts/generateGameFiles.js"
+    "games:import": "npm link rag-2-games-lib"
   },
   "private": true,
   "dependencies": {

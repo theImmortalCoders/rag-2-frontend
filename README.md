@@ -3,7 +3,7 @@
 ## License
 
 This project is available under the AGPL License. See [LICENSE](./LICENSE) for more information.
-    
+
 The application was created as part of the work of the Human-Computer Interaction Scientific Club "GEST" at the Rzeszów University of Technology.
 
 ## Compliance and distribution
@@ -15,6 +15,8 @@ Failure to comply with the terms of the AGPL license may result in legal consequ
 ## Description
 
 A web application with mini-games that collects game data and connects AI models to game agents via WebSocket. Users can interact with game data, view statistics, and manage game history through dashboard panel. The system supports different user roles and simplifies adding new game titles.
+
+An external service with minigames used exclusively in this repository is avalaible [here](https://github.com/KN-GEST-ongit/rag-2-games/). To import the library you need to build it and export. Then it depends on export's type. Link it locally using `npm run games:import` or install it using npm from `.tgz` file.
 
 ## Features
 
