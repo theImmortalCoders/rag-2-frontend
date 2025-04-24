@@ -20,7 +20,20 @@ describe('Dashboard Page E2E Tests:', () => {
     cy.location('pathname').should('eq', '/dashboard');
   });
 
-  it('test', () => {
-    //
+  it('should describe user`s data correctly', () => {
+    cy.fixture('user.json').then(user => {
+      cy.get('#dashboardNameHeader').should(
+        'contain.text',
+        'Hello, ' + user.name + '!'
+      );
+      cy.get('#dashboardRoleHeader').should('contain.text', user.role);
+      cy.get('#dashboardEmailHeader').should('contain.text', user.email);
+      cy.get('#dashboardYearsHeader').should(
+        'contain.text',
+        user.studyCycleYearA + '/' + user.studyCycleYearB
+      );
+      cy.get('#dashboardCourseHeader').should('contain.text', user.course.name);
+      cy.get('#dashboardGroupHeader').should('contain.text', user.group);
+    });
   });
 });

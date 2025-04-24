@@ -11,6 +11,7 @@ import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle
     <div class="flex flex-col lg:flex-row justify-stretch w-full">
       <div class="flex flex-col w-[90%] md:w-3/4 pl-4 xs:pl-8 sm:pl-12">
         <h1
+          id="dashboardNameHeader"
           class="text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
           Hello, {{ aboutMeUserInfo?.name }}!
         </h1>
@@ -18,13 +19,13 @@ import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle
           class="w-full xs:w-5/6 border-[1px] sm:border-2 border-mainOrange mb-4" />
         <div
           class="flex flex-col pl-2 xs:pl-6 text-sm xs:text-base sm:text-xl text-mainOrange">
-          <h2>
+          <h2 id="dashboardRoleHeader">
             Logged in as:
             <span class="text-mainCreme uppercase">
               {{ aboutMeUserInfo?.role }}
             </span>
           </h2>
-          <h2>
+          <h2 id="dashboardEmailHeader">
             Your email address:
             <span class="text-mainCreme">
               {{ aboutMeUserInfo?.email }}
@@ -34,7 +35,7 @@ import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle
             aboutMeUserInfo?.studyCycleYearA !== null &&
             aboutMeUserInfo?.studyCycleYearB !== null
           ) {
-            <h2>
+            <h2 id="dashboardYearsHeader">
               Your study cycle years:
               <span class="text-mainCreme">
                 {{ aboutMeUserInfo?.studyCycleYearA }}/{{
@@ -44,7 +45,7 @@ import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle
             </h2>
           }
           @if (aboutMeUserInfo?.course !== null) {
-            <h2>
+            <h2 id="dashboardCourseHeader">
               Your course of study:
               <span class="text-mainCreme">
                 {{ aboutMeUserInfo?.course?.name }}
@@ -52,20 +53,20 @@ import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle
             </h2>
           }
           @if (aboutMeUserInfo?.group !== null) {
-            <h2>
+            <h2 id="dashboardGroupHeader">
               Your group:
               <span class="text-mainCreme">
                 {{ aboutMeUserInfo?.group }}
               </span>
             </h2>
           }
-          <h2>
+          <h2 id="dashboardGamesHeader">
             Your types of games played:
             <span class="text-mainCreme">
               {{ userStatsInfo?.games }}
             </span>
           </h2>
-          <h2>
+          <h2 id="dashboardPlaysHeader">
             Your total plays in all games:
             <span class="text-mainCreme">
               {{ userStatsInfo?.plays }}

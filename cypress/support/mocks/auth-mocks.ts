@@ -32,7 +32,7 @@ Cypress.Commands.add('mockLogin', (email: string, password: string) => {
   cy.get('button[type="submit"]').click();
 
   cy.wait('@loginRequest').then(interception => {
-    const token = interception.response.body.token;
+    const token = interception.response?.body.token;
     window.localStorage.setItem('jwtToken', token);
   });
 });
