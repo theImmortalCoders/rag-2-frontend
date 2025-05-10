@@ -72,13 +72,13 @@ import { ProgressCircleBarComponent } from '@dashboardComponents/progress-circle
               {{ userStatsInfo?.plays }}
             </span>
           </h2>
-          <h2>
+          <h2 id="dashboardFirstGameHeader">
             Your first game was on:
             <span class="text-mainCreme">
               {{ userStatsInfo?.firstPlayed | date: 'dd/MM/yyyy, HH:mm' }}
             </span>
           </h2>
-          <h2>
+          <h2 id="dashboardLastGameHeader">
             Your last game was on:
             <span class="text-mainCreme">
               {{ userStatsInfo?.lastPlayed | date: 'dd/MM/yyyy, HH:mm' }}
