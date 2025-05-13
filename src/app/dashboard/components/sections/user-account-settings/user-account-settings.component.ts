@@ -33,6 +33,7 @@ import { AppStatusService } from 'app/shared/services/app-status.service';
   template: `
     <button
       (click)="showOptions()"
+      id="userAccountSettingsButton"
       class="flex flex-row justify-between text-xl xs:text-2xl sm:text-4xl font-bold text-mainOrange text-center 2xs:text-start">
       <span> My account settings </span>
       <div
@@ -44,6 +45,7 @@ import { AppStatusService } from 'app/shared/services/app-status.service';
     </button>
     <hr class="w-full border-[1px] sm:border-2 border-mainOrange mb-4" />
     <div
+      id="userAccountSettingsOptionsParent"
       class="relative ease-in-out duration-150 transition-all {{
         isOptionsVisible
           ? 'top-0 opacity-100 z-30 h-fit'

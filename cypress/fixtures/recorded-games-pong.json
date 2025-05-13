@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": 1,
+    "gameName": "pong",
+    "user": {
+      "id": 1,
+      "email": "testuser@stud.prz.edu.pl",
+      "role": "Student",
+      "name": "John Night",
+      "studyCycleYearA": 2022,
+      "studyCycleYearB": 2023,
+      "lastPlayed": "2025-05-13T20:07:01",
+      "banned": false,
+      "course": null,
+      "group": null
+    },
+    "players": [
+      {
+        "id": 0,
+        "name": "Player 1",
+        "isObligatory": true,
+        "isActive": true,
+        "playerType": "Keyboard",
+        "inputData": {
+          "move": 0,
+          "start": 0
+        },
+        "expectedDataDescription": "<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start"
+      },
+      {
+        "id": 1,
+        "name": "Player 2",
+        "isObligatory": true,
+        "isActive": true,
+        "playerType": "Keyboard",
+        "inputData": {
+          "move": 0,
+          "start": 0
+        },
+        "expectedDataDescription": "<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start"
+      }
+    ],
+    "started": "2025-05-13T20:06:25.358",
+    "ended": "2025-05-13T20:06:34.697",
+    "outputSpec": "\n      output:\n        leftPaddleY: int, <0, 600>;\n        rightPaddleY: int, <0, 600>;\n        leftPaddleSpeed: int, {-20, 0, 20};\n        rightPaddleSpeed: int, {-20, 0, 20};\n        ballX: float, <0, 1000>;\n        ballY: float, <0, 600>;\n        ballSpeedX: float, <-inf, inf>;\n        ballSpeedY: float, <-inf, inf>;\n        ballSpeedMultiplier: float, <1, inf>;\n        scoreLeft: int, <0, inf>;\n        scoreRight: int, <0, inf>;\n\n      default values:\n        ballX: 500;\n        ballY: 300;\n        leftPaddleY: 250;\n        rightPaddleY: 250;\n    ",
+    "endState": "{\"leftPaddleY\":165,\"rightPaddleY\":0,\"leftPaddleSpeed\":0,\"rightPaddleSpeed\":0,\"ballX\":839.8000000000008,\"ballY\":108,\"ballSpeedX\":-7,\"ballSpeedY\":3,\"ballSpeedMultiplier\":1.2400000000000002,\"scoreLeft\":0,\"scoreRight\":0}",
+    "sizeMb": 0.06694793701171875,
+    "isEmptyRecord": false
+  },
+  {
+    "id": 2,
+    "gameName": "pong",
+    "user": {
+      "id": 1,
+      "email": "testuser@stud.prz.edu.pl",
+      "role": "Student",
+      "name": "John Night",
+      "studyCycleYearA": 2022,
+      "studyCycleYearB": 2023,
+      "lastPlayed": "2025-05-13T20:07:01",
+      "banned": false,
+      "course": null,
+      "group": null
+    },
+    "players": [
+      {
+        "id": 0,
+        "name": "Player 1",
+        "isObligatory": true,
+        "isActive": true,
+        "playerType": "Keyboard",
+        "inputData": {
+          "move": 0,
+          "start": 0
+        },
+        "expectedDataDescription": "<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start"
+      },
+      {
+        "id": 1,
+        "name": "Player 2",
+        "isObligatory": true,
+        "isActive": true,
+        "playerType": "Keyboard",
+        "inputData": {
+          "move": 0,
+          "start": 0
+        },
+        "expectedDataDescription": "<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start"
+      }
+    ],
+    "started": "2025-05-13T20:06:25.358",
+    "ended": "2025-05-13T20:06:41.121",
+    "outputSpec": "\n      output:\n        leftPaddleY: int, <0, 600>;\n        rightPaddleY: int, <0, 600>;\n        leftPaddleSpeed: int, {-20, 0, 20};\n        rightPaddleSpeed: int, {-20, 0, 20};\n        ballX: float, <0, 1000>;\n        ballY: float, <0, 600>;\n        ballSpeedX: float, <-inf, inf>;\n        ballSpeedY: float, <-inf, inf>;\n        ballSpeedMultiplier: float, <1, inf>;\n        scoreLeft: int, <0, inf>;\n        scoreRight: int, <0, inf>;\n\n      default values:\n        ballX: 500;\n        ballY: 300;\n        leftPaddleY: 250;\n        rightPaddleY: 250;\n    ",
+    "endState": "{\"leftPaddleY\":230,\"rightPaddleY\":225,\"leftPaddleSpeed\":0,\"rightPaddleSpeed\":0,\"ballX\":768.7200000000014,\"ballY\":26,\"ballSpeedX\":9,\"ballSpeedY\":9,\"ballSpeedMultiplier\":1.08,\"scoreLeft\":0,\"scoreRight\":1}",
+    "sizeMb": 0.08756446838378906,
+    "isEmptyRecord": false
+  },
+  {
+    "id": 3,
+    "gameName": "pong",
+    "user": {
+      "id": 1,
+      "email": "testuser@stud.prz.edu.pl",
+      "role": "Student",
+      "name": "John Night",
+      "studyCycleYearA": 2022,
+      "studyCycleYearB": 2023,
+      "lastPlayed": "2025-05-13T20:07:01",
+      "banned": false,
+      "course": null,
+      "group": null
+    },
+    "players": [
+      {
+        "id": 0,
+        "name": "Player 1",
+        "isObligatory": true,
+        "isActive": true,
+        "playerType": "Keyboard",
+        "inputData": {
+          "move": 0,
+          "start": 0
+        },
+        "expectedDataDescription": "<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start"
+      },
+      {
+        "id": 1,
+        "name": "Player 2",
+        "isObligatory": true,
+        "isActive": true,
+        "playerType": "Keyboard",
+        "inputData": {
+          "move": 0,
+          "start": 0
+        },
+        "expectedDataDescription": "<move>: value of {-1, 0, 1}, -1: down, 0: stop, 1: up; <start>: value of {0, 1}, 0: not start, 1: start"
+      }
+    ],
+    "started": "2025-05-13T20:07:01",
+    "ended": "2025-05-13T20:07:01",
+    "outputSpec": "\n      output:\n        leftPaddleY: int, <0, 600>;\n        rightPaddleY: int, <0, 600>;\n        leftPaddleSpeed: int, {-20, 0, 20};\n        rightPaddleSpeed: int, {-20, 0, 20};\n        ballX: float, <0, 1000>;\n        ballY: float, <0, 600>;\n        ballSpeedX: float, <-inf, inf>;\n        ballSpeedY: float, <-inf, inf>;\n        ballSpeedMultiplier: float, <1, inf>;\n        scoreLeft: int, <0, inf>;\n        scoreRight: int, <0, inf>;\n\n      default values:\n        ballX: 500;\n        ballY: 300;\n        leftPaddleY: 250;\n        rightPaddleY: 250;\n    ",
+    "endState": "{}",
+    "sizeMb": 0,
+    "isEmptyRecord": true
+  }
+]
