@@ -1,3 +1,4 @@
+import 'cypress-real-events/support';
 import './mocks/auth-mocks';
 import './mocks/game-mocks';
 import './mocks/stats-mocks';

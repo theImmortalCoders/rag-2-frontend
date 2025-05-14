@@ -9,6 +9,6 @@
   "exclude": [],
   "compilerOptions": {
     "sourceMap": false,
-    "types": ["cypress"]
+    "types": ["cypress", "cypress-real-events"]
   }
 }

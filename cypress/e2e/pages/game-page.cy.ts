@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 describe('Game Page E2E Tests:', () => {
   beforeEach(() => {
     cy.mockGetMe();
@@ -12,7 +13,24 @@ describe('Game Page E2E Tests:', () => {
   });
 
   it('should describe game controls section after hover', () => {
-    cy.get('#gameControlsParent').should('exist');
-    // cy.get('#gameControlsSection').should('be.visible');
+    cy.get('#gameControlsParent').realHover();
+    cy.get('#gameControlsSection').should('be.visible');
+  });
+
+  it('should start the game after SPACE button clicked', () => {
+    let before: any;
+
+    cy.get('canvas').then($canvas => {
+      before = $canvas[0].toDataURL();
+    });
+
+    cy.get('body').realPress('Space');
+
+    cy.wait(500);
+
+    cy.get('canvas').then($canvas => {
+      const after = $canvas[0].toDataURL();
+      expect(after).to.not.equal(before);
+    });
   });
 });
