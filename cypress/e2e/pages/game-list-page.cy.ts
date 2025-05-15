@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 describe('Game List Page E2E Tests:', () => {
   beforeEach(() => {
-    cy.visit('/game-list');
     cy.mockGetGames();
+    cy.visit('/game-list');
     cy.wait('@getGames').its('response.statusCode').should('eq', 200);
   });
 

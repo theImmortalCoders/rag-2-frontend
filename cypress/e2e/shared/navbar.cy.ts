@@ -1,6 +1,7 @@
 describe('Navbar E2E Tests:', () => {
   beforeEach(() => {
     cy.mockGetGames();
+    cy.visit('/');
     cy.wait('@getGames').its('response.statusCode').should('eq', 200);
   });
 
