@@ -65,10 +65,10 @@ describe('Navbar E2E Tests:', () => {
   it('user shortcut should open user menu and navigate to dashboard correctly (logged in)', () => {
     cy.mockGetMe();
     cy.mockLogin('testuser@stud.prz.edu.pl', 'tajnehaslo123');
+    cy.mockVerifyJWTToken();
     cy.wait('@getMe').its('response.statusCode').should('eq', 200);
     cy.get('#userShortcutButton').forceClick();
     cy.get('#userShortcutMenuDashboardButton').forceClick();
-    cy.mockVerifyJWTToken();
     cy.wait('@verifyJWTToken').its('response.statusCode').should('eq', 200);
     cy.location('pathname').should('eq', '/dashboard');
   });

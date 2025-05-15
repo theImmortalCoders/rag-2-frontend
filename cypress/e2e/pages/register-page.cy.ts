@@ -21,6 +21,7 @@ describe('Register Page E2E Tests:', () => {
   });
 
   it('should navigate to login page after button clicked', () => {
+    cy.wait(500);
     cy.get('#sidePanelNavigateButton').forceClick();
     cy.wait(500);
     cy.location('pathname').should('eq', '/login');
