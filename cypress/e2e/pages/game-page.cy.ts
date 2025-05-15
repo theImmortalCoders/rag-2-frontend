@@ -83,7 +83,7 @@ describe('Game Page E2E Tests:', () => {
     cy.wait('@addGameRecording').its('response.statusCode').should('eq', 200);
   });
 
-  it('should enable change of player name change after player menu edit button is clicked', () => {
+  it('should enable change of player name change after players menu edit button is clicked', () => {
     cy.get('#togglePlayersMenuButton').forceClick();
     cy.get('#gameEditPlayerName').first().should('contain.text', 'Player 1');
     cy.get('#gameEditPlayerButton').first().forceClick();
@@ -94,9 +94,28 @@ describe('Game Page E2E Tests:', () => {
       .should('contain.text', 'TEST NEW NAME');
   });
 
-  it('should enable to change player steering way to socket after correct option is selected', () => {
+  it('should enable to change player steering way to socket after correct option in players menu is selected', () => {
     cy.get('#togglePlayersMenuButton').forceClick();
     cy.get('#gamePlayerSourceSelect').first().select('SOCKET');
     cy.get('#toggleAISocketMenuButton').should('be.visible');
+  });
+
+  it('should enable to steer the game by socket (testing via debug mode) in ai socket menu', () => {
+    cy.get('#togglePlayersMenuButton').forceClick();
+    cy.get('#gamePlayerSourceSelect').first().select('SOCKET');
+    cy.get('#toggleAISocketMenuButton').forceClick();
+    cy.get('#gameDebugModeCheckbox').check();
+    cy.get('input[name="gameDebugModeInput"]').first().clear().type('1');
+
+    let before: any;
+    cy.get('canvas').then($canvas => {
+      before = $canvas[0].toDataURL();
+    });
+    cy.get('#gameDebugModeSendButton').forceClick();
+    cy.wait(500);
+    cy.get('canvas').then($canvas => {
+      const after = $canvas[0].toDataURL();
+      expect(after).to.not.equal(before);
+    });
   });
 });
