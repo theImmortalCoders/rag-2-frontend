@@ -10,12 +10,14 @@ import { Game } from 'rag-2-games-lib';
     <div class="group font-mono absolute left-0 top-0 z-30">
       <div class="bg-zinc-300 hidden"></div>
       <div
+        id="gameControlsParent"
         class="absolute z-30 top-3 left-4 rounded-full bg-zinc-400 group-hover:bg-mainCreme border-2 border-mainGray transition-all ease-in-out duration-300">
         <i
           data-feather="info"
           class="size-9 text-mainGray group-hover:scale-110 transition-all ease-in-out duration-300"></i>
       </div>
       <div
+        id="gameControlsSection"
         class="flex absolute z-20 top-3 left-4 h-10 w-56 pointer-events-none opacity-0 group-hover:opacity-100 items-start justify-center rounded-l-full rounded-tr-full bg-mainGray text-mainCreme text-nowrap transition-all ease-in-out duration-300">
         <p class="text-center py-2 pl-12 pr-4 uppercase">Game controls:</p>
       </div>

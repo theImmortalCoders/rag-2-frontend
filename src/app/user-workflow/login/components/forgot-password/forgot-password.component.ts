@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
   imports: [ReactiveFormsModule],
   template: `
     <button
+      id="forgotPasswordButton"
       type="button"
       (click)="shouldShowInput = !shouldShowInput"
       class="w-fit text-start text-sm hover:underline">
@@ -21,6 +22,7 @@ import { Subscription } from 'rxjs';
     </button>
     @if (shouldShowInput) {
       <form
+        id="forgotPasswordSectionForm"
         [formGroup]="forgotPasswordForm"
         (submit)="submitButton()"
         class="flex flex-col space-y-4">

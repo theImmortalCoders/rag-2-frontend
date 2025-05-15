@@ -37,27 +37,32 @@ interface IExtendendGameStats {
     <div
       class="flex flex-col items-center mt-6 py-9 md:py-14 px-0 sm:px-4 md:px-8 lg:px-14 xl:px-20 font-mono">
       <h1
+        id="gameListPageHeader"
         class="text-center uppercase text-lg 2xs:text-xl xs:text-2xl sm:text-3xl md:text-4xl xl:text-5xl mb-4 md:mb-8 text-mainCreme">
         Check details about our games:
       </h1>
       <div
         class="h-[2px] lg:h-[4px] bg-mainCreme w-full mb-2 xs:mb-4 md:mb-8"></div>
       <div
+        id="gameTilesParent"
         class="flex flex-row flex-wrap items-center justify-evenly w-full xl:w-11/12">
         @for (game of extendendGameList; track game.id) {
           <div
+            [id]="'gameTile' + game.id"
             class="w-4/5 xs:w-[90%] sm:w-[45%] md:w-1/3 lg:w-1/4 h-52 bg-mainGray mx-2 lg:mx-4 xl:mx-8 my-6 p-4 border-mainOrange border-2 rounded-lg text-mainCreme transition-all duration-200 ease-in-out hover:scale-110 relative group">
             <div
               class="absolute z-10 flex flex-row group-hover:flex-col justify-between w-full left-0 bottom-0 py-4 px-3 bg-lightGray opacity-95 rounded-b-lg">
               <div class="flex flex-row justify-between py-0 group-hover:py-2">
                 <p class="text-xl sm:text-2xl uppercase">{{ game.name }}</p>
                 <button
+                  [id]="'gameTileButton' + game.id"
                   [routerLink]="['/game/', game.name]"
                   [attr.aria-label]="game.name + 'game page'"
                   class="w-fit text-sm hidden group-hover:block rounded-md font-bold text-green-500 bg-lightGray border-[1px] border-green-500 hover:text-mainGray hover:bg-green-500 ease-in-out transition-all duration-200 px-2 py-0 my-0">
                   PLAY IT
                 </button>
                 <button
+                  [id]="'gamePageActionButtonTile' + game.id"
                   (click)="switchView(game.id)"
                   class="w-fit text-sm hidden group-hover:block rounded-md font-bold text-mainGray bg-mainCreme hover:text-mainCreme hover:bg-mainGray ease-in-out transition-all duration-200 px-2 py-0 my-0">
                   {{ isStatsViewChoosen(game.id) ? 'Description' : 'Stats' }}
@@ -69,7 +74,7 @@ interface IExtendendGameStats {
               <div
                 class="flex-col text-2xs hidden text-lightOragne group-hover:flex">
                 @if (isStatsViewChoosen(game.id)) {
-                  <p>
+                  <p [id]="'gamePageTotalPlayersTile' + game.id">
                     Total players:
                     {{ getGameStatsByName(game.name).totalPlayers }}
                   </p>
@@ -105,7 +110,9 @@ interface IExtendendGameStats {
                     }}
                   </p>
                 } @else {
-                  <p class="overflow-x-auto text-justify">
+                  <p
+                    [id]="'gamePageDescriptionTile' + game.id"
+                    class="overflow-x-auto text-justify">
                     {{ game.description }}
                   </p>
                 }

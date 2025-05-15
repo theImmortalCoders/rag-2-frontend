@@ -29,6 +29,7 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
         class="flex mx-auto w-full flex-row items-center justify-between font-mono text-mainOrange">
         <div class="flex w-fit md:w-1/4 lg:w-1/2 justify-between items-center">
           <a
+            id="navbarLogo"
             [routerLink]="['/']"
             aria-label="Home page"
             class="size-10 2xs:size-12 relative -rotate-6">
@@ -38,13 +39,17 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
               class="object-contain"
               fill />
           </a>
-          <a [routerLink]="['/']" class="text-3xl hidden md:block">{{
-            isMinWidthLg ? 'RUT-AI-GAMES 2.0' : 'RAG-2'
-          }}</a>
+          <a
+            id="navbarHeadline"
+            [routerLink]="['/']"
+            class="text-3xl hidden md:block">
+            {{ isMinWidthLg ? 'RUT-AI-GAMES 2.0' : 'RAG-2' }}
+          </a>
         </div>
         <div
           class="game-list-container text-xl xs:text-2xl flex flex-col w-3/5 2xs:w-1/2 sm:w-2/5 md:w-[30%] lg:w-1/4 xl:w-1/6 relative items-center justify-center">
           <button
+            id="toggleGameListButton"
             class="flex flex-row w-full items-center justify-center space-x-1 xs:space-x-2 p-1 relative z-40 border-b-[1px] xs:border-b-2 border-mainOrange hover:border-green-500 ease-in-out transition-all duration-500"
             (click)="toggleGameList()">
             <div
@@ -62,6 +67,7 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
             </div>
           </button>
           <app-game-list
+            id="gameListMenu"
             class="absolute z-20 w-full bg-mainGray ease-in-out transition-all duration-200 shadow-navbarShadow rounded-b-lg {{
               isGameListActive
                 ? 'top-[56px] 2xs:top-[60px] xs:top-[64px] opacity-100'

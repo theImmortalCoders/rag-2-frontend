@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
           Please accept cookies to continue using the site.
         </p>
         <button
+          id="cookieButton"
           (click)="acceptCookies()"
           class="px-4 py-2 bg-mainOrange bg-opacity-80 text-mainCreme rounded hover:bg-opacity-100 focus:outline-none ease-in-out duration-200 transition-all">
           ACCEPT

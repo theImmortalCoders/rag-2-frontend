@@ -40,7 +40,7 @@ import { Subscription } from 'rxjs';
       </svg>
       <div
         class="flex flex-col items-center justify-center absolute text-lg sm:text-2xl lg:text-xl xl:text-2xl font-bold text-mainCreme">
-        <span
+        <span id="dashboardUsedStorage"
           >{{ usedSpace?.toPrecision(2) }}/{{
             totalSpace.toPrecision(3)
           }}

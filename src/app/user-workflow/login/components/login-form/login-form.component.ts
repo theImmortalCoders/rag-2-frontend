@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -19,8 +20,13 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
   standalone: true,
   imports: [ReactiveFormsModule, ForgotPasswordComponent],
   template: `
-    <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">Log in</h1>
+    <h1
+      id="loginHeader"
+      class="text-2xl pb-6 font-bold uppercase tracking-wider">
+      Log in
+    </h1>
     <form
+      id="loginPageForm"
       [formGroup]="loginForm"
       (submit)="submitButton()"
       class="flex flex-col space-y-4">
@@ -32,6 +38,7 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
           id="email"
           type="email"
           formControlName="email"
+          name="email"
           placeholder="Type your email"
           class="custom-input"
           list="recentEmails" />
@@ -49,6 +56,7 @@ import { AuthEndpointsService } from '@endpoints/auth-endpoints.service';
           id="password"
           type="password"
           formControlName="password"
+          name="password"
           placeholder="Type your password"
           class="custom-input" />
       </div>
