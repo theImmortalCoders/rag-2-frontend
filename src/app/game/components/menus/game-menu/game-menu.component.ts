@@ -15,6 +15,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
   imports: [SideMenuHelperComponent],
   template: `
     <button
+      id="toggleGameMenuButton"
       (click)="toggleGameMenu()"
       class="side-menu-right-button -top-4 w-12 h-40 {{
         isGameMenuVisible ? 'right-72' : 'right-0'

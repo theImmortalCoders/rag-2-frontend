@@ -19,15 +19,11 @@ describe('Game Page E2E Tests:', () => {
 
   it('should start the game after SPACE button clicked', () => {
     let before: any;
-
     cy.get('canvas').then($canvas => {
       before = $canvas[0].toDataURL();
     });
-
     cy.get('body').realPress('Space');
-
     cy.wait(500);
-
     cy.get('canvas').then($canvas => {
       const after = $canvas[0].toDataURL();
       expect(after).to.not.equal(before);
@@ -39,15 +35,12 @@ describe('Game Page E2E Tests:', () => {
 
     //PAUSE
     cy.get('body').realPress('Space');
-
     cy.get('canvas').then($canvas => {
       before = $canvas[0].toDataURL();
     });
-
+    cy.get('#toggleGameMenuButton').forceClick();
     cy.get('#gamePauseResumeButton').forceClick();
-
     cy.wait(500);
-
     cy.get('canvas').then($canvas => {
       const after = $canvas[0].toDataURL();
       expect(after).not.to.equal(before);
@@ -57,11 +50,8 @@ describe('Game Page E2E Tests:', () => {
     cy.get('canvas').then($canvas => {
       before = $canvas[0].toDataURL();
     });
-
     cy.get('#gamePauseResumeButton').forceClick();
-
     cy.wait(500);
-
     cy.get('canvas').then($canvas => {
       const after = $canvas[0].toDataURL();
       expect(after).not.to.equal(before);
@@ -69,22 +59,27 @@ describe('Game Page E2E Tests:', () => {
 
     //RESTART
     cy.get('#gameRestartButton').forceClick();
-
     cy.wait(250);
-
     cy.get('canvas').then($canvas => {
       before = $canvas[0].toDataURL();
     });
-
     cy.wait(250);
-
     cy.get('#gameRestartButton').forceClick();
-
     cy.wait(250);
-
     cy.get('canvas').then($canvas => {
       const after = $canvas[0].toDataURL();
       expect(after).to.equal(before);
     });
+  });
+
+  it('should collect and save data after data menu collecting button is clicked', () => {
+    cy.mockAddGameRecording();
+    cy.get('#toggleDataMenuButton').forceClick();
+    cy.get('body').realPress('Space');
+    cy.wait(250);
+    cy.get('#gameCollectingDataButton').forceClick();
+    cy.wait(1500);
+    cy.get('#gameCollectingDataButton').forceClick();
+    cy.wait('@addGameRecording').its('response.statusCode').should('eq', 200);
   });
 });

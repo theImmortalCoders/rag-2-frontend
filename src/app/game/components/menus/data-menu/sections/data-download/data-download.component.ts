@@ -17,6 +17,7 @@ import { formatFileSize } from '@utils/helpers/formatFileSize';
   standalone: true,
   template: `<div class="flex flex-col">
     <button
+      id="gameCollectingDataButton"
       class="font-bold mt-2 border-b-[1px] border-mainOrange w-full text-center"
       (click)="handleCollectingData()">
       @if (!isDataCollectingActive) {

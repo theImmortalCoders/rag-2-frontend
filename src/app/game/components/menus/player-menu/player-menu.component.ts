@@ -31,7 +31,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
         isPlayerMenuVisible ? 'left-0' : '-left-72'
       }}">
       <app-side-menu-helper
-        [menuType]="'Data menu'"
+        [menuType]="'Players menu'"
         [descriptionPart1]="
           'In this menu, you can choose each players control source. If you choose WebSocket control for at least one player, an additional menu will appear.'
         "

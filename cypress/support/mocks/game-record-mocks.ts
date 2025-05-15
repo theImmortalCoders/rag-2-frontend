@@ -4,6 +4,7 @@
 declare namespace Cypress {
   interface Chainable {
     mockGetRecordedGamesPong(): Chainable<void>;
+    mockAddGameRecording(): Chainable<void>;
   }
 }
 
@@ -18,4 +19,10 @@ Cypress.Commands.add('mockGetRecordedGamesPong', () => {
       }
     ).as('getRecordedGamesPong');
   });
+});
+
+Cypress.Commands.add('mockAddGameRecording', () => {
+  cy.intercept('POST', '/api/GameRecord', {
+    statusCode: 200,
+  }).as('addGameRecording');
 });
