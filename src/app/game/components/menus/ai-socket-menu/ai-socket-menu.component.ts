@@ -17,6 +17,7 @@ import { SideMenuHelperComponent } from './sections/side-menu-helper/side-menu-h
   imports: [PlayerSocketMenuComponent, SideMenuHelperComponent],
   template: `
     <button
+      id="toggleAISocketMenuButton"
       (click)="toggleAISocketMenu()"
       class="side-menu-left-button top-60 w-12 {{
         editedPlayerId === -1 ? 'h-60' : 'h-[22rem]'

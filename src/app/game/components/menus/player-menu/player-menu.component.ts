@@ -17,6 +17,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
   standalone: true,
   template: `
     <button
+      id="togglePlayersMenuButton"
       (click)="togglePlayerMenu()"
       class="side-menu-left-button -top-4 w-12 h-60 {{
         isPlayerMenuVisible ? 'left-72' : 'left-0'
@@ -46,6 +47,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
                 #playerName
                 id="inGameMenuInputFocusAction"
                 class="custom-input-small text-lg"
+                name="gameEditPlayerInput"
                 type="text"
                 maxlength="19"
                 minlength="3"
@@ -65,11 +67,13 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
                 " />
             } @else {
               <span
+                id="gameEditPlayerName"
                 class="text-mainOrange text-xl font-bold uppercase text-center"
                 >{{ player.name }}</span
               >
             }
             <button
+              id="gameEditPlayerButton"
               (click)="
                 setEditedPlayerId(player.id); setEditedPlayerName(player.name)
               "
@@ -82,6 +86,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
           <span class="text-mainCreme font-bold">Select player source:</span>
           <select
             #playerSourceSelect
+            id="gamePlayerSourceSelect"
             class="custom-input w-full"
             [attr.disabled]="!player.isActive ? 'disabled' : null"
             (change)="updateSources(player, playerSourceSelect.value)">

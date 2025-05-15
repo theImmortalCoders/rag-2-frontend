@@ -82,4 +82,21 @@ describe('Game Page E2E Tests:', () => {
     cy.get('#gameCollectingDataButton').forceClick();
     cy.wait('@addGameRecording').its('response.statusCode').should('eq', 200);
   });
+
+  it('should enable change of player name change after player menu edit button is clicked', () => {
+    cy.get('#togglePlayersMenuButton').forceClick();
+    cy.get('#gameEditPlayerName').first().should('contain.text', 'Player 1');
+    cy.get('#gameEditPlayerButton').first().forceClick();
+    cy.get('input[name="gameEditPlayerInput"]').clear().type('TEST NEW NAME');
+    cy.get('#gameEditPlayerButton').forceClick();
+    cy.get('#gameEditPlayerName')
+      .first()
+      .should('contain.text', 'TEST NEW NAME');
+  });
+
+  it('should enable to change player steering way to socket after correct option is selected', () => {
+    cy.get('#togglePlayersMenuButton').forceClick();
+    cy.get('#gamePlayerSourceSelect').first().select('SOCKET');
+    cy.get('#toggleAISocketMenuButton').should('be.visible');
+  });
 });
