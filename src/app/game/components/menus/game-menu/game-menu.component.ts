@@ -15,6 +15,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
   imports: [SideMenuHelperComponent],
   template: `
     <button
+      id="toggleGameMenuButton"
       (click)="toggleGameMenu()"
       class="side-menu-right-button -top-4 w-12 h-40 {{
         isGameMenuVisible ? 'right-72' : 'right-0'
@@ -36,6 +37,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
         [descriptionPart2]="null"
         [descriptionPart3]="null" />
       <button
+        id="gamePauseResumeButton"
         (click)="onPauseClick()"
         class="w-full py-1 font-bold text-blue-900 border-blue-900 border-[1px] hover:bg-blue-900 hover:text-mainCreme transition-all ease-in-out duration-300">
         @if (isPaused) {
@@ -45,6 +47,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
         }
       </button>
       <button
+        id="gameRestartButton"
         (click)="onRestartClick()"
         class="w-full py-1 font-bold text-violet-800 border-violet-800 border-[1px] hover:bg-violet-800 hover:text-mainCreme transition-all ease-in-out duration-300">
         Restart

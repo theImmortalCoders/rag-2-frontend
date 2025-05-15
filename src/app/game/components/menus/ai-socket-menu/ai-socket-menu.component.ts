@@ -17,6 +17,7 @@ import { SideMenuHelperComponent } from './sections/side-menu-helper/side-menu-h
   imports: [PlayerSocketMenuComponent, SideMenuHelperComponent],
   template: `
     <button
+      id="toggleAISocketMenuButton"
       (click)="toggleAISocketMenu()"
       class="side-menu-left-button top-60 w-12 {{
         editedPlayerId === -1 ? 'h-60' : 'h-[22rem]'
@@ -33,7 +34,7 @@ import { SideMenuHelperComponent } from './sections/side-menu-helper/side-menu-h
         isAISocketMenuVisible ? 'left-0' : '-left-72'
       }}">
       <app-side-menu-helper
-        [menuType]="'Data menu'"
+        [menuType]="'AI Socket menu'"
         [descriptionPart1]="
           'In this menu, you can connect selected player to be controlled by selected model or algorithm. You can use previously prepared models or connect yours by entering the correct URL for the local WebSocket server (page URL must start with http://).'
         "

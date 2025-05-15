@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "pong",
+    "description": "pong description"
+  },
+  {
+    "id": 2,
+    "name": "skijump",
+    "description": "skijump description"
+  },
+  {
+    "id": 3,
+    "name": "flappybird",
+    "description": "flappybird description"
+  }
+]

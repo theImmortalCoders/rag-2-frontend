@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "email": "testuser@stud.prz.edu.pl",
+  "role": "Student",
+  "name": "John Night",
+  "studyCycleYearA": 2022,
+  "studyCycleYearB": 2023,
+  "lastPlayed": "2024-02-10T12:00:00Z",
+  "banned": false,
+  "course": {
+    "id": 1,
+    "name": "EF-DI"
+  },
+  "group": "L7"
+}

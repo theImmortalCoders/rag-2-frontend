@@ -52,10 +52,11 @@ import { Subscription } from 'rxjs';
     </div>
     <div class="flex flex-row justify-center items-center w-full">
       <button
+        id="checkGameListButton"
         [routerLink]="['game-list']"
         aria-label="Game list page"
-        class="text-sm md:text-base lg:text-lg mt-2 md:m-4 px-2 py-1 rounded-xl text-center border-2 border-mainOrange hover:border-green-500 text-mainOrange hover:text-green-500 font-bold uppercase tracking-widest ease-in-out transition-all duration-500">
-        Begin your journey!
+        class="text-sm md:text-base lg:text-lg mt-2 md:m-4 px-2 py-1 rounded-xl text-center bg-lightGray hover:bg-mainOrange border-2 border-lightGray hover:border-mainOrange text-mainOrange hover:text-darkGray font-semibold uppercase tracking-widest ease-in-out transition-all duration-300">
+        check game list
       </button>
     </div>
   `,

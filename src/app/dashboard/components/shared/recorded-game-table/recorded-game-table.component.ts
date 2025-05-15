@@ -14,6 +14,7 @@ import { formatFileSize } from '@utils/helpers/formatFileSize';
     } @else {
       @if (recordedGamesData && recordedGamesData.length > 0) {
         <table
+          id="recordedGameTableMarkup"
           class="flex flex-col min-w-[44rem] w-full justify-around space-y-0 font-mono">
           <tr
             class="flex flex-row space-x-4 justify-between bg-mainGray text-mainOrange text-sm xs:text-base font-bold px-4 py-2">
@@ -72,17 +73,26 @@ import { formatFileSize } from '@utils/helpers/formatFileSize';
                 class="flex justify-center w-2/12 uppercase">
                 {{ recordedGame.gameName }}
               </td>
-              <td headers="game_start_date" class="flex justify-center w-3/12">
+              <td
+                headers="game_start_date"
+                [id]="'recordedGameTableStarted' + recordedGame.id"
+                class="flex justify-center w-3/12">
                 {{
                   recordedGame.started !== recordedGame.ended
                     ? (recordedGame.started | date: 'dd/MM/yyyy, HH:mm:ss')
                     : '-'
                 }}
               </td>
-              <td headers="game_end_date" class="flex justify-center w-3/12">
+              <td
+                headers="game_end_date"
+                [id]="'recordedGameTableEnded' + recordedGame.id"
+                class="flex justify-center w-3/12">
                 {{ recordedGame.ended | date: 'dd/MM/yyyy, HH:mm:ss' }}
               </td>
-              <td headers="size" class="flex justify-center w-1/12 text-nowrap">
+              <td
+                headers="size"
+                [id]="'recordedGameTableSize' + recordedGame.id"
+                class="flex justify-center w-1/12 text-nowrap">
                 {{
                   recordedGame.isEmptyRecord
                     ? '-'

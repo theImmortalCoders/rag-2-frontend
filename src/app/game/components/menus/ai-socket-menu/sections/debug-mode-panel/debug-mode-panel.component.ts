@@ -12,10 +12,12 @@ import { Player, TExchangeData } from 'rag-2-games-lib';
       <input
         #variableInput
         id="inGameMenuInputFocusAction"
+        name="gameDebugModeInput"
         class="custom-input w-full"
         type="text"
         [defaultValue]="variable.value" />
       <button
+        id="gameDebugModeSendButton"
         (click)="emitInputData(variable.key, variableInput.value)"
         class="pt-2 border-b-[1px] border-mainOrange w-full text-center font-black">
         Send

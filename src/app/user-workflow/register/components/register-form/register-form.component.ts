@@ -20,10 +20,13 @@ import { CourseEndpointsService } from '@endpoints/course-endpoints.service';
   standalone: true,
   imports: [ReactiveFormsModule],
   template: `
-    <h1 class="text-2xl pb-6 font-bold uppercase tracking-wider">
+    <h1
+      id="registerHeader"
+      class="text-2xl pb-6 font-bold uppercase tracking-wider">
       Register new account
     </h1>
     <form
+      id="registerPageForm"
       [formGroup]="registerForm"
       (submit)="submitButton()"
       class="flex flex-col space-y-4 w-full">

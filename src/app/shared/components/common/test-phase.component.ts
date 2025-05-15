@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
           may be deleted without prior notice.
         </p>
         <button
+          id="testPhaseButton"
           (click)="acceptTesting()"
           class="px-4 py-2 bg-mainOrange bg-opacity-80 text-mainCreme rounded hover:bg-opacity-100 focus:outline-none ease-in-out duration-200 transition-all">
           I UNDERSTAND

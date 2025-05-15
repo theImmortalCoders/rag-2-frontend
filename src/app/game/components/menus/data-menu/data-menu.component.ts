@@ -26,6 +26,7 @@ import { SideMenuHelperComponent } from '../ai-socket-menu/sections/side-menu-he
   ],
   template: `
     <button
+      id="toggleDataMenuButton"
       (click)="toggleDataMenu()"
       class="side-menu-right-button top-40 w-12 h-72 {{
         isDataMenuVisible ? 'right-72' : 'right-0'

@@ -12,22 +12,29 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [RouterModule, CommonModule],
   template: `
-    <button (click)="handleButtonClick()" class="mr-5 xs:mr-10">
+    <button
+      id="userShortcutButton"
+      (click)="handleButtonClick()"
+      class="mr-5 xs:mr-10">
       <i
         data-feather="users"
         class="hover:text-green-500 ease-in-out transition-all duration-500 size-8 2xs:size-9"></i>
     </button>
     <div
+      id="userShortcutMenu"
       class="flex flex-col space-y-1 text-sm 2xs:text-base absolute h-24 2xs:h-28 overflow-y-hidden -z-10 transition-all ease-in-out duration-300 {{
         isUserInfoVisible
           ? 'right-0 opacity-100 w-48 md:w-52 lg:w-44 xl:w-56 p-3'
           : '-right-20 opacity-0 w-0 overflow-x-hidden p-0'
       }} top-[75px] 2xs:top-[83px] bg-mainGray shadow-userInfoShadow rounded-bl-lg">
-      <span class="text-center text-lightOragne font-bold uppercase"
+      <span
+        id="userShortcutMenuRole"
+        class="text-center text-lightOragne font-bold uppercase"
         >Your role: {{ currentUserRole }}</span
       >
       <hr class="border-[1px] border-lightOragne" />
       <a
+        id="userShortcutMenuDashboardButton"
         [routerLink]="['dashboard']"
         (click)="isUserInfoVisible = false"
         class="flex flex-row items-center justify-center space-x-2 text-center hover:text-green-500 ease-in-out transition-all duration-500">

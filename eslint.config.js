@@ -1,4 +1,5 @@
 // @ts-check
+// @ts-ignore
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
@@ -8,13 +9,16 @@ module.exports = tseslint.config(
     files: ['**/*.ts'],
     extends: [
       eslint.configs.recommended,
+      // @ts-ignore
       ...tseslint.configs.recommended,
+      // @ts-ignore
       ...tseslint.configs.stylistic,
+      // @ts-ignore
       ...angular.configs.tsRecommended,
     ],
     languageOptions: {
       parserOptions: {
-        project: 'tsconfig.json',
+        project: ['tsconfig.json', 'tsconfig.app.json', 'tsconfig.spec.json'],
       },
     },
     processor: angular.processInlineTemplates,
