@@ -27,7 +27,7 @@ import { RouterModule } from '@angular/router';
   template: `
     <div class="flex flex-col w-full bg-mainGray">
       <div
-        class="bg-homeImageAI opacity-40 bg-center fixed z-0 top-0 left-0 h-[100vh] w-[100vw]"></div>
+        class="bg-homeImageAI grayscale-0 opacity-30 bg-top bg-cover bg-no-repeat fixed z-0 top-0 left-0 h-full w-[100vw]"></div>
       <div
         class="flex flex-col justify-end pb-20 xl:pb-10 pt-6 xl:pt-14 relative min-h-all space-y-6 border-b-2 border-mainOrange ">
         <div class="hidden">RAG-2</div>
