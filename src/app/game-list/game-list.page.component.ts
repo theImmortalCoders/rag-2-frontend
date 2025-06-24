@@ -13,12 +13,14 @@ import { Subscription } from 'rxjs';
 import * as feather from 'feather-icons';
 import { StatsEndpointsService } from '@endpoints/stats-endpoints.service';
 import { CommonModule } from '@angular/common';
+import { games } from 'rag-2-games-lib';
 
 interface IExtendendGameList {
   id: number;
   name: string;
   description: string;
   isStatsChoosen?: boolean;
+  author?: string;
 }
 interface IExtendendGameStats {
   name?: string;
@@ -110,11 +112,15 @@ interface IExtendendGameStats {
                     }}
                   </p>
                 } @else {
-                  <p
+                  <div class="text-xs w-full pb-1">
+                    <span class="font-bold">Game author: </span>
+                    <span class="text-mainCreme italic">{{ game.author }}</span>
+                  </div>
+                  <span
                     [id]="'gamePageDescriptionTile' + game.id"
                     class="overflow-x-auto text-justify">
                     {{ game.description }}
-                  </p>
+                  </span>
                 }
               </div>
             </div>
@@ -182,6 +188,7 @@ export class GameListPageComponent
       for (let i = 0; i < this._gameList?.length; i++) {
         this.extendendGameList[i] = this._gameList[i];
         this.extendendGameList[i].isStatsChoosen = false;
+        this.extendendGameList[i].author = games[this._gameList[i].name].author;
       }
     }
   }
