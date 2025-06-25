@@ -22,7 +22,7 @@ module.exports = {
         mainCreme: '#FFE6C7',
       },
       backgroundImage: {
-        homeImageAI: "url('/images/home/home.jpg')",
+        homeImageAI: "url('/images/home/home2.png')",
         homeImageUser: "url('/images/authors/user.png')",
         homeImageUser0: "url('/images/authors/marcin.jpg')",
         homeImageUser1: "url('/images/authors/pawel.jpg')",
