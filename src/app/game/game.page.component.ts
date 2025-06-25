@@ -83,18 +83,6 @@ import {
             [gameRestart]="gameRestartSubject.asObservable()"
             [gamePause]="gamePauseSubject.asObservable()"
             (gameStateDataEmitter)="receiveGameOutputData($event)" />
-          <div class="font-mono -mt-8 w-[70vw] flex flex-col">
-            <div class="w-full bg-mainGray h-[1px]"></div>
-            <div
-              class="w-full flex flex-row items-center justify-center space-x-3">
-              <span class="font-bold text-center text-mainGray"
-                >This game was made by:
-              </span>
-              <span class="text-black italic">
-                {{ game.author }}
-              </span>
-            </div>
-          </div>
         }
         <app-console *appAuthRequired [logData]="logData" />
       } @else {
