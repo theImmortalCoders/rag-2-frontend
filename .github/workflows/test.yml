@@ -1,46 +1,49 @@
-name: Node.js CI
+name: Test
 
 on:
   pull_request:
     branches: ['dev']
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   unit-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
+
       - name: Install all necessary dependencies
         run: npm ci
+
       - name: Install Angular CLI
         run: npm install -g @angular/cli
+
       - name: Run Karma unit tests
         run: npm test -- --no-watch --no-progress
 
   e2e-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
+
       - name: Install all necessary dependencies
         run: npm ci
+
       - name: Install Angular CLI
         run: npm install -g @angular/cli
+
       - name: Clone games library and install dependencies
         run: |
           git clone https://github.com/KN-GEST-ongit/rag-2-games.git

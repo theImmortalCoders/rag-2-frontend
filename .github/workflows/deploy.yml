@@ -1,18 +1,23 @@
-name: Deploy
+name: Production deploy
 
 on:
   push:
-    branches: ['main']
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build:
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/build_push.yml
 
   deploy:
-    runs-on: ubuntu-latest
     needs: [build]
+    environment: production
+    runs-on: ubuntu-latest
     steps:
-      - name: Deploy
+      - name: Production deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
@@ -20,10 +25,9 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/project/rag-2-frontend
-            git checkout main
-            git pull
-            cd /home/project
-            docker compose up --build -d
-            echo "$(date): frontend deployed successfully" >> deploy-log.txt 
-            docker system prune -f
+            set -e
+
+            cd /home/rag2
+
+            docker compose --file docker-compose.prod.yml pull && docker compose --file docker-compose.prod.yml up -d
+            docker system prune -a -f
