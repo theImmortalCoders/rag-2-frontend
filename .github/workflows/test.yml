@@ -51,6 +51,7 @@ jobs:
           npm i
           npm run games:build
           npm run games:link
+
       - name: Install Cypress
         run: npm install cypress --save-dev
 

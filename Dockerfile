@@ -11,7 +11,7 @@ RUN npm run games:link
 
 #front
 WORKDIR /app/rag-2-frontend
-COPY rag-2-frontend .
+COPY . .
 
 RUN npm install
 RUN npm run games:import
@@ -19,7 +19,7 @@ RUN npm run build --prod
 
 FROM nginx:latest AS ngi
 COPY --from=build /app/rag-2-frontend/dist/rag-2-frontend/browser /usr/share/nginx/html
-COPY rag-2-frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

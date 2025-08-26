@@ -25,11 +25,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Clone games library and install dependencies
+        run: |
+          git clone https://github.com/KN-GEST-ongit/rag-2-games.git ./rag-2-games
+          cd rag-2-games
+          npm i
+          npm run games:build
+          npm run games:link
+
       - name: Build and push rag-2-frontend image
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: rag-2-frontend/Dockerfile
           push: true
           tags: |
             ghcr.io/kn-gest-ongit/rag-2-frontend:${{ github.ref_name }}
