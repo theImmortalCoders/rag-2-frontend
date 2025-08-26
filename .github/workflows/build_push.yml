@@ -40,4 +40,4 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ghcr.io/kn-gest-ongit/rag-2-frontend:${{ github.ref_name }}
+            ghcr.io/theimmortalcoders/rag-2-frontend:${{ github.ref_name }}
