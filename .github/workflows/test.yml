@@ -48,11 +48,11 @@ jobs:
         run: |
           git clone https://github.com/KN-GEST-ongit/rag-2-games.git
           cd rag-2-games
-          npm i
+          npm i --force
           npm run games:build
           npm run games:link
       - name: Install Cypress
-        run: npm install cypress --save-dev
+        run: npm install cypress --save-dev --force
       - name: Install library
         run: npm run games:import
       - name: Run Cypress E2E tests
