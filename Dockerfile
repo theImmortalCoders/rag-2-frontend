@@ -15,7 +15,7 @@ COPY rag-2-frontend .
 
 RUN npm install
 RUN npm run games:import
-RUN npm run build --prod
+RUN npm run build -- --configuration production
 
 FROM nginx:latest AS ngi
 COPY --from=build /app/rag-2-frontend/dist/rag-2-frontend/browser /usr/share/nginx/html
