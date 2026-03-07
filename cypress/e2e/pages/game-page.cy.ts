@@ -10,6 +10,7 @@ describe('Game Page E2E Tests:', () => {
     cy.wait('@verifyJWTToken').its('response.statusCode').should('eq', 200);
     cy.wait('@getGames').its('response.statusCode').should('eq', 200);
     cy.location('pathname').should('eq', '/game/pong');
+    cy.wait(500);
   });
 
   it('should describe game controls section after hover', () => {
