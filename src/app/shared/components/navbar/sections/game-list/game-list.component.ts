@@ -3,14 +3,15 @@ import { RouterModule } from '@angular/router';
 import { GameEndpointsService } from '@endpoints/game-endpoints.service';
 import { IGameResponse } from '@api-models/game.models';
 import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-game-list',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   template: `
-    <ul id="gamesNavbarList" class="text-base xs:text-lg space-y-2 px-4 py-4">
-      @for (game of games; track game.id) {
+    <ul id="gamesNavbarList" class="text-base xs:text-lg space-y-2 px-4 py-4 max-h-[450px]">
+      @for (game of (games | slice:0:10); track game.id) {
         <li class="w-full group">
           <a
             id="gameListElement"
