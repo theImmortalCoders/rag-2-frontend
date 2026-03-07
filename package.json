@@ -14,7 +14,7 @@
     "e2e:dev": "npx ng e2e",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "games:import": "npm link rag-2-games-lib",
+    "games:import": "npm link rag-2-games-lib && node scripts/sync-versions.js",
     "postinstall": "node scripts/sync-versions.js"
   },
   "private": true,
