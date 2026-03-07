@@ -3,7 +3,6 @@ import { FooterComponent } from './footer.component';
 import { NgOptimizedImage } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -11,12 +10,7 @@ describe('FooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        FooterComponent,
-        NgOptimizedImage,
-        RouterTestingModule,
-        HttpClientTestingModule,
-      ],
+      imports: [FooterComponent, NgOptimizedImage, RouterTestingModule],
     }).compileComponents();
   });
 

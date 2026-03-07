@@ -2,30 +2,51 @@ const fs = require('fs');
 const path = require('path');
 
 try {
-  const gamesLibPackageSourcePath = path.join(
+  const frontendPackagePath = path.join(__dirname, '../package.json');
+  const gamesLibPackagePath = path.join(
     __dirname,
     '../node_modules/rag-2-games-lib/package.json'
   );
-  const gamesLibPackageDestPath = path.join(
+  const versionsOutputPath = path.join(
     __dirname,
-    '../public/rag-2-games-lib-package.json'
+    '../src/app/shared/constants/versions.ts'
   );
 
-  if (!fs.existsSync(gamesLibPackageSourcePath)) {
+  const frontendPackageData = JSON.parse(
+    fs.readFileSync(frontendPackagePath, 'utf-8')
+  );
+
+  let gamesLibVersion = 'unknown';
+
+  try {
+    if (fs.existsSync(gamesLibPackagePath)) {
+      const gamesLibPackageData = JSON.parse(
+        fs.readFileSync(gamesLibPackagePath, 'utf-8')
+      );
+      gamesLibVersion = gamesLibPackageData.version;
+    }
+  } catch (error) {
     console.warn(
-      'rag-2-games-lib package.json not found. Skipping version sync.'
+      'Could not read rag-2-games-lib version. Using "unknown".'
     );
-    process.exit(0);
   }
 
-  const gamesLibPackageData = fs.readFileSync(gamesLibPackageSourcePath, 'utf-8');
+  const versionContent = `export const APP_VERSIONS = {
+  frontend: '${frontendPackageData.version}',
+  gamesLib: '${gamesLibVersion}',
+} as const;
+`;
 
-  fs.writeFileSync(gamesLibPackageDestPath, gamesLibPackageData);
+  const outputDir = path.dirname(versionsOutputPath);
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
 
-  const packageJson = JSON.parse(gamesLibPackageData);
-  console.log(
-    `Synced rag-2-games-lib version: ${packageJson.version}`
-  );
+  fs.writeFileSync(versionsOutputPath, versionContent);
+
+  console.log(`Generated versions file:`);
+  console.log(`  Frontend: ${frontendPackageData.version}`);
+  console.log(`  Games Library: ${gamesLibVersion}`);
 } catch (error) {
   console.error('Error syncing versions:', error.message);
   process.exit(1);

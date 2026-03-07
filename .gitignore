@@ -43,5 +43,7 @@ Thumbs.db
 
 /cypress/screenshots
 
+# Version files
 /public/rag-2-games-lib-package.json
 /public/package.json
+/src/app/shared/constants/versions.ts
