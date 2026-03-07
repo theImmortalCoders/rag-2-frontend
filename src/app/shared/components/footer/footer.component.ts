@@ -1,6 +1,9 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { VersionService, IAppVersions } from '@shared/services/version.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-footer',
@@ -28,6 +31,18 @@ import { RouterModule } from '@angular/router';
             >Rzeszów University of Technology<br />
             Games for Artificial Intelligence</span
           >
+          @if (versions) {
+            <div class="flex flex-col text-xs mt-2 space-y-1 text-mainOrange">
+              <div>
+                <span class="font-black">RUT-AI-GAMES</span>
+                <span class="italic"> v{{ versions.frontend }}</span>
+              </div>
+              <div>
+                <span class="font-bold">GAMES LIBRARY</span>
+                <span class="italic"> v{{ versions.gamesLib }}</span>
+              </div>
+            </div>
+          }
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">AUTHORS</span>
@@ -104,8 +119,26 @@ import { RouterModule } from '@angular/router';
     </footer>
   `,
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit, OnDestroy {
+  private _versionService = inject(VersionService);
+  private _destroy$ = new Subject<void>();
+
   public currentYear: number = new Date().getFullYear();
+  public versions: IAppVersions | null = null;
+
+  public ngOnInit(): void {
+    this._versionService
+      .getVersions()
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(versions => {
+        this.versions = versions;
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
 
   public authors = [
     {

@@ -173,6 +173,10 @@ export class GamePageComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     this._routerSubscription.unsubscribe();
     this._breakpointSubscription.unsubscribe();
+
+    if (this._intervalId) {
+      clearInterval(this._intervalId as number);
+    }
   }
 
   public updatePlayers(players: Player[]): void {

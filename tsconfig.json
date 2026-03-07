@@ -25,6 +25,7 @@
     "paths": {
       "@env/*": ["environments/*"],
       "@utils/*": ["utils/*"],
+      "@shared/*": ["app/shared/*"],
       "@endpoints/*": ["app/shared/services/endpoints/*"],
       "@api-models/*": ["app/shared/models/api-models/*"],
       "@gameModels/*": ["app/game/models/*"],

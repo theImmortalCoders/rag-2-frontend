@@ -68,10 +68,10 @@ import { UserShortcutComponent } from './sections/user-shortcut/user-shortcut.co
           </button>
           <app-game-list
             id="gameListMenu"
-            class="absolute z-20 w-full bg-mainGray ease-in-out transition-all duration-200 shadow-navbarShadow rounded-b-lg {{
+            class="absolute z-20 w-full bg-mainGray ease-in-out transition-all duration-200 shadow-navbarShadow rounded-b-lg overflow-hidden {{
               isGameListActive
                 ? 'top-[56px] 2xs:top-[60px] xs:top-[64px] opacity-100'
-                : '-top-72 opacity-0'
+                : '-top-72 opacity-0 pointer-events-none'
             }}" />
         </div>
         <app-user-shortcut class="flex items-center" />

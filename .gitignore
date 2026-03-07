@@ -42,3 +42,6 @@ testem.log
 Thumbs.db
 
 /cypress/screenshots
+
+/public/rag-2-games-lib-package.json
+/public/package.json
