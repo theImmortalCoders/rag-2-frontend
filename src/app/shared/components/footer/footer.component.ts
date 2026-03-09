@@ -64,7 +64,7 @@ import { takeUntil } from 'rxjs/operators';
         </div>
         <div class="flex flex-col items-start space-y-2">
           <span class="font-bold text-base lg:text-lg">PROJECT SUPERVISOR</span>
-          <span>Ph.D. Eng. Dawid Kalandyk</span>
+          <span>Dawid Kalandyk, Ph.D. Eng.</span>
           <span class="font-bold text-base lg:text-lg">CONTACT</span>
           <span>rut-ai&#64;kia.prz.edu.pl</span>
         </div>

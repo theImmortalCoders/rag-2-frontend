@@ -49,8 +49,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
       </p>
       <p>
         Last major update:
-        <time id="a11y-data-aktualizacja" datetime="2025-02-15"
-          >15th February 2025</time
+        <time id="a11y-data-aktualizacja" datetime="2026-03-07"
+          >7th March 2026</time
         >
       </p>
       <h2>Compliance status</h2>
@@ -103,8 +103,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
       </p>
       <p>
         The statement was last reviewed on:
-        <time id="a11y-data-sporzadzenie" datetime="2025-02-15"
-          >15th February 2025</time
+        <time id="a11y-data-sporzadzenie" datetime="2026-03-09"
+          >9th March 2026</time
         >
       </p>
       <p>
